@@ -8,12 +8,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
+import { HomePageComponent } from './home-page/home-page.component';
+import { RoleComponent } from './role/role.component';
+import { StepComponent } from './step/step.component';
+import { PersonInformationComponent } from './person-information/person-information.component';
 
 registerLocaleData(fr);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomePageComponent,
+    RoleComponent,
+    StepComponent,
+    PersonInformationComponent
   ],
   imports: [
     BrowserModule,

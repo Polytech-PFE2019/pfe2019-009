@@ -15,6 +15,9 @@ import { PersonInformationComponent } from './person-information/person-informat
 import { GameCreatorComponent } from './modal-module/game-creator/game-creator.component';
 import { GameRoomComponent } from './game-room/game-room.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ConfirmRoleComponent } from './modal-module/role-confirm/confirm-role/confirm-role.component';
+import { GameOnComponent } from './game-on/game-on.component';
+import { RoleChoiceDirective } from './directives/role-choice.directive';
 
 registerLocaleData(fr);
 
@@ -26,7 +29,10 @@ registerLocaleData(fr);
     StepComponent,
     PersonInformationComponent,
     GameCreatorComponent,
-    GameRoomComponent
+    GameRoomComponent,
+    ConfirmRoleComponent,
+    GameOnComponent,
+    RoleChoiceDirective
   ],
   imports: [
     BrowserModule,

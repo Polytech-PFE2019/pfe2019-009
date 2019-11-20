@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class GameCreatorComponent implements OnInit {
   isCreatingSalon: any;
+  @Output() test = new EventEmitter();
 
   constructor(private route: ActivatedRoute,
               private router: Router) { }
@@ -20,6 +21,7 @@ export class GameCreatorComponent implements OnInit {
   }
 
   handleOk() {
+    this.test.emit(1);
     this.router.navigate(['gameroom']);
     this.isCreatingSalon = false;
   }

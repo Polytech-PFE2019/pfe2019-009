@@ -1,17 +1,22 @@
-<img [src]="role?.src" width="60" height="60">
-<div class="role-container">
-  <nz-card [nzTitle]="role?.title">
-    <nz-card-tab>
-      <nz-tabset [(nzSelectedIndex)]="index1">
-        <nz-tab nzTitle="Rôle"></nz-tab>
-        <nz-tab nzTitle="Mission"></nz-tab>
-      </nz-tabset>
-      <div class="info-container">
-      <span *ngIf="index1==0">{{role?.description}}</span>
-      <span *ngIf="index1==1">{{role?.mission}}</span>
-      </div>
-    </nz-card-tab>
-  </nz-card>
+<div class="container">
+  <img [src]="role?.src" width="60" height="60">
+  <div class="role-container">
+    <nz-card [nzTitle]="role?.title">
+      <nz-card-tab>
+        <nz-tabset [(nzSelectedIndex)]="index1">
+          <nz-tab nzTitle="Rôle"></nz-tab>
+          <nz-tab nzTitle="Mission"></nz-tab>
+        </nz-tabset>
+        <div class="info-container">
+          <span *ngIf="index1==0">{{role?.description}}</span>
+          <span *ngIf="index1==1">{{role?.mission}}</span>
+        </div>
+      </nz-card-tab>
+    </nz-card>
+    <label nz-checkbox [(ngModel)]="checked" (ngModelChange)="getChange()">Confirmation</label>
+  </div>
+  <img id="profile" *ngIf="checked" [src]="role?.profile" width="80" height="80" style="margin-top: 60px">
+  <app-confirm-role #confirmRole [role]="role?.title"></app-confirm-role>
 </div>
 
 

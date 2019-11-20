@@ -7,12 +7,4 @@ import {GameCreatorComponent} from "./modal-module/game-creator/game-creator.com
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
-  @ViewChild(GameCreatorComponent, {static: true})
-  gameCreator;
-  title = 'Angular';
-
-  createASalon() {
-    this.gameCreator.isCreatingSalon = true;
-  }
 }

@@ -9,7 +9,8 @@ export const Roles = [
       'la réalisation et la livraison d\'un résultat,\n' +
       'appelé l\'ouvrage.',
     mission: 'missions',
-    src: '../../assets/Maitre d’ouvrage.jpg'
+    src: '../../assets/Maitre d’ouvrage.jpg',
+    profile: '../../assets/profiles/1.jpeg'
   },
   {
     title: 'Maitre d\'œuvre (Architecte) ',
@@ -20,7 +21,8 @@ export const Roles = [
       'En tant qu’architecte, il doit aussi concevoir' +
       ' le projet en répondant aux exigences du maitred’ouvrage.',
     mission: 'missions',
-    src: '../../assets/Architecte.png'
+    src: '../../assets/Architecte.png',
+    profile: '../../assets/profiles/2.jpg'
   },
   {
     title: 'Bureau d\'étude',
@@ -30,7 +32,8 @@ export const Roles = [
       'étudedelastructure, étude de sol, étude thermique,' +
       ' étude acoustique, étude des réseaux...',
     mission: 'missions',
-    src: '../../assets/Bureau d\'etude.png'
+    src: '../../assets/Bureau d\'etude.png',
+    profile: '../../assets/profiles/4.jpeg'
   },
   {
     title: 'Bureau de contrôle',
@@ -42,7 +45,8 @@ export const Roles = [
       'Il a une responsabilité juridique vis à vis ' +
       'du respects des différentes normesetréglementation.',
     mission: 'missions',
-    src: '../../assets/Bureau de contrôle.jpg'
+    src: '../../assets/Bureau de contrôle.jpg',
+    profile: '../../assets/profiles/7.jpg'
   },
   {
     title: 'Entreprise Corps\tEtat Secondaire',
@@ -52,7 +56,8 @@ export const Roles = [
       ' de l’électricité, de la ventilation, des menuiseries, ' +
       'des revêtement de sol,delaplomberie…',
     mission: 'missions',
-    src: '../../assets/Entreprise Corps Etat Secondaire.png'
+    src: '../../assets/Entreprise Corps Etat Secondaire.png',
+    profile: '../../assets/profiles/8.jpg'
   },
   {
     title: 'Entreprise Gros Œuvre',
@@ -63,7 +68,8 @@ export const Roles = [
       'Ils ont aussi souvent en charge les installations ' +
       'de chantier et le terrassement.',
     mission: 'missions',
-    src: '../../assets/Entreprise Gros Œuvre.png'
+    src: '../../assets/Entreprise Gros Œuvre.png',
+    profile: '../../assets/profiles/grilla.jpg'
   },
 
 ];

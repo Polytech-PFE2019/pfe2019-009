@@ -1,7 +1,20 @@
+.container{
+  cursor: pointer;
+  transition: all 0.6s
+}
+
+.container:hover{
+  transform: scale(1.2);
+}
+
+.container:visited{
+  border: #000c17 1px solid;
+}
+
 .role-container {
   background: #ECECEC;
   padding: 12px;
-  height: 400px;
+  height: 440px;
   overflow-y: auto;
   text-align: center;
 }
@@ -17,7 +30,9 @@ img{
 
 nz-card {
   height: 376px;
+
 }
+
 
 nz-card-tab{
   height: 100%;
@@ -27,3 +42,6 @@ nz-card-tab{
   min-height: 250px;
 }
 
+#profile{
+  border: 10px solid #008000;
+}

@@ -20,4 +20,8 @@ export class HomePageComponent implements OnInit {
   createASalon() {
     this.gameCreator.isCreatingSalon = true;
   }
+
+  testdd($event: any) {
+    console.log($event);
+  }
 }

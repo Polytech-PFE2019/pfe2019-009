@@ -7,4 +7,13 @@
 <!--  </div>-->
 <!--  <app-game-creator #gameCreator></app-game-creator>-->
 <!--</div>-->
+<div>
+  <nz-card style="width:250px;" [nzBordered]="true" nzTitle="Etape 1" [nzExtra]="extraTemplate">
+    <p>Card content</p>
+  </nz-card>
+</div>
+<ng-template #extraTemplate>
+  <a>More</a>
+</ng-template>
+
 <router-outlet></router-outlet>

@@ -12,6 +12,9 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RoleComponent } from './role/role.component';
 import { StepComponent } from './step/step.component';
 import { PersonInformationComponent } from './person-information/person-information.component';
+import { GameCreatorComponent } from './modal-module/game-creator/game-creator.component';
+import { GameRoomComponent } from './game-room/game-room.component';
+import { AppRoutingModule } from './app-routing.module';
 
 registerLocaleData(fr);
 
@@ -21,14 +24,17 @@ registerLocaleData(fr);
     HomePageComponent,
     RoleComponent,
     StepComponent,
-    PersonInformationComponent
+    PersonInformationComponent,
+    GameCreatorComponent,
+    GameRoomComponent
   ],
   imports: [
     BrowserModule,
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]

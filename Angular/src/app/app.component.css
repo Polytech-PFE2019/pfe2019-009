@@ -1,0 +1,36 @@
+.container{
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  background-image: url("../assets/icons/controle-construction.jpg");
+}
+
+h1{
+  color: #3f3f3f;
+}
+
+.creationContainer{
+  position: absolute;
+  right: 180px;
+  top: 300px;
+}
+
+#createSalon{
+  width: 240px;
+  height: 50px;
+  margin-left: 20px;
+  font-size: 30px;
+  border: #2f92b1 solid 2px;
+}
+
+img{
+  /* Start the shake animation and make the animation last for 0.5 seconds */
+  animation: shake 0.5s;
+
+  /* When the animation is finished, start again */
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  10% { transform: translate(10px, 0px) rotate(0deg); }
+}

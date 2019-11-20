@@ -24,24 +24,25 @@
 
     <div id="result">Result of request</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
     <script>
 
-        // var sock = new SockJS('https://mydomain.com/my_prefix');
-        //  sock.onopen = function() {
-        //      console.log('open');
-        //      sock.send('test');
-        //  };
 
-        //  sock.onmessage = function(e) {
-        //      console.log('message', e.data);
-        //      sock.close();
-        //  };
 
-        //  sock.onclose = function() {
-        //      console.log('close');
-        //  };
+
+
         function connect() {
+            ws = new WebSocket('ws://localhost:8080/name');
+            ws.onmessage = function(data){
+                console.log(data.data);
+            }
+
+            var sock = new SockJS('http://localhost:8080/name');
+            sock.onopen = function() {
+                console.log('open');
+                //sock.send('test');
+            };
             console.log("connect")
         }
 
@@ -51,7 +52,8 @@
 
         function request() {
             console.log("request")
-        }</script>
+        }
+    </script>
 
 
 

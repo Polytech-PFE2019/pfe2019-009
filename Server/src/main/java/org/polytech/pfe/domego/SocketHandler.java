@@ -1,7 +1,6 @@
 package org.polytech.pfe.domego;
 
 import com.google.gson.Gson;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -15,22 +14,23 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    private List sessions = new CopyOnWriteArrayList<>();
+    List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        //Map value = new Gson().fromJson(message.getPayload(), Map.class);
-        //session.sendMessage(new TextMessage());
+    public void handleTextMessage(WebSocketSession session, TextMessage message)
+            throws InterruptedException, IOException {
+        Map<String, String> value = new Gson().fromJson(message.getPayload(), Map.class);
 		/*for(WebSocketSession webSocketSession : sessions) {
-			Map value = new Gson().fromJson(message.getPayload(), Map.class);
 			webSocketSession.sendMessage(new TextMessage("Hello " + value.get("name") + " !"));
 		}*/
-        session.sendMessage(new TextMessage("Hello " + "toto" + " !"));
+        session.sendMessage(new TextMessage("Hello " + value.get("name") + " !"));
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session){
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         //the messages will be broadcasted to all users.
+        System.out.println("NEW USER");
         sessions.add(session);
     }
+
 }

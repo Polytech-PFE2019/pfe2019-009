@@ -1,2 +1,9 @@
-<p>game-room works!</p>
+<div class="container">
 
+  <h1 nz-title>Choissisez vore rôle</h1>
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="4" *ngFor="let role of roles">
+      <app-role [role]="role"></app-role>
+    </div>
+  </div>
+</div>

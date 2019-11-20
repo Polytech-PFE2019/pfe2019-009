@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Roles} from '../model/roles';
 
 @Component({
   selector: 'app-game-room',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameRoomComponent implements OnInit {
 
-  constructor() { }
+  roles: any = Roles;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

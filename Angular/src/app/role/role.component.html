@@ -1,53 +1,55 @@
-<div style="background: #ECECEC;padding:20px;">
-  <div nz-row [nzGutter]="6">
-    <div nz-col [nzSpan]="4">
-      <nz-card nzTitle="Maitre d'ouvrage ">
-        <nz-card-tab>
-          <nz-tabset>
-            <nz-tab nzTitle="Rôle">Le maître d’ouvrage est la personne pour laquelle est réalisée l’ouvrage. Le maître d'ouvrage est le porteur du projet,
-              il définit l'objectif du projet, son calendrier et le budget. Le résultat attendu du projet est la réalisation et la livraison d'un résultat,
-              appelé l'ouvrage.</nz-tab>
-            <nz-tab nzTitle="Mission">Content of Tab Pane 2</nz-tab>
-          </nz-tabset>
-        </nz-card-tab>
-      </nz-card>
-    </div>
-    <div nz-col [nzSpan]="4">
-      <nz-card nzTitle="Maitre d'œuvre (Architecte) ">
-        <p>Rôle<p>
-        <p>Le maitre d’œuvre (souvent l’architecte) est le chef de projet de construction, la personne physique ou morale qui dirige et vérifie la bonne exécution des travaux. En tant qu’architecte, il doit aussi concevoir le projet en répondant aux exigences du maitred’ouvrage.
-      </p>
-      </nz-card>
-    </div>
-    <div nz-col [nzSpan]="4">
-      <nz-card nzTitle="Bureau d'étude ">
-        <p>Rôle<p>
-        <p>Le bureau d’étude doit assister l’architecte sur les spécificités techniques qui relèvent de sa compétence. Ils assurent des études techniques spécifiques : étudedelastructure, étude de sol, étude thermique, étude acoustique, étude des réseaux...
-      </p>
-      </nz-card>
-    </div>
-    <div nz-col [nzSpan]="4">
-      <nz-card nzTitle="Bureau de contrôle">
-        <p>Rôle<p>
-        <p>Le bureau de contrôle juge de la solidité de l'ouvrage, et vérifie le respect des normes et des règles de construction - appelées souvent « règles de l'art ». Il a une responsabilité juridique vis à vis du respects des différentes normesetréglementation.
-      </p>
-      </nz-card>
-    </div>
-    <div nz-col [nzSpan]="4">
-      <nz-card nzTitle="Entreprise Gros Œuvre">
-        <p>Rôle<p>
-        <p>Ces entreprises ont pour but de bâtir l’ossature de l’ouvrage. Cela comprend les fondations, les poutres, les poteaux, les murs, la charpente, le dallage… Ils ont aussi souvent en charge les installations de chantier et le terrassement.
-      </p>
-      </nz-card>
-    </div>
-    <div nz-col [nzSpan]="4">
-      <nz-card nzTitle="Entreprise Corps	Etat Secondaire">
-        <p>Rôle<p>
-        <p>Leur rôle est de construire tout ce qui n’est pas assuré par le gros œuvre. Il s’agit des cloisons et plâtrerie, de la peinture, de l’électricité, de la ventilation, des menuiseries, des revêtement de sol,delaplomberie…
-      </p>
-      </nz-card>
-    </div>
-  </div>
-
-
+<div class="role-container">
+  <!--  <div nz-row [nzGutter]="6">-->
+  <!--    <div nz-col [nzSpan]="4">-->
+  <nz-card [nzTitle]="role?.title">
+    <nz-card-tab>
+      <nz-tabset [(nzSelectedIndex)]="index1">
+        <nz-tab nzTitle="Rôle"></nz-tab>
+        <nz-tab nzTitle="Mission"></nz-tab>
+      </nz-tabset>
+      <div class="info-container">
+      <span *ngIf="index1==0">{{role?.description}}</span>
+      <span *ngIf="index1==1">{{role?.mission}}</span>
+      </div>
+    </nz-card-tab>
+  </nz-card>
+  <!--    </div>-->
+  <!--    <div nz-col [nzSpan]="4">-->
+  <!--      <nz-card nzTitle="Maitre d'œuvre (Architecte) ">-->
+  <!--        <p>Rôle<p>-->
+  <!--        <p>Le maitre d’œuvre (souvent l’architecte) est le chef de projet de construction, la personne physique ou morale qui dirige et vérifie la bonne exécution des travaux. En tant qu’architecte, il doit aussi concevoir le projet en répondant aux exigences du maitred’ouvrage.-->
+  <!--      </p>-->
+  <!--      </nz-card>-->
+  <!--    </div>-->
+  <!--    <div nz-col [nzSpan]="4">-->
+  <!--      <nz-card nzTitle="Bureau d'étude ">-->
+  <!--        <p>Rôle<p>-->
+  <!--        <p>Le bureau d’étude doit assister l’architecte sur les spécificités techniques qui relèvent de sa compétence. Ils assurent des études techniques spécifiques : étudedelastructure, étude de sol, étude thermique, étude acoustique, étude des réseaux...-->
+  <!--      </p>-->
+  <!--      </nz-card>-->
+  <!--    </div>-->
+  <!--    <div nz-col [nzSpan]="4">-->
+  <!--      <nz-card nzTitle="Bureau de contrôle">-->
+  <!--        <p>Rôle<p>-->
+  <!--        <p>Le bureau de contrôle juge de la solidité de l'ouvrage, et vérifie le respect des normes et des règles de construction - appelées souvent « règles de l'art ». Il a une responsabilité juridique vis à vis du respects des différentes normesetréglementation.-->
+  <!--      </p>-->
+  <!--      </nz-card>-->
+  <!--    </div>-->
+  <!--    <div nz-col [nzSpan]="4">-->
+  <!--      <nz-card nzTitle="Entreprise Gros Œuvre">-->
+  <!--        <p>Rôle<p>-->
+  <!--        <p>Ces entreprises ont pour but de bâtir l’ossature de l’ouvrage. Cela comprend les fondations, les poutres, les poteaux, les murs, la charpente, le dallage… Ils ont aussi souvent en charge les installations de chantier et le terrassement.-->
+  <!--      </p>-->
+  <!--      </nz-card>-->
+  <!--    </div>-->
+  <!--    <div nz-col [nzSpan]="4">-->
+  <!--      <nz-card nzTitle="Entreprise Corps	Etat Secondaire">-->
+  <!--        <p>Rôle<p>-->
+  <!--        <p>Leur rôle est de construire tout ce qui n’est pas assuré par le gros œuvre. Il s’agit des cloisons et plâtrerie, de la peinture, de l’électricité, de la ventilation, des menuiseries, des revêtement de sol,delaplomberie…-->
+  <!--      </p>-->
+  <!--      </nz-card>-->
+  <!--    </div>-->
 </div>
+
+
+

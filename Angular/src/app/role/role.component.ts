@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-role',
@@ -6,8 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./role.component.css']
 })
 export class RoleComponent implements OnInit {
-  index1 = 1;
-  constructor() { }
+  @Input() role: any = null;
+  index1 = 0;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

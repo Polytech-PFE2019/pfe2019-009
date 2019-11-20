@@ -1,4 +1,19 @@
-
-button {
-  margin-right: 8px;
+.role-container {
+  background: #ECECEC;
+  padding: 12px;
+  height: 400px;
+  overflow-y: auto
 }
+
+nz-card {
+  height: 376px;
+}
+
+nz-card-tab{
+  height: 100%;
+}
+
+.info-container{
+  height: 250px;
+}
+

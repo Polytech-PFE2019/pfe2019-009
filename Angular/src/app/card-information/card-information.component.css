@@ -1,0 +1,7 @@
+.step-container{
+  background: #ECECEC;
+  padding: 12px;
+  height: 400px;
+  overflow-y: auto;
+  text-align: center;
+}

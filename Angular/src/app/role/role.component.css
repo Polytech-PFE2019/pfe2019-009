@@ -2,7 +2,17 @@
   background: #ECECEC;
   padding: 12px;
   height: 400px;
-  overflow-y: auto
+  overflow-y: auto;
+  text-align: center;
+}
+
+img{
+  border-radius: 50%;
+  border: solid 1px #3f3f3f;
+  z-index:999;
+  position: absolute;
+  margin-top: -40px;
+  left:120px
 }
 
 nz-card {
@@ -14,6 +24,6 @@ nz-card-tab{
 }
 
 .info-container{
-  height: 250px;
+  min-height: 250px;
 }
 

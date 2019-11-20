@@ -8,7 +8,8 @@ export const Roles = [
       ' Le résultat attendu du projet est ' +
       'la réalisation et la livraison d\'un résultat,\n' +
       'appelé l\'ouvrage.',
-    mission: 'missions'
+    mission: 'missions',
+    src: '../../assets/Maitre d’ouvrage.jpg'
   },
   {
     title: 'Maitre d\'œuvre (Architecte) ',
@@ -18,7 +19,8 @@ export const Roles = [
       'et vérifie la bonne exécution des travaux. ' +
       'En tant qu’architecte, il doit aussi concevoir' +
       ' le projet en répondant aux exigences du maitred’ouvrage.',
-    mission: 'missions'
+    mission: 'missions',
+    src: '../../assets/Architecte.png'
   },
   {
     title: 'Bureau d\'étude',
@@ -27,7 +29,8 @@ export const Roles = [
       ' Ils assurent des études techniques spécifiques : ' +
       'étudedelastructure, étude de sol, étude thermique,' +
       ' étude acoustique, étude des réseaux...',
-    mission: 'missions'
+    mission: 'missions',
+    src: '../../assets/Bureau d\'etude.png'
   },
   {
     title: 'Bureau de contrôle',
@@ -38,7 +41,8 @@ export const Roles = [
       ' appelées souvent « règles de l\'art ». ' +
       'Il a une responsabilité juridique vis à vis ' +
       'du respects des différentes normesetréglementation.',
-    mission: 'missions'
+    mission: 'missions',
+    src: '../../assets/Bureau de contrôle.jpg'
   },
   {
     title: 'Entreprise Corps\tEtat Secondaire',
@@ -47,7 +51,8 @@ export const Roles = [
       'Il s’agit des cloisons et plâtrerie, de la peinture,' +
       ' de l’électricité, de la ventilation, des menuiseries, ' +
       'des revêtement de sol,delaplomberie…',
-    mission: 'missions'
+    mission: 'missions',
+    src: '../../assets/Entreprise Corps Etat Secondaire.png'
   },
   {
     title: 'Entreprise Gros Œuvre',
@@ -57,7 +62,8 @@ export const Roles = [
       'les murs, la charpente, le dallage… ' +
       'Ils ont aussi souvent en charge les installations ' +
       'de chantier et le terrassement.',
-    mission: 'missions'
+    mission: 'missions',
+    src: '../../assets/Entreprise Gros Œuvre.png'
   },
 
 ];

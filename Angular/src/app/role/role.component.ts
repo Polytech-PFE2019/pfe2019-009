@@ -8,6 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class RoleComponent implements OnInit {
   @Input() role: any = null;
   index1 = 0;
+  src = '../../assets/Architecte.png';
 
   constructor() {
   }

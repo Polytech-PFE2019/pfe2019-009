@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.models;
 
+import com.google.gson.JsonObject;
 import org.springframework.web.socket.WebSocketSession;
 
 public class Player {
@@ -48,7 +49,13 @@ public class Player {
     }
 
     public String createResponseRequest(){
-        return "{username :\""+name+"\", ready :"+ ready+",roleID:"+ role.getId()+"}";
+
+        JsonObject response = new JsonObject();
+        response.addProperty("username", name);
+        response.addProperty("ready", ready);
+        response.addProperty("roleID", (role != null ? role.getId() : 0));
+
+        return response.toString();
     }
 
     public WebSocketSession getSession() {

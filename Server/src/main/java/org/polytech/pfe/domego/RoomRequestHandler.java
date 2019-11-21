@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego;
 
+import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.models.Player;
@@ -16,9 +17,6 @@ import java.util.Map;
 
 
 public class RoomRequestHandler {
-
-    private final String RESPONSE_OK = " {\"response\":\"OK\"}";
-    private final String RESPONSE_KO = " {\"response\":\"KO\"}";
 
     private RoomInstance roomInstance = RoomInstance.getInstance();
 
@@ -102,7 +100,7 @@ public class RoomRequestHandler {
         //Player updatedPlayer = RoomInstance.getRoomByID(roomID).getPlayerByID(playerID);
         //System.out.println(updatedPlayer.getName()+" has now the role : "+updatedPlayer.getRole().getName());
 
-        session.sendMessage(new TextMessage(RESPONSE_OK));
+        session.sendMessage(new TextMessage(responseOK()));
 
         updateRoomForAllPlayers(room,player);
 
@@ -116,6 +114,18 @@ public class RoomRequestHandler {
                 player.getSession().sendMessage(new TextMessage(room.createUpdateResponse()));
             }
         }
+    }
+
+    private String responseOK(){
+        JsonObject response = new JsonObject();
+        response.addProperty("Request", "OK");
+        return response.toString();
+    }
+
+    private String responseKO(){
+        JsonObject response = new JsonObject();
+        response.addProperty("Request", "KO");
+        return response.toString();
     }
 }
 

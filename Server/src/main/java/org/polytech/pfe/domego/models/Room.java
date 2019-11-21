@@ -1,5 +1,7 @@
 package org.polytech.pfe.domego.models;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.http.WebSocket;
@@ -34,24 +36,35 @@ public class Room {
     }
 
     public String createResponseRequest(String userID) {
-        String response = "{response : \"OK\", roomID :" + this.id + ", userID :\"" + userID + "\"";
-        response += "players : [";
+
+        JsonObject response = new JsonObject();
+        response.addProperty("response", "OK");
+        response.addProperty("roomID", this.id);
+        response.addProperty("userID", userID);
+
+        JsonArray players = new JsonArray();
         for (Player player : playerList) {
-            response += player.createResponseRequest() + ",";
+            players.add(player.createResponseRequest());
         }
-        response += "]}";
-        return response;
+        response.addProperty("players", players.toString());
+
+        return response.toString();
 
     }
 
     public String createUpdateResponse() {
-        String response = "{response : \"UPDATE\", roomID :" + this.id+",";
-        response += "players : [";
+
+        JsonObject response = new JsonObject();
+        response.addProperty("response", "UPDATE");
+        response.addProperty("roomID", this.id);
+
+        JsonArray players = new JsonArray();
         for (Player player : playerList) {
-            response += player.createResponseRequest() + ",";
+            players.add(player.createResponseRequest());
         }
-        response += "]}";
-        return response;
+        response.addProperty("players", players.toString());
+
+        return response.toString();
 
     }
 

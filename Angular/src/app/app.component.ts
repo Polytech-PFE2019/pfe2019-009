@@ -7,4 +7,5 @@ import {GameCreatorComponent} from "./modal-module/game-creator/game-creator.com
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  dataset=[];
 }

@@ -2,3 +2,92 @@
 @import "~ng-zorro-antd/style/index.min.css"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/index.min.css"; /* 引入组件样式 */
 
+.money{
+  background: #ffcb0f;
+  height:30px;
+  width: 30px;
+  border-radius: 15px;
+}
+.blue_square{
+  background: #2f63d4;
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+
+.green_square{
+  background: #4cc916;
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+
+.yellow_square{
+  background: #f7e80c;
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+
+.black_square{
+  background: #000000;
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+
+.red_square{
+  background: #ff0000;
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+
+.purple_square{
+  background: #cc00b4;
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+
+.blue_rounding{
+  background: #2f63d4;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.green_rounding{
+  background: #4cc916;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.yellow_rounding{
+  background: #f7e80c;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.black_rounding{
+  background: #000000;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.red_rounding{
+  background: #ff0000;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.purple_rounding{
+  background: #cc00b4;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+}

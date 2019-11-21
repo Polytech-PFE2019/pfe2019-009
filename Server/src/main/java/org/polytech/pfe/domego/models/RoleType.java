@@ -28,4 +28,11 @@ public enum RoleType {
     public static int getNumberOfRole(){
         return RoleType.values().length -1;
     }
+
+    public static RoleType getRoleType(int roleID){
+        for (RoleType type : RoleType.values()) {
+            if (type.id == roleID) return type;
+        }
+        throw new IllegalArgumentException("Incorrect RoleID: must be between 1 and 6");
+    }
 }

@@ -1,6 +1,8 @@
 package org.polytech.pfe.domego;
 
 import com.google.gson.Gson;
+import org.polytech.pfe.domego.components.statefull.RoomInstance;
+import org.polytech.pfe.domego.models.Room;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -18,12 +20,22 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message)
-            throws InterruptedException, IOException {
+            throws InterruptedException, IOException, Exception {
         Map<String, String> value = new Gson().fromJson(message.getPayload(), Map.class);
+
 		/*for(WebSocketSession webSocketSession : sessions) {
 			webSocketSession.sendMessage(new TextMessage("Hello " + value.get("name") + " !"));
 		}*/
-        session.sendMessage(new TextMessage("Hello " + value.get("name") + " !"));
+        session.sendMessage(new TextMessage("Hello 2"));
+
+        try {
+            new RoomRequestHandler().handleRequest(session,value);
+        }catch(Exception e){
+            e.printStackTrace();
+            session.sendMessage(new TextMessage("{response : \"KO\", message : \"bad request\"}"));
+        }
+
+
     }
 
     @Override
@@ -31,6 +43,7 @@ public class SocketHandler extends TextWebSocketHandler {
         //the messages will be broadcasted to all users.
         System.out.println("NEW USER");
         sessions.add(session);
+        session.sendMessage(new TextMessage("Hello"));
     }
 
 }

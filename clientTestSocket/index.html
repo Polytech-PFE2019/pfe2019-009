@@ -30,16 +30,18 @@
 
 
 
-
+        var ws;
 
         function connect() {
             ws = new WebSocket('ws://localhost:8080/name');
-            ws.onmessage = function(data){
+            ws.onmessage = function (data) {
                 console.log(data.data);
+
             }
 
+
             var sock = new SockJS('http://localhost:8080/name');
-            sock.onopen = function() {
+            sock.onopen = function () {
                 console.log('open');
                 //sock.send('test');
             };
@@ -51,7 +53,29 @@
         }
 
         function request() {
-            console.log("request")
+            console.log(document.getElementById("request").value)
+            sendMessage(document.getElementById("request").value);
+        }
+
+        function sendMessage(value) {
+            switch (value) {
+                case "0": var msg = {
+                    request: "CREATE_GAME",
+                    username: "Player 1",
+                };
+
+                    // Envoi de l'objet msg à travers une chaîne formatée en JSON
+                    ws.send(JSON.stringify(msg));
+                    break;
+                case "1":
+                    var msg = {
+                        request: "JOIN_GAME",
+                        roomID: "0",
+                        username: "Player 2"
+                    };
+                    ws.send(JSON.stringify(msg));
+                    break;
+            }
         }
     </script>
 

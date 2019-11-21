@@ -19,6 +19,8 @@ public class Role {
 
     private String special;
     //private List<Objective> objectives;
+    private int roleID;
+
 
 
     public Role(int id, RoleType name, String description, int budget, String special) {
@@ -60,4 +62,5 @@ public class Role {
     public void setBudget(int budget) {
         this.budget = budget;
     }
+
 }

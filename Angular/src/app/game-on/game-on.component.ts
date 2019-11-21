@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Steps} from '../model/step';
 
 @Component({
   selector: 'app-game-on',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameOnComponent implements OnInit {
 
-  constructor() { }
+  steps: any = Steps;
+  step = 'Étape 1';
+
+  constructor() {
+  }
 
   ngOnInit() {
   }
 
+  getCurrentStep($event: any) {
+    this.step = $event;
+  }
 }

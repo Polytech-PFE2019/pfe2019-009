@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {GameCreatorComponent} from "../modal-module/game-creator/game-creator.component";
+import {GameCreatorComponent} from '../modal-module/game-creator/game-creator.component';
 
 @Component({
   selector: 'app-home-page',

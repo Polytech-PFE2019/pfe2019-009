@@ -18,6 +18,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConfirmRoleComponent } from './modal-module/role-confirm/confirm-role/confirm-role.component';
 import { GameOnComponent } from './game-on/game-on.component';
 import { RoleChoiceDirective } from './directives/role-choice.directive';
+import { ProjetInformationComponent } from './projet-information/projet-information.component';
+import { ProjetInformationDurationComponent } from './projet-information/projet-information-duration/projet-information-duration.component';
+import { ProjetInformationBudgetComponent } from './projet-information/projet-information-budget/projet-information-budget.component';
+import { ProjetInformationRiskComponent } from './projet-information/projet-information-risk/projet-information-risk.component';
 
 registerLocaleData(fr);
 
@@ -32,7 +36,11 @@ registerLocaleData(fr);
     GameRoomComponent,
     ConfirmRoleComponent,
     GameOnComponent,
-    RoleChoiceDirective
+    RoleChoiceDirective,
+    ProjetInformationComponent,
+    ProjetInformationDurationComponent,
+    ProjetInformationBudgetComponent,
+    ProjetInformationRiskComponent
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,10 @@
-<p>step works!</p>
+<div class="container" (click)="sendStep()">
+  <nz-card [nzBordered]="true"
+           [nzTitle]="step?.title"
+           [nzExtra]="extraTemplate">
+    <p>{{step?.description}}</p>
+  </nz-card>
+</div>
+<ng-template #extraTemplate>
+  <a nz-tooltip [nzTooltipTitle]="step?.detail">Détail</a>
+</ng-template>

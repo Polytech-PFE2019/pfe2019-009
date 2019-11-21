@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-step',
@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./step.component.css']
 })
 export class StepComponent implements OnInit {
+  @Input() step: any = null;
+  @Output() currentStep = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
 
+
+  sendStep() {
+    this.currentStep.emit(this.step.title);
+  }
 }

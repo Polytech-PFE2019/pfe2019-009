@@ -5,11 +5,8 @@ import com.google.gson.JsonObject;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.http.WebSocket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Objects;
-import java.util.UUID;
 
 public class Room{
 
@@ -92,7 +89,7 @@ public class Room{
     }
 
     public Player getPlayerByID(String playerID){
-        return playerList.stream().filter(player -> playerID.equals(player.getSocketID())).findAny().orElse(null);
+        return playerList.stream().filter(player -> player.getSocketID().equals(playerID)).findAny().orElse(null);
     }
 
     public void createGame(List<Player> players){

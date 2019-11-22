@@ -23,9 +23,6 @@ import java.util.Optional;
 @Service
 public class RoomRequestHandler {
 
-    private final String RESPONSE_OK = " {\"response\":\"OK\"}";
-    private final String RESPONSE_KO = " {\"response\":\"KO\"}";
-
     private RoomInstance roomInstance;
     private final RoleAccessor roleAccessor;
 
@@ -44,7 +41,7 @@ public class RoomRequestHandler {
 
         System.out.println("REQUETE : ");
         for (String key : request.keySet()) {
-            System.out.println("KEY : " + key + " VALUE : " + request.get(key).toString());
+            System.out.println("KEY : " + key + " VALUE : " + request.get(key));
         }
 
         switch(requestName){
@@ -103,21 +100,25 @@ public class RoomRequestHandler {
 
     private void handleRoomCreation(WebSocketSession session, String username) throws IOException {
         System.out.println(username);
-        Room room = new Room("La Room",this.roomInstance.getRoomList().size());
+        Room room = new Room(username + "'s lobby",this.roomInstance.getRoomList().size());
 
         Player player = new Player(session,username);
         room.addPlayer(player);
         this.roomInstance.addRoom(room);
         System.out.println(this.roomInstance.numberOfRooms()+" rooms");
 
+        System.out.println(room.createResponseRequest(player.getSocketID()));
         session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
-
 
     }
 
     private void handleJoiningRoom(WebSocketSession session,  int roomID, String username) throws IOException {
         Room room = this.roomInstance.getRoomByID(roomID);
-
+        if(room.isFull()){
+            session.sendMessage(new TextMessage(responseKO()));
+            System.out.println("ROOM FULL");
+            return;
+        }
         Player player = new Player(session,username);
         room.addPlayer(player);
         System.out.println(this.roomInstance.getRoomByID(roomID).getPlayerList().size()+" players in room of roomID"+roomID);
@@ -128,7 +129,7 @@ public class RoomRequestHandler {
         updateRoomForAllPlayers(room,player);
     }
 
-    //TODO Corriger cette partie
+
     private void handleChoosingRole(WebSocketSession session,  int roomID, String playerID, int roleID) throws IOException {
         Room room = this.roomInstance.getRoomByID(roomID);
 
@@ -136,15 +137,20 @@ public class RoomRequestHandler {
 
         RoleType roleType = RoleType.getRoleType(roleID);
 
-        Optional<Role> role = roleAccessor.getSpecificRoleById(roleID);
+        Optional<Role> optionalRole = roleAccessor.getSpecificRoleById(roleID);
 
-        if (!role.isPresent()){
+        if (!optionalRole.isPresent()){
             System.out.println("ERROR this role doesn't existe");
             return;
         }
+        Role role = optionalRole.get();
+        if(room.getPlayerList().stream().anyMatch(player1 -> player1.getRole().equals(role))){
+            System.out.println("ERROR THIS ROLE IS ALREADY TAKEN");
+            session.sendMessage(new TextMessage(responseKO()));
+        }
 
 
-        player.setRole(role.get());
+        player.setRole(role);
 
 
         Player updatedPlayer = this.roomInstance.getRoomByID(roomID).getPlayerByID(playerID);

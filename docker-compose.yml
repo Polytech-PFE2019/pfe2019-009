@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mongodb:
+    image: mongo:4.0.0
+    container_name: "mongodb"
+    ports:
+      - 27017:27017
+    command: --smallfiles
+  domegoServer:
+    build : ./Server
+    image: domego/server
+    ports:
+      - 8080:8080
+    links:
+      - mongodb
+    environment:
+      spring.data.mongodb.uri: mongodb://mongodb:27017/domego
+  domegoClient:
+    build: ./Angular
+    image: domego/client
+    ports:
+      - 4200:4200

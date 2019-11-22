@@ -7,11 +7,13 @@ import org.springframework.web.socket.WebSocketSession;
 import java.net.http.WebSocket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Room {
     private int id;
     private String roomName;
     private List<Player> playerList;
+    private Game game;
 
     public Room(String roomName, int id){
         this.roomName = roomName;
@@ -33,6 +35,10 @@ public class Room {
 
     public int getID(){
         return id;
+    }
+
+    public void removePlayer(Player playerToRemove){
+        this.playerList = this.playerList.stream().filter(player -> !player.equals(playerToRemove)).collect(Collectors.toList());
     }
 
     public String createResponseRequest(String userID) {
@@ -70,6 +76,14 @@ public class Room {
 
     public Player getPlayerByID(String playerID){
         return playerList.stream().filter(player -> playerID.equals(player.getSocketID())).findAny().orElse(null);
+    }
+
+    public void createGame(List<Player> players){
+        this.game = new Game(players,this.id);
+    }
+
+    public Game getGame(){
+        return this.game;
     }
 
 }

@@ -41,6 +41,14 @@ public class Player {
         return ready;
     }
 
+    public void changeReady(){
+        if(ready){
+            ready = false;
+        }
+        else{
+            ready = true;
+        }
+    }
     public void setReady(boolean ready) {
         this.ready = ready;
     }

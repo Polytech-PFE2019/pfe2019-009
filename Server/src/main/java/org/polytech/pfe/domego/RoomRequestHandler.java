@@ -21,7 +21,7 @@ import java.util.Optional;
 
 
 @Service
-    public class RoomRequestHandler {
+public class RoomRequestHandler {
 
     private final String RESPONSE_OK = " {\"response\":\"OK\"}";
     private final String RESPONSE_KO = " {\"response\":\"KO\"}";
@@ -33,7 +33,6 @@ import java.util.Optional;
     public RoomRequestHandler(RoleAccessor roleDB){
         roomInstance = RoomInstance.getInstance();
         this.roleAccessor = roleDB;
-
     }
 
     public void handleRequest(WebSocketSession session, Map<String, String> request) throws Exception {
@@ -78,7 +77,7 @@ import java.util.Optional;
             case "CHANGE_STATUS" :
                 if(request.get("roomID")==null || request.get("userID")==null) {
                     session.sendMessage(new TextMessage(responseKO()));
-                    throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',userID:\"userID\",roomID:ROOMID,roleID:ROLEID}");
+                    throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',userID:\"userID\",roomID:ROOMID}");
                 }
                 handleChangingStatus(session, Integer.parseInt(request.get("roomID")),request.get("userID"));
                 break;
@@ -112,6 +111,7 @@ import java.util.Optional;
         System.out.println(this.roomInstance.numberOfRooms()+" rooms");
 
         session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
+
 
     }
 
@@ -173,7 +173,7 @@ import java.util.Optional;
         player.changeReady();
 
         JsonObject response = new JsonObject();
-        response.addProperty("Request", "CHOOSING_ROLE");
+        response.addProperty("response", "CHOOSING_ROLE");
         response.addProperty("ready", player.isReady());
         response.addProperty("userID", playerID);
         session.sendMessage(new TextMessage(response.toString()));
@@ -189,7 +189,7 @@ import java.util.Optional;
 
 
         JsonObject response = new JsonObject();
-        response.addProperty("Request", "START_GAME");
+        response.addProperty("response", "START_GAME");
         for(Player player : room.getPlayerList()){
                 player.getSession().sendMessage(new TextMessage(response.toString()));
         }
@@ -202,7 +202,7 @@ import java.util.Optional;
         room.removePlayer(player);
 
         JsonObject response = new JsonObject();
-        response.addProperty("Request", "LEAVE_ROOM");
+        response.addProperty("response", "LEAVE_ROOM");
         response.addProperty("userID", playerID);
         session.sendMessage(new TextMessage(response.toString()));
         updateRoomForAllPlayers(room,player);
@@ -212,13 +212,13 @@ import java.util.Optional;
 
         private String responseOK(){
         JsonObject response = new JsonObject();
-        response.addProperty("Request", "OK");
+        response.addProperty("response", "OK");
         return response.toString();
     }
 
     private String responseKO(){
         JsonObject response = new JsonObject();
-        response.addProperty("Request", "KO");
+        response.addProperty("response", "KO");
         return response.toString();
     }
 }

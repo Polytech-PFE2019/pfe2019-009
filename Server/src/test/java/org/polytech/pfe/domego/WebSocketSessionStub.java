@@ -13,6 +13,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+
 public class WebSocketSessionStub implements WebSocketSession {
     @Override
     public String getId() {

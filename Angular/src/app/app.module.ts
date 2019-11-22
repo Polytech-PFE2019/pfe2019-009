@@ -22,6 +22,7 @@ import { ProjetInformationComponent } from './projet-information/projet-informat
 import { ProjetInformationDurationComponent } from './projet-information/projet-information-duration/projet-information-duration.component';
 import { ProjetInformationBudgetComponent } from './projet-information/projet-information-budget/projet-information-budget.component';
 import { ProjetInformationRiskComponent } from './projet-information/projet-information-risk/projet-information-risk.component';
+import { ActivitiesComponent } from './activities/activities.component';
 
 registerLocaleData(fr);
 
@@ -40,7 +41,8 @@ registerLocaleData(fr);
     ProjetInformationComponent,
     ProjetInformationDurationComponent,
     ProjetInformationBudgetComponent,
-    ProjetInformationRiskComponent
+    ProjetInformationRiskComponent,
+    ActivitiesComponent
   ],
   imports: [
     BrowserModule,

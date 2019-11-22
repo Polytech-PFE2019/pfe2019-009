@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.models.Room;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,20 +20,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    private final RoomRequestHandler requestHandler;
+
+    @Autowired
+    public SocketHandler(RoomRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
+    }
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message)
-            throws InterruptedException, IOException, Exception {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         Map<String, String> value = new Gson().fromJson(message.getPayload(), Map.class);
 
-		/*for(WebSocketSession webSocketSession : sessions) {
-			webSocketSession.sendMessage(new TextMessage("Hello " + value.get("name") + " !"));
-		}*/
-       // session.sendMessage(new TextMessage("Hello 2"));
-
         try {
-            new RoomRequestHandler().handleRequest(session,value);
+            requestHandler.handleRequest(session,value);
         }catch(Exception e){
             e.printStackTrace();
 
@@ -46,10 +48,13 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        //the messages will be broadcasted to all users.
         System.out.println("NEW USER");
-        sessions.add(session);
-        //session.sendMessage(new TextMessage("Hello"));
+
     }
 
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        System.out.println("UN USER s'est déconnecté");
+        new DisconnectManager().process(session);
+    }
 }

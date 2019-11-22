@@ -8,21 +8,34 @@ import java.net.http.WebSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.UUID;
 
-public class Room {
-    private int id;
+public class Room{
+
+    private String id;
     private String roomName;
     private List<Player> playerList;
     private Game game;
 
+    public Room(String roomName){
+        this.roomName = roomName;
+        this.playerList = new ArrayList<>();
+        this.id = UUID.randomUUID().toString();
+
+    }
+
     public Room(String roomName, int id){
         this.roomName = roomName;
         this.playerList = new ArrayList<>();
-        this.id = id;
+        this.id = String.valueOf(id);
+
     }
 
-    public void addPlayer(Player player){
-        this.playerList.add(player);
+    public boolean addPlayer(Player player){
+        if (this.isFull())
+            return false;
+        return this.playerList.add(player);
     }
 
     public String getRoomName() {
@@ -33,7 +46,11 @@ public class Room {
         return playerList;
     }
 
-    public int getID(){
+    public boolean isFull(){
+        return this.playerList.size() >= 6;
+    }
+
+    public String getID(){
         return id;
     }
 
@@ -79,11 +96,27 @@ public class Room {
     }
 
     public void createGame(List<Player> players){
-        this.game = new Game(players,this.id);
+        this.game = new Game(players,Integer.valueOf(this.id));
     }
 
     public Game getGame(){
         return this.game;
     }
 
+    public int getNumberOfPlayer(){
+        return this.playerList.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return id == room.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

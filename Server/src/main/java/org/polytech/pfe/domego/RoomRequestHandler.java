@@ -7,6 +7,9 @@ import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.Room;
+import org.polytech.pfe.domego.protocol.EventProtocol;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -14,95 +17,112 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
-public class RoomRequestHandler {
+@Service
+    public class RoomRequestHandler {
 
-    private RoomInstance roomInstance = RoomInstance.getInstance();
+    private final String RESPONSE_OK = " {\"response\":\"OK\"}";
+    private final String RESPONSE_KO = " {\"response\":\"KO\"}";
 
-    public RoomRequestHandler(){
+    private RoomInstance roomInstance;
+    private final RoleAccessor roleAccessor;
+
+    @Autowired
+    public RoomRequestHandler(RoleAccessor roleDB){
+        roomInstance = RoomInstance.getInstance();
+        this.roleAccessor = roleDB;
+
     }
 
-    public void handleRequest(WebSocketSession session, Map<String, String> value) throws Exception {
+    public void handleRequest(WebSocketSession session, Map<String, String> request) throws Exception {
 
-
-        if(value.get("request")==null) {
+        if(!request.containsKey("request")) {
             throw new Exception("bad request : must be of type {\"request\":\"REQUEST_NAME\'}");
         }
-        String requestName = value.get("request");
+        String requestName = request.get("request");
+
+        System.out.println("REQUETE : ");
+        for (String key : request.keySet()) {
+            System.out.println("KEY : " + key + " VALUE : " + request.get(key).toString());
+        }
 
         switch(requestName){
             case "CREATE_GAME" :
-                if(value.get("username")==null) {
+                if(!request.containsKey("username")) {
                     session.sendMessage(new TextMessage(responseKO()));
 
                     throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',username:\"USERNAME\"}");
                 }
-                handleRoomCreation(session, value.get("username"));
+                System.out.println("CREATE GAME");
+                handleRoomCreation(session, request.get("username"));
                 break;
             case "JOIN_GAME" :
-                if(value.get("username")==null || value.get("roomID")==null) {
+                if(!request.containsKey("username") || !request.containsKey("roomID")) {
                     session.sendMessage(new TextMessage(responseKO()));
 
                     throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',username:\"USERNAME\",roomID:ROOMID}");
                 }
-                handleJoiningRoom(session, Integer.parseInt(value.get("roomID")),value.get("username"));
+                System.out.println(" JOIN GAME");
+                handleJoiningRoom(session, Integer.parseInt(request.get("roomID")),request.get("username"));
                 break;
 
             case "CHOOSE_ROLE" :
-                if(value.get("roomID")==null || value.get("userID")==null || value.get("roleID")==null) {
+                if(!request.containsKey("roomID") || !request.containsKey("userID") || !request.containsKey("roleID")){
                     session.sendMessage(new TextMessage(responseKO()));
-
                     throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',userID:\"userID\",roomID:ROOMID,roleID:ROLEID}");
                 }
-                handleChoosingRole(session, Integer.parseInt(value.get("roomID")),value.get("userID"),Integer.parseInt(value.get("roleID")));
+                handleChoosingRole(session, Integer.parseInt(request.get("roomID")),request.get("userID"),Integer.parseInt(request.get("roleID")));
                 break;
             case "CHANGE_STATUS" :
-                if(value.get("roomID")==null || value.get("userID")==null) {
+                if(request.get("roomID")==null || request.get("userID")==null) {
                     session.sendMessage(new TextMessage(responseKO()));
                     throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',userID:\"userID\",roomID:ROOMID,roleID:ROLEID}");
                 }
-                handleChangingStatus(session, Integer.parseInt(value.get("roomID")),value.get("userID"));
+                handleChangingStatus(session, Integer.parseInt(request.get("roomID")),request.get("userID"));
                 break;
             case "START_GAME" :
-                if(value.get("roomID")==null || value.get("userID")==null) {
+                if(request.get("roomID")==null || request.get("userID")==null) {
                     session.sendMessage(new TextMessage(responseKO()));
                     throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',userID:\"userID\",roomID:ROOMID,roleID:ROLEID}");
                 }
-                handleStartingGame(session, Integer.parseInt(value.get("roomID")),value.get("userID"));
+                handleStartingGame(session, Integer.parseInt(request.get("roomID")),request.get("userID"));
                 break;
             case "LEAVE_ROOM" :
-                if(value.get("roomID")==null || value.get("userID")==null) {
+                if(request.get("roomID")==null || request.get("userID")==null) {
                     session.sendMessage(new TextMessage(responseKO()));
                     throw new Exception("bad request : must be of type {request:\"REQUEST_NAME\',userID:\"userID\",roomID:ROOMID,roleID:ROLEID}");
                 }
-                handleLeavingRoom(session, Integer.parseInt(value.get("roomID")),value.get("userID"));
+                System.out.println("START GAME");
+                handleLeavingRoom(session, Integer.parseInt(request.get("roomID")),request.get("userID"));
                 break;
-
-
+            default:
+                break;
         }
     }
 
     private void handleRoomCreation(WebSocketSession session, String username) throws IOException {
         System.out.println(username);
-        Room room = new Room("La Room",RoomInstance.getRoomList().size());
+        Room room = new Room("La Room",this.roomInstance.getRoomList().size());
 
         Player player = new Player(session,username);
         room.addPlayer(player);
-        RoomInstance.addRoom(room);
-        System.out.println(RoomInstance.numberOfRooms()+" rooms");
+        this.roomInstance.addRoom(room);
+        System.out.println(this.roomInstance.numberOfRooms()+" rooms");
 
         session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
 
     }
 
     private void handleJoiningRoom(WebSocketSession session,  int roomID, String username) throws IOException {
-        Room room = RoomInstance.getRoomByID(roomID);
+        Room room = this.roomInstance.getRoomByID(roomID);
 
         Player player = new Player(session,username);
         room.addPlayer(player);
-        System.out.println(RoomInstance.getRoomByID(roomID).getPlayerList().size()+" players in room of roomID"+roomID);
+        System.out.println(this.roomInstance.getRoomByID(roomID).getPlayerList().size()+" players in room of roomID"+roomID);
 
+        System.out.println(room.createResponseRequest(player.getSocketID()));
         session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
 
         updateRoomForAllPlayers(room,player);
@@ -110,18 +130,24 @@ public class RoomRequestHandler {
 
     //TODO Corriger cette partie
     private void handleChoosingRole(WebSocketSession session,  int roomID, String playerID, int roleID) throws IOException {
-        Room room = RoomInstance.getRoomByID(roomID);
+        Room room = this.roomInstance.getRoomByID(roomID);
 
         Player player = room.getPlayerByID(playerID);
 
         RoleType roleType = RoleType.getRoleType(roleID);
 
-        //Role role = new Role()
+        Optional<Role> role = roleAccessor.getSpecificRoleById(roleID);
 
-        //player.setRole(role);
+        if (!role.isPresent()){
+            System.out.println("ERROR this role doesn't existe");
+            return;
+        }
 
 
-        //Player updatedPlayer = RoomInstance.getRoomByID(roomID).getPlayerByID(playerID);
+        player.setRole(role.get());
+
+
+        Player updatedPlayer = this.roomInstance.getRoomByID(roomID).getPlayerByID(playerID);
         //System.out.println(updatedPlayer.getName()+" has now the role : "+updatedPlayer.getRole().getName());
 
         session.sendMessage(new TextMessage(responseOK()));
@@ -142,7 +168,7 @@ public class RoomRequestHandler {
     }
 
     private void handleChangingStatus(WebSocketSession session,  int roomID, String playerID) throws IOException {
-        Room room = RoomInstance.getRoomByID(roomID);
+        Room room = this.roomInstance.getRoomByID(roomID);
         Player player = room.getPlayerByID(playerID);
         player.changeReady();
 
@@ -158,7 +184,7 @@ public class RoomRequestHandler {
     }
 
     private void handleStartingGame(WebSocketSession session,  int roomID, String playerID) throws IOException {
-        Room room = RoomInstance.getRoomByID(roomID);
+        Room room = this.roomInstance.getRoomByID(roomID);
         room.createGame(room.getPlayerList());
 
 
@@ -170,7 +196,7 @@ public class RoomRequestHandler {
     }
 
     private void handleLeavingRoom(WebSocketSession session,  int roomID, String playerID) throws IOException {
-        Room room = RoomInstance.getRoomByID(roomID);
+        Room room = this.roomInstance.getRoomByID(roomID);
         room.createGame(room.getPlayerList());
         Player player = room.getPlayerByID(playerID);
         room.removePlayer(player);

@@ -14,6 +14,7 @@ public class Player {
     public Player(WebSocketSession session, String name ){
         this.session = session;
         this.socketID = session.getId();
+        this.role = new Role();
         this.name = name;
     }
 

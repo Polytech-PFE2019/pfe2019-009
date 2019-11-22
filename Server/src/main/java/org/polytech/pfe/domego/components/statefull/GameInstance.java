@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.components.statefull;
 
+
 public class GameInstance {
 
     private GameInstance() {

@@ -1,12 +1,10 @@
 package org.polytech.pfe.domego.database.accessor;
 
-import org.junit.Before;
-import org.junit.Ignore;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;

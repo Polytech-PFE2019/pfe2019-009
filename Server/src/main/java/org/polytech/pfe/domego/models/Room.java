@@ -61,7 +61,7 @@ public class Room{
     public String createResponseRequest(String userID) {
 
         JsonObject response = new JsonObject();
-        response.addProperty("response", "OK");
+        response.addProperty("response", "UPDATE");
         response.addProperty("roomID", this.id);
         response.addProperty("userID", userID);
 

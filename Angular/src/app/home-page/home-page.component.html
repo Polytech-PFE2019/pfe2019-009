@@ -4,6 +4,36 @@
   <div class="creationContainer">
     <img src="../../assets/icons/arrow.png" width="200" height="200" alt="Picture">
     <button id="createSalon" nz-button nzType="default" (click)="createASalon()">Créer un salon</button>
+    <button id="joinSalon" nz-button nzType="default" (click)="joinASalon()">Join un salon</button>
+
   </div>
-  <app-game-creator #gameCreator (test)="testdd($event)"></app-game-creator>
+  <app-game-creator #gameCreator (test)="testdd($event)" [userName]="username"></app-game-creator>
+  <input nz-input placeholder="Basic usage" [(ngModel)]="value"/>
+  <button nz-button (click)="enterUsername()">confirm</button>
+
+  <nz-modal [nzVisible]="showJoinSalon" (nzOnCancel)="cancel()" nzTitle="Rejoindre un salon" (nzOnOk)="handleOk()">
+      <nz-table #filterTable [nzData]="listOfDisplayData">
+        <thead >
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>Creator</th>
+          <th>
+            Nombre de joueurs
+          </th>
+        <th>Join</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of filterTable.data">
+          <td>{{ data?.roomID}}</td>
+          <td>{{ data?.creator}}</td>
+          <td>{{ data?.numberOfPlayer }}</td>
+          <td><button nz-button (click)="joinSalon(data)">Join</button></td>
+        </tr>
+        </tbody>
+      </nz-table>
+  </nz-modal>
 </div>

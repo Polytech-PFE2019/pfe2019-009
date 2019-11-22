@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class StepComponent implements OnInit {
   @Input() step: any = null;
   @Output() currentStep = new EventEmitter();
+  datasets = [1];
 
   constructor() {
   }

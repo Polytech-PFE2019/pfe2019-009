@@ -6,6 +6,7 @@ export class SocketRequest {
     username: string;
     userID: string;
     roomID: string;
-    players: [Player]
+    roleID: string;
+    players: [Player];
 
 }

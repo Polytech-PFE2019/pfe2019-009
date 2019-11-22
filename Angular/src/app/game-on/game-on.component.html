@@ -1,6 +1,6 @@
-<h2 nz-title>Demogo - {{step}}</h2>
+<h2 nz-title>Domego - {{step}}</h2>
 <div nz-row class="container">
-  <div class="left-container" nz-col [nzSpan]="18" [nzPush]="6" style="background-color: #cccccc">
+  <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
     <div class="activityContainer">
       <div class="activity">a1</div>
       <div class="activity">a2</div>
@@ -11,9 +11,9 @@
         <app-projet-information></app-projet-information>
       </div>
     </div>
-    <button id="end" nz-button *ngIf="step==='Étape 12'"><b>Terminer</b></button>
+    <button id="end" nz-button *ngIf="step==='Étape 12'" (click)="closeGame()"><b>Terminer</b></button>
   </div>
-  <div class="right-container" nz-col [nzSpan]="6" [nzPull]="18" style="background-color: #ececec">
+  <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
     <div class="stepContainer" *ngFor="let s of steps">
       <app-step [step]="s" (currentStep)="getCurrentStep($event)"></app-step>
     </div>

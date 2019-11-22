@@ -10,7 +10,7 @@ export const Steps = [
   {
     title: 'Étape 2',
     description: 'ETUDES DE FAISABILITÉ',
-    durantion: '15j',
+    duration: '15j',
     detail: 'Une étude de faisabilité permet de déterminer ' +
       'si le projet est viable ou non. Elle permet aussi de ' +
       'rassembler toutes les informations nécessaires pour ' +
@@ -24,7 +24,7 @@ export const Steps = [
   {
     title: 'Étape 3',
     description: 'NEGOCIATION ET CONTRACTUALISATION \nMAITRE D’OUVRAGE –MAITRE D’OEUVRE',
-    durantion: '8j',
+    duration: '8j',
     detail: 'Le maître d’ouvrage négocie avec le maître d’œuvre ' +
       'afin de déterminer la rémunération de ce dernier. ' +
       'Une fois qu’ils se sont entendus, le contrat peut alors être signé. ' +
@@ -33,7 +33,7 @@ export const Steps = [
   {
     title: 'Étape 4',
     description: 'NEGOCIATION ET CONTRACTUALISATION\n MAITRE D’OEUVRE –ENTREPRISES –BUREAU CONTROLE',
-    durantion: '15j',
+    duration: '15j',
     detail: 'Le maître d’œuvre et les entreprises négocient ' +
       'afin de tomber d’accord sur un montant qui satisfera ' +
       'les différents intervenants.\n ' +
@@ -45,7 +45,7 @@ export const Steps = [
   {
     title: 'Étape 5',
     description: 'ALLOCATION DE RESSOURCES \nMAITRE D’ŒUVRE, BUREAU D’ETUDES ET DE CONTROLE',
-    durantion: '5j',
+    duration: '5j',
     detail: 'Le maître d’œuvre, le bureau d’étude et le bureau ' +
       'de contrôle prévoient les ressources dont ils estiment ' +
       'avoir besoin durant l’opération de construction',
@@ -53,7 +53,7 @@ export const Steps = [
   {
     title: 'Étape 6',
     description: 'CONCEPTION PRELIMINAIRE',
-    durantion: '20j',
+    duration: '20j',
     detail: 'La conception préliminaire permet au client de ' +
       'faire des choix stratégiques entre les concepts fonctionnels ' +
       'et les options envisagées. Durant celle-ci, une conception ' +
@@ -64,7 +64,7 @@ export const Steps = [
   {
     title: 'Étape 7',
     description: 'CONCEPTION DEFINITIVE',
-    durantion: '30j',
+    duration: '30j',
     detail: 'Une fois la conception préliminaire validée par le maître d’ouvrage,' +
       'il est alors possible de faire une mise au point définitive ' +
       'des plans du projet.On créé alors les dossiers de consultation ' +
@@ -75,7 +75,7 @@ export const Steps = [
   {
     title: 'Étape 8',
     description: 'PREPARATION DE CHANTIER',
-    durantion: '20j',
+    duration: '20j',
     detail: 'Les entreprises doivent préparer le chantier ' +
       'en anticipant tout ce qui sera nécessaire à sa ' +
       'réalisation.Ils’agit de prévoir et d’organiser ' +
@@ -87,7 +87,7 @@ export const Steps = [
   {
     title: 'Étape 9',
     description: 'TERRASSEMENT ET FONDATIONS ',
-    durantion: '50j',
+    duration: '50j',
     detail: 'TERRASSEMENT: Ils permettent de préparer l\'assise ' +
       'de la construction et de ses abords. \n' +
       'Travaux à effectuer: -creuser à l\'emplacement des fondations \n' +
@@ -102,7 +102,7 @@ export const Steps = [
   {
     title: 'Étape 10',
     description: 'GROS-OEUVRE',
-    durantion: '80j',
+    duration: '80j',
     detail: 'Le gros œuvre désigne les parties d\'une construction ' +
       'qui constituent l\'ossature de celle-ci et qui comprennent à la fois: \n' +
       '* les éléments porteurs qui concourent à la stabilité ou à la ' +
@@ -115,7 +115,7 @@ export const Steps = [
   {
     title: 'Étape 11',
     description: 'CORPS D’ETAT SECONDAIRE',
-    durantion: '100j',
+    duration: '100j',
     detail: 'Lescorps	d\'état	secondairesrecouvrent	l\'ensemble ' +
       'des	travaux	réalisés	à	l\'intérieur	d\'un	bâtiment	' +
       'comme	les	enduits	et	revêtements	intérieurs	ainsi	que	' +
@@ -125,7 +125,7 @@ export const Steps = [
   {
     title: 'Étape 12',
     description: 'LIVRAISON ET RECEPTION',
-    durantion: '30j',
+    duration: '30j',
     detail: 'La livraison correspond à la fin des travaux. ' +
       'Le maître d’ouvrage émet alors ou non des réserves ' +
       'sur la construction.La réception traduit l\'intention ' +

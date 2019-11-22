@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
-import { WebsocketService } from "./websocket.service";
-import { LobbyService } from "./lobby.service";
-import { SocketRequest } from 'src/Request';
+import {WebsocketService} from './service/websocket.service';
+import {LobbyService} from './service/lobby.service';
 
-import {Component, ViewChild} from '@angular/core';
-import {GameCreatorComponent} from "./modal-module/game-creator/game-creator.component";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -15,33 +12,7 @@ import {GameCreatorComponent} from "./modal-module/game-creator/game-creator.com
 export class AppComponent {
 
 
-
-  constructor(private lobbyService: LobbyService) {
-    lobbyService.messages.subscribe(msg => {
-      console.log("Response: " + msg.response)
-
-      // Implement here onMessage methods
-
-      switch (msg.response) {
-        case "UPDATE": this.updateRoom();
-          break;
-      }
-
-
-    });
+  constructor() {
   }
 
-  updateRoom() {
-
-  }
-
-
-
-  sendRequest() {
-    let message = {
-      request: "CREATE_GAME",
-      username: "TEST"
-    };
-    this.lobbyService.messages.next(message as SocketRequest);
-  }
 }

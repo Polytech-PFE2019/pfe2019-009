@@ -1,8 +1,9 @@
 <div class="container">
   <h1 nz-title>Choissisez vore rôle</h1>
+  <p>{{userName}}</p>
   <div nz-row [nzGutter]="6" style="margin-top: 100px">
     <div nz-col [nzSpan]="4" *ngFor="let role of roles">
-      <app-role #Role [role]="role" (checkNum)="getCheckedNum($event)"></app-role>
+      <app-role #Role [roomID]="0" [testChecked]="role.id === checkedID" [role]="role" (checkNum)="getCheckedNum($event)"></app-role>
     </div>
   </div>
   <button id="start" nz-button nzType="default" *ngIf="numOfPlayers===6" (click)="gameStart()">Démarrer</button>

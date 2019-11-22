@@ -148,10 +148,14 @@ public class RoomRequestHandler {
 
 
         Player updatedPlayer = this.roomInstance.getRoomByID(roomID).getPlayerByID(playerID);
-        //System.out.println(updatedPlayer.getName()+" has now the role : "+updatedPlayer.getRole().getName());
+        System.out.println(updatedPlayer.getName()+" has now the role : "+updatedPlayer.getRole().getName());
 
-        session.sendMessage(new TextMessage(responseOK()));
-
+        JsonObject response = new JsonObject();
+        response.addProperty("response", "CHOOSING_ROLE");
+        response.addProperty("roomID", roomID);
+        response.addProperty("userID", playerID);
+        response.addProperty("roleID", roleID);
+        session.sendMessage(new TextMessage(response.toString()));
 
         updateRoomForAllPlayers(room,player);
 

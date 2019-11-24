@@ -1,19 +1,18 @@
 <div class="container">
   <h1 nz-title>DOMEGO</h1>
-  <span nz-text><u>un jeu sérieux pédagogique</u></span>
+  <span nz-text><u>Un jeu sérieux pédagogique</u></span>
   <div class="creationContainer">
-    <img src="../../assets/icons/arrow.png" width="200" height="200" alt="Picture">
-    <button id="createSalon" nz-button nzType="default" (click)="createASalon()">Créer un salon</button>
-    <button id="joinSalon" nz-button nzType="default" (click)="joinASalon()">Join un salon</button>
-
-  </div>
-  <app-game-creator #gameCreator (test)="testdd($event)" [userName]="username"></app-game-creator>
-  <input nz-input placeholder="Basic usage" [(ngModel)]="value"/>
-  <button nz-button (click)="enterUsername()">confirm</button>
-
-  <nz-modal [nzVisible]="showJoinSalon" (nzOnCancel)="cancel()" nzTitle="Rejoindre un salon" (nzOnOk)="handleOk()">
-      <nz-table #filterTable [nzData]="listOfDisplayData">
-        <thead >
+    <!--    <img src="../../assets/icons/arrow.png" width="200" height="200" alt="Picture">-->
+    <!--    <button id="createSalon" nz-button nzType="default" (click)="createASalon()">Créer un salon</button>-->
+    <!--    <button id="joinSalon" nz-button nzType="default" (click)="joinASalon()">Join un salon</button>-->
+    <nz-card>
+      <h4>Entréez votre nom!</h4>
+      <input nz-input placeholder="Entréez votre nom" [(ngModel)]="value" (ngModelChange)="getUsername()"/>
+      <div class="choice">
+        <button class="create" (click)="createASalon()">Créer une partie</button>
+      </div>
+      <nz-table #filterTable [nzData]="listOfDisplayData" nzTitle="Parties disponibles">
+        <thead>
         <tr>
           <th>
             ID
@@ -22,7 +21,7 @@
           <th>
             Nombre de joueurs
           </th>
-        <th>Join</th>
+          <th>Join</th>
 
         </tr>
         </thead>
@@ -31,9 +30,13 @@
           <td>{{ data?.roomID}}</td>
           <td>{{ data?.creator}}</td>
           <td>{{ data?.numberOfPlayer }}</td>
-          <td><button nz-button (click)="joinSalon(data)">Join</button></td>
+          <td>
+            <button nz-button (click)="joinSalon(data)">Join</button>
+          </td>
         </tr>
         </tbody>
       </nz-table>
-  </nz-modal>
+    </nz-card>
+  </div>
+  <app-game-creator #gameCreator (test)="testdd($event)" [userName]="value"></app-game-creator>
 </div>

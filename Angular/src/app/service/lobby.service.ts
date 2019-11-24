@@ -3,8 +3,8 @@ import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {WebsocketService} from './websocket.service';
 import {SocketRequest} from 'src/Request';
-import {URL} from "../model/url";
-import {Globals} from "../globals";
+import {URL} from '../model/url';
+import {Globals} from '../globals';
 
 
 @Injectable()
@@ -18,19 +18,27 @@ export class LobbyService {
 
   constructor(private wsService: WebsocketService, globals: Globals) {
     this.globals = globals;
-    this.messages = wsService
+    this.messages = <Subject<SocketRequest>> wsService
       .connect(URL)
       .pipe(
         map((response: MessageEvent): SocketRequest => {
           const data = JSON.parse(response.data);
-          console.log(data);
+          let playerList = [];
+          if (JSON.stringify(data).includes('players')) {
+            playerList = JSON.parse(data.players);
+          }
           if (JSON.stringify(data).includes('userID')) {
             this.globals.userID = data.userID;
             this.userID = this.globals.userID;
           }
-          this.roomId = data.roomID;
-          return data as SocketRequest;
-
-        })) as Subject<SocketRequest>;
+          if (JSON.stringify(data).includes('roomID')) {
+            this.globals.roomID = data.roomID;
+          }
+          data.players = playerList.map(player => {
+            return JSON.parse(player);
+          });
+          console.log(data);
+          return data;
+        }));
   }
 }

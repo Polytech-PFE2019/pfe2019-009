@@ -23,6 +23,7 @@ import { ProjetInformationDurationComponent } from './game-information/projet-in
 import { ProjetInformationBudgetComponent } from './game-information/projet-information/projet-information-budget/projet-information-budget.component';
 import { ProjetInformationRiskComponent } from './game-information/projet-information/projet-information-risk/projet-information-risk.component';
 import {Globals} from "./globals";
+import {ActivitiesComponent} from "./activities/activities.component";
 
 registerLocaleData(fr);
 
@@ -41,7 +42,8 @@ registerLocaleData(fr);
     ProjetInformationComponent,
     ProjetInformationDurationComponent,
     ProjetInformationBudgetComponent,
-    ProjetInformationRiskComponent
+    ProjetInformationRiskComponent,
+    ActivitiesComponent
   ],
   imports: [
     BrowserModule,

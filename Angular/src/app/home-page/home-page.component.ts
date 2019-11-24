@@ -5,8 +5,9 @@ import {SocketRequest} from '../../Request';
 import {LobbyService} from '../service/lobby.service';
 import {RoomsService} from '../rooms.service';
 import {Rooms} from '../rooms';
-import {Router} from "@angular/router";
-import {Globals} from "../globals";
+import {Router} from '@angular/router';
+import {Globals} from '../globals';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-home-page',
@@ -17,14 +18,15 @@ export class HomePageComponent implements OnInit {
 
   @ViewChild(GameCreatorComponent, {static: true})
   gameCreator;
-  value: any;
-  username: string;
+  value = '';
+  username = '';
   showJoinSalon = false;
   listOfDisplayData: Rooms[] = [];
 
   constructor(private roomsService: RoomsService,
               private globals: Globals,
               private router: Router,
+              private message: NzMessageService,
               private lobbyService: LobbyService) {
   }
 
@@ -43,33 +45,23 @@ export class HomePageComponent implements OnInit {
     console.log($event);
   }
 
-
-  enterUsername() {
-    this.username = this.value;
-    this.globals.username = this.value;
-  }
-
-  joinASalon() {
-    this.showJoinSalon = true;
-  }
-
-  handleOk() {
-    this.showJoinSalon = false;
-  }
-
-  cancel() {
-    this.showJoinSalon = false;
-  }
-
   joinSalon(data) {
-    console.log('Join game');
-    const req = {
-      request: 'JOIN_GAME',
-      roomID: data.roomID,
-      username: this.username
-    };
+    if (this.value !== '') {
+      console.log('Join game');
+      const req = {
+        request: 'JOIN_GAME',
+        roomID: data.roomID,
+        username: this.value
+      };
+      console.log(req);
+      this.lobbyService.messages.next(req as SocketRequest);
+      this.router.navigate(['gameroom']);
+    } else {
+      this.message.warning('Entréez votre nom!');
+    }
+  }
 
-    this.lobbyService.messages.next(req as SocketRequest);
-    this.router.navigate(['gameroom']);
+  getUsername() {
+    this.globals.username = this.value;
   }
 }

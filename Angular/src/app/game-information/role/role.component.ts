@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {LobbyService} from "../../service/lobby.service";
 import {Globals} from "../../globals";
 import {SocketRequest} from "../../../Request";
+import {ObserveOnSubscriber} from "rxjs/internal/operators/observeOn";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-role',
@@ -12,7 +14,7 @@ import {SocketRequest} from "../../../Request";
 })
 export class RoleComponent implements OnInit {
   @Input() role: any = null;
-  @Input() roomID: number;
+  @Input() roomID: string;
   @Output() checkNum = new EventEmitter();
   @Input() testChecked = false;
   @ViewChild(ConfirmRoleComponent, {static: true})
@@ -23,10 +25,17 @@ export class RoleComponent implements OnInit {
   globals: Globals;
   userID: string;
   testId: string;
+  ID: string;
 
   constructor(private router: Router,
               globals: Globals,
               private lobbyService: LobbyService) {
+    lobbyService.messages.subscribe(data => {
+      console.log(data);
+      if (data.roomID === null) {
+        this.ID = data.roomID;
+      }
+    });
     this.globals = globals;
     this.testId = globals.userID;
   }
@@ -49,7 +58,7 @@ export class RoleComponent implements OnInit {
     console.log(this.globals.userID);
     const req = {
       request: 'CHOOSE_ROLE',
-      roomID: this.roomID.toString(),
+      roomID: this.globals.roomID.toString(),
       userID: this.globals.userID,
       roleID: this.role.id.toString()
     };

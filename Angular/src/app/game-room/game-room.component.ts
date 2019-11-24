@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {SocketRequest} from '../../Request';
 import {LobbyService} from '../service/lobby.service';
 import {Player} from '../Player';
-import {Globals} from "../globals";
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-game-room',
@@ -23,15 +23,31 @@ export class GameRoomComponent implements OnInit {
   userName: string;
   globals: Globals;
   users = [];
+  roomID: string;
+  userID: string;
 
   constructor(private router: Router,
               private global: Globals,
               private lobbyService: LobbyService) {
+
     this.globals = global;
   }
 
   ngOnInit() {
     this.userName = this.globals.username;
+    this.lobbyService.messages.subscribe(data => {
+      console.log('asdfasdfasdfasdfa' + this.roomID);
+      console.log(data);
+      console.log(data.response);
+      this.globals.roomID = data.roomID;
+      this.roomID = data.roomID;
+      this.userID = data.userID;
+      switch (data.response) {
+        case 'UPDATE':
+          this.users = data.players;
+          break;
+      }
+    });
   }
 
   getCheckedNum($event: any) {
@@ -52,9 +68,10 @@ export class GameRoomComponent implements OnInit {
     console.log('Game start');
     const message = {
       request: 'START_GAME',
-      roomID: '0',
-      userID: '2'
+      roomID: this.roomID,
+      userID: this.userID
     };
+    console.log(message);
     this.lobbyService.messages.next(message as SocketRequest);
     this.router.navigate(['gameon']);
   }

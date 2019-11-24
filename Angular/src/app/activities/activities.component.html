@@ -1,6 +1,6 @@
 <div class="activityContainer">
   <h2>Acheter des ressources</h2>
   <nz-input-number [(ngModel)]="ressourceNb" [nzMin]="0" [nzMax]="500" [nzStep]="1" [nzPlaceHolder]="'Nombre de ressource'"></nz-input-number>
-  <p>Ça coûte {{ ressourceNb * 1}}k</p>
-  <button nz-button [nzType]="default" [nzShape]="round">Confirmer</button>
+  <p>Ça coûte {{ressourceNb}} k</p>
+  <button nz-button nzType="default" nzShape="round">Confirmer</button>
 </div>

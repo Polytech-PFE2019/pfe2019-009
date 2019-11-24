@@ -16,6 +16,9 @@ export class GameOnComponent implements OnInit {
 
   constructor(private lobbyService: LobbyService,
               private router: Router) {
+    lobbyService.messages.subscribe(data => {
+      console.log(data);
+    });
   }
 
   ngOnInit() {

@@ -14,6 +14,7 @@ public class Player {
     public Player(WebSocketSession session, String name ){
         this.session = session;
         this.socketID = session.getId();
+        this.role = new Role();
         this.name = name;
     }
 
@@ -41,6 +42,14 @@ public class Player {
         return ready;
     }
 
+    public void changeReady(){
+        if(ready){
+            ready = false;
+        }
+        else{
+            ready = true;
+        }
+    }
     public void setReady(boolean ready) {
         this.ready = ready;
     }

@@ -22,6 +22,13 @@ public class Role {
     private int roleID;
 
 
+    public Role() {
+        this.id = RoleType.NON_DEFINI.getId();;
+        this.name = RoleType.NON_DEFINI;
+        this.description = "";
+        this.budget = 0;
+        this.special = "";
+    }
 
     public Role(int id, RoleType name, String description, int budget, String special) {
         this.id = id;

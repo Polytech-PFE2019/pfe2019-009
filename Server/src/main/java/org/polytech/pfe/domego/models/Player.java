@@ -11,14 +11,17 @@ public class Player {
     private String name;
     private Role role;
     private boolean ready = false;
-    private int points = 0;
+    private int resourcesAmount;
+    private int money;
 
     public Player(WebSocketSession session, String name ){
         this.session = session;
+        this.id = session.getId();
         UUID uuid = UUID.randomUUID();
         this.id = uuid.toString();
         this.role = new Role();
         this.name = name;
+        this.resourcesAmount = 0;
     }
 
     public String getName() {
@@ -37,27 +40,16 @@ public class Player {
         return role;
     }
 
-    public int getPoints(){
-        return points;
-    }
 
     public boolean isReady() {
         return ready;
     }
 
     public void changeReady(){
-        if(ready){
-            ready = false;
-        }
-        else{
-            ready = true;
-        }
+        ready = !ready;
     }
     public void setReady(boolean ready) {
         this.ready = ready;
-    }
-    public void addPoints(int points){
-        this.points += points;
     }
 
     public String createResponseRequest(){
@@ -72,5 +64,31 @@ public class Player {
 
     public WebSocketSession getSession() {
         return session;
+    }
+
+    public int getResourcesAmount() {
+        return resourcesAmount;
+    }
+
+
+    public void addResouces(int amount){
+        resourcesAmount += amount;
+    }
+
+    public void substractResources(int amount){
+        resourcesAmount -= amount;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+
+    public void addMoney(int amount){
+        money += amount;
+    }
+
+    public void substractMoney(int amount){
+        money -= amount;
     }
 }

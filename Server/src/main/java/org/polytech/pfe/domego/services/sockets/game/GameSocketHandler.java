@@ -1,9 +1,10 @@
-package org.polytech.pfe.domego;
+package org.polytech.pfe.domego.services.sockets.game;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.polytech.pfe.domego.components.statefull.RoomInstance;
-import org.polytech.pfe.domego.models.Room;
+import org.polytech.pfe.domego.DisconnectManager;
+import org.polytech.pfe.domego.services.sockets.RequestHandler;
+import org.polytech.pfe.domego.services.sockets.room.RoomRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,25 +12,21 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
-public class SocketHandler extends TextWebSocketHandler {
+public class GameSocketHandler extends TextWebSocketHandler {
 
-    private final RoomRequestHandler requestHandler;
+    private final RequestHandler requestHandler;
 
     @Autowired
-    public SocketHandler(RoomRequestHandler requestHandler) {
+    public GameSocketHandler(GameRequestHandler requestHandler) {
         this.requestHandler = requestHandler;
     }
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        Map<String, String> value = new Gson().fromJson(message.getPayload(), Map.class);
+        Map value = new Gson().fromJson(message.getPayload(), Map.class);
 
         try {
             requestHandler.handleRequest(session,value);
@@ -48,13 +45,10 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("NEW USER");
 
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("UN USER s'est déconnecté");
-        new DisconnectManager().process(session);
     }
 }

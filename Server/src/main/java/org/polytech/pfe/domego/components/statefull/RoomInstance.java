@@ -1,10 +1,11 @@
 package org.polytech.pfe.domego.components.statefull;
 
 
-import org.polytech.pfe.domego.models.Room;
+import org.polytech.pfe.domego.components.buisness.Room;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class RoomInstance
 {
@@ -30,6 +31,10 @@ public class RoomInstance
 
     public Room getRoomByID(int roomID){
         return roomList.stream().filter(room -> room.getID().equals(String.valueOf(roomID))).findAny().get();
+    }
+
+    public Optional<Room> getRoomById(String roomId){
+        return roomList.stream().filter(room -> room.getID().equals(roomId)).findAny();
     }
 
     private static RoomInstance INSTANCE = new RoomInstance();

@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.models;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
+import org.polytech.pfe.domego.components.buisness.Room;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.*;

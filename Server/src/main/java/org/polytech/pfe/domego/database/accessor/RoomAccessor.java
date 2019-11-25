@@ -1,7 +1,7 @@
 package org.polytech.pfe.domego.database.accessor;
 
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
-import org.polytech.pfe.domego.models.Room;
+import org.polytech.pfe.domego.components.buisness.Room;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

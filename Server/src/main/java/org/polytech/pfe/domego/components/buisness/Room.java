@@ -1,10 +1,9 @@
-package org.polytech.pfe.domego.models;
+package org.polytech.pfe.domego.components.buisness;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.springframework.web.socket.WebSocketSession;
+import org.polytech.pfe.domego.models.Player;
 
-import java.net.http.WebSocket;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,6 +26,10 @@ public class Room{
         this.playerList = new ArrayList<>();
         this.id = String.valueOf(id);
 
+    }
+
+    public boolean playerIsReady(Player player){
+        return playerList.stream().filter(player1 -> player1.getID().equals(player.getID())).findFirst().get().isReady();
     }
 
     public boolean addPlayer(Player player){
@@ -93,7 +96,7 @@ public class Room{
     }
 
     public void createGame(List<Player> players){
-        this.game = new Game(players,Integer.valueOf(this.id));
+        this.game = new Game(this.id, players);
     }
 
     public Game getGame(){

@@ -1,27 +1,26 @@
-package org.polytech.pfe.domego;
+package org.polytech.pfe.domego.services.sockets.room;
 
 import com.google.gson.JsonObject;
+import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.RoleType;
-import org.polytech.pfe.domego.models.Room;
-import org.polytech.pfe.domego.protocol.EventProtocol;
+import org.polytech.pfe.domego.components.buisness.Room;
+import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 
 @Service
-public class RoomRequestHandler {
+public class RoomRequestHandler implements RequestHandler {
 
     private RoomInstance roomInstance;
     private final RoleAccessor roleAccessor;
@@ -32,7 +31,8 @@ public class RoomRequestHandler {
         this.roleAccessor = roleDB;
     }
 
-    public void handleRequest(WebSocketSession session, Map<String, String> request) throws Exception {
+    @Override
+    public void handleRequest(WebSocketSession session, Map<String,String> request) throws Exception {
 
         if(!request.containsKey("request")) {
             throw new Exception("bad request : must be of type {\"request\":\"REQUEST_NAME\'}");
@@ -196,6 +196,8 @@ public class RoomRequestHandler {
     private void handleStartingGame(WebSocketSession session,  int roomID, String playerID) throws IOException {
         Room room = this.roomInstance.getRoomByID(roomID);
         room.createGame(room.getPlayerList());
+
+        GameInstance.getInstance().addGame(room.getGame());
 
 
         JsonObject response = new JsonObject();

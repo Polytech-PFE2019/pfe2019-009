@@ -11,6 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.models.RoleType;
+import org.polytech.pfe.domego.services.sockets.room.RoomRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

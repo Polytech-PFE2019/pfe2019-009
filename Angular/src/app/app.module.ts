@@ -18,7 +18,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConfirmRoleComponent } from './modal-module/role-confirm/confirm-role/confirm-role.component';
 import { GameOnComponent } from './game-on/game-on.component';
 import { RoleChoiceDirective } from './directives/role-choice.directive';
-
+import { ProjetInformationComponent } from './game-information/projet-information/projet-information.component';
+import { ProjetInformationDurationComponent } from './game-information/projet-information/projet-information-duration/projet-information-duration.component';
+import { ProjetInformationBudgetComponent } from './game-information/projet-information/projet-information-budget/projet-information-budget.component';
+import { ProjetInformationRiskComponent } from './game-information/projet-information/projet-information-risk/projet-information-risk.component';
+import {Globals} from "./globals";
+import { Activity1Component } from './activity1/activity1.component';
+import { Activity2Component } from './activity2/activity2.component';
 
 registerLocaleData(fr);
 

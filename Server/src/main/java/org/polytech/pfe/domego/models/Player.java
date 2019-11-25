@@ -3,9 +3,11 @@ package org.polytech.pfe.domego.models;
 import com.google.gson.JsonObject;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.UUID;
+
 public class Player {
     private WebSocketSession session;
-    private String socketID;
+    private String id;
     private String name;
     private Role role;
     private boolean ready = false;
@@ -13,7 +15,8 @@ public class Player {
 
     public Player(WebSocketSession session, String name ){
         this.session = session;
-        this.socketID = session.getId();
+        UUID uuid = UUID.randomUUID();
+        this.id = uuid.toString();
         this.role = new Role();
         this.name = name;
     }
@@ -22,8 +25,8 @@ public class Player {
         return name;
     }
 
-    public String getSocketID() {
-        return socketID;
+    public String getID() {
+        return id;
     }
 
     public void setRole(Role role){

@@ -89,7 +89,7 @@ public class Room{
     }
 
     public Player getPlayerByID(String playerID){
-        return playerList.stream().filter(player -> player.getSocketID().equals(playerID)).findAny().orElse(null);
+        return playerList.stream().filter(player -> player.getID().equals(playerID)).findAny().orElse(null);
     }
 
     public void createGame(List<Player> players){

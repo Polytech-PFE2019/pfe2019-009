@@ -107,8 +107,7 @@ public class RoomRequestHandler {
         this.roomInstance.addRoom(room);
         System.out.println(this.roomInstance.numberOfRooms()+" rooms");
 
-        System.out.println(room.createResponseRequest(player.getSocketID()));
-        session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
+        session.sendMessage(new TextMessage(room.createResponseRequest(player.getID())));
 
     }
 
@@ -123,8 +122,8 @@ public class RoomRequestHandler {
         room.addPlayer(player);
         System.out.println(this.roomInstance.getRoomByID(roomID).getPlayerList().size()+" players in room of roomID"+roomID);
 
-        System.out.println(room.createResponseRequest(player.getSocketID()));
-        session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
+        System.out.println(room.createResponseRequest(player.getID()));
+        session.sendMessage(new TextMessage(room.createResponseRequest(player.getID())));
 
         updateRoomForAllPlayers(room,player);
     }
@@ -157,7 +156,7 @@ public class RoomRequestHandler {
         System.out.println(updatedPlayer.getName()+" has now the role : "+updatedPlayer.getRole().getName());
 
         JsonObject response = new JsonObject();
-        response.addProperty("response", "CHOOSING_ROLE");
+        response.addProperty("response", "CHOOSE_ROLE");
         response.addProperty("roomID", roomID);
         response.addProperty("userID", playerID);
         response.addProperty("roleID", roleID);
@@ -183,7 +182,7 @@ public class RoomRequestHandler {
         player.changeReady();
 
         JsonObject response = new JsonObject();
-        response.addProperty("response", "CHOOSING_ROLE");
+        response.addProperty("response", "CHANGE_STATUS");
         response.addProperty("ready", player.isReady());
         response.addProperty("userID", playerID);
         session.sendMessage(new TextMessage(response.toString()));

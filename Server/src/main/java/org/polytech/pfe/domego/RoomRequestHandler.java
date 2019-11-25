@@ -139,7 +139,8 @@ public class RoomRequestHandler {
         Optional<Role> optionalRole = roleAccessor.getSpecificRoleById(roleID);
 
         if (!optionalRole.isPresent()){
-            System.out.println("ERROR this role doesn't existe");
+            System.out.println("ERROR this role doesn't exist");
+            session.sendMessage(new TextMessage(responseKO()));
             return;
         }
         Role role = optionalRole.get();

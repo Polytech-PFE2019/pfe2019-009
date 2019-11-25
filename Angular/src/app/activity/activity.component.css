@@ -1,9 +1,13 @@
+.container{
+  text-align: center;
+}
 .activity2Container{
   padding: 20px;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  justify-content: space-around;
 }
+
 .row{
   display: flex;
   flex-direction: row;
@@ -22,4 +26,7 @@ img{
 
 .information{
   margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }

@@ -5,6 +5,7 @@ import {SocketRequest} from '../../../Request';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {HttpParams} from '@angular/common/http';
 import {Subscription} from 'rxjs';
+import {Globals} from "../../globals";
 
 @Component({
   selector: 'app-game-creator',
@@ -21,6 +22,7 @@ export class GameCreatorComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
+              private globals: Globals,
               private subscriptionService: SubscriptionService,
               private lobbyService: LobbyService) {
     lobbyService.messages.subscribe(msg => {

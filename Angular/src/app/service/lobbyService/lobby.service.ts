@@ -15,13 +15,10 @@ export class LobbyService implements OnDestroy {
   subUserName: Subscription;
 
   public messages: Subject<SocketRequest>;
-  globals: Globals;
   userID: string;
 
   constructor(private wsService: WebsocketService,
-              globals: Globals,
               private subscription: SubscriptionService) {
-    this.globals = globals;
     this.subUserName = this.subscription.userName$.subscribe(name => {
       this.username = name;
     });

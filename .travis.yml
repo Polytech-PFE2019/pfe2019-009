@@ -1,0 +1,32 @@
+
+##
+# Travis configuration file for Domego Server
+##
+
+language: java  # Java is the main language for this project
+
+jdk:            # Running using Oracle JDK 11
+  - oraclejdk11
+
+services:
+  - docker
+  - mongodb
+
+sudo: required  # Mandatory to run Docker
+
+cache:          # Caching maven local repository to speedup builds
+  directories:
+    - $HOME/.m2
+
+before_install:
+  - chmod +x Server/mvnw
+
+script:         # Building the project
+  - cd Server;    mvn -q clean install
+  - cd ..
+
+
+notifications:  # Using email-based notifications
+  email:
+    recipients:
+      - gaetan.vialon@etu.univ-cotedazur.fr

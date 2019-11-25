@@ -13,9 +13,9 @@
         </div>
       </nz-card-tab>
     </nz-card>
-    <label nz-checkbox [(ngModel)]="checked" (ngModelChange)="getChange()">Confirmation</label>
+    <label nz-checkbox [(ngModel)]="testChecked" (ngModelChange)="getChange()">Confirmation</label>
   </div>
-  <img id="profile" *ngIf="checked" [src]="role?.profile" width="80" height="80" style="margin-top: 60px">
+<!--  <img id="profile" *ngIf="checked" [src]="role?.profile" width="80" height="80" style="margin-top: 60px">-->
   <app-confirm-role #confirmRole [role]="role?.title"></app-confirm-role>
 </div>
 

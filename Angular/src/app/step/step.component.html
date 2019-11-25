@@ -1,10 +1,95 @@
 <div class="container" (click)="sendStep()">
   <nz-card [nzBordered]="true"
-           [nzTitle]="step?.title"
+           [nzTitle]="titleTemplate"
            [nzExtra]="extraTemplate">
     <p>{{step?.description}}</p>
+    <div class="step-container">
+      <div nz-row>
+        <div nz-col nzSpan="14">
+          <nz-card style="" nzTitle="Action(s) spéciale(s) ">
+            <div nz-row style="padding-bottom: 10px">
+              <div nz-col nzSpan="8">
+                <div class="money">1k</div>
+              </div>
+              <div nz-col nzSpan="8">
+                <img src="../../assets/icons/right_arrow.png" width="30" height="30" alt="right_arrow">
+              </div>
+              <div nz-col nzSpan="8">
+                <div class="blue_square"></div>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="8">
+                <div class="blue_rounding"></div>
+              </div>
+              <div nz-col nzSpan="8">
+                <img src="../../assets/icons/handshake.png" width="30" height="30" alt="handshake">
+              </div>
+              <div nz-col nzSpan="8">
+                <div class="green_rounding"></div>
+              </div>
+            </div>
+
+          </nz-card>
+        </div>
+      </div>
+      <div nz-row style="margin-top: 10px">
+        <div nz-col nzSpan="24">
+          <nz-card style="" nzTitle="Activités">
+            <nz-table nzBordered [nzData]="datasets" #table [nzFrontPagination]="false">
+              <thead>
+              <tr>
+                <th><img src="../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
+                <th><img src="../../assets/icons/faillante.png" width="20" height="20" alt="faillante"></th>
+                <th><img src="../../assets/icons/duration.png" width="20" height="20" alt="duration"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of table.data">
+                <td>
+                  <div class="cell">
+                    <div class="blue_square">
+                      <p style="color: white">1</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div nz-col nzSpan="12" class="cell">
+                    <div class="blue_square">
+                      <p style="color: white">1</p>
+                    </div>
+                    <p>-1R</p>
+                  </div>
+                  <div nz-col [nzSpan]="12" class="cell">
+                    <div class="blue_square">
+                      <p style="color: white">3</p>
+                    </div>
+                    <p>-2R</p>
+                  </div>
+                </td>
+                <td><p></p></td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nz-card>
+        </div>
+      </div>
+    </div>
+
   </nz-card>
 </div>
 <ng-template #extraTemplate>
   <a nz-tooltip [nzTooltipTitle]="step?.detail">Détail</a>
+</ng-template>
+
+<ng-template #titleTemplate>
+  <div class="templateTitle">
+    <h4 nz-title>{{step?.title}}</h4>
+    <div class="durationContainer"><b>+{{step?.duration}}</b></div>
+    <div class="risk">risque 1</div>
+    <div class="risk">risque 1</div>
+    <div class="risk">risque 1</div>
+    <div class="risk">risque 1</div>
+    <div class="risk">risque 1</div>
+  </div>
 </ng-template>

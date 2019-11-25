@@ -3,16 +3,38 @@
   width: 100%;
   text-align: center;
   background-image: url("../../assets/icons/controle-construction.jpg");
+  display: flex;
+  flex-direction: column;
 }
 
 h1{
   color: #3f3f3f;
+  align-items: center;
 }
 
+
 .creationContainer{
-  position: absolute;
-  right: 180px;
-  top: 300px;
+  opacity: 0.9;
+  width: 500px;
+  margin-top: 80px;
+  align-self: center;
+  border: 1px solid #8b8b8b;
+}
+
+.choice{
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.create, .join{
+  border-radius: 5px;
+  justify-content: space-between;
+  height: 70px;
+  width: 500px;
+  background-color: #8b8b8b;
+  font-size: 28px;
+  color: #f0f2f5;
 }
 
 #createSalon{
@@ -22,6 +44,12 @@ h1{
   font-size: 30px;
   border: #2f92b1 solid 2px;
 }
+
+nz-table{
+  margin-top: 25px;
+  border: #8b8b8b solid 1px;
+}
+
 
 img{
   /* Start the shake animation and make the animation last for 0.5 seconds */

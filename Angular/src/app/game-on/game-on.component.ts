@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Steps} from '../model/step';
+import {LobbyService} from "../service/lobby.service";
+import {SocketRequest} from "../../Request";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-game-on',
@@ -11,7 +14,11 @@ export class GameOnComponent implements OnInit {
   steps: any = Steps;
   step = 'Étape 1';
 
-  constructor() {
+  constructor(private lobbyService: LobbyService,
+              private router: Router) {
+    lobbyService.messages.subscribe(data => {
+      console.log(data);
+    });
   }
 
   ngOnInit() {
@@ -19,5 +26,16 @@ export class GameOnComponent implements OnInit {
 
   getCurrentStep($event: any) {
     this.step = $event;
+  }
+
+  closeGame() {
+    console.log('Game over');
+    const message = {
+      request: 'LEAVE_GAME',
+      roomID: '0',
+      userID: '2'
+    };
+    this.lobbyService.messages.next(message as SocketRequest);
+    this.router.navigate(['']);
   }
 }

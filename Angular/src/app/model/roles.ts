@@ -1,6 +1,7 @@
 export const Roles = [
   {
     title: 'Maitre d\'ouvrage',
+    id: 1,
     description: 'Le maître d’ouvrage est la personne pour ' +
       'laquelle est réalisée l’ouvrage. ' +
       'Le maître d\'ouvrage est le porteur du projet,\n' +
@@ -14,6 +15,7 @@ export const Roles = [
   },
   {
     title: 'Maitre d\'œuvre (Architecte) ',
+    id: 2,
     description: 'Le maitre d’œuvre (souvent l’architecte)' +
       ' est le chef de projet de construction,' +
       ' la personne physique ou morale qui dirige ' +
@@ -26,6 +28,7 @@ export const Roles = [
   },
   {
     title: 'Bureau d\'étude',
+    id: 3,
     description: 'Le bureau d’étude doit assister l’architecte sur ' +
       'les spécificités techniques qui relèvent de sa compétence.' +
       ' Ils assurent des études techniques spécifiques : ' +
@@ -37,6 +40,7 @@ export const Roles = [
   },
   {
     title: 'Bureau de contrôle',
+    id: 4,
     description: 'Le bureau de contrôle juge de' +
       ' la solidité de l\'ouvrage, ' +
       'et vérifie le respect des normes et' +
@@ -50,6 +54,7 @@ export const Roles = [
   },
   {
     title: 'Entreprise Corps\tEtat Secondaire',
+    id: 6,
     description: 'Leur rôle est de construire tout ce qui ' +
       'n’est pas assuré par le gros œuvre. ' +
       'Il s’agit des cloisons et plâtrerie, de la peinture,' +
@@ -61,6 +66,7 @@ export const Roles = [
   },
   {
     title: 'Entreprise Gros Œuvre',
+    id: 5,
     description: 'Ces entreprises ont pour but de bâtir' +
       ' l’ossature de l’ouvrage. Cela comprend les fondations, ' +
       'les poutres, les poteaux, ' +

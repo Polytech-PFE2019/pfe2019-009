@@ -13,7 +13,14 @@ export class GameOnComponent implements OnInit {
 
   steps: any = Steps;
   step = 'Étape 1';
-
+  getDataFromParent:number;
+  getDataFromActivity: number;
+  getResource(event){
+    this.getDataFromParent=event;
+  }
+  getPayment(event){
+    this.getDataFromActivity=event;
+  }
   constructor(private lobbyService: LobbyService,
               private router: Router) {
     lobbyService.messages.subscribe(data => {

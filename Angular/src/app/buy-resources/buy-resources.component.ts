@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,EventEmitter, Output  } from '@angular/core';
 
 @Component({
   selector: 'app-buy-resources',
@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./buy-resources.component.css']
 })
 export class BuyResourcesComponent implements OnInit {
+  @Output() valueChange = new EventEmitter();
   ressourceNb = 0;
+  buyResource():void{
+    this.valueChange.emit(this.ressourceNb);
+  }
   constructor() { }
 
   ngOnInit() {

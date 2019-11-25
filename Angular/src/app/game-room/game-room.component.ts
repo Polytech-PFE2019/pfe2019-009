@@ -7,6 +7,8 @@ import {LobbyService} from '../service/lobbyService/lobby.service';
 import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {HttpParams} from '@angular/common/http';
+import {Role} from '../model/role';
+import {Globals} from "../globals";
 
 @Component({
   selector: 'app-game-room',
@@ -17,7 +19,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
 
   @ViewChild(RoleComponent, {static: true})
   Role;
-  roles: any = Roles;
+  roles: any[] = [];
   chekedItem = [];
   checkedID: number;
   userName = '9999';
@@ -26,13 +28,20 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   userID: string;
   subUserId: Subscription;
   subRoomId: Subscription;
-  subUserName: Subscription;
   roleID: any;
+  roleChoosed: any[] = [];
+  userReady = 0;
+  hostID: string;
 
   constructor(private router: Router,
+              private globals: Globals,
               private activatedRoute: ActivatedRoute,
               private subscriptionService: SubscriptionService,
               private lobbyService: LobbyService) {
+    for (let r of Roles) {
+      r = new Role(r);
+      this.roles = this.roles.concat(r);
+    }
   }
 
   ngOnInit() {
@@ -41,6 +50,20 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       switch (data.response) {
         case 'UPDATE':
           this.users = data.players;
+          this.hostID = data.hostID;
+          for (const r of this.roles) {
+            for (const player of this.users) {
+              this.roleChoosed = this.roleChoosed.concat(player.roleID);
+              if (player.ready) {
+                this.userReady++;
+              }
+              if (r.id === player.roleID) {
+                r.addAttribute(player);
+              }
+            }
+          }
+          console.log(this.roles);
+          console.log(this.roleChoosed);
           break;
       }
     });
@@ -55,10 +78,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       this.roomID = roomId;
     });
 
-    // this.subUserName = this.subscriptionService.userName$.subscribe(name => {
-    //   console.log(name);
-    //   this.userName = name;
-    // });
     this.userName = this.lobbyService.username;
   }
 
@@ -79,8 +98,8 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     console.log('Game start');
     const message = {
       request: 'START_GAME',
-      roomID: this.roomID,
-      userID: this.userID
+      roomID: this.roomID.toString(),
+      userID: this.userID.toString()
     };
     console.log(message);
     const params = {
@@ -91,4 +110,5 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     this.lobbyService.messages.next(message as SocketRequest);
     this.router.navigate(['gameon'], {queryParams: params});
   }
+
 }

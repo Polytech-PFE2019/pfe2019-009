@@ -14,15 +14,20 @@ import {SubscriptionService} from '../../service/subscriptionSerivce/subscriptio
 export class RoleComponent implements OnInit, OnDestroy {
   @Input() role: any = null;
   @Output() checkNum = new EventEmitter();
+  @Input() readyed = false;
   @Input() testChecked = false;
   @Input() roomID: any;
+  @Input() choosed = false;
   @ViewChild(ConfirmRoleComponent, {static: true})
   confirmRole;
   index1 = 0;
-  checked = false;
   numOfPlayers = 0;
   userID: string;
   subUserId: Subscription;
+
+  roleChoosed: any[] = [];
+  ifReady = false;
+  users: any[] = [];
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -56,6 +61,18 @@ export class RoleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subUserId.unsubscribe();
+  }
+
+  ready() {
+    if (this.readyed) {
+      const req = {
+        request: 'CHANGE_STATUS',
+        roomID: this.roomID.toString(),
+        userID: this.userID.toString()
+      };
+      console.log(req);
+      this.lobbyService.messages.next(req as SocketRequest);
+    }
   }
 
 }

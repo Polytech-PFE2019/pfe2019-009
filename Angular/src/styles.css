@@ -7,13 +7,18 @@
   height:30px;
   width: 30px;
   border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 .blue_square{
   background: #2f63d4;
   height:30px;
   width: 30px;
-  text-align: center;
-  vertical-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .green_square{
@@ -21,6 +26,9 @@
   height:30px;
   width: 30px;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .yellow_square{
@@ -28,6 +36,9 @@
   height:30px;
   width: 30px;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .black_square{
@@ -35,6 +46,9 @@
   height:30px;
   width: 30px;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .red_square{
@@ -42,6 +56,9 @@
   height:30px;
   width: 30px;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .purple_square{
@@ -49,6 +66,9 @@
   height:30px;
   width: 30px;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .blue_rounding{
@@ -56,6 +76,9 @@
   height:30px;
   width: 30px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .green_rounding{
@@ -63,6 +86,9 @@
   height:30px;
   width: 30px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .yellow_rounding{
@@ -70,6 +96,9 @@
   height:30px;
   width: 30px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .black_rounding{
@@ -77,6 +106,9 @@
   height:30px;
   width: 30px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .red_rounding{
@@ -84,6 +116,9 @@
   height:30px;
   width: 30px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .purple_rounding{
@@ -91,4 +126,7 @@
   height:30px;
   width: 30px;
   border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }

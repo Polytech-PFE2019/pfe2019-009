@@ -83,7 +83,6 @@ export class HomePageComponent implements OnInit {
   }
 
   getUsername() {
-    this.globals.username = this.value;
     this.userName = this.value;
   }
 

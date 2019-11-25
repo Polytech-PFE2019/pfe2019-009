@@ -1,43 +1,35 @@
-<div class="activity2Container">
+<div class="container">
   <h2>Payer des ressources</h2>
-  <div class="row_plain">
-    <div class="column_plain">
+  <div class="activity2Container">
+    <div class="activity">
       <div class="row">
-        <img src="../../assets/icons/person.png"  alt="Person">
+        <img src="../../assets/icons/person.png" alt="Person">
         <div style="width: 20px;"></div>
         <div>
-          <div class="blue_square"><p style="color: white">1</p></div>
-          <label nz-radio [ngModel]="true"></label>
+          <div class="blue_square">1</div>
+          <label nz-checkbox nzDisabled [(ngModel)]="checked1"></label>
         </div>
       </div>
       <div class="row">
         <img src="../../assets/icons/faillante.png" alt="faillante">
-        <div style="width: 20px;"></div>
-        <div class="blue_square" style="padding-right: 10px"><p style="color: white">0</p></div>
-        <div style="padding-right: 30px"></div>
-        <div class="blue_square"><p style="color: white">1</p></div>
-        <div style="padding-right: 30px"></div>
-        <div class="blue_square"><p style="color: white">3</p></div>
-      </div>
-      <div class="row_plain">
-        <div style="width: 45px"></div>
-        <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="updateChecked()">
-          <label nz-radio nzValue="0">-0R</label>
-          <label nz-radio nzValue="1">-1R</label>
-          <label nz-radio nzValue="2">-2R</label>
-        </nz-radio-group>
+        <div class="column">
+          <div class="blue_square">1</div>
+          <label nz-checkbox [(ngModel)]="checked2">-1R</label>
+        </div>
+        <div class="column">
+          <div class="blue_square">3</div>
+          <label nz-checkbox [(ngModel)]="checked3">-3R</label>
+        </div>
       </div>
       <div class="row">
         <img src="../../assets/icons/duration.png" alt="duration">
       </div>
     </div>
-    <div class="column">
-    <div style="height: 150px"></div>
-
-    <h3>Ressources à payer: {{total_res}}</h3>
-    <h3>Risques à réduire: {{risque}}</h3>
-    <div style="height: 20px"></div>
-    <button nz-button [nzType]="default" nzShape="round" (click)="payResource()">Confirmer</button>
+    <div class="information">
+      <h3>Ressources à payer: {{(checked1 ? 1 : 0) + (checked2 ? 1 : 0) + (checked3 ? 3 : 0)}}</h3>
+      <h3>Risques à réduire: {{(checked2 ? 1 : 0) + (checked3 ? 2 : 0)}}</h3>
     </div>
   </div>
+
+  <button nz-button nzType="default" nzShape="round">Confirmer</button>
 </div>

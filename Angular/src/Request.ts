@@ -8,5 +8,6 @@ export class SocketRequest {
     roomID: string;
     roleID: string;
     players: [Player];
+    hostID: string;
 
 }

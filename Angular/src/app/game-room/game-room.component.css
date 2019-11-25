@@ -1,35 +1,36 @@
-.container{
+.container {
   text-align: center;
 }
 
-h1{
+h1 {
   color: #3f3f3f;
   margin-top: 3%;
 }
 
-#start{
+#start {
   margin-top: 60px;
   width: 240px;
   height: 50px;
   font-size: 30px;
 }
 
-.information{
+.information {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 30px;
-  align-items: center;
 }
 
-h1{
-  margin-right: 35%;
+nz-list {
+  width: 200px;
 }
 
-h4{
+h1 {
+  margin-left: calc(50% - 200px - 200px);
+}
+
+h4 {
   margin-left: 5px;
 }
 
-img{
+img {
   border-radius: 50%;
   border: 1px solid #8b8b8b;
 }

@@ -1,5 +1,5 @@
-import {WebsocketService} from './service/websocket.service';
-import {LobbyService} from './service/lobby.service';
+import {WebsocketService} from './service/webSocketService/websocket.service';
+import {LobbyService} from './service/lobbyService/lobby.service';
 
 import {Component} from '@angular/core';
 

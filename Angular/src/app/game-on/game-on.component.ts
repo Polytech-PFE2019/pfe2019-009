@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Steps} from '../model/step';
-import {LobbyService} from "../service/lobby.service";
+import {LobbyService} from "../service/lobbyService/lobby.service";
 import {SocketRequest} from "../../Request";
 import {Router} from "@angular/router";
 

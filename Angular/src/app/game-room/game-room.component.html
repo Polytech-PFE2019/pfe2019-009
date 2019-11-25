@@ -1,17 +1,24 @@
 <div class="container">
   <div class="information">
+    <nz-list [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <ng-template #item let-item>
+        <nz-list-item>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            nzAvatar="../../assets/profiles/test.jpg">
+            <ng-template #nzTitle>
+              <a>{{ item?.username}}</a>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
     <h1 nz-title>Choissisez vore rôle</h1>
-    <img src="../../assets/profiles/test.jpg"
-         [width]="60" [height]="60"
-         alt="Picture">
-    <h4>{{userName}}</h4>
-  </div>
-  <div *ngFor="let user of users">
-    <span>{{user?.username}}</span>
   </div>
   <div nz-row [nzGutter]="6" style="margin-top: 100px">
     <div nz-col [nzSpan]="4" *ngFor="let role of roles">
-      <app-role #Role [roomID]="roomID" [testChecked]="role.id === checkedID" [role]="role" (checkNum)="getCheckedNum($event)"></app-role>
+      <app-role #Role [roomID]="roomID" [testChecked]="role.id === checkedID" [role]="role"
+                (checkNum)="getCheckedNum($event)"></app-role>
     </div>
   </div>
   <button id="start" nz-button nzType="default" (click)="gameStart()">Démarrer</button>

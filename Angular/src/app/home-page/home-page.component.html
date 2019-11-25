@@ -11,7 +11,10 @@
       <div class="choice">
         <button class="create" (click)="createASalon()">Créer une partie</button>
       </div>
-      <nz-table #filterTable [nzData]="listOfDisplayData" nzTitle="Parties disponibles">
+      <nz-table #filterTable
+                [nzShowPagination]="false"
+                [nzData]="listOfDisplayData"
+                nzTitle="Parties disponibles">
         <thead>
         <tr>
           <th>

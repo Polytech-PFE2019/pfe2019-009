@@ -1,65 +1,48 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {ConfirmRoleComponent} from '../../modal-module/role-confirm/confirm-role/confirm-role.component';
-import {Router} from '@angular/router';
-import {LobbyService} from "../../service/lobby.service";
-import {Globals} from "../../globals";
-import {SocketRequest} from "../../../Request";
-import {ObserveOnSubscriber} from "rxjs/internal/operators/observeOn";
-import {Observable} from "rxjs";
+import {ActivatedRoute, Router} from '@angular/router';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {SocketRequest} from '../../../Request';
+import {Subscription} from 'rxjs';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
   styleUrls: ['./role.component.css']
 })
-export class RoleComponent implements OnInit {
+export class RoleComponent implements OnInit, OnDestroy {
   @Input() role: any = null;
-  @Input() roomID: string;
   @Output() checkNum = new EventEmitter();
   @Input() testChecked = false;
+  @Input() roomID: any;
   @ViewChild(ConfirmRoleComponent, {static: true})
   confirmRole;
   index1 = 0;
   checked = false;
   numOfPlayers = 0;
-  globals: Globals;
   userID: string;
-  testId: string;
-  ID: string;
+  subUserId: Subscription;
 
   constructor(private router: Router,
-              globals: Globals,
+              private activatedRoute: ActivatedRoute,
+              private subscription: SubscriptionService,
               private lobbyService: LobbyService) {
-    lobbyService.messages.subscribe(data => {
-      console.log(data);
-      if (data.roomID === null) {
-        this.ID = data.roomID;
-      }
-    });
-    this.globals = globals;
-    this.testId = globals.userID;
   }
 
   ngOnInit() {
+    this.subUserId = this.subscription.userID$.subscribe(data => {
+      console.log(data);
+      this.userID = data;
+    });
   }
-
-  confirmRoles() {
-    this.confirmRole.isVisible = true;
-  }
-
-  getRole($event: MouseEvent) {
-  }
-
-// {    “REQUEST” : ‘CHOOSE_ROLE’,
-// “roomID” : 1,   “userID” : 2,
-// “roleID” : 2}
 
   getChange() {
-    console.log(this.globals.userID);
+    console.log(this.userID);
     const req = {
       request: 'CHOOSE_ROLE',
-      roomID: this.globals.roomID.toString(),
-      userID: this.globals.userID,
+      roomID: this.roomID.toString(),
+      userID: this.userID,
       roleID: this.role.id.toString()
     };
     console.log(req);
@@ -70,4 +53,9 @@ export class RoleComponent implements OnInit {
     };
     this.checkNum.emit(data);
   }
+
+  ngOnDestroy(): void {
+    this.subUserId.unsubscribe();
+  }
+
 }

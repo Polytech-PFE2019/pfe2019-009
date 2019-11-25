@@ -1,7 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {LobbyService} from "../../service/lobby.service";
-import {SocketRequest} from "../../../Request";
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {SocketRequest} from '../../../Request';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {HttpParams} from '@angular/common/http';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-game-creator',
@@ -12,10 +15,13 @@ export class GameCreatorComponent implements OnInit {
   @Input() userName = '';
   isCreatingSalon: any;
   @Output() test = new EventEmitter();
+  subRoomId: Subscription;
+  roomID: string;
 
 
   constructor(private route: ActivatedRoute,
               private router: Router,
+              private subscriptionService: SubscriptionService,
               private lobbyService: LobbyService) {
     lobbyService.messages.subscribe(msg => {
       console.log('Response: ' + msg.response);
@@ -31,6 +37,10 @@ export class GameCreatorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subRoomId = this.subscriptionService.roomID$.subscribe(data => {
+      console.log(data);
+      this.roomID = data;
+    });
   }
 
   updateRoom() {
@@ -44,6 +54,7 @@ export class GameCreatorComponent implements OnInit {
   handleOk() {
     this.test.emit(1);
     this.sendRequest();
+    console.log(this.roomID);
     this.router.navigate(['gameroom']);
     this.isCreatingSalon = false;
   }

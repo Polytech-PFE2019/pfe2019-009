@@ -48,6 +48,8 @@ h1{
 nz-table{
   margin-top: 25px;
   border: #8b8b8b solid 1px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 

@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./activity2.component.css']
 })
 export class Activity2Component implements OnInit {
+  checked_1 = true;
+  checked_2 = false;
+  checked_3 = false;
 
   constructor() { }
 

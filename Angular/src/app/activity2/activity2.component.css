@@ -1,11 +1,18 @@
 .activity2Container{
   padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .row{
   display: flex;
   flex-direction: row;
   padding: 10px;
   padding-bottom: 10px;
+}
+
+.column{
+  padding-left: 20px;
 }
 
 img{

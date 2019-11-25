@@ -1,17 +1,33 @@
-<script src="activity2.component.ts"></script>
 <div class="activity2Container">
   <h2>Payer des ressources</h2>
-
-  <div class="row">
-    <img src="../../assets/icons/person.png"  alt="Person">
-    <div style="width: 20px;"></div>
-    <div class="blue_square"><p style="color: white">1</p></div>
+  <div>
+    <div class="row">
+      <img src="../../assets/icons/person.png"  alt="Person">
+      <div style="width: 20px;"></div>
+      <div>
+        <div class="blue_square"><p style="color: white">1</p></div>
+        <label nz-checkbox nzDisabled [(ngModel)]="checked_1"></label>
+      </div>
+    </div>
+    <div class="row">
+      <img src="../../assets/icons/faillante.png" alt="faillante">
+      <div class="column">
+        <div class="blue_square"><p style="color: white">1</p></div>
+        <label nz-checkbox [(ngModel)]="checked_2">-1R</label>
+      </div>
+      <div class="column">
+        <div class="blue_square"><p style="color: white">3</p></div>
+        <label nz-checkbox [(ngModel)]="checked_3">-3R</label>
+      </div>
+    </div>
+    <div class="row">
+      <img src="../../assets/icons/duration.png" alt="duration">
+    </div>
   </div>
-  <div class="row">
-    <img src="../../assets/icons/faillante.png" alt="faillante">
-  </div>
-  <div class="row">
-    <img src="../../assets/icons/duration.png" alt="duration">
-  </div>
+  <div style="height: 20px"></div>
+  <h3>Ressources à payer: {{(checked_1 ? 1 : 0) + (checked_2 ? 1 : 0) + (checked_3 ? 3 : 0)}}</h3>
+  <h3>Risques à réduire: {{(checked_2 ? 1 : 0) + (checked_3 ? 2 : 0)}}</h3>
+  <div style="height: 20px"></div>
+  <button nz-button [nzType]="default" [nzShape]="round">Confirmer</button>
 </div>
 

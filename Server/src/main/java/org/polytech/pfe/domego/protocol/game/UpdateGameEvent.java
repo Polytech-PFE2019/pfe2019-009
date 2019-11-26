@@ -51,6 +51,7 @@ public class UpdateGameEvent implements EventProtocol {
             JsonObject activityJson = new JsonObject();
             activityJson.addProperty(ActivityResponseKey.ACTIVITY_ID.key, activity.getId());
             activityJson.addProperty(ActivityResponseKey.NUMBER_OF_DAYS.key, activity.getNumberOfDays());
+            activityJson.addProperty(ActivityResponseKey.DESCRIPTION.key, activity.getDescription());
             activityJson.addProperty(ActivityResponseKey.STATUS.key, activity.getActivityStatus().toString());
 
             JsonArray payingActions = new JsonArray();
@@ -70,15 +71,15 @@ public class UpdateGameEvent implements EventProtocol {
 
             JsonArray buyingActions = new JsonArray();
             for (BuyResources buyResources : activity.getBuyResourcesList()) {
-
-                JsonObject buyingActionJson = new JsonObject();
-                buyingActionJson.addProperty(ActionResponseKey.STATUS.key, buyResources.hasPaid());
-                buyingActionJson.addProperty(ActionResponseKey.RATE.key, buyResources.getRate());
-                buyingActionJson.addProperty(ActionResponseKey.ROLEID.key, buyResources.getRoleID());
-                buyingActionJson.addProperty(ActionResponseKey.RESOURCES_GIVEN.key, buyResources.getResourcesGiven());
-                buyingActionJson.addProperty(ActionResponseKey.MONEY_PAID.key, buyResources.getAmountPaid());
-
-                buyingActions.add(buyingActionJson);
+                if(player.getRole().getId() == buyResources.getRoleID()) {
+                    JsonObject buyingActionJson = new JsonObject();
+                    buyingActionJson.addProperty(ActionResponseKey.STATUS.key, buyResources.hasPaid());
+                    buyingActionJson.addProperty(ActionResponseKey.RATE.key, buyResources.getRate());
+                    buyingActionJson.addProperty(ActionResponseKey.ROLEID.key, buyResources.getRoleID());
+                    buyingActionJson.addProperty(ActionResponseKey.RESOURCES_GIVEN.key, buyResources.getResourcesGiven());
+                    buyingActionJson.addProperty(ActionResponseKey.MONEY_PAID.key, buyResources.getAmountPaid());
+                    buyingActions.add(buyingActionJson);
+                }
             }
             activityJson.addProperty(ActivityResponseKey.BUYING_ACTIONS.key,buyingActions.toString());
             activitiesJson.add(activityJson);

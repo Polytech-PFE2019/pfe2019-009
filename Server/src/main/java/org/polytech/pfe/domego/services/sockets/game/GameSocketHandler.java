@@ -52,14 +52,13 @@ public class GameSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
-        /*
         System.out.println("connexion");
         List<Player> playerList = new ArrayList<>();
         for(int i =1; i<7; i++){
             Player player = new Player(session,"ehffd");
-            player.setRole(new Role(i, RoleType.MAITRE_D_OUVRAGE,"descri",210,"skjd"));
+            player.setRole(new Role(i, RoleType.MAITRE_D_OUVRAGE,"descri",20000,"skjd"));
             player.addResouces(2);
+            player.addMoney(20000);
             playerList.add((player));
         }
 
@@ -67,7 +66,7 @@ public class GameSocketHandler extends TextWebSocketHandler {
         GameInstance.getInstance().addGame(game);
 
         UpdateGameEvent event = new UpdateGameEvent(game);
-        event.processEvent();*/
+        event.processEvent();
     }
 
     @Override

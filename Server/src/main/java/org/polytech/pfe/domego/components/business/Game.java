@@ -67,10 +67,6 @@ public class Game {
 
     }
 
-    public int getCurrentPriceOfResource(RoleType roleType){
-        return 2;
-    }
-
     public String getId() {
         return id;
     }

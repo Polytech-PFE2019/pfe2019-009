@@ -57,22 +57,19 @@ public class PayResourcesEvent implements EventProtocol {
 
         Player player = optionalPlayer.get();
 
-        int activityID = Integer.parseInt(request.get(GameRequestKey.ACTIVITYID.getKey()));
-        this.payResources(game,player,activityID);
+        this.payResources(game,player);
 
     }
 
 
-    private void payResources(Game game, Player player, int activityID){
-        //TODO choose over getCurrentActivity (and not send the id in the request) or create a getActivityByID method
-        Activity activity = game.getActivities().get(activityID-1);
+    private void payResources(Game game, Player player){
+        Activity activity = game.getCurrentActivity();
 
         int roleID = player.getRole().getId();
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
 
         PayResourceType payResourceType = PayResourceType.valueOf(request.get(GameRequestKey.TYPE.getKey()));
 
-        //int currentPriceOfResource = game.getCurrentPriceOfResource(player.getRole().getName());
         if (numberOfResource > player.getResourcesAmount()) {
             this.messenger.sendError("USER HAS NOT ENOUGH RESOURCES");
             return;
@@ -94,7 +91,6 @@ public class PayResourcesEvent implements EventProtocol {
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
         response.addProperty(GameResponseKey.BONUSTYPE.key, request.get(GameRequestKey.TYPE.getKey()));
         messenger.sendSpecificMessageToAUser(response.toString());
-
     }
 
 
@@ -104,6 +100,8 @@ public class PayResourcesEvent implements EventProtocol {
         if(!request.containsKey(GameRequestKey.USERID.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.USERID);
         if(!request.containsKey(GameRequestKey.AMOUNT.getKey()))
+            throw new MissArgumentToRequestException(GameRequestKey.AMOUNT);
+        if(!request.containsKey(GameRequestKey.TYPE.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.AMOUNT);
     }
 }

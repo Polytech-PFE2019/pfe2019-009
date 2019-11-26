@@ -54,32 +54,26 @@ public class BuyResourceEvent implements EventProtocol {
         }
 
         Player player = optionalPlayer.get();
-        if(this.buyResource(game,player)){
-            new UpdateGameEvent(game).processEvent();
-        }
-
-
+        this.buyResource(game,player);
 
     }
 
 
-    private boolean buyResource(Game game, Player player){
+    private void buyResource(Game game, Player player){
         Activity activity = game.getCurrentActivity();
 
         int roleID = player.getRole().getId();
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
         int currentPriceOfResource = activity.getExchangeRateForRoleID(roleID);
-        //int currentPriceOfResource = game.getCurrentPriceOfResource(player.getRole().getName());
+
         if (numberOfResource * currentPriceOfResource > player.getMoney()) {
             this.messenger.sendError("USER HAS NOT ENOUGH MONEY");
-            return false;
+            return;
         }
         activity.buyResources(roleID,numberOfResource);
         player.addResouces(numberOfResource);
         player.substractMoney(numberOfResource * currentPriceOfResource);
         this.sendResponseToUser(player);
-        return true;
-
     }
 
     private void sendResponseToUser(Player player) {

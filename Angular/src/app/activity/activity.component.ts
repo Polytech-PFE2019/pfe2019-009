@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-activity',
@@ -7,6 +8,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class ActivityComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
+  isVisible = false;
   radioValue = '0';
   res1 = 1;
   res2 = 0;
@@ -26,7 +28,24 @@ export class ActivityComponent implements OnInit {
   payResource(): void {
     this.valueChange.emit(this.totalRes);
   }
-  constructor() { }
+
+  popConfirm():void {
+    this.isVisible = true;
+    this.nzMessageService.info('Paiement réussi');
+
+  }
+
+  handleOk(): void {
+    this.payResource();
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+    this.nzMessageService.info('Paiement annulé');
+  }
+
+  constructor(private nzMessageService: NzMessageService) {}
 
   ngOnInit() {
   }

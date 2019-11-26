@@ -38,6 +38,7 @@ export class GameOnComponent implements OnInit {
 
   // the price paid by user
   getPrice(event) {
+    console.log('price is in ' + event);
     this.getPriceFromParent = event;
   }
 

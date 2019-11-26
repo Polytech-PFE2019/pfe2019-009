@@ -3,13 +3,14 @@
   <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
     <div class="activityContainer">
       <div class="activity">
-        <app-activity (valueChange)="getPayment($event)" [resourceRemain]="getResourceFromPerson"></app-activity>
+        <app-activity></app-activity>
       </div>
       <div class="activity">
-        <app-buy-resources (resourceChange)="getResource($event)"  (moneyChange)="getPrice($event)"  [moneyRemain]="getMoneyFromPerson"></app-buy-resources>
+        <app-buy-resources></app-buy-resources>
       </div>
       <div class="activity" id="personnal">
-        <app-person-information [addResource]="getDataFromParent" [payActivity]="getDataFromActivity" [moneyPayResource]="getPriceFromParent" (sendMoney)="getMoney($event)" (sendResource)="getRemainResource($event)" ></app-person-information>
+        <app-person-information>
+        </app-person-information>
       </div>
       <div class="activity">
         <app-projet-information></app-projet-information>

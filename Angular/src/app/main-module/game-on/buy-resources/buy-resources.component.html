@@ -3,10 +3,10 @@
   <div style="height: 20px"></div>
   <input nz-input type="number"
          placeholder="Nombre de ressource"
-         [max]=moneyRemain
+         [max]="currentMonney/multiple"
          [min]="0"
          [(ngModel)]="resourceNb">
-  <p style="padding: 10px">Ça coûte <b>{{ resourceNb*multiple}} k</b></p>
+  <p style="padding: 10px">Ça coûte <b>{{ resourceNb * multiple}} k</b></p>
   <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <p>Êtes-vous sûr d'acheter {{resourceNb}} ressources?</p>

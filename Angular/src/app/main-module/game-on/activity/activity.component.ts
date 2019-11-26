@@ -1,24 +1,19 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {BuyResourceService} from "../../../service/resources/buy-resource.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css']
 })
-export class ActivityComponent implements OnInit {
-  @Output() valueChange = new EventEmitter();
-  @Input() resourceRemain: number;
+export class ActivityComponent implements OnInit, OnDestroy {
   isVisible = false;
-  radioValue = 0;
   resBasic = 1;
-  res2 = 0;
-  res3 = 0;
-  risque = 0;
   riskReduced = 0;
   totalRes = this.resBasic;
   payment = 0;
-  numOfRisks = 3; // canbe input
   payActivity = [{
     payment: 0,
     benefits: 0
@@ -32,30 +27,33 @@ export class ActivityComponent implements OnInit {
       benefits: 2
     },
   ];
+  subCurrentResource: Subscription;
+  currentResource: number;
 
-  updateChecked(): void {
-    this.totalRes = this.resBasic;
-    for (const item of this.payActivity) {
-      if (item.payment === this.radioValue) {
-        this.totalRes = item.payment + this.resBasic;
-        this.riskReduced = item.benefits;
-      }
-    }
+  constructor(private nzMessageService: NzMessageService,
+              private resourceService: BuyResourceService) {
+  }
+
+  ngOnInit() {
+    this.subCurrentResource = this.resourceService.currentMonney$.subscribe(data => {
+      this.currentResource = data;
+    });
+
   }
 
   popConfirm(): void {
-    if (this.resourceRemain >= this.totalRes) {
+    if (this.currentResource >= this.totalRes) {
       this.isVisible = true;
     } else {
       this.nzMessageService.info('Votre ressource ne suffit pas. Il faut acheter la ressource en premier.');
     }
-
-
   }
 
   handleOk(): void {
-    this.payResource();
+    // this.payResource();
+    this.resourceService.sendResourcesReduced(this.totalRes);
     this.isVisible = false;
+    this.nzMessageService.info('Paiement réussi');
   }
 
   handleCancel(): void {
@@ -63,22 +61,20 @@ export class ActivityComponent implements OnInit {
     this.nzMessageService.info('Paiement annulé');
   }
 
-  payResource(): void {
-    this.valueChange.emit(this.totalRes);
-    this.nzMessageService.info('Paiement réussi');
-
-  }
-
-  constructor(private nzMessageService: NzMessageService) {
-  }
-
-  ngOnInit() {
-  }
 
   getPaymentActivity($event) {
     this.payment = $event;
+    this.riskReduced = this.getItemByOayment($event).benefits;
     this.totalRes = 0;
     this.totalRes = this.payment + this.resBasic;
+  }
+
+  getItemByOayment(payment) {
+    return this.payActivity.filter(next => next.payment === payment)[0];
+  }
+
+  ngOnDestroy(): void {
+    this.subCurrentResource.unsubscribe();
   }
 }
 

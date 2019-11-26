@@ -1,40 +1,45 @@
-import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Component, OnInit, EventEmitter, Output, Input, OnDestroy} from '@angular/core';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {BuyResourceService} from '../../../service/resources/buy-resource.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-buy-resources',
   templateUrl: './buy-resources.component.html',
   styleUrls: ['./buy-resources.component.css']
 })
-export class BuyResourcesComponent implements OnInit {
-  @Output() resourceChange = new EventEmitter();
-  @Output() moneyChange = new EventEmitter();
-  @Input() moneyRemain:number;
-  @Output() valueChange = new EventEmitter();
+export class BuyResourcesComponent implements OnInit, OnDestroy {
   resourceNb = 0;
   isVisible = false;
   multiple = 1;
   price = 0;
+  subCurrentMonney: Subscription;
+  currentMonney = 30;
 
-  constructor(private nzMessageService: NzMessageService) {}
+  constructor(private nzMessageService: NzMessageService,
+              private resourceService: BuyResourceService) {
+  }
+
+  ngOnInit() {
+    this.subCurrentMonney = this.resourceService.currentMonney$.subscribe(data => {
+      this.currentMonney = data;
+    });
+  }
 
   popConfirm(): void {
     this.isVisible = true;
   }
 
-  buyResource(): void {
-    this.price = this.resourceNb * this.multiple;
-    this.resourceChange.emit(this.resourceNb);
-    this.moneyChange.emit(this.price);
-    this.nzMessageService.info('Achat réussi');
-  }
-
   handleOk(): void {
-    this.buyResource();
-    this.moneyRemain -= this.resourceNb * this.multiple;
-    this.multiple =2;
-    this.moneyRemain = this.moneyRemain/this.multiple
+    this.price = this.resourceNb * this.multiple;
+    console.log('price is ' + this.price);
+    this.resourceService.sendResourcesBuying(this.resourceNb);
+    this.resourceService.sendPayment(this.price);
+    this.multiple = 2 * this.multiple;
+    console.log('multiple' + this.multiple);
     this.isVisible = false;
+    this.nzMessageService.info('Achat réussi');
+    this.resourceNb = 0;
   }
 
   handleCancel(): void {
@@ -42,7 +47,8 @@ export class BuyResourcesComponent implements OnInit {
     this.nzMessageService.info('Achat annulé');
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this.subCurrentMonney.unsubscribe();
   }
 
 }

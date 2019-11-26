@@ -6,10 +6,10 @@
         <app-activity (valueChange)="getPayment($event)"></app-activity>
       </div>
       <div class="activity">
-        <app-buy-resources (valueChange)="getResource($event)" [moneyRemain]="getMoneyFromPerson"></app-buy-resources>
+        <app-buy-resources (resourceChange)="getResource($event)"  (moneyChange)="getPrice($event)"  moneyRemain]="getMoneyFromPerson"></app-buy-resources>
       </div>
       <div class="activity" id="personnal">
-        <app-person-information [moneyPayResource]="getDataFromParent" [payActivity]="getDataFromActivity" (sendMoney)="getMoney($event)" ></app-person-information>
+        <app-person-information [addResource]="getDataFromParent" [payActivity]="getDataFromActivity" [moneyPayResource]="getPriceFromParent" (sendMoney)="getMoney($event)" ></app-person-information>
       </div>
       <div class="activity">
         <app-projet-information></app-projet-information>

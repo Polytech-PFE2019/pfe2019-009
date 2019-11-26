@@ -9,7 +9,7 @@
   <p style="padding: 10px">Ça coûte <b>{{ ressourceNb}} k</b></p>
   <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer{{moneyRemain}}</button>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-    <p>Êtes-vous sûr d'acheter {{ressourceNb}} ressources?</p>
+    <p>Êtes-vous sûr d'acheter {{ressourceNb * multiple}} ressources?</p>
   </nz-modal>
 
 </div>

@@ -7,25 +7,29 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./buy-resources.component.css']
 })
 export class BuyResourcesComponent implements OnInit {
-  @Output() valueChange = new EventEmitter();
+  @Output() resourceChange = new EventEmitter();
+  @Output() moneyChange = new EventEmitter();
   @Input() moneyRemain:number;
   ressourceNb = 0;
   isVisible = false;
+  multiple = 1;
+  price = this.ressourceNb * this.multiple;
 
   constructor(private nzMessageService: NzMessageService) {}
 
   popConfirm():void {
       this.isVisible = true;
-
   }
   buyResource(): void {
-    this.valueChange.emit(this.ressourceNb);
+    this.resourceChange.emit(this.ressourceNb);
+    this.moneyChange.emit(this.price);
     this.nzMessageService.info('Achat réussi');
   }
 
   handleOk(): void {
     this.buyResource();
-    this.moneyRemain -= this.ressourceNb;
+    this.moneyRemain -= this.ressourceNb * this.multiple;
+    this.multiple =2;
     this.isVisible = false;
   }
 

@@ -10,6 +10,7 @@ export class PersonInformationComponent implements OnInit {
   baseMoney = 30;
   @Input() moneyPayResource = 0;
   @Input() payActivity = 0;
+  @Input() addResource = 0;
   @Output() sendMoney = new EventEmitter();
   moneyNb = this.baseMoney - this.moneyPayResource;
 

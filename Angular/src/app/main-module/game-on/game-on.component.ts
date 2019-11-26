@@ -14,19 +14,25 @@ export class GameOnComponent implements OnInit {
   steps: any = Steps;
   step = 'Étape 1';
   getDataFromParent = 0;
+  getPriceFromParent = 0;
   getDataFromActivity = 0;
   getMoneyFromPerson = 0;
 
+  //how many resources user buys
   getResource(event) {
     console.log('payresource ' + event);
     this.getDataFromParent = event;
   }
-
+  //the price paid by user
+  getPrice(event) {
+    this.getPriceFromParent = event;
+  }
+  //how many resource user has to pay
   getPayment(event) {
     console.log('payactivity ' + event);
     this.getDataFromActivity = event;
   }
-
+  //how many money user remains
   getMoney(event) {
     this.getMoneyFromPerson = event;
   }

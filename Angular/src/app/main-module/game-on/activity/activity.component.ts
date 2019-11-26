@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
@@ -8,6 +8,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 })
 export class ActivityComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
+  @Input() resourceRemain: number;
   isVisible = false;
   radioValue = 0;
   resBasic = 1;
@@ -38,13 +39,17 @@ export class ActivityComponent implements OnInit {
       if (item.payment === this.radioValue) {
         this.totalRes = item.payment + this.resBasic;
         this.riskReduced = item.benefits;
-        this.valueChange.emit(this.totalRes);
       }
     }
   }
 
   popConfirm(): void {
-    this.isVisible = true;
+    if (this.resourceRemain >= this.totalRes) {
+      this.isVisible = true;
+    } else {
+      this.nzMessageService.info('Votre ressource ne suffit pas. Il faut acheter la ressource en premier.');
+    }
+
 
   }
 

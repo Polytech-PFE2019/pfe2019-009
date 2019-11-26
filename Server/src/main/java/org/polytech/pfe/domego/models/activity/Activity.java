@@ -37,10 +37,15 @@ public abstract class Activity {
 
     }
 
-    public void payResources(int roleID, PayResourceType payResourceType, int amount){
+    public boolean payResources(int roleID, PayResourceType payResourceType, int amount){
         PayResources payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
 
+        if(amount < payResources.getAmountNeeded()){
+            return false;
+        }
         payResources.pay(amount);
+        return true;
+
     }
 
     public boolean hasRolePaidMandatory(int roleID){

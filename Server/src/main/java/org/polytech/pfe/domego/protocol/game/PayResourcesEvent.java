@@ -46,6 +46,8 @@ public class PayResourcesEvent implements EventProtocol {
         }
 
         Game game = optionalGame.get();
+
+
         Optional<Player> optionalPlayer = game.getPlayers().stream().filter(player -> player.getID().equals(request.get(GameRequestKey.USERID.getKey()))).findAny();
 
         if (!optionalPlayer.isPresent()){
@@ -65,18 +67,23 @@ public class PayResourcesEvent implements EventProtocol {
         //TODO choose over getCurrentActivity (and not send the id in the request) or create a getActivityByID method
         Activity activity = game.getActivities().get(activityID-1);
 
-        int roleID = Integer.parseInt(request.get(GameRequestKey.ROLEID.getKey()));
+        int roleID = player.getRole().getId();
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
 
         PayResourceType payResourceType = PayResourceType.valueOf(request.get(GameRequestKey.TYPE.getKey()));
 
         //int currentPriceOfResource = game.getCurrentPriceOfResource(player.getRole().getName());
-        if (numberOfResource < player.getResourcesAmount()){
-            activity.payResources(roleID,payResourceType, numberOfResource);
-            player.substractResources(numberOfResource);
-            this.sendResponseToUser(player);
+        if (numberOfResource <= player.getResourcesAmount()){
+            if(activity.payResources(roleID,payResourceType, numberOfResource)){
+                player.substractResources(numberOfResource);
+                this.sendResponseToUser(player);
+            }
+            else {
+                this.messenger.sendError("NOT ENOUGH RESOURCES TO PAY");
+            }
+
         }else{
-            this.messenger.sendError("NOT ENOUGH RESOURCES");
+            this.messenger.sendError("USER HAS NOT ENOUGH RESOURCES");
         }
     }
 

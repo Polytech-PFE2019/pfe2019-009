@@ -38,6 +38,7 @@ public class UpdateGameEvent implements EventProtocol {
         JsonObject playerJson = new JsonObject();
         Player player = game.getPlayerByID(userID);
         playerJson.addProperty(GameResponseKey.USERNAME.key, player.getName());
+        playerJson.addProperty(GameResponseKey.USERID.key, player.getID());
         playerJson.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
         playerJson.addProperty(GameResponseKey.MONEY.key, player.getMoney());
         playerJson.addProperty(GameResponseKey.ROLEID.key, player.getRole().getId());

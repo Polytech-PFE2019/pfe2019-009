@@ -58,6 +58,7 @@ public class GameSocketHandler extends TextWebSocketHandler {
         for(int i =1; i<7; i++){
             Player player = new Player(session,"ehffd");
             player.setRole(new Role(i, RoleType.MAITRE_D_OUVRAGE,"descri",210,"skjd"));
+            player.addResouces(2);
             playerList.add((player));
         }
 

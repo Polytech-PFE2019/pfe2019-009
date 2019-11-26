@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Service
 public class GameRequestHandler implements RequestHandler {
+
     @Override
     public void handleRequest(WebSocketSession session, Map<String, String> request) throws Exception {
         EventProtocol event;

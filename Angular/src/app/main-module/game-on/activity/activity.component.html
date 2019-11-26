@@ -20,7 +20,7 @@
           <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="updateChecked()">
             <label nz-radio
                    *ngFor="let item of payActivity; let i=index"
-                   [nzValue]="item.risk">-{{item.risk}}R
+                   [nzValue]="item.id">-{{item.risk}}R
             </label>
           </nz-radio-group>
         </div>

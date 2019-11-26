@@ -10,6 +10,8 @@ export class BuyResourcesComponent implements OnInit {
   @Output() resourceChange = new EventEmitter();
   @Output() moneyChange = new EventEmitter();
   @Input() moneyRemain:number;
+  @Output() valueChange = new EventEmitter();
+  @Input() moneyRemain: number;
   ressourceNb = 0;
   isVisible = false;
   multiple = 1;
@@ -17,9 +19,10 @@ export class BuyResourcesComponent implements OnInit {
 
   constructor(private nzMessageService: NzMessageService) {}
 
-  popConfirm():void {
-      this.isVisible = true;
+  popConfirm(): void {
+    this.isVisible = true;
   }
+
   buyResource(): void {
     this.resourceChange.emit(this.ressourceNb);
     this.moneyChange.emit(this.price);

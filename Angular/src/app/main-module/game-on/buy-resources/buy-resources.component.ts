@@ -1,5 +1,5 @@
 import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-buy-resources',
@@ -8,16 +8,18 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class BuyResourcesComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
-  @Input() moneyRemain:number;
+  @Input() moneyRemain: number;
   ressourceNb = 0;
   isVisible = false;
 
-  constructor(private nzMessageService: NzMessageService) {}
+  constructor(private nzMessageService: NzMessageService) {
+  }
 
-  popConfirm():void {
-      this.isVisible = true;
+  popConfirm(): void {
+    this.isVisible = true;
 
   }
+
   buyResource(): void {
     this.valueChange.emit(this.ressourceNb);
     this.nzMessageService.info('Achat réussi');

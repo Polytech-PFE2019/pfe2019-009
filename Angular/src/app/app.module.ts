@@ -30,6 +30,7 @@ import {ActivityComponent} from './main-module/game-on/activity/activity.compone
 import { NegociationComponent } from './commun-module/negociation/negociation.component';
 import { ResourceBuyerComponent } from './commun-module/resource-buyer/resource-buyer.component';
 import { ActivityDisplayerComponent } from './commun-module/activity-displayer/activity-displayer.component';
+import { RiskCardComponent } from './commun-module/risk-card/risk-card.component';
 
 registerLocaleData(fr);
 
@@ -53,7 +54,8 @@ registerLocaleData(fr);
     ActivityComponent,
     NegociationComponent,
     ResourceBuyerComponent,
-    ActivityDisplayerComponent
+    ActivityDisplayerComponent,
+    RiskCardComponent
   ],
   imports: [
     BrowserModule,

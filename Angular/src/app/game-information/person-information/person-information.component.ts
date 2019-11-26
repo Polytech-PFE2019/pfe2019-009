@@ -12,13 +12,17 @@ export class PersonInformationComponent implements OnInit {
   @Input() payActivity = 0;
   @Input() addResource = 0;
   @Output() sendMoney = new EventEmitter();
+  @Output() sendResource = new EventEmitter();
   moneyNb = this.baseMoney - this.moneyPayResource;
-
+  resourceNb = this.addResource - this.payActivity;
   constructor() {
   }
 
   ngOnInit() {
     this.sendMoney.emit(this.moneyNb);
+    this.sendResource.emit(this.resourceNb);
   }
+
+
 
 }

@@ -11,11 +11,10 @@ export class BuyResourcesComponent implements OnInit {
   @Output() moneyChange = new EventEmitter();
   @Input() moneyRemain:number;
   @Output() valueChange = new EventEmitter();
-  @Input() moneyRemain: number;
-  ressourceNb = 0;
+  resourceNb = 0;
   isVisible = false;
   multiple = 1;
-  price = this.ressourceNb * this.multiple;
+  price = 0;
 
   constructor(private nzMessageService: NzMessageService) {}
 
@@ -24,15 +23,17 @@ export class BuyResourcesComponent implements OnInit {
   }
 
   buyResource(): void {
-    this.resourceChange.emit(this.ressourceNb);
+    this.price = this.resourceNb * this.multiple;
+    this.resourceChange.emit(this.resourceNb);
     this.moneyChange.emit(this.price);
     this.nzMessageService.info('Achat réussi');
   }
 
   handleOk(): void {
     this.buyResource();
-    this.moneyRemain -= this.ressourceNb * this.multiple;
+    this.moneyRemain -= this.resourceNb * this.multiple;
     this.multiple =2;
+    this.moneyRemain = this.moneyRemain/this.multiple
     this.isVisible = false;
   }
 

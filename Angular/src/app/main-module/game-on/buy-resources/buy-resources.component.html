@@ -5,11 +5,11 @@
          placeholder="Nombre de ressource"
          [max]=moneyRemain
          [min]="0"
-         [(ngModel)]="ressourceNb">
-  <p style="padding: 10px">Ça coûte <b>{{ ressourceNb}} k</b></p>
-  <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer{{moneyRemain}}</button>
+         [(ngModel)]="resourceNb">
+  <p style="padding: 10px">Ça coûte <b>{{ resourceNb*multiple}} k</b></p>
+  <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-    <p>Êtes-vous sûr d'acheter {{ressourceNb * multiple}} ressources?</p>
+    <p>Êtes-vous sûr d'acheter {{resourceNb}} ressources?</p>
   </nz-modal>
 
 </div>

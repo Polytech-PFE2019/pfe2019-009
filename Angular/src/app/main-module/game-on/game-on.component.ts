@@ -17,6 +17,7 @@ export class GameOnComponent implements OnInit {
   getPriceFromParent = 0;
   getDataFromActivity = 0;
   getMoneyFromPerson = 0;
+  getResourceFromPerson = 0;
 
   //how many resources user buys
   getResource(event) {
@@ -35,6 +36,10 @@ export class GameOnComponent implements OnInit {
   //how many money user remains
   getMoney(event) {
     this.getMoneyFromPerson = event;
+  }
+  //how many resource user remains
+  getRemainResource(event) {
+    this.getResourceFromPerson = event;
   }
 
   constructor(private lobbyService: LobbyService,

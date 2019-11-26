@@ -1,11 +1,7 @@
 package org.polytech.pfe.domego.services.http.game;
-import org.polytech.pfe.domego.components.buisness.Game;
+import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
-import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.exceptions.game.GameNotFoundException;
-import org.polytech.pfe.domego.exceptions.room.RoomNotFoundException;
-import org.polytech.pfe.domego.components.buisness.Room;
-import org.polytech.pfe.domego.services.http.room.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

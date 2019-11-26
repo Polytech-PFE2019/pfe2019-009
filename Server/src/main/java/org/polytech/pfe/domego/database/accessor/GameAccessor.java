@@ -1,6 +1,6 @@
 package org.polytech.pfe.domego.database.accessor;
 
-import org.polytech.pfe.domego.components.buisness.Game;
+import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.springframework.stereotype.Service;
 

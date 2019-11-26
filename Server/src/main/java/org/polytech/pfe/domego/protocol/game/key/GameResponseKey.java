@@ -3,7 +3,16 @@ package org.polytech.pfe.domego.protocol.game.key;
 public enum GameResponseKey {
     RESPONSE("response"),
     RESOURCES("resources"),
-    MONEY("money");
+    MONEY("money"),
+    GAMEID("gameID"),
+    PLAYER("player"),
+    USERID("userID"),
+    AMOUNT("amount"),
+    ROLEID("roleID"),
+    USERNAME("username"),
+    BONUSTYPE("bonusType"),
+    ACTIVITIES("activities");
+
 
     public String key;
 

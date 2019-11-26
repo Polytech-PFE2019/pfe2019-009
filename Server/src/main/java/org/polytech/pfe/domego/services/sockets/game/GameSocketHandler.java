@@ -3,6 +3,12 @@ package org.polytech.pfe.domego.services.sockets.game;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.DisconnectManager;
+import org.polytech.pfe.domego.components.business.Game;
+import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.models.*;
+import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.ClassicActivity;
+import org.polytech.pfe.domego.protocol.game.UpdateGameEvent;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.polytech.pfe.domego.services.sockets.room.RoomRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +18,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -46,6 +54,19 @@ public class GameSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 
+        System.out.println("connexion");
+        List<Player> playerList = new ArrayList<>();
+        for(int i =1; i<7; i++){
+            Player player = new Player(session,"ehffd");
+            player.setRole(new Role(i, RoleType.MAITRE_D_OUVRAGE,"descri",210,"skjd"));
+            playerList.add((player));
+        }
+
+        Game game = new Game("id",playerList);
+        GameInstance.getInstance().addGame(game);
+
+        UpdateGameEvent event = new UpdateGameEvent(game);
+        event.processEvent();
     }
 
     @Override

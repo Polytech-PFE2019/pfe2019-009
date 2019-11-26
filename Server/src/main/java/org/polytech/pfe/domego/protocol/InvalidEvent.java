@@ -1,7 +1,6 @@
 package org.polytech.pfe.domego.protocol;
 
-import org.polytech.pfe.domego.components.buisness.Messenger;
-import org.polytech.pfe.domego.protocol.EventProtocol;
+import org.polytech.pfe.domego.components.business.Messenger;
 import org.springframework.web.socket.WebSocketSession;
 
 public class InvalidEvent implements EventProtocol {

@@ -7,7 +7,7 @@ import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.RoleType;
-import org.polytech.pfe.domego.components.buisness.Room;
+import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

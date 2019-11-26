@@ -5,6 +5,7 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequest;
+import org.polytech.pfe.domego.models.PayResourceType;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
@@ -17,13 +18,13 @@ import java.util.Map;
 import java.util.Optional;
 
 
-public class BuyResourceEvent implements EventProtocol {
+public class PayResourcesEvent implements EventProtocol {
 
     private Map<String,String> request;
     private GameInstance gameInstance;
     private Messenger messenger;
 
-    public BuyResourceEvent(WebSocketSession session, Map<String,String> request) {
+    public PayResourcesEvent(WebSocketSession session, Map<String,String> request) {
         this.messenger = new Messenger(session);
         this.request = request;
         gameInstance = GameInstance.getInstance();
@@ -55,34 +56,35 @@ public class BuyResourceEvent implements EventProtocol {
         Player player = optionalPlayer.get();
 
         int activityID = Integer.parseInt(request.get(GameRequestKey.ACTIVITYID.getKey()));
-        this.buyResource(game,player,activityID);
+        this.payResources(game,player,activityID);
 
     }
 
 
-    private void buyResource(Game game, Player player, int activityID){
+    private void payResources(Game game, Player player, int activityID){
         //TODO choose over getCurrentActivity (and not send the id in the request) or create a getActivityByID method
         Activity activity = game.getActivities().get(activityID-1);
 
         int roleID = Integer.parseInt(request.get(GameRequestKey.ROLEID.getKey()));
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
-        int currentPriceOfResource = activity.getExchangeRateForRoleID(roleID);
+
+        PayResourceType payResourceType = PayResourceType.valueOf(request.get(GameRequestKey.TYPE.getKey()));
+
         //int currentPriceOfResource = game.getCurrentPriceOfResource(player.getRole().getName());
-        if (numberOfResource * currentPriceOfResource < player.getMoney()){
-            activity.buyResources(roleID,numberOfResource);
-            player.addResouces(numberOfResource);
-            player.substractMoney(numberOfResource * currentPriceOfResource);
+        if (numberOfResource < player.getResourcesAmount()){
+            activity.payResources(roleID,payResourceType, numberOfResource);
+            player.substractResources(numberOfResource);
             this.sendResponseToUser(player);
         }else{
-            this.messenger.sendError("NOT ENOUGH MONEY");
+            this.messenger.sendError("NOT ENOUGH RESOURCES");
         }
     }
 
     private void sendResponseToUser(Player player) {
         JsonObject response = new JsonObject();
-        response.addProperty(GameResponseKey.RESPONSE.key, "BUY_RESOURCES");
+        response.addProperty(GameResponseKey.RESPONSE.key, "PAY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
-        response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+        response.addProperty(GameResponseKey.BONUSTYPE.key, request.get(GameRequestKey.TYPE.getKey()));
         messenger.sendSpecificMessageToAUser(response.toString());
 
     }
@@ -95,6 +97,5 @@ public class BuyResourceEvent implements EventProtocol {
             throw new MissArgumentToRequest(GameRequestKey.USERID);
         if(!request.containsKey(GameRequestKey.AMOUNT.getKey()))
             throw new MissArgumentToRequest(GameRequestKey.AMOUNT);
-
     }
 }

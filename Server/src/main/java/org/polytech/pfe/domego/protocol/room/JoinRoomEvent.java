@@ -1,13 +1,12 @@
 package org.polytech.pfe.domego.protocol.room;
 
-import org.polytech.pfe.domego.components.buisness.Messenger;
-import org.polytech.pfe.domego.components.buisness.Room;
+import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequest;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.room.key.RoomRequestKey;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;

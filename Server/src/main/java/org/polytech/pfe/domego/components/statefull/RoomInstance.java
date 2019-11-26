@@ -1,7 +1,7 @@
 package org.polytech.pfe.domego.components.statefull;
 
 
-import org.polytech.pfe.domego.components.buisness.Room;
+import org.polytech.pfe.domego.components.business.Room;
 
 import java.util.ArrayList;
 import java.util.List;

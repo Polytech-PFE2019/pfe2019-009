@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.services.sockets.game;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.BuyResourceEvent;
 import org.polytech.pfe.domego.protocol.InvalidEvent;
+import org.polytech.pfe.domego.protocol.game.PayResourcesEvent;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -28,12 +29,13 @@ public class GameRequestHandler implements RequestHandler {
             case BUY_RESOURCES :
                 event = new BuyResourceEvent(session, request);
                 break;
+            case PAY_RESOURCES :
+                event = new PayResourcesEvent(session,request);
+                break;
             default:
                 event = new InvalidEvent(session);
                 break;
         }
-
         event.processEvent();
-
     }
 }

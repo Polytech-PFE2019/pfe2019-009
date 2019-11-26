@@ -1,4 +1,4 @@
-package org.polytech.pfe.domego.components.buisness;
+package org.polytech.pfe.domego.components.business;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

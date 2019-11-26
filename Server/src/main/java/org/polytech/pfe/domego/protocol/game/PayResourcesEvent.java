@@ -73,18 +73,19 @@ public class PayResourcesEvent implements EventProtocol {
         PayResourceType payResourceType = PayResourceType.valueOf(request.get(GameRequestKey.TYPE.getKey()));
 
         //int currentPriceOfResource = game.getCurrentPriceOfResource(player.getRole().getName());
-        if (numberOfResource <= player.getResourcesAmount()){
-            if(activity.payResources(roleID,payResourceType, numberOfResource)){
-                player.substractResources(numberOfResource);
-                this.sendResponseToUser(player);
-            }
-            else {
-                this.messenger.sendError("NOT ENOUGH RESOURCES TO PAY");
-            }
-
-        }else{
+        if (numberOfResource > player.getResourcesAmount()) {
             this.messenger.sendError("USER HAS NOT ENOUGH RESOURCES");
+            return;
         }
+        if(!activity.payResources(roleID,payResourceType, numberOfResource)){
+            this.messenger.sendError("NOT ENOUGH RESOURCES TO PAY");
+            return;
+
+        }
+        player.substractResources(numberOfResource);
+        this.sendResponseToUser(player);
+
+        new UpdateGameEvent(game).processEvent();
     }
 
     private void sendResponseToUser(Player player) {

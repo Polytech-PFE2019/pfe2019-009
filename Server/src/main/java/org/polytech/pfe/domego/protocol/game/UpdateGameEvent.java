@@ -71,14 +71,14 @@ public class UpdateGameEvent implements EventProtocol {
             JsonArray buyingActions = new JsonArray();
             for (BuyResources buyResources : activity.getBuyResourcesList()) {
 
-                JsonObject payingActionJson = new JsonObject();
-                payingActionJson.addProperty(ActionResponseKey.STATUS.key, buyResources.hasPaid());
-                payingActionJson.addProperty(ActionResponseKey.RATE.key, buyResources.getRate());
-                payingActionJson.addProperty(ActionResponseKey.ROLEID.key, buyResources.getRoleID());
-                payingActionJson.addProperty(ActionResponseKey.RESOURCES_GIVEN.key, buyResources.getResourcesGiven());
-                payingActionJson.addProperty(ActionResponseKey.MONEY_PAID.key, buyResources.getAmountPaid());
+                JsonObject buyingActionJson = new JsonObject();
+                buyingActionJson.addProperty(ActionResponseKey.STATUS.key, buyResources.hasPaid());
+                buyingActionJson.addProperty(ActionResponseKey.RATE.key, buyResources.getRate());
+                buyingActionJson.addProperty(ActionResponseKey.ROLEID.key, buyResources.getRoleID());
+                buyingActionJson.addProperty(ActionResponseKey.RESOURCES_GIVEN.key, buyResources.getResourcesGiven());
+                buyingActionJson.addProperty(ActionResponseKey.MONEY_PAID.key, buyResources.getAmountPaid());
 
-                payingActions.add(payingActionJson);
+                buyingActions.add(buyingActionJson);
             }
             activityJson.addProperty(ActivityResponseKey.BUYING_ACTIONS.key,buyingActions.toString());
             activitiesJson.add(activityJson);

@@ -2,6 +2,8 @@ package org.polytech.pfe.domego.components.business;
 
 import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.BuyResources;
+import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
 
 import java.util.ArrayList;
@@ -53,8 +55,12 @@ public class Game {
         List<PayResources> payResourcesList = new ArrayList<>();
         payResourcesList.add(payResources);
 
+        BuyResources buyResources = new BuyResources(1,1000);
+        List<BuyResources> buyResourcesList = new ArrayList<>();
+        buyResourcesList.add(buyResources);
+
         List<Activity> activities = new ArrayList<>();
-        Activity activity = new ClassicActivity(1,30,"description",payResourcesList);
+        Activity activity = new BuyingResourcesActivity(1,30,"description",payResourcesList,buyResourcesList);
         activities.add(activity);
         this.setActivities(activities);
 

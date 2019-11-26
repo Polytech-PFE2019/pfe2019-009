@@ -56,27 +56,33 @@ public class BuyResourceEvent implements EventProtocol {
         Player player = optionalPlayer.get();
 
         int activityID = Integer.parseInt(request.get(GameRequestKey.ACTIVITYID.getKey()));
-        this.buyResource(game,player,activityID);
+        if(this.buyResource(game,player,activityID)){
+            new UpdateGameEvent(game).processEvent();
+        }
+
+
 
     }
 
 
-    private void buyResource(Game game, Player player, int activityID){
+    private boolean buyResource(Game game, Player player, int activityID){
         //TODO choose over getCurrentActivity (and not send the id in the request) or create a getActivityByID method
         Activity activity = game.getActivities().get(activityID-1);
 
-        int roleID = Integer.parseInt(request.get(GameRequestKey.ROLEID.getKey()));
+        int roleID = player.getRole().getId();
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
         int currentPriceOfResource = activity.getExchangeRateForRoleID(roleID);
         //int currentPriceOfResource = game.getCurrentPriceOfResource(player.getRole().getName());
-        if (numberOfResource * currentPriceOfResource < player.getMoney()){
-            activity.buyResources(roleID,numberOfResource);
-            player.addResouces(numberOfResource);
-            player.substractMoney(numberOfResource * currentPriceOfResource);
-            this.sendResponseToUser(player);
-        }else{
-            this.messenger.sendError("NOT ENOUGH MONEY");
+        if (numberOfResource * currentPriceOfResource > player.getMoney()) {
+            this.messenger.sendError("USER HAS NOT ENOUGH MONEY");
+            return false;
         }
+        activity.buyResources(roleID,numberOfResource);
+        player.addResouces(numberOfResource);
+        player.substractMoney(numberOfResource * currentPriceOfResource);
+        this.sendResponseToUser(player);
+        return true;
+
     }
 
     private void sendResponseToUser(Player player) {

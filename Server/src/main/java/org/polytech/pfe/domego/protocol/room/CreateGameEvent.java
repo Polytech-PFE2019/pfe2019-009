@@ -1,7 +1,10 @@
 package org.polytech.pfe.domego.protocol.room;
 
 import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.components.business.Room;
+import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
+import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.protocol.EventProtocol;
@@ -9,9 +12,11 @@ import org.polytech.pfe.domego.protocol.room.key.RoomRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class CreateGameEvent implements EventProtocol {
 
+    private final static Logger LOGGER = Logger.getGlobal();
     private Map<String,String> request;
     private Messenger messenger;
     private WebSocketSession user;
@@ -29,12 +34,20 @@ public class CreateGameEvent implements EventProtocol {
             return;
         }
         String username = request.get(RoomRequestKey.USERNAME.getKey());
-        Room newRoom = new Room(username + "'s lobby");
+        Room newRoom = new Room(username + "'s lobby", RoomInstance.getInstance().getRoomList().size());
 
         Player player = new Player(user,username);
         newRoom.addPlayer(player);
-        RoomInstance.getInstance().addRoom(newRoom);
+        if(new RoomAccessor().addRoom(newRoom)){
+            new UpdateRoomEvent(newRoom).processEvent();
+            LOGGER.info(username + " has created a Room named : " + newRoom.getRoomName() + " with ID : " + newRoom.getID());
 
-        new UpdateRoomEvent(newRoom).processEvent();
+        }
+        else{
+            LOGGER.warning("Error creating room");
+            this.messenger.sendError("Error creating game ! Retry please !");
+
+        }
+
     }
 }

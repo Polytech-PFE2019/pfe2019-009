@@ -1,4 +1,5 @@
 package org.polytech.pfe.domego.services.http.game;
+
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.game.GameNotFoundException;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController

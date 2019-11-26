@@ -48,16 +48,17 @@ class RoomTest {
 
         JsonObject response = new JsonObject();
         response.addProperty("response", "UPDATE");
-        response.addProperty("roomID", "0");
+        response.addProperty("roomID", room.getID());
         response.addProperty("userID", player.getID());
+        response.addProperty("hostID", room.getHostID());
 
         JsonArray players = new JsonArray();
-        players.add(player.createResponseRequest());
-        players.add(player2.createResponseRequest());
+        players.add(createResponseRequest(player, room));
+        players.add(createResponseRequest(player2, room));
 
         response.addProperty("players", players.toString());
 
-        assertEquals(response.toString(),room.createResponseRequest(player.getID()));
+        assertEquals(response,createUpdateResponse(player,room));
 
     }
 
@@ -79,16 +80,20 @@ class RoomTest {
         JsonObject response = new JsonObject();
         response.addProperty("response", "UPDATE");
         response.addProperty("roomID", "0");
+        response.addProperty("userID", player.getID());
+        response.addProperty("hostID", room.getHostID());
 
         JsonArray players = new JsonArray();
-        players.add(player.createResponseRequest());
-        players.add(player2.createResponseRequest());
+        players.add(createResponseRequest(player, room));
+        players.add(createResponseRequest(player2,room));
 
         response.addProperty("players", players.toString());
 
-        assertEquals(response.toString(),room.createUpdateResponse());
+        assertEquals(response,this.createUpdateResponse(player,room));
 
     }
+
+
 
     @Test
     void testGetPlayerByID(){
@@ -100,8 +105,11 @@ class RoomTest {
         Player player2 = new Player(session, "name2");
         room.addPlayer(player2);
         assertEquals(2, room.getPlayerList().size());
-        assertEquals(player, room.getPlayerByID(player.getID()));
-        assertEquals(player2, room.getPlayerByID(player2.getID()));
+
+        assertTrue(room.getPlayerById(player.getID()).isPresent());
+        assertTrue(room.getPlayerById(player2.getID()).isPresent());
+        assertEquals(player, room.getPlayerById(player.getID()).get());
+        assertEquals(player2, room.getPlayerById(player2.getID()).get());
     }
 
     @Test
@@ -143,5 +151,34 @@ class RoomTest {
 
     public boolean verifyAllAreDifferent(List<String> list) {
         return new HashSet<>(list).size() == list.size();
+    }
+
+    public JsonObject createResponseRequest(Player player, Room room){
+
+        JsonObject response = new JsonObject();
+        response.addProperty("username", player.getName());
+        response.addProperty("ready", room.playerIsReady(player));
+        response.addProperty("roleID", player.getRole().getId());
+
+        return response;
+    }
+
+    public JsonObject createUpdateResponse(Player playerID, Room room) {
+
+        JsonObject response = new JsonObject();
+        response.addProperty("response", "UPDATE");
+        response.addProperty("roomID", room.getID());
+        response.addProperty("userID", playerID.getID());
+        response.addProperty("hostID", room.getHostID());
+
+
+        JsonArray players = new JsonArray();
+        for (Player player : room.getPlayerList()) {
+            players.add(createResponseRequest(player,room));
+        }
+        response.addProperty("players", players.toString());
+
+        return response;
+
     }
 }

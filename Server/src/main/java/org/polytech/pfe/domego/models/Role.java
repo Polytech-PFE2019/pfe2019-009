@@ -3,7 +3,7 @@ package org.polytech.pfe.domego.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.Objects;
 
 @Document(collection = "Roles")
 public class Role {
@@ -18,8 +18,7 @@ public class Role {
     private int budget;
 
     private String special;
-    //private List<Objective> objectives;
-    private int roleID;
+
 
 
     public Role() {
@@ -70,4 +69,17 @@ public class Role {
         this.budget = budget;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return id == role.id &&
+                name == role.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 }

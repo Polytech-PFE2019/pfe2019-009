@@ -1,10 +1,10 @@
 package org.polytech.pfe.domego;
+
 import org.polytech.pfe.domego.services.sockets.game.GameSocketHandler;
 import org.polytech.pfe.domego.services.sockets.room.RoomSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 @Configuration
 @EnableWebSocket
-@EnableWebMvc
+//@EnableWebMvc
 public class WebSocketConfig implements WebSocketConfigurer, WebMvcConfigurer {
 
     private final RoomSocketHandler roomSocket;

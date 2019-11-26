@@ -1,37 +1,29 @@
 package org.polytech.pfe.domego;
 
+import org.polytech.pfe.domego.logger.MyLogger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
-import java.util.logging.FileHandler;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 @SpringBootApplication
 public class DomegoApplication {
 
+
+
 	public static void main(String[] args) {
-		/*Logger logger = Logger.getLogger("MyLog");
-		FileHandler fh;
+		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 		try {
+			MyLogger.setup();
+			logger.info("Application Start");
 
-			// This block configure the logger with handler and formatter
-			fh = new FileHandler("MyLogFile.log");
-			logger.addHandler(fh);
-			fh.setFormatter(new SimpleFormatter());
-
-			// the following statement is used to log any messages
-			logger.info("My first log");
-
-		} catch (SecurityException e) {
+		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Problems with creating the log files");
 		}
-
-		logger.info("Hi How r u?");*/
 		SpringApplication.run(DomegoApplication.class, args);
 	}
 

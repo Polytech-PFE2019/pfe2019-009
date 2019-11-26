@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
-import org.polytech.pfe.domego.exceptions.MissArgumentToRequest;
+import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.PayResourceType;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -35,7 +35,7 @@ public class PayResourcesEvent implements EventProtocol {
     public void processEvent() {
         try {
             this.checkArgumentOfRequest();
-        }catch (MissArgumentToRequest missArgumentToRequest){
+        }catch (MissArgumentToRequestException missArgumentToRequest){
             this.messenger.sendErrorCuzMissingArgument(missArgumentToRequest.getMissKey().getKey());
         }
 
@@ -90,12 +90,12 @@ public class PayResourcesEvent implements EventProtocol {
     }
 
 
-    private void checkArgumentOfRequest() throws MissArgumentToRequest{
+    private void checkArgumentOfRequest() throws MissArgumentToRequestException{
         if(!request.containsKey(GameRequestKey.GAMEID.getKey()))
-            throw new MissArgumentToRequest(GameRequestKey.GAMEID);
+            throw new MissArgumentToRequestException(GameRequestKey.GAMEID);
         if(!request.containsKey(GameRequestKey.USERID.getKey()))
-            throw new MissArgumentToRequest(GameRequestKey.USERID);
+            throw new MissArgumentToRequestException(GameRequestKey.USERID);
         if(!request.containsKey(GameRequestKey.AMOUNT.getKey()))
-            throw new MissArgumentToRequest(GameRequestKey.AMOUNT);
+            throw new MissArgumentToRequestException(GameRequestKey.AMOUNT);
     }
 }

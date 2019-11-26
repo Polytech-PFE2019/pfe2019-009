@@ -12,7 +12,7 @@ public class UpdateRoomEvent implements EventProtocol {
 
     private Room currentRoom;
 
-    public UpdateRoomEvent(Room currentRoom) {
+    UpdateRoomEvent(Room currentRoom) {
         this.currentRoom = currentRoom;
     }
 
@@ -30,6 +30,7 @@ public class UpdateRoomEvent implements EventProtocol {
         response.addProperty(RoomResponseKey.RESPONSE.key, RoomResponseKey.UPDATE.key);
         response.addProperty(RoomResponseKey.ROOMID.key, currentRoom.getID());
         response.addProperty(RoomResponseKey.USERID.key, userID);
+        response.addProperty(RoomResponseKey.HOSTID.key, currentRoom.getHostID());
 
         JsonArray players = new JsonArray();
         for (Player player : currentRoom.getPlayerList()) {

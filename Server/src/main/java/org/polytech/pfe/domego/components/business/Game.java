@@ -26,6 +26,10 @@ public class Game {
 
     }
 
+    public Game(String id) {
+        this.id = id;
+    }
+
     public Game(String id, List<Player> players) {
         this.id = id;
         this.players = players;

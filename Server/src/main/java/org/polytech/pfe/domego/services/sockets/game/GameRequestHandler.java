@@ -1,8 +1,8 @@
 package org.polytech.pfe.domego.services.sockets.game;
 
 import org.polytech.pfe.domego.protocol.EventProtocol;
-import org.polytech.pfe.domego.protocol.game.BuyResourceEvent;
 import org.polytech.pfe.domego.protocol.InvalidEvent;
+import org.polytech.pfe.domego.protocol.game.BuyResourceEvent;
 import org.polytech.pfe.domego.protocol.game.PayResourcesEvent;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.stereotype.Service;

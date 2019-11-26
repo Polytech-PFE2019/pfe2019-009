@@ -13,7 +13,7 @@ public class InvalidEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-        this.messenger.sendError("Unknown event");
+        this.messenger.sendError("Invalid event");
 
     }
 }

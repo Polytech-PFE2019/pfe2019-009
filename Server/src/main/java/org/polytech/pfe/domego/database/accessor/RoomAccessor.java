@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.database.accessor;
 
+import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.components.business.Room;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class RoomAccessor {
     public RoomAccessor() {
         this.roomInstance = RoomInstance.getInstance();
     }
+
+    public boolean addRoom(Room room){ return this.roomInstance.addRoom(room);}
 
     public List<Room> getAllRooms(){
         return this.roomInstance.getRoomList();

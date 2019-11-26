@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.services.http.room;
 
+import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.exceptions.room.RoomNotFoundException;
 import org.polytech.pfe.domego.components.business.Room;

@@ -10,7 +10,6 @@ import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
 import org.polytech.pfe.domego.protocol.game.UpdateGameEvent;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
-import org.polytech.pfe.domego.services.sockets.room.RoomRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;

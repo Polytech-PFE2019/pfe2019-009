@@ -1,6 +1,5 @@
 package org.polytech.pfe.domego.models;
 
-import com.google.gson.JsonObject;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.UUID;
@@ -10,15 +9,13 @@ public class Player {
     private String id;
     private String name;
     private Role role;
-    private boolean ready = false;
     private int resourcesAmount;
     private int money;
 
     public Player(WebSocketSession session, String name ){
         this.session = session;
         this.id = session.getId();
-        UUID uuid = UUID.randomUUID();
-        this.id = uuid.toString();
+        this.id = UUID.randomUUID().toString();
         this.role = new Role();
         this.name = name;
         this.resourcesAmount = 0;
@@ -38,28 +35,6 @@ public class Player {
 
     public Role getRole(){
         return role;
-    }
-
-
-    public boolean isReady() {
-        return ready;
-    }
-
-    public void changeReady(){
-        ready = !ready;
-    }
-    public void setReady(boolean ready) {
-        this.ready = ready;
-    }
-
-    public String createResponseRequest(){
-
-        JsonObject response = new JsonObject();
-        response.addProperty("username", name);
-        response.addProperty("ready", ready);
-        response.addProperty("roleID", (role != null ? role.getId() : 0));
-
-        return response.toString();
     }
 
     public WebSocketSession getSession() {
@@ -91,4 +66,6 @@ public class Player {
     public void substractMoney(int amount){
         money -= amount;
     }
+
+
 }

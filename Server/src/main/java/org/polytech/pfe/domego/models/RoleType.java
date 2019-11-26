@@ -26,7 +26,7 @@ public enum RoleType {
     }
 
     public static int getNumberOfRole(){
-        return RoleType.values().length -1;
+        return RoleType.values().length;
     }
 
     public static RoleType getRoleType(int roleID){

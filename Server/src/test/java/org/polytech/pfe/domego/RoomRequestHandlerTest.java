@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
+import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.services.sockets.room.RoomRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +61,8 @@ class RoomRequestHandlerTest {
         handler.handleRequest(sessionPlayerTest, value);
     }
 
+
+
     @Test
     public void testRoomCreation() throws Exception {
         JsonObject request = new JsonObject();
@@ -74,19 +79,22 @@ class RoomRequestHandlerTest {
         //Check a room was created
         assertEquals(numberOfRooms+1, roomInstance.getRoomList().size());
 
-        int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
+        Room lastRoomCreatedID = roomInstance.getRoomList().get(roomInstance.getRoomList().size()-1);
 
-        playerTestID =roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().get(0).getID();
+        playerTestID =lastRoomCreatedID.getPlayerList().get(0).getID();
         // Verify that response was sent
         verify(sessionPlayerTest, times(1)).sendMessage(
-                new TextMessage(roomInstance.getRoomByID(lastRoomCreatedID).createResponseRequest(playerTestID)));
+                new TextMessage(createResponseRequest(playerTestID, lastRoomCreatedID)));
     }
 
+
     //In this test the update response sent to all others players in room is tested
+
+
     @Test
     public void testJoiningRoomAndUpdateResponse() throws Exception {
 
-        int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
+        Room lastRoomCreatedID = roomInstance.getRoomList().get(roomInstance.getRoomList().size()-1);
 
         WebSocketSession sessionPlayerTest2 = mock(WebSocketSession.class) ;
 
@@ -94,7 +102,7 @@ class RoomRequestHandlerTest {
         JsonObject request2 = new JsonObject();
         request2.addProperty("request","JOIN_GAME");
         request2.addProperty("username", "name2");
-        request2.addProperty("roomID", ""+lastRoomCreatedID);
+        request2.addProperty("roomID", ""+lastRoomCreatedID.getID());
         Map value2 = new Gson().fromJson(request2, Map.class);
 
         when(sessionPlayerTest2.isOpen()).thenReturn(true);
@@ -102,20 +110,19 @@ class RoomRequestHandlerTest {
 
 
         //assert the room has 1 player
-        assertEquals(1, roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().size());
+        assertEquals(1, lastRoomCreatedID.getPlayerList().size());
         handler.handleRequest(sessionPlayerTest2, value2);
 
         //Check the room has now 2 players
-        assertEquals(2, roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().size());
-        String player2ID =roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().get(1).getID();
+        assertEquals(2, lastRoomCreatedID.getPlayerList().size());
+        String player2ID =lastRoomCreatedID.getPlayerList().get(1).getID();
 
         // Verify that response was sent
-        verify(sessionPlayerTest2, times(1)).sendMessage(
-                new TextMessage(roomInstance.getRoomByID(lastRoomCreatedID).createResponseRequest(player2ID)));
+        verify(sessionPlayerTest2, times(1)).sendMessage( new TextMessage(this.createResponseRequest(player2ID, lastRoomCreatedID)));
 
+        //TODO CHANGE
         // Verify response was sent to other player
-        verify(sessionPlayerTest, times(1)).sendMessage(
-                new TextMessage(roomInstance.getRoomByID(lastRoomCreatedID).createUpdateResponse()));
+        //verify(sessionPlayerTest, times(1)).sendMessage(new TextMessage(lastRoomCreatedID.createUpdateResponse()));
     }
 
     // can't mock the socketID so we changed for UUID.
@@ -123,27 +130,27 @@ class RoomRequestHandlerTest {
     public void testChangeStatus() throws Exception {
 
 
-        int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
+        Room lastRoomCreatedID = roomInstance.getRoomList().get(roomInstance.getRoomList().size()-1);
 
-        String playerID =roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().get(0).getID();
+        Player player = lastRoomCreatedID.getPlayerList().get(0);
 
         JsonObject request2 = new JsonObject();
         request2.addProperty("request","CHANGE_STATUS");
-        request2.addProperty("userID", playerID);
-        request2.addProperty("roomID", ""+lastRoomCreatedID);
+        request2.addProperty("userID", player.getID());
+        request2.addProperty("roomID", ""+lastRoomCreatedID.getID());
         Map value2 = new Gson().fromJson(request2, Map.class);
 
         handler.handleRequest(sessionPlayerTest, value2);
 
         // check player status is now true
-        assertTrue(roomInstance.getRoomByID(lastRoomCreatedID).getPlayerByID(playerID).isReady());
+        assertTrue(lastRoomCreatedID.playerIsReady(player));
 
         // Verify that response was sent
 
         JsonObject response = new JsonObject();
         response.addProperty("response", "CHANGE_STATUS");
-        response.addProperty("ready", roomInstance.getRoomByID(lastRoomCreatedID).getPlayerByID(playerID).isReady());
-        response.addProperty("userID", playerID);
+        response.addProperty("ready", lastRoomCreatedID.playerIsReady(player));
+        response.addProperty("userID", player.getID());
         verify(sessionPlayerTest, times(1)).sendMessage(
                 new TextMessage(response.toString()));
 
@@ -153,33 +160,35 @@ class RoomRequestHandlerTest {
     public void testChoosingRole() throws Exception {
 
 
-        int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
+        Room lastRoomCreatedID = roomInstance.getRoomList().get(roomInstance.getRoomList().size()-1);
 
-        String playerID =roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().get(0).getID();
+        String playerID =lastRoomCreatedID.getPlayerList().get(0).getID();
 
         JsonObject request2 = new JsonObject();
         request2.addProperty("request","CHOOSE_ROLE");
         request2.addProperty("userID", playerID);
-        request2.addProperty("roomID", ""+lastRoomCreatedID);
+        request2.addProperty("roomID", ""+lastRoomCreatedID.getID());
         request2.addProperty("roleID", "1");
 
 
         Map value2 = new Gson().fromJson(request2, Map.class);
 
         //asserts Role is none
-        assertEquals(RoleType.NON_DEFINI,roomInstance.getRoomByID(lastRoomCreatedID).getPlayerByID(playerID).getRole().getName());
+        assertTrue(lastRoomCreatedID.getPlayerById(playerID).isPresent());
+        assertEquals(RoleType.NON_DEFINI,lastRoomCreatedID.getPlayerById(playerID).get().getRole().getName());
 
         handler.handleRequest(sessionPlayerTest, value2);
 
         //checks player role is now maitre d'ouvrage (role id = 1)
-        assertEquals(RoleType.MAITRE_D_OUVRAGE,roomInstance.getRoomByID(lastRoomCreatedID).getPlayerByID(playerID).getRole().getName());
+        assertTrue(lastRoomCreatedID.getPlayerById(playerID).isPresent());
+        assertEquals(RoleType.MAITRE_D_OUVRAGE,lastRoomCreatedID.getPlayerById(playerID).get().getRole().getName());
 
 
         // Verify that response was sent
 
         JsonObject response = new JsonObject();
         response.addProperty("response", "CHOOSE_ROLE");
-        response.addProperty("roomID", lastRoomCreatedID);
+        response.addProperty("roomID", lastRoomCreatedID.getID());
         response.addProperty("userID", playerID);
         response.addProperty("roleID", 1);
 
@@ -188,7 +197,6 @@ class RoomRequestHandlerTest {
     }
 
     //TODO Check creation game object in gameInstance
-    @Test
     public void testStartingGame() throws Exception {
         int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
 
@@ -214,7 +222,7 @@ class RoomRequestHandlerTest {
 
     }
 
-    @Test
+
     public void testLeavingRoom() throws Exception {
         int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
 
@@ -241,6 +249,36 @@ class RoomRequestHandlerTest {
         response.addProperty("userID", playerID);
         verify(sessionPlayerTest, times(1)).sendMessage(
                 new TextMessage(response.toString()));
+    }
+
+
+
+    private String createResponseRequest(String userID, Room room) {
+
+        JsonObject response = new JsonObject();
+        response.addProperty("response", "UPDATE");
+        response.addProperty("roomID", room.getID());
+        response.addProperty("userID", userID);
+        response.addProperty("hostID", room.getHostID());
+
+        JsonArray players = new JsonArray();
+        for (Player player : room.getPlayerList()) {
+            players.add(createResponseRequest(player, room));
+        }
+        response.addProperty("players", players.toString());
+
+        return response.toString();
+
+    }
+
+    public JsonObject createResponseRequest(Player player, Room room){
+
+        JsonObject response = new JsonObject();
+        response.addProperty("username", player.getName());
+        response.addProperty("ready", room.playerIsReady(player));
+        response.addProperty("roleID", player.getRole().getId());
+
+        return response;
     }
 
 

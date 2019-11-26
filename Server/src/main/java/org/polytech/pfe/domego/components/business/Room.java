@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.components.business;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.RoleType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,31 +12,29 @@ public class Room{
 
     private String id;
     private String roomName;
-    private List<Player> playerList;
+    private Map<Player,Boolean> playerList;
     private Game game;
 
     public Room(String roomName){
         this.roomName = roomName;
-        this.playerList = new ArrayList<>();
+        this.playerList = new LinkedHashMap<>();
         this.id = UUID.randomUUID().toString();
 
     }
 
     public Room(String roomName, int id){
         this.roomName = roomName;
-        this.playerList = new ArrayList<>();
+        this.playerList = new LinkedHashMap<>();
         this.id = String.valueOf(id);
 
-    }
-
-    public boolean playerIsReady(Player player){
-        return playerList.stream().filter(player1 -> player1.getID().equals(player.getID())).findFirst().get().isReady();
     }
 
     public boolean addPlayer(Player player){
         if (this.isFull())
             return false;
-        return this.playerList.add(player);
+        int size = playerList.size();
+        this.playerList.put(player,Boolean.FALSE);
+        return size + 1 == playerList.size();
     }
 
     public String getRoomName() {
@@ -43,7 +42,7 @@ public class Room{
     }
 
     public List<Player> getPlayerList(){
-        return playerList;
+        return playerList.keySet().stream().collect(Collectors.toList());
     }
 
     public boolean isFull(){
@@ -54,49 +53,22 @@ public class Room{
         return id;
     }
 
+
+    public boolean everybodyIsReady(){
+        return !playerList.containsValue(false);
+    }
+
+    public boolean everybodyGotARole(){
+        return !playerList.keySet().stream().anyMatch(player -> player.getRole().getName().getId() == RoleType.NON_DEFINI.getId());
+    }
+
     public void removePlayer(Player playerToRemove){
-        this.playerList = this.playerList.stream().filter(player -> !player.equals(playerToRemove)).collect(Collectors.toList());
+        this.playerList.remove(playerToRemove);
     }
 
-    public String createResponseRequest(String userID) {
 
-        JsonObject response = new JsonObject();
-        response.addProperty("response", "UPDATE");
-        response.addProperty("roomID", this.id);
-        response.addProperty("userID", userID);
-
-        JsonArray players = new JsonArray();
-        for (Player player : playerList) {
-            players.add(player.createResponseRequest());
-        }
-        response.addProperty("players", players.toString());
-
-        return response.toString();
-
-    }
-
-    public String createUpdateResponse() {
-
-        JsonObject response = new JsonObject();
-        response.addProperty("response", "UPDATE");
-        response.addProperty("roomID", this.id);
-
-        JsonArray players = new JsonArray();
-        for (Player player : playerList) {
-            players.add(player.createResponseRequest());
-        }
-        response.addProperty("players", players.toString());
-
-        return response.toString();
-
-    }
-
-    public Player getPlayerByID(String playerID){
-        return playerList.stream().filter(player -> player.getID().equals(playerID)).findAny().orElse(null);
-    }
-
-    public void createGame(List<Player> players){
-        this.game = new Game(this.id, players);
+    public Optional<Player> getPlayerById(String playerID){
+        return playerList.keySet().stream().filter(player -> player.getID().equals(playerID)).findAny();
     }
 
     public Game getGame(){
@@ -105,6 +77,21 @@ public class Room{
 
     public int getNumberOfPlayer(){
         return this.playerList.size();
+    }
+
+    public boolean changeStateOfPlayer(Player player){
+        playerList.replace(player, !playerList.get(player));
+        return playerList.get(player);
+    }
+
+    public String getHostID() {
+        if (playerList.isEmpty())
+            return "0";
+        return playerList.keySet().stream().findFirst().get().getID();
+    }
+
+    public boolean playerIsReady(Player player){
+        return playerList.get(player);
     }
 
     @Override

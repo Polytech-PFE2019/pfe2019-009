@@ -44,13 +44,17 @@ public class RoomSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("NEW USER");
+        /*System.out.println("NEW USER");
+        System.out.println(session.getLocalAddress().toString());
+        System.out.println(session.getRemoteAddress().toString());
+        System.out.println(session.getId());*/
+        
 
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("UN USER s'est déconnecté");
+        //System.out.println("UN USER s'est déconnecté");
         new DisconnectManager().process(session);
     }
 }

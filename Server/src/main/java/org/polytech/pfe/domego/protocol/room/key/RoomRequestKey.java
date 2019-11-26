@@ -1,11 +1,12 @@
 package org.polytech.pfe.domego.protocol.room.key;
 
 import org.polytech.pfe.domego.protocol.RequestArgumentKey;
-import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 
 public enum RoomRequestKey implements RequestArgumentKey {
     REQUEST("REQUEST"),
     ROOMID("roomID"),
+    USERID("userID"),
+    ROLEID("roleID"),
     USERNAME("username");
 
     private String key;

@@ -5,8 +5,11 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class Messenger {
+
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private WebSocketSession session;
 
@@ -19,6 +22,7 @@ public class Messenger {
         try {
             this.session.sendMessage(new TextMessage(message));
         } catch (IOException e) {
+            logger.warning("CANT sendErrorCuzMissingArgument : " + message + " at session :" + session.getRemoteAddress());
             e.printStackTrace();
         }
     }
@@ -32,6 +36,7 @@ public class Messenger {
         try {
             this.session.sendMessage(new TextMessage(response.toString()));
         } catch (IOException e) {
+            logger.warning("CANT sendErrorCuzMissingArgument : " + response.toString());
             e.printStackTrace();
         }
     }
@@ -41,9 +46,11 @@ public class Messenger {
         response.addProperty("response","KO");
         response.addProperty("reason",error);
 
+
         try {
             this.session.sendMessage(new TextMessage(response.toString()));
         } catch (IOException e) {
+            logger.warning("CANT sendError : " + response.toString());
             e.printStackTrace();
         }
     }

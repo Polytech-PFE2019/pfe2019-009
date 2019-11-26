@@ -17,8 +17,8 @@ public class RoomInstance
 
     }
 
-    public void addRoom(Room room){
-        roomList.add(room);
+    public boolean addRoom(Room room){
+        return roomList.add(room);
     }
 
     public int numberOfRooms(){

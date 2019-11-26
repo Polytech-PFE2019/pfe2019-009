@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-person-information',
@@ -10,12 +10,14 @@ export class PersonInformationComponent implements OnInit {
   baseMoney = 30;
   @Input() moneyPayResource = 0;
   @Input() payActivity = 0;
-  @Output() moneyNb = this.baseMoney - this.moneyPayResource;
+  @Output() sendMoney = new EventEmitter();
+  moneyNb = this.baseMoney - this.moneyPayResource;
 
   constructor() {
   }
 
   ngOnInit() {
+    this.sendMoney.emit(this.moneyNb);
   }
 
 }

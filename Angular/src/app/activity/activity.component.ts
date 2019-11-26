@@ -42,7 +42,6 @@ export class ActivityComponent implements OnInit {
   }
   popConfirm():void {
     this.isVisible = true;
-    this.nzMessageService.info('Paiement réussi');
 
   }
 
@@ -57,6 +56,8 @@ export class ActivityComponent implements OnInit {
   }
   payResource(): void {
     this.valueChange.emit(this.totalRes);
+    this.nzMessageService.info('Paiement réussi');
+
   }
 
   constructor(private nzMessageService: NzMessageService) {}

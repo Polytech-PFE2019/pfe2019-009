@@ -8,14 +8,15 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class BuyResourcesComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
-  @Input() moneyRemain = 0;
+  @Input() moneyRemain:number;
   ressourceNb = 0;
   isVisible = false;
 
   constructor(private nzMessageService: NzMessageService) {}
 
   popConfirm():void {
-    this.isVisible = true;
+      this.isVisible = true;
+
   }
   buyResource(): void {
     this.valueChange.emit(this.ressourceNb);
@@ -24,6 +25,7 @@ export class BuyResourcesComponent implements OnInit {
 
   handleOk(): void {
     this.buyResource();
+    this.moneyRemain -= this.ressourceNb;
     this.isVisible = false;
   }
 

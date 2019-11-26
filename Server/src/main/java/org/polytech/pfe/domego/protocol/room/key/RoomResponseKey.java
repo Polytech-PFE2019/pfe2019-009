@@ -12,7 +12,7 @@ public enum RoomResponseKey {
     GAMEID("gameID"),
     PLAYERS("players");
 
-    public String key;
+    public final String key;
 
     RoomResponseKey(String key) {
         this.key = key;

@@ -1,7 +1,6 @@
 package org.polytech.pfe.domego.protocol.game;
 
 import com.google.gson.JsonObject;
-import netscape.javascript.JSObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
@@ -11,7 +10,6 @@ import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.polytech.pfe.domego.protocol.room.key.RoomRequestKey;
-import org.polytech.pfe.domego.protocol.room.key.RoomResponseKey;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class JoinGameEvent implements EventProtocol {
     private GameAccessor gameAccessor;
     private WebSocketSession newSession;
 
-    public JoinGameEvent(WebSocketSession session,Map<String, String> request) {
+    public JoinGameEvent(WebSocketSession session,Map request) {
         this.newSession = session;
         this.request = request;
         this.messenger = new Messenger(session);

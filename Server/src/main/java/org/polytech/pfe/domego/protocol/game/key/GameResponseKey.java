@@ -15,7 +15,7 @@ public enum GameResponseKey {
     ACTIVITIES("activities");
 
 
-    public String key;
+    public final String key;
 
     GameResponseKey(String key) {
         this.key = key;

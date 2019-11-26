@@ -7,7 +7,6 @@ import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
@@ -23,7 +22,7 @@ public class BuyResourceEvent implements EventProtocol {
     private GameInstance gameInstance;
     private Messenger messenger;
 
-    public BuyResourceEvent(WebSocketSession session, Map<String,String> request) {
+    public BuyResourceEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
         gameInstance = GameInstance.getInstance();

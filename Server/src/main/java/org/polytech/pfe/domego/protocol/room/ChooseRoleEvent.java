@@ -27,7 +27,7 @@ public class ChooseRoleEvent implements EventProtocol {
     private RoomAccessor roomAccessor;
     private RoleAccessor roleAccessor;
 
-    public ChooseRoleEvent(WebSocketSession session, Map<String, String> request, RoleAccessor roleAccessor) {
+    public ChooseRoleEvent(WebSocketSession session, Map request, RoleAccessor roleAccessor) {
         this.messenger = new Messenger(session);
         this.request = request;
         this.roomAccessor = new RoomAccessor();

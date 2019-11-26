@@ -9,7 +9,7 @@ public enum ActivityResponseKey {
     BUYING_ACTIONS("buyingActions"),
     PAYING_ACTIONS("payingActions");
 
-    public String key;
+    public final String key;
 
     ActivityResponseKey(String key) {
         this.key = key;

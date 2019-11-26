@@ -1,5 +1,7 @@
 package org.polytech.pfe.domego.protocol;
 
-public interface RequestArgumentKey {
+import java.io.Serializable;
+
+public interface RequestArgumentKey extends Serializable {
     String getKey();
 }

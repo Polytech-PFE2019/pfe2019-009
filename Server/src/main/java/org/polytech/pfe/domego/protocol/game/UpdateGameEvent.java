@@ -25,18 +25,17 @@ public class UpdateGameEvent implements EventProtocol {
     @Override
     public void processEvent() {
         for (Player player : game.getPlayers()) {
-            new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player.getID()));
+            new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player));
         }
     }
 
-    private String createUpdateResponse(String userID) {
+    private String createUpdateResponse(Player player) {
 
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, RoomResponseKey.UPDATE.key);
         response.addProperty(GameResponseKey.GAMEID.key, game.getId());
 
         JsonObject playerJson = new JsonObject();
-        Player player = game.getPlayerById(userID).get();
         playerJson.addProperty(GameResponseKey.USERNAME.key, player.getName());
         playerJson.addProperty(GameResponseKey.USERID.key, player.getID());
         playerJson.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());

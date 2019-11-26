@@ -1,14 +1,9 @@
 package org.polytech.pfe.domego.services.sockets.room;
 
-import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.InvalidEvent;
 import org.polytech.pfe.domego.protocol.room.*;
-import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.Role;
-import org.polytech.pfe.domego.models.RoleType;
-import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +18,11 @@ public class RoomRequestHandler implements RequestHandler {
 
     private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private RoomInstance roomInstance;
     private final RoleAccessor roleAccessor;
 
 
     @Autowired
     public RoomRequestHandler(RoleAccessor roleDB){
-        roomInstance = RoomInstance.getInstance();
         this.roleAccessor = roleDB;
     }
 

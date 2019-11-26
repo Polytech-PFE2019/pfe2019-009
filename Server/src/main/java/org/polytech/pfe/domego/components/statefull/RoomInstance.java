@@ -29,10 +29,6 @@ public class RoomInstance
         return roomList;
     }
 
-    public Room getRoomByID(int roomID){
-        return roomList.stream().filter(room -> room.getID().equals(String.valueOf(roomID))).findAny().get();
-    }
-
     public Optional<Room> getRoomById(String roomId){
         return roomList.stream().filter(room -> room.getID().equals(roomId)).findAny();
     }

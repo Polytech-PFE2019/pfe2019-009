@@ -4,7 +4,7 @@ import org.polytech.pfe.domego.protocol.RequestArgumentKey;
 
 public class MissArgumentToRequestException extends Exception{
 
-    private RequestArgumentKey missKey;
+    private final RequestArgumentKey missKey;
 
     public MissArgumentToRequestException(RequestArgumentKey missKey) {
         super("Error Request : Missing " + missKey.getKey() + " value for good request");

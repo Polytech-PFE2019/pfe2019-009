@@ -11,7 +11,7 @@ public enum ActionResponseKey {
     MONEY_PAID("moneyPaid");
 
 
-    public String key;
+    public final String key;
 
     ActionResponseKey(String key) {
         this.key = key;

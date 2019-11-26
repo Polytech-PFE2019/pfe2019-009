@@ -3,10 +3,7 @@ package org.polytech.pfe.domego.models.activity;
 import org.polytech.pfe.domego.models.PayResourceType;
 import org.polytech.pfe.domego.models.PayResources;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Activity {
@@ -18,13 +15,14 @@ public abstract class Activity {
     //Map to know easily if the mandatory has been paid by the roles
     private Map<Integer, Boolean> roleHasPaid;
 
-    protected List<BuyResources> buyResourcesList = new ArrayList<>();
+    protected List<BuyResources> buyResourcesList;
 
     Activity(int id, int numbersOfDays, String description, List<PayResources> payResourcesList){
         this.id = id;
         this.numbersOfDays = numbersOfDays;
         this.description = description;
         this.payResourcesList = payResourcesList;
+        this.buyResourcesList = new ArrayList<>();
         List<PayResources> mandatoryPayResourcesList = payResourcesList.stream().filter(payResources ->
                 payResources.getPayResourceType().equals(PayResourceType.MANDATORY)).collect(Collectors.toList());
 
@@ -32,18 +30,18 @@ public abstract class Activity {
         mandatoryPayResourcesList.forEach(payResources -> roleHasPaid.put(payResources.getRoleID(),false));
     }
 
-    private PayResources getPayResourcesByRoleAndType(int roleID, PayResourceType payResourceType){
-        return payResourcesList.stream().filter(payResources -> ((payResources.getRoleID() == roleID) && payResources.getPayResourceType().equals(payResourceType))).findAny().orElse(null);
+    private Optional<PayResources> getPayResourcesByRoleAndType(int roleID, PayResourceType payResourceType){
+        return payResourcesList.stream().filter(payResources -> ((payResources.getRoleID() == roleID) && payResources.getPayResourceType().equals(payResourceType))).findAny();
 
     }
 
     public boolean payResources(int roleID, PayResourceType payResourceType, int amount){
-        PayResources payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
+        Optional<PayResources> payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
 
-        if(amount < payResources.getAmountNeeded()){
+        if(payResources.isEmpty() || amount < payResources.get().getAmountNeeded()){
             return false;
         }
-        payResources.pay(amount);
+        payResources.get().pay(amount);
         return true;
 
     }

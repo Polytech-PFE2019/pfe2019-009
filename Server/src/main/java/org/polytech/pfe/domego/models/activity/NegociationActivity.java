@@ -1,8 +1,6 @@
 package org.polytech.pfe.domego.models.activity;
 
 import org.polytech.pfe.domego.models.PayResources;
-import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.NegociationAction;
 
 import java.util.List;
 

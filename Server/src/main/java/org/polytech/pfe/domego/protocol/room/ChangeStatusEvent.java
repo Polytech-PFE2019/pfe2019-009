@@ -23,7 +23,7 @@ public class ChangeStatusEvent implements EventProtocol {
     private RoomAccessor roomAccessor;
 
 
-    public ChangeStatusEvent(WebSocketSession session, Map<String, String> request) {
+    public ChangeStatusEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
         this.roomAccessor = new RoomAccessor();

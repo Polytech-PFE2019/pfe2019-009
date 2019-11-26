@@ -12,11 +12,13 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Component
 public class RoomSocketHandler extends TextWebSocketHandler {
 
     private final RequestHandler requestHandler;
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     @Autowired
     public RoomSocketHandler(RoomRequestHandler requestHandler) {
@@ -30,7 +32,7 @@ public class RoomSocketHandler extends TextWebSocketHandler {
         try {
             requestHandler.handleRequest(session,request);
         }catch(Exception e){
-            e.printStackTrace();
+            logger.warning("RoomSocketHandler : Impossible to recognize an event : " + message.getPayload());
 
             JsonObject response = new JsonObject();
             response.addProperty("request", "OK");
@@ -38,23 +40,11 @@ public class RoomSocketHandler extends TextWebSocketHandler {
 
             session.sendMessage(new TextMessage(response.toString()));
         }
-
-
     }
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        /*System.out.println("NEW USER");
-        System.out.println(session.getLocalAddress().toString());
-        System.out.println(session.getRemoteAddress().toString());
-        System.out.println(session.getId());*/
-        
-
-    }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        //System.out.println("UN USER s'est déconnecté");
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status){
         new DisconnectManager().process(session);
     }
 }

@@ -19,10 +19,16 @@ class PlayerTest {
 
         JsonObject response = new JsonObject();
         response.addProperty("username", "name");
-        response.addProperty("ready", true);
         response.addProperty("roleID", 1);
 
-        //assertEquals(response.toString(), player.createResponseRequest());
+        assertEquals(response, createResponseRequest(player));
+    }
+
+    public JsonObject createResponseRequest(Player player){
+        JsonObject response = new JsonObject();
+        response.addProperty("username", player.getName());
+        response.addProperty("roleID", player.getRole().getId());
+        return response;
     }
 
     @Test

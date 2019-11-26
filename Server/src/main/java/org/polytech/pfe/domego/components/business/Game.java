@@ -1,10 +1,12 @@
 package org.polytech.pfe.domego.components.business;
 
-import org.polytech.pfe.domego.models.*;
+import org.polytech.pfe.domego.models.PayResourceType;
+import org.polytech.pfe.domego.models.PayResources;
+import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyResources;
 import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
-import org.polytech.pfe.domego.models.activity.ClassicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,7 @@ public class Game {
         List<PayResources> payResourcesList = new ArrayList<>();
         payResourcesList.add(payResources);
 
-        BuyResources buyResources = new BuyResources(1,1000);
+        BuyResources buyResources = new BuyResources(1,1);
         List<BuyResources> buyResourcesList = new ArrayList<>();
         buyResourcesList.add(buyResources);
 

@@ -28,8 +28,6 @@ public class MyLogger {
         logger.setLevel(Level.INFO);
         URI uri = MyLogger.class.getResource("/public/").toURI();
         String mainPath = Paths.get(uri).toString();
-        System.out.println(mainPath);
-        Path filePath = Paths.get(mainPath, "Logger.html".trim());
         fileTxt = new FileHandler("Logging.txt");
         fileHTML = new FileHandler(mainPath + "/Logger.html");
 

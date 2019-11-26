@@ -200,7 +200,7 @@ class RoomRequestHandlerTest {
     public void testStartingGame() throws Exception {
         int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
 
-        String playerID =roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().get(0).getID();
+        String playerID =roomInstance.getRoomById(String.valueOf(lastRoomCreatedID)).get().getPlayerList().get(0).getID();
 
         JsonObject request2 = new JsonObject();
         request2.addProperty("request","START_GAME");
@@ -226,7 +226,7 @@ class RoomRequestHandlerTest {
     public void testLeavingRoom() throws Exception {
         int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
 
-        String playerID =roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().get(0).getID();
+        String playerID =roomInstance.getRoomById(String.valueOf(lastRoomCreatedID)).get().getPlayerList().get(0).getID();
 
         JsonObject request2 = new JsonObject();
         request2.addProperty("request","LEAVE_ROOM");
@@ -237,12 +237,12 @@ class RoomRequestHandlerTest {
 
 
 
-        int numberOfPlayers = roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().size();
+        int numberOfPlayers = roomInstance.getRoomById(String.valueOf(lastRoomCreatedID)).get().getPlayerList().size();
 
         handler.handleRequest(sessionPlayerTest, value2);
 
         //Check the room has less 1 player
-        assertEquals(numberOfPlayers-1, roomInstance.getRoomByID(lastRoomCreatedID).getPlayerList().size());
+        assertEquals(numberOfPlayers-1, roomInstance.getRoomById(String.valueOf(lastRoomCreatedID)).get().getPlayerList().size());
 
         JsonObject response = new JsonObject();
         response.addProperty("response", "LEAVE_ROOM");

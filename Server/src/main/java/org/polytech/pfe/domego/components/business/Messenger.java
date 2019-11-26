@@ -22,8 +22,7 @@ public class Messenger {
         try {
             this.session.sendMessage(new TextMessage(message));
         } catch (IOException e) {
-            logger.warning("CANT sendErrorCuzMissingArgument : " + message + " at session :" + session.getRemoteAddress());
-            e.printStackTrace();
+            logger.warning("Messenger : can't sendErrorCuzMissingArgument : " + message + " at session :" + session.getRemoteAddress());
         }
     }
 
@@ -36,8 +35,7 @@ public class Messenger {
         try {
             this.session.sendMessage(new TextMessage(response.toString()));
         } catch (IOException e) {
-            logger.warning("CANT sendErrorCuzMissingArgument : " + response.toString());
-            e.printStackTrace();
+            logger.warning("Messenger : can't sendErrorCuzMissingArgument : " + response.toString());
         }
     }
 
@@ -50,8 +48,7 @@ public class Messenger {
         try {
             this.session.sendMessage(new TextMessage(response.toString()));
         } catch (IOException e) {
-            logger.warning("CANT sendError : " + response.toString());
-            e.printStackTrace();
+            logger.warning("Messenger : can't sendError : " + response.toString());
         }
     }
 }

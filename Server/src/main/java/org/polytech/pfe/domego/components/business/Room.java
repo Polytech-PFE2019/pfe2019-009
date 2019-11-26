@@ -1,7 +1,5 @@
 package org.polytech.pfe.domego.components.business;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 
@@ -13,7 +11,6 @@ public class Room{
     private String id;
     private String roomName;
     private Map<Player,Boolean> playerList;
-    private Game game;
 
     public Room(String roomName){
         this.roomName = roomName;
@@ -53,13 +50,12 @@ public class Room{
         return id;
     }
 
-
     public boolean everybodyIsReady(){
         return !playerList.containsValue(false);
     }
 
     public boolean everybodyGotARole(){
-        return !playerList.keySet().stream().anyMatch(player -> player.getRole().getName().getId() == RoleType.NON_DEFINI.getId());
+        return playerList.keySet().stream().noneMatch(player -> player.getRole().getName().getId() == RoleType.NON_DEFINI.getId());
     }
 
     public void removePlayer(Player playerToRemove){
@@ -69,10 +65,6 @@ public class Room{
 
     public Optional<Player> getPlayerById(String playerID){
         return playerList.keySet().stream().filter(player -> player.getID().equals(playerID)).findAny();
-    }
-
-    public Game getGame(){
-        return this.game;
     }
 
     public int getNumberOfPlayer(){
@@ -87,7 +79,7 @@ public class Room{
     public String getHostID() {
         if (playerList.isEmpty())
             return "0";
-        return playerList.keySet().stream().findFirst().get().getID();
+        return playerList.keySet().iterator().next().getID();
     }
 
     public boolean playerIsReady(Player player){

@@ -36,6 +36,7 @@ public class JoinRoomEvent implements EventProtocol {
         Optional<Room> optionalRoom = new RoomAccessor().getRoomById(request.get(RoomRequestKey.ROOMID.getKey()));
         if(optionalRoom.isEmpty()){
             this.messenger.sendError("Room Not Found");
+            return;
         }
         Room room = optionalRoom.get();
         boolean accepted = room.addPlayer(new Player(user,request.get(RoomRequestKey.USERNAME.getKey())));

@@ -16,30 +16,28 @@ export class ActivityComponent implements OnInit {
   risque = 0;
   riskReduced = 0;
   totalRes = this.resBasic;
+  payment = 0;
   numOfRisks = 3; // canbe input
   payActivity = [{
-    id: 0,
-    monney: 0,
-    risk: 0,
+    payment: 0,
+    benefits: 0
   },
     {
-      id: 1,
-      monney: 2,
-      risk: 1
+      payment: 2,
+      benefits: 1
     },
     {
-      id: 2,
-      monney: 4,
-      risk: 2
-    }
+      payment: 4,
+      benefits: 2
+    },
   ];
 
   updateChecked(): void {
     this.totalRes = this.resBasic;
     for (const item of this.payActivity) {
-      if (item.id === this.radioValue) {
-        this.totalRes = item.monney + this.resBasic;
-        this.riskReduced = item.risk;
+      if (item.payment === this.radioValue) {
+        this.totalRes = item.payment + this.resBasic;
+        this.riskReduced = item.benefits;
         this.valueChange.emit(this.totalRes);
       }
     }
@@ -72,5 +70,10 @@ export class ActivityComponent implements OnInit {
   ngOnInit() {
   }
 
+  getPaymentActivity($event) {
+    this.payment = $event;
+    this.totalRes = 0;
+    this.totalRes = this.payment + this.resBasic;
+  }
 }
 

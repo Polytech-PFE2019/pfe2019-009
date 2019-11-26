@@ -1,29 +1,20 @@
-import {Injectable, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import {WebsocketService} from '../webSocketService/websocket.service';
-import {SocketRequest} from 'src/Request';
-import {URLRoom} from '../../model/url';
-import {Globals} from '../../globals';
 import {SubscriptionService} from '../subscriptionSerivce/subscription.service';
-
+import {Subject} from 'rxjs';
+import {SocketRequest} from '../../../Request';
+import {URLGame} from '../../model/url';
+import {map} from 'rxjs/operators';
 
 @Injectable()
-export class LobbyService implements OnDestroy {
-  roomId: number;
-  username: string;
-  subUserName: Subscription;
+export class GameOnService {
 
   public messages: Subject<SocketRequest>;
-  userID: string;
 
   constructor(private wsService: WebsocketService,
               private subscription: SubscriptionService) {
-    this.subUserName = this.subscription.userName$.subscribe(name => {
-      this.username = name;
-    });
-    this.messages = <Subject<SocketRequest>> wsService
-      .connect(URLRoom)
+    this.messages = wsService
+      .connect(URLGame)
       .pipe(
         map((response: MessageEvent): SocketRequest => {
           const data = JSON.parse(response.data);
@@ -47,10 +38,6 @@ export class LobbyService implements OnDestroy {
           });
           console.log(data);
           return data;
-        }));
-  }
-
-  ngOnDestroy(): void {
-    this.subUserName.unsubscribe();
+        })) as Subject<SocketRequest>;
   }
 }

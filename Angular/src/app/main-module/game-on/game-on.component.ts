@@ -3,6 +3,7 @@ import {Steps} from '../../model/step';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {SocketRequest} from '../../../Request';
 import {Router} from '@angular/router';
+import {GameOnService} from "../../service/gameOnService/game-on.service";
 
 @Component({
   selector: 'app-game-on',
@@ -17,6 +18,17 @@ export class GameOnComponent implements OnInit {
   getDataFromActivity = 0;
   getMoneyFromPerson = 0;
 
+  constructor(private lobbyService: LobbyService,
+              private gameService: GameOnService,
+              private router: Router) {
+  }
+
+  ngOnInit() {
+    this.gameService.messages.subscribe(data => {
+        console.log(data);
+    });
+  }
+
   getResource(event) {
     console.log('payresource ' + event);
     this.getDataFromParent = event;
@@ -29,16 +41,6 @@ export class GameOnComponent implements OnInit {
 
   getMoney(event) {
     this.getMoneyFromPerson = event;
-  }
-
-  constructor(private lobbyService: LobbyService,
-              private router: Router) {
-    lobbyService.messages.subscribe(data => {
-      console.log(data);
-    });
-  }
-
-  ngOnInit() {
   }
 
   getCurrentStep($event: any) {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Roles} from '../../model/roles';
 
 @Component({
@@ -9,18 +9,20 @@ import {Roles} from '../../model/roles';
 export class ActivityDisplayerComponent implements OnInit {
   @Input() role: number;
   @Input() type = 'duration';
-  @Input() activitiesDuration = [
+  @Input() isActivity = false;
+  @Output() sendPaymentActivity = new EventEmitter();
+  @Input() activitiesBenefits: any[] = [
     {
       payment: 0,
-      duration: 0
+      benefits: 0
     },
     {
       payment: 2,
-      duration: 1
+      benefits: 1
     },
     {
       payment: 4,
-      duration: 2
+      benefits: 2
     },
   ];
   roleStyle: any;
@@ -37,4 +39,8 @@ export class ActivityDisplayerComponent implements OnInit {
     return this.roles.filter(next => (next.id === userId))[0];
   }
 
+  getClickItem(item: any) {
+    this.sendPaymentActivity.emit(item.payment);
+
+  }
 }

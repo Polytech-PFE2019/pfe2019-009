@@ -9,6 +9,8 @@ export class Role {
   ready: boolean;
   choosed: boolean;
   profile: string;
+  style: any;
+  monney: any;
 
 
   constructor(r: any) {
@@ -22,6 +24,8 @@ export class Role {
     this.ready = false;
     this.username = '';
     this.profile = r.profile;
+    this.style = {};
+    this.monney = '';
   }
 
   addAttribute(o: any) {

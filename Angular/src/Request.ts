@@ -9,5 +9,6 @@ export class SocketRequest {
     roleID: string;
     players: [Player];
     hostID: string;
+    gameID: string;
 
 }

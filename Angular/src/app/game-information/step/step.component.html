@@ -6,7 +6,7 @@
     <div class="step-container">
       <div nz-row>
         <div nz-col nzSpan="14">
-          <nz-card nzTitle="Action(s) spéciale(s) ">
+          <nz-card nzTitle="Action(s) spéciale(s)">
             <app-resource-buyer [buyer]="1"></app-resource-buyer>
             <app-negociation [fromUser]="2" [toUser]="3"></app-negociation>
           </nz-card>
@@ -26,17 +26,16 @@
               <tbody>
               <tr *ngFor="let data of table.data">
                 <td>
-                  <div class="cell">
-                    <div class="blue_square">
-                      1
-                    </div>
-                  </div>
+                  <app-activity-displayer [role]="1"
+                                          [type]="'basic'"
+                                          [activitiesBenefits]="[{payment: 0,duration: 0}]">
+                  </app-activity-displayer>
                 </td>
                 <td>
-                  <app-activity-displayer [role]="1" [type]="'risk'"></app-activity-displayer>
+                  <app-activity-displayer [role]="1" [isActivity]="false" [type]="'risk'"></app-activity-displayer>
                 </td>
                 <td>
-                  <app-activity-displayer [role]="1" [type]="'duration'"></app-activity-displayer>
+                  <app-activity-displayer [role]="1" [isActivity]="false" [type]="'duration'"></app-activity-displayer>
                 </td>
               </tr>
               </tbody>
@@ -57,7 +56,7 @@
     <h4 nz-title>{{step?.title}}</h4>
     <div class="durationContainer"><b>+{{step?.duration}}</b></div>
     <div class="risk" *ngFor="let item of counter(numOfRisks); let i=index">
-      Risque{{i+1}}
+      Risque{{i + 1}}
     </div>
   </div>
 </ng-template>

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Steps} from '../model/step';
-import {LobbyService} from "../service/lobbyService/lobby.service";
-import {SocketRequest} from "../../Request";
-import {Router} from "@angular/router";
+import {LobbyService} from '../service/lobbyService/lobby.service';
+import {SocketRequest} from '../../Request';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-game-on',
@@ -13,6 +13,16 @@ export class GameOnComponent implements OnInit {
 
   steps: any = Steps;
   step = 'Étape 1';
+  getDataFromParent: number;
+  getDataFromActivity: number;
+
+  getResource(event) {
+    this.getDataFromParent = event;
+  }
+
+  getPayment(event) {
+    this.getDataFromActivity = event;
+  }
 
   constructor(private lobbyService: LobbyService,
               private router: Router) {

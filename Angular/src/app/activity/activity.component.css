@@ -4,6 +4,7 @@
 .activity2Container{
   padding: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-around;
 }
@@ -12,11 +13,22 @@
   display: flex;
   flex-direction: row;
   padding: 10px;
-  padding-bottom: 10px;
+}
+
+.row_plain{
+  display: flex;
+  flex-direction: row;
 }
 
 .column{
   padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column_plain{
+  display: flex;
+  flex-direction: column;
 }
 
 img{

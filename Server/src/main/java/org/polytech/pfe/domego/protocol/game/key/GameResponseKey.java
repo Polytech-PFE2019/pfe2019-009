@@ -5,6 +5,7 @@ public enum GameResponseKey {
     RESOURCES("resources"),
     MONEY("money"),
     GAMEID("gameID"),
+    NOPC("numberOfPlayersConnected"),
     PLAYER("player"),
     USERID("userID"),
     AMOUNT("amount"),

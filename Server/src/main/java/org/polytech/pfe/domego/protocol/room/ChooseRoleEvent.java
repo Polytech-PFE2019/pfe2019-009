@@ -80,8 +80,6 @@ public class ChooseRoleEvent implements EventProtocol {
         player.setRole(role);
 
 
-        System.out.println(player.getName()+" has now the role : "+player.getRole().getName());
-
         JsonObject response = new JsonObject();
         response.addProperty("response", "CHOOSE_ROLE");
         response.addProperty("roomID", room.getID());

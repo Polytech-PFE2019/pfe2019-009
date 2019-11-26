@@ -14,11 +14,20 @@ public class Player {
 
     public Player(WebSocketSession session, String name ){
         this.session = session;
-        this.id = session.getId();
         this.id = UUID.randomUUID().toString();
         this.role = new Role();
         this.name = name;
         this.resourcesAmount = 0;
+        this.money = 0;
+    }
+
+    public Player(Player player) {
+        this.id = player.id;
+        this.role = player.role;
+        this.name = player.name;
+        this.resourcesAmount = player.resourcesAmount;
+        this.money = player.money;
+        this.session = null;
     }
 
     public String getName() {
@@ -31,6 +40,7 @@ public class Player {
 
     public void setRole(Role role){
         this.role = role;
+        this.money = role.getBudget();
     }
 
     public Role getRole(){
@@ -39,6 +49,10 @@ public class Player {
 
     public WebSocketSession getSession() {
         return session;
+    }
+
+    public void setSession(WebSocketSession session) {
+        this.session = session;
     }
 
     public int getResourcesAmount() {

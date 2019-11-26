@@ -8,6 +8,8 @@ import org.polytech.pfe.domego.models.activity.ClassicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -43,14 +45,13 @@ public class Game {
         return true;
     }
 
-    public Player getPlayerByID(String playerID){
-        return players.stream().filter(player -> player.getID().equals(playerID)).findAny().orElse(null);
+    public Optional<Player> getPlayerById(String playerID){
+        return players.stream().filter(player -> player.getID().equals(playerID)).findFirst();
     }
 
 
 
     private void initActivitiesOfGame(){
-
         PayResources payResources = new PayResources(1,1,0, PayResourceType.MANDATORY);
         List<PayResources> payResourcesList = new ArrayList<>();
         payResourcesList.add(payResources);
@@ -94,11 +95,15 @@ public class Game {
         this.activities = activities;
     }
 
-    public int getCurrentActivity() {
-        return currentActivity;
-    }
-
     public void setCurrentActivity(int currentActivity) {
         this.currentActivity = currentActivity;
+    }
+
+    public List<Player> getPlayersPresent(){
+        return players.stream().filter(player -> player.getSession() != null).collect(Collectors.toList());
+    }
+
+    public Activity getCurrentActivity(){
+        return activities.get(currentActivity);
     }
 }

@@ -25,7 +25,7 @@ public class DisconnectManager {
             Optional<Player> optional = room.getPlayerList().stream().filter(player -> player.getSession().equals(session)).findFirst();
             if(optional.isPresent()){
                 room.removePlayer(optional.get());
-                logger.info("Le joueur : " + optional.get().getName() + " s'est déconnecté de la partie du système, nous l'avons donc supprimer de la partie : " + room.getID() );
+                logger.info("Le joueur : " + optional.get().getName() + " s'est deconnecte de la partie du système, nous l'avons donc supprimer de la partie : " + room.getID() );
                 return;
             }
         }

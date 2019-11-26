@@ -3,8 +3,10 @@ package org.polytech.pfe.domego.database.accessor;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.models.Player;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +30,11 @@ public class GameAccessor {
     }
 
     public Game createNewGameFromRoom(Room room){
-        Game game = new Game(room.getID());
+        List<Player> players = new ArrayList<>();
+        for (Player player : room.getPlayerList()) {
+            players.add(new Player(player));
+        }
+        Game game = new Game(room.getID(), players);
         gameInstance.addGame(game);
         return game;
     }

@@ -54,9 +54,7 @@ public class BuyResourceEvent implements EventProtocol {
         }
 
         Player player = optionalPlayer.get();
-
-        int activityID = Integer.parseInt(request.get(GameRequestKey.ACTIVITYID.getKey()));
-        if(this.buyResource(game,player,activityID)){
+        if(this.buyResource(game,player)){
             new UpdateGameEvent(game).processEvent();
         }
 
@@ -65,9 +63,8 @@ public class BuyResourceEvent implements EventProtocol {
     }
 
 
-    private boolean buyResource(Game game, Player player, int activityID){
-        //TODO choose over getCurrentActivity (and not send the id in the request) or create a getActivityByID method
-        Activity activity = game.getActivities().get(activityID-1);
+    private boolean buyResource(Game game, Player player){
+        Activity activity = game.getCurrentActivity();
 
         int roleID = player.getRole().getId();
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));

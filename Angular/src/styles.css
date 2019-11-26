@@ -6,6 +6,7 @@
   background: #ffcb0f;
   height:30px;
   width: 30px;
+  display: flex;
   border-radius: 15px;
   justify-content: center;
   align-items: center;

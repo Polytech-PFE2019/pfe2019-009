@@ -28,13 +28,12 @@
                 (checkNum)="getCheckedNum($event)"></app-role>
       <label nz-checkbox
              *ngIf="role.choosed"
-             [disabled]="users.length>1 && role.choosed"
              [(ngModel)]="role.ready" (ngModelChange)="ready()">Prêt</label>
     </div>
   </div>
 
   <button id="start"
+          *ngIf="userID === hostID"
           nz-button nzType="default"
-          *ngIf="userReady===6 && hostID === userID"
           (click)="gameStart()">Démarrer</button>
 </div>

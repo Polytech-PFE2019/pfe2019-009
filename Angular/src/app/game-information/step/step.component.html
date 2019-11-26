@@ -1,0 +1,63 @@
+<div class="container" (click)="sendStep()">
+  <nz-card [nzBordered]="true"
+           [nzTitle]="titleTemplate"
+           [nzExtra]="extraTemplate">
+    <p>{{step?.description}}</p>
+    <div class="step-container">
+      <div nz-row>
+        <div nz-col nzSpan="14">
+          <nz-card nzTitle="Action(s) spéciale(s) ">
+            <app-resource-buyer [buyer]="1"></app-resource-buyer>
+            <app-negociation [fromUser]="2" [toUser]="3"></app-negociation>
+          </nz-card>
+        </div>
+      </div>
+      <div nz-row style="margin-top: 10px">
+        <div nz-col nzSpan="24">
+          <nz-card style="" nzTitle="Activités">
+            <nz-table nzBordered [nzData]="datasets" #table [nzFrontPagination]="false">
+              <thead>
+              <tr>
+                <th><img src="../../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
+                <th><img src="../../../assets/icons/faillante.png" width="20" height="20" alt="faillante"></th>
+                <th><img src="../../../assets/icons/duration.png" width="20" height="20" alt="duration"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of table.data">
+                <td>
+                  <div class="cell">
+                    <div class="blue_square">
+                      1
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <app-activity-displayer [role]="1" [type]="'risk'"></app-activity-displayer>
+                </td>
+                <td>
+                  <app-activity-displayer [role]="1" [type]="'duration'"></app-activity-displayer>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nz-card>
+        </div>
+      </div>
+    </div>
+
+  </nz-card>
+</div>
+<ng-template #extraTemplate>
+  <a nz-tooltip [nzTooltipTitle]="step?.detail">Détail</a>
+</ng-template>
+
+<ng-template #titleTemplate>
+  <div class="templateTitle">
+    <h4 nz-title>{{step?.title}}</h4>
+    <div class="durationContainer"><b>+{{step?.duration}}</b></div>
+    <div class="risk" *ngFor="let item of counter(numOfRisks); let i=index">
+      Risque{{i+1}}
+    </div>
+  </div>
+</ng-template>

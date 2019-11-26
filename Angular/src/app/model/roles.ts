@@ -11,7 +11,17 @@ export const Roles = [
       'appelé l\'ouvrage.',
     mission: 'missions',
     src: '../../assets/Maitre d’ouvrage.jpg',
-    profile: '../../assets/profiles/1.jpeg'
+    profile: '../../assets/profiles/1.jpeg',
+    monney: 150,
+    style: {
+      background: '#2f63d4',
+      height: '30px',
+      width: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+    }
   },
   {
     title: 'Maitre d\'œuvre (Architecte) ',
@@ -24,7 +34,17 @@ export const Roles = [
       ' le projet en répondant aux exigences du maitred’ouvrage.',
     mission: 'missions',
     src: '../../assets/Architecte.png',
-    profile: '../../assets/profiles/2.jpg'
+    profile: '../../assets/profiles/2.jpg',
+    monney: 30,
+    style: {
+      background: '#4cc916',
+      height: '30px',
+      width: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+    }
   },
   {
     title: 'Bureau d\'étude',
@@ -36,7 +56,17 @@ export const Roles = [
       ' étude acoustique, étude des réseaux...',
     mission: 'missions',
     src: '../../assets/Bureau d\'etude.png',
-    profile: '../../assets/profiles/4.jpeg'
+    profile: '../../assets/profiles/4.jpeg',
+    monney: 20,
+    style: {
+      background: '#f7e80c',
+      height: '30px',
+      width: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+    }
   },
   {
     title: 'Bureau de contrôle',
@@ -50,7 +80,17 @@ export const Roles = [
       'du respects des différentes normesetréglementation.',
     mission: 'missions',
     src: '../../assets/Bureau de contrôle.jpg',
-    profile: '../../assets/profiles/7.jpg'
+    profile: '../../assets/profiles/7.jpg',
+    monney: 20,
+    style: {
+      background: '#000000',
+      height: '30px',
+      width: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+    }
   },
   {
     title: 'Entreprise Corps\tEtat Secondaire',
@@ -62,7 +102,17 @@ export const Roles = [
       'des revêtement de sol,delaplomberie…',
     mission: 'missions',
     src: '../../assets/Entreprise Corps Etat Secondaire.png',
-    profile: '../../assets/profiles/8.jpg'
+    profile: '../../assets/profiles/8.jpg',
+    monney: 30,
+    style: {
+      background: '#cc00b4',
+      height: '30px',
+      width: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+    }
   },
   {
     title: 'Entreprise Gros Œuvre',
@@ -75,7 +125,17 @@ export const Roles = [
       'de chantier et le terrassement.',
     mission: 'missions',
     src: '../../assets/Entreprise Gros Œuvre.png',
-    profile: '../../assets/profiles/grilla.jpg'
+    profile: '../../assets/profiles/grilla.jpg',
+    monney: 30,
+    style: {
+      background: '#ff0000',
+      height: '30px',
+      width: '30px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+    }
   },
 
 ];

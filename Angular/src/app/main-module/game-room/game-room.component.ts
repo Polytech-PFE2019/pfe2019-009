@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Roles} from '../model/roles';
-import {RoleComponent} from '../game-information/role/role.component';
+import {Roles} from '../../model/roles';
+import {RoleComponent} from '../../game-information/role/role.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SocketRequest} from '../../Request';
-import {LobbyService} from '../service/lobbyService/lobby.service';
-import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
+import {SocketRequest} from '../../../Request';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {HttpParams} from '@angular/common/http';
-import {Role} from '../model/role';
-import {Globals} from '../globals';
+import {Role} from '../../model/role';
+import {Globals} from '../../globals';
 
 @Component({
   selector: 'app-game-room',

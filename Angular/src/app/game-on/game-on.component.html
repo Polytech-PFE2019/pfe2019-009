@@ -9,7 +9,7 @@
         <app-buy-resources (valueChange)="getResource($event)"></app-buy-resources>
       </div>
       <div class="activity" id="personnal">
-        <app-person-information [getDataFromParent]="getDataFromParent" [getDataFromActivity]="getDataFromActivity"></app-person-information>
+        <app-person-information [moneyPayResource]="getDataFromParent" [payActivity]="getDataFromActivity"></app-person-information>
       </div>
       <div class="activity">
         <app-projet-information></app-projet-information>

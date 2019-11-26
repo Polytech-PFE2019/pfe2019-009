@@ -1,4 +1,4 @@
-import {Component,Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-person-information',
@@ -10,12 +10,8 @@ export class PersonInformationComponent implements OnInit {
   addRes = 0;
   pay = 0;
   baseMoney = 30;
-  @Input() set getDataFromParent( getDataFromParent: number) {
-    this.addRes = getDataFromParent;
-  }
-  @Input() set getDataFromActivity(getDataFromActivity:number) {
-    this.pay = getDataFromActivity;
-  }
+  @Input() moneyPayResource = 0;
+  @Input() payActivity = 0;
 
   constructor() {
   }

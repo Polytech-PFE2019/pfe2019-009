@@ -13,14 +13,16 @@ export class GameOnComponent implements OnInit {
 
   steps: any = Steps;
   step = 'Étape 1';
-  getDataFromParent: number;
-  getDataFromActivity: number;
+  getDataFromParent = 0;
+  getDataFromActivity = 0;
 
   getResource(event) {
+    console.log('payresource ' + event);
     this.getDataFromParent = event;
   }
 
   getPayment(event) {
+    console.log('payactivity ' + event);
     this.getDataFromActivity = event;
   }
 

@@ -3,29 +3,27 @@
   <div class="row_plain">
     <div class="column_plain">
       <div class="row">
-        <img src="../../assets/icons/person.png"  alt="Person">
-        <div style="width: 20px;"></div>
-        <div>
+        <img src="../../assets/icons/person.png" alt="Person">
+        <div style="margin-left: 30px">
           <div class="blue_square">1</div>
           <label nz-radio [ngModel]="true"></label>
         </div>
       </div>
       <div class="row">
         <img src="../../assets/icons/faillante.png" alt="faillante">
-        <div style="width: 20px;"></div>
-        <div class="blue_square" style="padding-right: 10px">0</div>
-        <div style="padding-right: 30px"></div>
-        <div class="blue_square">1</div>
-        <div style="padding-right: 30px"></div>
-        <div class="blue_square">3</div>
+        <div class="blue_square"
+             *ngFor="let item of payActivity; let i=index"
+             style="margin-left: 30px">{{item.monney}}</div>
       </div>
       <div class="row_plain">
-        <div style="width: 45px"></div>
-        <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="updateChecked()">
-          <label nz-radio nzValue="0">-0R</label>
-          <label nz-radio nzValue="1">-1R</label>
-          <label nz-radio nzValue="2">-2R</label>
-        </nz-radio-group>
+        <div style="margin-left: 60px">
+          <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="updateChecked()">
+            <label nz-radio
+                   *ngFor="let item of payActivity; let i=index"
+                   [nzValue]="item.risk">-{{item.risk}}R
+            </label>
+          </nz-radio-group>
+        </div>
       </div>
       <div class="row">
         <img src="../../assets/icons/duration.png" alt="duration">
@@ -35,7 +33,7 @@
       <div style="height: 50px"></div>
 
       <h3>Ressources à payer: {{totalRes}}</h3>
-      <h3>Risques à réduire: {{risque}}</h3>
+      <h3>Risques à réduire: {{riskReduced}}</h3>
 
     </div>
   </div>

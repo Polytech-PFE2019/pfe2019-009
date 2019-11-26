@@ -22,11 +22,13 @@
     <div nz-col [nzSpan]="4" *ngFor="let role of roles">
       <app-role #Role [roomID]="roomID"
                 [role]="role"
+                [disableChoose]="users.length>1 && role.choosed"
                 [choosed]="role.choosed"
                 [readyed]="role.ready"
                 (checkNum)="getCheckedNum($event)"></app-role>
       <label nz-checkbox
              *ngIf="role.choosed"
+             [disabled]="users.length>1 && role.choosed"
              [(ngModel)]="role.ready" (ngModelChange)="ready()">Prêt</label>
     </div>
   </div>

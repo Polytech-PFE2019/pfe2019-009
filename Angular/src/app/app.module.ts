@@ -27,6 +27,7 @@ import {ProjetInformationRiskComponent} from './game-information/projet-informat
 import {Globals} from './globals';
 import {BuyResourcesComponent} from './buy-resources/buy-resources.component';
 import {ActivityComponent} from './activity/activity.component';
+import { NegociationComponent } from './commun-module/negociation/negociation.component';
 
 registerLocaleData(fr);
 
@@ -47,7 +48,8 @@ registerLocaleData(fr);
     ProjetInformationBudgetComponent,
     ProjetInformationRiskComponent,
     BuyResourcesComponent,
-    ActivityComponent
+    ActivityComponent,
+    NegociationComponent
   ],
   imports: [
     BrowserModule,

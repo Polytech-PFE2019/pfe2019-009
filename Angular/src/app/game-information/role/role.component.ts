@@ -17,6 +17,7 @@ export class RoleComponent implements OnInit, OnDestroy {
   @Input() readyed = false;
   @Input() roomID: any;
   @Input() choosed = false;
+  @Input() disableChoose = false;
   @ViewChild(ConfirmRoleComponent, {static: true})
   confirmRole;
   index1 = 0;

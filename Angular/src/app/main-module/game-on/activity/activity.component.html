@@ -5,24 +5,22 @@
       <div class="row">
         <img src="../../../../assets/icons/person.png" alt="Person">
         <div style="margin-left: 30px">
-          <div class="blue_square">1</div>
-          <label nz-radio [ngModel]="true"></label>
+          <app-activity-displayer [role]="1"
+                                  [isActivity]="true"
+                                  [type]="'basic'"
+                                  [activitiesBenefits]="[{payment:1, benefits:0}]"></app-activity-displayer>
         </div>
       </div>
       <div class="row">
         <img src="../../../../assets/icons/faillante.png" alt="faillante">
-        <div class="blue_square"
-             *ngFor="let item of payActivity; let i=index"
-             style="margin-left: 30px">{{item.monney}}</div>
-      </div>
-      <div class="row_plain">
-        <div style="margin-left: 60px">
-          <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="updateChecked()">
-            <label nz-radio
-                   *ngFor="let item of payActivity; let i=index"
-                   [nzValue]="item.id">-{{item.risk}}R
-            </label>
-          </nz-radio-group>
+        <div style="margin-left: 30px; display: flex">
+          <app-activity-displayer
+            [role]="1"
+            [activitiesBenefits]="payActivity"
+            [isActivity]="true"
+            (sendPaymentActivity)="getPaymentActivity($event)"
+            type="risk">
+          </app-activity-displayer>
         </div>
       </div>
       <div class="row">

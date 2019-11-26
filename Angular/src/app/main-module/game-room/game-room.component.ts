@@ -9,6 +9,7 @@ import {Subscription} from 'rxjs';
 import {HttpParams} from '@angular/common/http';
 import {Role} from '../../model/role';
 import {Globals} from '../../globals';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
 
 @Component({
   selector: 'app-game-room',
@@ -20,7 +21,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   @ViewChild(RoleComponent, {static: true})
   Role;
   roles: any[] = [];
-  chekedItem = [];
   checkedID = null;
   userName = '9999';
   users = [];
@@ -31,11 +31,10 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   roleID: any;
   userReady = 0;
   hostID: string;
-  testChecked = false;
-  isChecked = false;
 
   constructor(private router: Router,
               private globals: Globals,
+              private gameService: GameOnService,
               private activatedRoute: ActivatedRoute,
               private subscriptionService: SubscriptionService,
               private lobbyService: LobbyService) {
@@ -49,23 +48,40 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     this.lobbyService.messages.subscribe(data => {
       console.log(data);
       this.userReady = 0;
-      switch (data.response) {
-        case 'UPDATE':
-          this.users = data.players;
-          this.hostID = data.hostID;
-          for (const r of this.roles) {
-            if (r.ready) {
-              this.userReady++;
-            }
-            for (const player of this.users) {
-              if (r.id === player.roleID) {
-                r.addAttribute(player);
+      console.log(data.gameID);
+      // if (JSON.stringify(data).includes('gameID')) {
+      //   const params = {
+      //     params: new HttpParams()
+      //       .set('roleID', this.roleID)
+      //       .set('userName', this.userName)
+      //       .set('gameID', data.gameID)
+      //   };
+      //   const req = {
+      //     request: 'JOIN_GAME',
+      //     gameID: data.gameID,
+      //     userID: this.userID
+      //   };
+      //   this.router.navigate(['gameon'], {queryParams: params});
+      //   this.gameService.messages.next(req as SocketRequest);
+      // } else {
+        switch (data.response) {
+          case 'UPDATE':
+            this.users = data.players;
+            this.hostID = data.hostID;
+            for (const r of this.roles) {
+              if (r.ready) {
+                this.userReady++;
+              }
+              for (const player of this.users) {
+                if (r.id === player.roleID) {
+                  r.addAttribute(player);
+                }
               }
             }
-          }
-          console.log(this.roles);
-          break;
-      }
+            console.log(this.roles);
+            break;
+        }
+     // }
     });
 
     this.subUserId = this.subscriptionService.userID$.subscribe(data => {

@@ -15,7 +15,6 @@ export class RoleComponent implements OnInit, OnDestroy {
   @Input() role: any = null;
   @Output() checkNum = new EventEmitter();
   @Input() readyed = false;
-  @Input() testChecked = false;
   @Input() roomID: any;
   @Input() choosed = false;
   @ViewChild(ConfirmRoleComponent, {static: true})
@@ -43,18 +42,30 @@ export class RoleComponent implements OnInit, OnDestroy {
   }
 
   getChange() {
-    console.log(this.userID);
-    const req = {
-      request: 'CHOOSE_ROLE',
-      roomID: this.roomID.toString(),
-      userID: this.userID,
-      roleID: this.role.id.toString()
-    };
-    console.log(req);
-    this.lobbyService.messages.next(req as SocketRequest);
+    if (this.role.choosed) {
+      console.log(this.userID);
+      const req = {
+        request: 'CHOOSE_ROLE',
+        roomID: this.roomID.toString(),
+        userID: this.userID,
+        roleID: this.role.id.toString()
+      };
+      console.log(req);
+      this.lobbyService.messages.next(req as SocketRequest);
+    } else {
+      const req = {
+        request: 'CHOOSE_ROLE',
+        roomID: this.roomID.toString(),
+        userID: this.userID,
+        roleID: '0'
+      };
+      console.log(req);
+      this.lobbyService.messages.next(req as SocketRequest);
+
+    }
     const data = {
       role: this.role.id,
-      checked: this.testChecked
+      checked: this.role.choosed
     };
     this.checkNum.emit(data);
   }
@@ -64,15 +75,13 @@ export class RoleComponent implements OnInit, OnDestroy {
   }
 
   ready() {
-    if (this.readyed) {
-      const req = {
-        request: 'CHANGE_STATUS',
-        roomID: this.roomID.toString(),
-        userID: this.userID.toString()
-      };
-      console.log(req);
-      this.lobbyService.messages.next(req as SocketRequest);
-    }
+    const req = {
+      request: 'CHANGE_STATUS',
+      roomID: this.roomID.toString(),
+      userID: this.userID.toString()
+    };
+    console.log(req);
+    this.lobbyService.messages.next(req as SocketRequest);
   }
 
 }

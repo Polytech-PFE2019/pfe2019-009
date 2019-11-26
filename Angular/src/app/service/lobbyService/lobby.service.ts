@@ -27,9 +27,11 @@ export class LobbyService implements OnDestroy {
       .pipe(
         map((response: MessageEvent): SocketRequest => {
           const data = JSON.parse(response.data);
+          console.log(data);
           let playerList = [];
           if (JSON.stringify(data).includes('players')) {
             playerList = JSON.parse(data.players);
+            console.log(playerList);
           }
           if (JSON.stringify(data).includes('userID')) {
             console.log('send userID');
@@ -40,7 +42,8 @@ export class LobbyService implements OnDestroy {
             this.subscription.sendRoomID(data.roomID);
           }
           data.players = playerList.map(player => {
-            return JSON.parse(player);
+            console.log(player);
+            return player;
           });
           console.log(data);
           return data;

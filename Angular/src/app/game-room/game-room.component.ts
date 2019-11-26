@@ -8,7 +8,7 @@ import {SubscriptionService} from '../service/subscriptionSerivce/subscription.s
 import {Subscription} from 'rxjs';
 import {HttpParams} from '@angular/common/http';
 import {Role} from '../model/role';
-import {Globals} from "../globals";
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-game-room',
@@ -21,7 +21,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   Role;
   roles: any[] = [];
   chekedItem = [];
-  checkedID: number;
+  checkedID = null;
   userName = '9999';
   users = [];
   roomID: string;
@@ -29,9 +29,10 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   subUserId: Subscription;
   subRoomId: Subscription;
   roleID: any;
-  roleChoosed: any[] = [];
   userReady = 0;
   hostID: string;
+  testChecked = false;
+  isChecked = false;
 
   constructor(private router: Router,
               private globals: Globals,
@@ -52,18 +53,16 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           this.users = data.players;
           this.hostID = data.hostID;
           for (const r of this.roles) {
+            if (r.ready) {
+              this.userReady++;
+            }
             for (const player of this.users) {
-              this.roleChoosed = this.roleChoosed.concat(player.roleID);
-              if (player.ready) {
-                this.userReady++;
-              }
               if (r.id === player.roleID) {
                 r.addAttribute(player);
               }
             }
           }
           console.log(this.roles);
-          console.log(this.roleChoosed);
           break;
       }
     });
@@ -88,9 +87,41 @@ export class GameRoomComponent implements OnInit, OnDestroy {
 
   getCheckedNum($event: any) {
     if ($event.checked) {
-      this.checkedID = $event.role;
-      this.chekedItem.push($event);
-      console.log($event);
+      if (this.checkedID === null) {
+        this.checkedID = $event.role;
+        for (const r of this.roles) {
+          if (r.id === $event.role) {
+            r.choosed = true;
+            r.ready = false;
+          }
+        }
+      } else {
+        for (const r of this.roles) {
+          if ($event.role === r.id) {
+            if (r.ready) {
+              this.ready();
+            }
+            r.choosed = true;
+            r.ready = false;
+          }
+          if (this.checkedID === r.id) {
+            if (r.ready) {
+              this.ready();
+            }
+            r.choosed = false;
+            r.ready = false;
+          }
+        }
+        this.checkedID = $event.role;
+      }
+    } else {
+      for (const r of this.roles) {
+        if (r.id === $event.role) {
+          r.choosed = false;
+          r.ready = false;
+          this.checkedID = null;
+        }
+      }
     }
   }
 
@@ -111,4 +142,14 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     this.router.navigate(['gameon'], {queryParams: params});
   }
 
+  ready() {
+    console.log(event);
+    const req = {
+      request: 'CHANGE_STATUS',
+      roomID: this.roomID.toString(),
+      userID: this.userID.toString()
+    };
+    console.log(req);
+    this.lobbyService.messages.next(req as SocketRequest);
+  }
 }

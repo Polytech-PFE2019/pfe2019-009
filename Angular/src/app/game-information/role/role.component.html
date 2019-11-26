@@ -13,8 +13,10 @@
         </div>
       </nz-card-tab>
     </nz-card>
-    <label nz-checkbox [disabled]="choosed" [(ngModel)]="testChecked" (ngModelChange)="getChange()">Choisir ce rôle</label>
-    <label nz-checkbox  *ngIf="testChecked" [disabled]="choosed" [(ngModel)]="readyed" (ngModelChange)="ready()">Prêt</label>
+    <label nz-checkbox
+           [(ngModel)]="role.choosed"
+           (ngModelChange)="getChange()">Choisir ce rôle</label>
+<!--    <label nz-checkbox  *ngIf="testChecked" [(ngModel)]="readyed" (ngModelChange)="ready()">Prêt</label>-->
 
   </div>
 <!--  <img id="profile" *ngIf="checked" [src]="role?.profile" width="80" height="80" style="margin-top: 60px">-->

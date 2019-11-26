@@ -15,6 +15,7 @@ export class GameOnComponent implements OnInit {
   step = 'Étape 1';
   getDataFromParent = 0;
   getDataFromActivity = 0;
+  getMoneyFromPerson = 0;
 
   getResource(event) {
     console.log('payresource ' + event);
@@ -24,6 +25,10 @@ export class GameOnComponent implements OnInit {
   getPayment(event) {
     console.log('payactivity ' + event);
     this.getDataFromActivity = event;
+  }
+
+  getMoney(event) {
+    this.getMoneyFromPerson = event;
   }
 
   constructor(private lobbyService: LobbyService,

@@ -48,6 +48,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.lobbyService.messages.subscribe(data => {
       console.log(data);
+      this.userReady = 0;
       switch (data.response) {
         case 'UPDATE':
           this.users = data.players;

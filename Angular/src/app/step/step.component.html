@@ -86,10 +86,8 @@
   <div class="templateTitle">
     <h4 nz-title>{{step?.title}}</h4>
     <div class="durationContainer"><b>+{{step?.duration}}</b></div>
-    <div class="risk">risque 1</div>
-    <div class="risk">risque 1</div>
-    <div class="risk">risque 1</div>
-    <div class="risk">risque 1</div>
-    <div class="risk">risque 1</div>
+    <div class="risk" *ngFor="let item of counter(numOfRisks); let i=index">
+      Risque{{i+1}}
+    </div>
   </div>
 </ng-template>

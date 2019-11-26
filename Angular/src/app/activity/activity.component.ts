@@ -7,26 +7,44 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class ActivityComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
-  radioValue = '0';
-  res1 = 1;
+  radioValue = 0;
+  resBasic = 1;
   res2 = 0;
   res3 = 0;
   risque = 0;
-  totalRes = this.res1 + this.res2 + this.res3;
+  riskReduced = 0;
+  totalRes = this.resBasic;
+  numOfRisks = 3; // canbe input
+  payActivity = [{
+    monney: 0,
+    risk: 0,
+  },
+    {
+      monney: 2,
+      risk: 1
+    },
+    {
+      monney: 4,
+      risk: 2
+    }
+  ];
 
   updateChecked(): void {
-    switch (this.radioValue) {
-      case '0': this.res2 = 0; this.risque = 0; break;
-      case '1': this.res2 = 1; this.risque = 1; break;
-      case '2': this.res2 = 3; this.risque = 2; break;
+    this.totalRes = this.resBasic;
+    for (const item of this.payActivity) {
+      if (item.monney === this.radioValue) {
+        this.totalRes = item.monney + this.resBasic;
+        this.riskReduced = item.risk;
+      }
     }
-    this.totalRes = this.res1 + this.res2 + this.res3;
   }
 
   payResource(): void {
     this.valueChange.emit(this.totalRes);
   }
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

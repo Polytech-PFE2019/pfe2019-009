@@ -7,7 +7,10 @@ public enum ActivityResponseKey {
     STATUS("status"),
     DESCRIPTION("description"),
     BUYING_ACTIONS("buyingActions"),
-    PAYING_ACTIONS("payingActions");
+    PAYING_ACTIONS("payingActions"),
+    PLAYER_ID_LIST("playersID"),
+    RISKS("risks");
+
 
     public final String key;
 

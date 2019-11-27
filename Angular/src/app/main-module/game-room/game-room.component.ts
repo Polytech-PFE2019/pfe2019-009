@@ -1,15 +1,17 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Roles} from '../../model/roles';
-import {RoleComponent} from '../../game-information/role/role.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {SocketRequest} from '../../../Request';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
-import {HttpParams} from '@angular/common/http';
-import {Role} from '../../model/role';
-import {Globals} from '../../globals';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Roles } from '../../model/roles';
+import { RoleComponent } from '../../game-information/role/role.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SocketRequest } from '../../../Request';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+import { Role } from '../../model/role';
+import { Globals } from '../../globals';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { Player } from 'src/app/Player';
+import { PlayerdataService } from 'src/app/playerdata.service';
 
 @Component({
   selector: 'app-game-room',
@@ -18,7 +20,7 @@ import {GameOnService} from '../../service/gameOnService/game-on.service';
 })
 export class GameRoomComponent implements OnInit, OnDestroy {
 
-  @ViewChild(RoleComponent, {static: true})
+  @ViewChild(RoleComponent, { static: true })
   Role;
   roles: any[] = [];
   checkedID = null;
@@ -33,11 +35,11 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   hostID: string;
 
   constructor(private router: Router,
-              private globals: Globals,
-              private gameService: GameOnService,
-              private activatedRoute: ActivatedRoute,
-              private subscriptionService: SubscriptionService,
-              private lobbyService: LobbyService) {
+    private globals: Globals,
+    private gameService: GameOnService,
+    private activatedRoute: ActivatedRoute,
+    private subscriptionService: SubscriptionService,
+    private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
     for (let r of Roles) {
       r = new Role(r);
       this.roles = this.roles.concat(r);
@@ -48,40 +50,24 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     this.lobbyService.messages.subscribe(data => {
       console.log(data);
       this.userReady = 0;
-      console.log(data.gameID);
-      if (data.gameID !== undefined) {
-        const params = {
-          params: new HttpParams()
-            .set('roleID', this.roleID)
-            .set('userName', this.userName)
-            .set('gameID', data.gameID)
-        };
-        const req = {
-          request: 'JOIN_GAME',
-          gameID: data.gameID.toString(),
-          userID: this.userID
-        };
-        this.subscriptionService.sendGameId(data.gameID);
-        this.router.navigate(['gameon'], {queryParams: params});
-        this.gameService.messages.next(req as SocketRequest);
-      } else {
-        switch (data.response) {
-          case 'UPDATE':
-            this.users = data.players;
-            this.hostID = data.hostID;
-            for (const r of this.roles) {
-              if (r.ready) {
-                this.userReady++;
-              }
-              for (const player of this.users) {
-                if (r.id === player.roleID) {
-                  r.addAttribute(player);
-                }
+      switch (data.response) {
+        case 'UPDATE':
+          this.users = data.players;
+          this.hostID = data.hostID;
+          for (const r of this.roles) {
+            if (r.ready) {
+              this.userReady++;
+            }
+            for (const player of this.users) {
+              if (r.id === player.roleID) {
+                r.addAttribute(player);
               }
             }
-            console.log(this.roles);
-            break;
-        }
+          }
+          console.log(this.roles);
+          break;
+        case "START_GAME":
+          this.goToLoadingPage(data.gameID);
       }
     });
 
@@ -151,13 +137,20 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       userID: this.userID.toString()
     };
     console.log(message);
-    const params = {
-      params: new HttpParams()
-        .set('roleID', this.roleID)
-        .set('userName', this.userName)
-    };
+
+
     this.lobbyService.messages.next(message as SocketRequest);
-    this.router.navigate(['gameon'], {queryParams: params});
+  }
+
+  goToLoadingPage(gameID) {
+    const player = {
+      playerID: this.userID.toString(),
+      gameID: gameID.toString()
+    } as Player
+
+    this.playerDataService.player = player;
+    this.router.navigate(['loading']);
+
   }
 
   ready() {

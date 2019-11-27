@@ -3,4 +3,5 @@ export class Player {
     roleID: number;
     ready: boolean;
     username: string;
+    gameID: string;
 }

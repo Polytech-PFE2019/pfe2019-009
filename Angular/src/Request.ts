@@ -13,5 +13,6 @@ export class SocketRequest {
     amount: string;
     player: any;
     activities: any;
+    numberOfPlayersConnected;
 
 }

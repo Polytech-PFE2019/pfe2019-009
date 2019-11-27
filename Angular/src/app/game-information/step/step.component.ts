@@ -28,12 +28,14 @@ export class StepComponent implements OnInit, OnDestroy {
         this.tmpAction.id = item.roleID;
         switch (item.payType) {
           case 'RISK':
+            item.actions.push({amountToPay: 0, bonusAmount: 0});
             this.tmpAction.riskActions = item.actions;
             break;
           case 'MANDATORY':
             this.tmpAction.basicActions = item.actions;
             break;
           case 'DAYS':
+            item.actions.push({amountToPay: 0, bonusAmount: 0});
             this.tmpAction.durationActions = item.actions;
             break;
         }
@@ -42,12 +44,14 @@ export class StepComponent implements OnInit, OnDestroy {
         const alreayExiste = this.dataResources.filter(next => next.id === item.roleID)[0];
         switch (item.payType) {
           case 'RISK':
+            item.actions.push({amountToPay: 0, bonusAmount: 0});
             alreayExiste.riskActions = item.actions;
             break;
           case 'MANDATORY':
             alreayExiste.basicActions = item.actions;
             break;
           case 'DAYS':
+            item.actions.push({amountToPay: 0, bonusAmount: 0});
             alreayExiste.durationActions = item.actions;
             break;
         }
@@ -55,6 +59,7 @@ export class StepComponent implements OnInit, OnDestroy {
     }
     console.log(this.dataResources);
     this.subscription.sendPayingActions(this.dataResources);
+
   }
 
 

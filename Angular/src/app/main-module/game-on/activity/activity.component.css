@@ -1,6 +1,7 @@
 .container{
   text-align: center;
 }
+
 .activity2Container{
   padding-top: 20px;
   display: flex;
@@ -41,4 +42,8 @@ img{
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.column{
+  text-align: center;
 }

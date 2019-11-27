@@ -12,29 +12,21 @@ export class ActivityDisplayerComponent implements OnInit {
   @Input() type = 'duration';
   @Input() isActivity = false;
   @Output() sendPaymentActivity = new EventEmitter();
-  @Input() activitiesBenefits: Action[] = [
-    {
-      amountToPay: 0,
-      bonusAmount: 0
-    },
-    {
-      amountToPay: 2,
-      bonusAmount: 1
-    },
-    {
-      amountToPay: 4,
-      bonusAmount: 2
-    },
-  ];
+  @Input() activitiesBenefits: Action[] = [];
   roleStyle: any;
   roles = Roles;
+  value = 0;
 
   constructor() {
   }
 
   ngOnInit() {
     console.log(this.role);
+    if (this.type === 'basic') {
+      this.value = this.activitiesBenefits[0].amountToPay;
+    }
     this.roleStyle = this.getStyleById(this.role).style;
+
   }
 
   getStyleById(userId) {
@@ -42,7 +34,12 @@ export class ActivityDisplayerComponent implements OnInit {
   }
 
   getClickItem(item: any) {
-    this.sendPaymentActivity.emit(item.amountToPay);
+    const i = {
+      amountToPay: item.amountToPay,
+      type: this.type,
+      bonusAmount: item.bonusAmount
+    };
+    this.sendPaymentActivity.emit(i);
 
   }
 }

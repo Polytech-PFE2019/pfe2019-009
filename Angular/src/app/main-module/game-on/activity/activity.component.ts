@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {BuyResourceService} from '../../../service/resources/buy-resource.service';
 import {Subscription} from 'rxjs';
@@ -15,6 +24,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
   resBasic = 1;
   riskReduced = 0;
   totalRes = this.resBasic;
+  payForRisk = 0;
+  payForDays = 0;
   payment = 0;
   payActivity = [{
     payment: 0,
@@ -33,9 +44,11 @@ export class ActivityComponent implements OnInit, OnDestroy {
   currentResource: number;
   subPayingActions: Subscription;
   dataResources: ActionSet = new ActionSet();
+  daysReduced = 0;
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
+              private changeDetector: ChangeDetectorRef,
               private resourceService: BuyResourceService) {
   }
 
@@ -47,6 +60,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
       console.log(data);
       this.dataResources = data;
+      this.changeDetector.markForCheck();
+      this.changeDetector.detectChanges();
       console.log(this.dataResources);
     });
 
@@ -78,10 +93,19 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
 
   getPaymentActivity($event) {
-    this.payment = $event;
-    this.riskReduced = this.getItemByOayment($event).benefits;
+    const i = $event;
+    switch (i.type) {
+      case 'risk':
+        this.riskReduced = $event.bonusAmount;
+        this.payForRisk = $event.amountToPay;
+        break;
+      case 'duration':
+        this.daysReduced = $event.bonusAmount;
+        this.payForDays = $event.amountToPay;
+        break;
+    }
     this.totalRes = 0;
-    this.totalRes = this.payment + this.resBasic;
+    this.totalRes = this.payForDays + this.payForRisk + this.resBasic;
   }
 
   getItemByOayment(payment) {
@@ -93,12 +117,5 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.subPayingActions.unsubscribe();
   }
 
-  // ngAfterViewInit(): void {
-  //   this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
-  //     console.log(data);
-  //     this.dataResources = data;
-  //     console.log(this.dataResources);
-  //   });
-  // }
 }
 

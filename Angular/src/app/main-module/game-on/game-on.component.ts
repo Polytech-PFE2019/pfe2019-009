@@ -52,57 +52,69 @@ export class GameOnComponent implements OnInit, OnDestroy {
           this.resourceManager.sendCurrentResource(data.player.resources);
           this.resourceManager.sendCurrentMonney(data.player.money);
           this.subscription.sendActivities(data.activities);
-        // for (const activity of data.activities) {
-        //   const tmp = new Activity();
-        //   tmp.addAttributes(activity);
-        //   this.currentStep.push(tmp);
-        // }
+          const testss = JSON.parse(data.activities);
+          for (const activity of testss) {
+            this.test = new Activity(activity);
+            console.log(this.test);
+            this.currentStep.push(this.test);
+            console.log(this.currentStep);
+          }
       }
     });
 
-    const testdata = [
-      {
-        activityID: 1,
-        playersID: [1, 2],
-        risks: 3,
-        numberOfDays: 100,
-        status: 'FINISHED',
-        description: 'text',
-        buyingActions: [{
-          status: false,
-          amount: 0,
-          roleID: 1
-        }],
-        payingActions: [{
-          status: false,
-          roleID: 1,
-          payType: 'RISK',
-          bonusGiven: 0,
-          amountPaid: 0,
-          actions: [
-            {amountToPay: 1, bonusAmount: 0},
-            {amountToPay: 4, bonusAmount: 2}
-          ]
-        },
-          {
-            status: false,
-            roleID: 1,
-            payType: 'DAYS',
-            bonusGiven: 0,
-            amountPaid: 0,
-            actions: [
-              {amountToPay: 2, bonusAmount: 1},
-              {amountToPay: 4, bonusAmount: 2}
-            ]
-          },
-        ]
-      },
-    ];
-
-    this.test = new Activity(testdata[0]);
-    console.log(this.test);
-    this.currentStep.push(this.test);
-    console.log(this.currentStep);
+    // const testdata = [
+    //   {
+    //     activityID: 1,
+    //     playersID: [1, 2],
+    //     risks: 3,
+    //     numberOfDays: 100,
+    //     status: 'FINISHED',
+    //     description: 'text',
+    //     buyingActions: [{
+    //       status: false,
+    //       amount: 0,
+    //       roleID: 1
+    //     }],
+    //     payingActions: [{
+    //       status: false,
+    //       roleID: 1,
+    //       payType: 'RISK',
+    //       bonusGiven: 0,
+    //       amountPaid: 0,
+    //       actions: [
+    //         {amountToPay: 1, bonusAmount: 1},
+    //         {amountToPay: 4, bonusAmount: 2}
+    //       ]
+    //     },
+    //       {
+    //         status: false,
+    //         roleID: 1,
+    //         payType: 'DAYS',
+    //         bonusGiven: 0,
+    //         amountPaid: 0,
+    //         actions: [
+    //           {amountToPay: 2, bonusAmount: 1},
+    //           {amountToPay: 4, bonusAmount: 2}
+    //         ]
+    //       },
+    //       {
+    //         status: false,
+    //         roleID: 1,
+    //         payType: 'MANDATORY',
+    //         bonusGiven: 0,
+    //         amountPaid: 0,
+    //         actions: [
+    //           {amountToPay: 1, bonusAmount: 0},
+    //         ]
+    //       },
+    //     ]
+    //   },
+    // ];
+    //
+    // this.test = new Activity(testdata[0]);
+    // console.log(this.test);
+    // this.currentStep.push(this.test);
+    // console.log(this.currentStep);
   }
 
   getResource(event) {

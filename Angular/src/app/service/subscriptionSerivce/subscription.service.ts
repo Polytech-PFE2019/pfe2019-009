@@ -14,6 +14,15 @@ export class SubscriptionService {
   userName = new Subject<any>();
   userName$ = this.userName.asObservable();
 
+  gameID = new Subject<any>();
+  gameID$ = this.gameID.asObservable();
+
+  activites = new Subject<any>();
+  activites$ = this.activites.asObservable();
+
+  payingActions = new Subject<any>();
+  payingActions$ = this.payingActions.asObservable();
+
   constructor() {
   }
 
@@ -30,5 +39,20 @@ export class SubscriptionService {
   sendUserName(message) {
     console.log('subscription userName' + message);
     this.userName.next(message);
+  }
+
+  sendGameId(message) {
+    console.log('subscription gameID' + message);
+    this.gameID.next(message);
+  }
+
+  sendActivities(message) {
+    console.log('subscription activities' + message);
+    this.activites.next(message);
+  }
+
+  sendPayingActions(message) {
+    console.log('subscription activities' + message);
+    this.payingActions.next(message);
   }
 }

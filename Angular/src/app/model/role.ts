@@ -10,7 +10,7 @@ export class Role {
   choosed: boolean;
   profile: string;
   style: any;
-  monney: any;
+  money: any;
 
 
   constructor(r: any) {
@@ -25,7 +25,7 @@ export class Role {
     this.username = '';
     this.profile = r.profile;
     this.style = {};
-    this.monney = '';
+    this.money = '';
   }
 
   addAttribute(o: any) {

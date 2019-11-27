@@ -49,21 +49,22 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       console.log(data);
       this.userReady = 0;
       console.log(data.gameID);
-      // if (JSON.stringify(data).includes('gameID')) {
-      //   const params = {
-      //     params: new HttpParams()
-      //       .set('roleID', this.roleID)
-      //       .set('userName', this.userName)
-      //       .set('gameID', data.gameID)
-      //   };
-      //   const req = {
-      //     request: 'JOIN_GAME',
-      //     gameID: data.gameID,
-      //     userID: this.userID
-      //   };
-      //   this.router.navigate(['gameon'], {queryParams: params});
-      //   this.gameService.messages.next(req as SocketRequest);
-      // } else {
+      if (data.gameID !== undefined) {
+        const params = {
+          params: new HttpParams()
+            .set('roleID', this.roleID)
+            .set('userName', this.userName)
+            .set('gameID', data.gameID)
+        };
+        const req = {
+          request: 'JOIN_GAME',
+          gameID: data.gameID.toString(),
+          userID: this.userID
+        };
+        this.subscriptionService.sendGameId(data.gameID);
+        this.router.navigate(['gameon'], {queryParams: params});
+        this.gameService.messages.next(req as SocketRequest);
+      } else {
         switch (data.response) {
           case 'UPDATE':
             this.users = data.players;
@@ -81,7 +82,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
             console.log(this.roles);
             break;
         }
-     // }
+      }
     });
 
     this.subUserId = this.subscriptionService.userID$.subscribe(data => {

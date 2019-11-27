@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {BuyResourceService} from "../../../service/resources/buy-resource.service";
-import {Subscription} from "rxjs";
+import {BuyResourceService} from '../../../service/resources/buy-resource.service';
+import {Subscription} from 'rxjs';
+import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
+import {ActionSet} from '../../../model/action';
 
 @Component({
   selector: 'app-activity',
@@ -29,14 +31,23 @@ export class ActivityComponent implements OnInit, OnDestroy {
   ];
   subCurrentResource: Subscription;
   currentResource: number;
+  subPayingActions: Subscription;
+  dataResources: ActionSet = new ActionSet();
 
   constructor(private nzMessageService: NzMessageService,
+              private subscription: SubscriptionService,
               private resourceService: BuyResourceService) {
   }
 
   ngOnInit() {
     this.subCurrentResource = this.resourceService.currentMonney$.subscribe(data => {
       this.currentResource = data;
+    });
+
+    this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
+      console.log(data);
+      this.dataResources = data;
+      console.log(this.dataResources);
     });
 
   }
@@ -54,6 +65,10 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.resourceService.sendResourcesReduced(this.totalRes);
     this.isVisible = false;
     this.nzMessageService.info('Paiement réussi');
+    const req = {
+      request: 'PAY_RESOURCES',
+      // activityID:
+    };
   }
 
   handleCancel(): void {
@@ -75,6 +90,15 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subCurrentResource.unsubscribe();
+    this.subPayingActions.unsubscribe();
   }
+
+  // ngAfterViewInit(): void {
+  //   this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
+  //     console.log(data);
+  //     this.dataResources = data;
+  //     console.log(this.dataResources);
+  //   });
+  // }
 }
 

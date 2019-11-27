@@ -10,5 +10,8 @@ export class SocketRequest {
     players: [Player];
     hostID: string;
     gameID: string;
+    amount: string;
+    player: any;
+    activities: any;
 
 }

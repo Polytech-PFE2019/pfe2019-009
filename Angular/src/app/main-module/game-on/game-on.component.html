@@ -20,7 +20,7 @@
     <button id="end" nz-button *ngIf="step==='Étape 12'" (click)="closeGame()"><b>Terminer</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
-    <div class="stepContainer" *ngFor="let s of steps">
+    <div class="stepContainer" *ngFor="let s of currentStep">
       <app-step [step]="s" (currentStep)="getCurrentStep($event)"></app-step>
     </div>
   </div>

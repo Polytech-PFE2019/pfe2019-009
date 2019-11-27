@@ -1,6 +1,6 @@
 <div nz-col nzSpan="8" *ngFor="let item of activitiesBenefits">
-  <button *ngIf="isActivity" [disabled]="type === 'basic'" [ngStyle]="roleStyle" (click)="getClickItem(item)">{{item?.payment}}</button>
-  <div *ngIf="!isActivity" [ngStyle]="roleStyle">{{item?.payment}}</div>
-  <b *ngIf="type==='duration'">-{{item?.benefits}}j</b>
-  <b *ngIf="type==='risk'">-{{item?.benefits}}R</b>
+  <button *ngIf="isActivity" [disabled]="type === 'basic'" [ngStyle]="roleStyle" (click)="getClickItem(item)">{{item?.amountToPay}}</button>
+  <div *ngIf="!isActivity" [ngStyle]="roleStyle">{{item?.amountToPay}}</div>
+  <b *ngIf="type==='duration'">-{{item?.bonusAmount}}j</b>
+  <b *ngIf="type==='risk'">-{{item?.bonusAmount}}R</b>
 </div>

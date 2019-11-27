@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {WebsocketService} from '../webSocketService/websocket.service';
 import {SubscriptionService} from '../subscriptionSerivce/subscription.service';
 import {Subject} from 'rxjs';
@@ -25,12 +25,23 @@ export class GameOnService {
             console.log(playerList);
           }
           if (JSON.stringify(data).includes('userID')) {
-            console.log('send userID');
-            this.subscription.sendUserID(data.userID);
+            if (data.userID !== undefined) {
+              console.log('send userID');
+              this.subscription.sendUserID(data.userID);
+            }
           }
           if (JSON.stringify(data).includes('roomID')) {
             console.log('send roomID');
-            this.subscription.sendRoomID(data.roomID);
+            if (data.userID !== undefined) {
+              this.subscription.sendRoomID(data.roomID);
+            }
+          }
+
+          if (JSON.stringify(data).includes('gameID')) {
+            console.log('send roomID');
+            if (data.gameID !== undefined) {
+              this.subscription.sendGameId(data.gameID);
+            }
           }
           data.players = playerList.map(player => {
             console.log(player);

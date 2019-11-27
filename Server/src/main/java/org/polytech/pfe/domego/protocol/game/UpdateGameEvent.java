@@ -14,6 +14,10 @@ import org.polytech.pfe.domego.protocol.game.key.ActivityResponseKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.polytech.pfe.domego.protocol.room.key.RoomResponseKey;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public class UpdateGameEvent implements EventProtocol {
 
     private Game game;
@@ -31,6 +35,7 @@ public class UpdateGameEvent implements EventProtocol {
 
     private String createUpdateResponse(Player player) {
 
+
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, RoomResponseKey.UPDATE.key);
         response.addProperty(GameResponseKey.GAMEID.key, game.getId());
@@ -45,6 +50,9 @@ public class UpdateGameEvent implements EventProtocol {
 
         response.addProperty(GameResponseKey.PLAYER.key, playerJson.toString());
 
+        JsonArray playerIDToPlayList = new JsonArray();
+
+
         JsonArray activitiesJson = new JsonArray();
         for (Activity activity : game.getActivities()) {
             JsonObject activityJson = new JsonObject();
@@ -56,12 +64,27 @@ public class UpdateGameEvent implements EventProtocol {
             JsonArray payingActions = new JsonArray();
             for (PayResources payResources : activity.getPayResourcesList()) {
 
+                // ADD PLAYER ID TO LIST (USEFUL ?)
+                Optional<Player> playerAction = game.getPlayerByRoleID(payResources.getRoleID());
+                playerAction.ifPresent(value -> {//if(playerIDToPlayList.contains(value.getID()))
+                    playerIDToPlayList.add(value.getID());});
+
                 JsonObject payingActionJson = new JsonObject();
                 payingActionJson.addProperty(ActionResponseKey.STATUS.key, payResources.hasPaid());
-                payingActionJson.addProperty(ActionResponseKey.AMOUNT_TO_PAY.key, payResources.getAmountNeeded());
+
+                JsonArray payActionsForType = new JsonArray();
+                payResources.getPriceAndBonusMap().forEach((price,bonus)-> {
+                    JsonObject payActionJson = new JsonObject();
+                    payActionJson.addProperty(ActionResponseKey.AMOUNT_TO_PAY.key,price);
+                    payActionJson.addProperty(ActionResponseKey.BONUS_AMOUNT.key,bonus);
+                    payActionsForType.add(payActionJson);
+
+                });
+                payingActionJson.addProperty(ActionResponseKey.ACTIONS.key, payActionsForType.toString());
+                payingActionJson.addProperty(ActionResponseKey.AMOUNT_PAID.key, payResources.getAmountPaid());
                 payingActionJson.addProperty(ActionResponseKey.ROLEID.key, payResources.getRoleID());
                 payingActionJson.addProperty(ActionResponseKey.PAY_TYPE.key, payResources.getPayResourceType().toString());
-                payingActionJson.addProperty(ActionResponseKey.BONUS_AMOUNT.key, payResources.getBonusGiven());
+                payingActionJson.addProperty(ActionResponseKey.BONUS_GIVEN.key, payResources.getBonusGiven());
                 payingActions.add(payingActionJson);
 
 
@@ -70,6 +93,11 @@ public class UpdateGameEvent implements EventProtocol {
 
             JsonArray buyingActions = new JsonArray();
             for (BuyResources buyResources : activity.getBuyResourcesList()) {
+
+                // ADD PLAYER ID TO LIST (USEFUL ?)
+                Optional<Player> playerAction = game.getPlayerByRoleID(buyResources.getRoleID());
+                playerAction.ifPresent(value -> playerIDToPlayList.add(value.getID()));
+
                 if(player.getRole().getId() == buyResources.getRoleID()) {
                     JsonObject buyingActionJson = new JsonObject();
                     buyingActionJson.addProperty(ActionResponseKey.STATUS.key, buyResources.hasPaid());
@@ -84,6 +112,9 @@ public class UpdateGameEvent implements EventProtocol {
             activitiesJson.add(activityJson);
         }
         response.addProperty(GameResponseKey.ACTIVITIES.key, activitiesJson.toString());
+
+        response.addProperty(GameResponseKey.PLAYER_ID_LIST.key, playerIDToPlayList.toString());
+
 
         return response.toString();
     }

@@ -12,7 +12,8 @@ public enum GameResponseKey {
     ROLEID("roleID"),
     USERNAME("username"),
     BONUSTYPE("bonusType"),
-    ACTIVITIES("activities");
+    ACTIVITIES("activities"),
+    PLAYER_ID_LIST("playersID");
 
 
     public final String key;

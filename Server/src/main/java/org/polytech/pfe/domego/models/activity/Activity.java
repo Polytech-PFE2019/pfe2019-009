@@ -38,10 +38,13 @@ public abstract class Activity {
     public boolean payResources(int roleID, PayResourceType payResourceType, int amount){
         Optional<PayResources> payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
 
-        if(payResources.isEmpty() || amount < payResources.get().getAmountNeeded()){
+        if(payResources.isEmpty()){
             return false;
         }
-        payResources.get().pay(amount);
+
+        if(!payResources.get().pay(amount)){
+            return false;
+        }
         return true;
 
     }

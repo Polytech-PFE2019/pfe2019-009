@@ -50,4 +50,27 @@ public class GameSocketHandler extends TextWebSocketHandler {
 
 
     }
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        System.out.println("connexion");
+        List<Player> playerList = new ArrayList<>();
+        for(int i =1; i<7; i++){
+            Player player = new Player(session,"ehffd");
+            player.setRole(new Role(i, RoleType.MAITRE_D_OUVRAGE,"descri",20000,"skjd"));
+            player.addResouces(5);
+            player.addMoney(20000);
+            playerList.add((player));
+        }
+
+        Game game = new Game("id",playerList);
+        GameInstance.getInstance().addGame(game);
+
+        UpdateGameEvent event = new UpdateGameEvent(game);
+        event.processEvent();
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    }
 }

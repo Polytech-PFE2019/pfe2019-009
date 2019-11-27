@@ -8,9 +8,7 @@ import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyResources;
 import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -54,9 +52,27 @@ public class Game {
 
 
     private void initActivitiesOfGame(){
-        PayResources payResources = new PayResources(1,1,0, PayResourceType.MANDATORY);
+
+        Map<Integer,Integer> priceAndBonusMap = new HashMap<>();
+
+        priceAndBonusMap.put(1,0);
+
+        PayResources payResources = new PayResources(1,priceAndBonusMap, PayResourceType.MANDATORY);
+
+
+        Map<Integer,Integer> priceAndBonusMap2 = new HashMap<>();
+
+        priceAndBonusMap2.put(1,1);
+
+        priceAndBonusMap2.put(3,2);
+
+        priceAndBonusMap2.put(5,3);
+
+        PayResources payResources2 = new PayResources(1,priceAndBonusMap2, PayResourceType.DAYS);
+
         List<PayResources> payResourcesList = new ArrayList<>();
         payResourcesList.add(payResources);
+        payResourcesList.add(payResources2);
 
         BuyResources buyResources = new BuyResources(1,1);
         List<BuyResources> buyResourcesList = new ArrayList<>();
@@ -67,6 +83,10 @@ public class Game {
         activities.add(activity);
         this.setActivities(activities);
 
+    }
+
+    public Optional<Player> getPlayerByRoleID(int roleID){
+        return this.players.stream().filter(player -> player.getRole().getId() == roleID).findFirst();
     }
 
     public String getId() {

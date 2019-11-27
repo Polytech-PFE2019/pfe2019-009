@@ -4,18 +4,19 @@ import java.util.Map;
 
 public class PayResources {
     private int roleID;
-    //TODO SEVERAL PRICES FOR SEVERAL BONUSES
-    private Map<Integer, Integer> toll;
-    private int amountNeeded;
+    private Map<Integer, Integer> priceAndBonusMap;
+    private int amountPaid;
     private int bonusGiven;
     private PayResourceType payResourceType;
-    private boolean hasPaid = false;
+    private boolean hasPaid;
+    private int amountLeft;
 
-    public PayResources(int roleID, int amountNeeded, int bonusGiven, PayResourceType payResourceType){
+    public PayResources(int roleID, Map<Integer,Integer> priceAndBonusMap, PayResourceType payResourceType){
+        this.amountPaid = 0;
+        this.hasPaid = false;
         this.roleID = roleID;
-        this.amountNeeded = amountNeeded;
-        this.bonusGiven = bonusGiven;
         this.payResourceType = payResourceType;
+        this.priceAndBonusMap = priceAndBonusMap;
     }
 
     public PayResourceType getPayResourceType() {
@@ -34,16 +35,37 @@ public class PayResources {
         return bonusGiven;
     }
 
-    public int getAmountNeeded() {
-        return amountNeeded;
+    public int getAmountPaid() {
+        return amountPaid;
     }
 
     public int getRoleID() {
         return roleID;
     }
 
-    public void pay(int amount){
-        // here you will set the bonus given according to the amount
+    public Map<Integer,Integer> getPriceAndBonusMap(){
+        return  priceAndBonusMap;
+    }
+
+    public boolean pay(int amount){
+
+        priceAndBonusMap.forEach((price,bonus)-> {
+            if(price <= amount){
+                this.amountPaid = price;
+                this.bonusGiven = bonus;
+            }
+        });
+        if(amountPaid == 0){
+            return false;
+        }
+        if(this.amountPaid > amount){
+            this.amountLeft = amountPaid-amount;
+        }
         setHasPaid(true);
+        return true;
+    }
+
+    public int getAmountLeft() {
+        return amountLeft;
     }
 }

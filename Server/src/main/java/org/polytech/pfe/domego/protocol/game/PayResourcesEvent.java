@@ -76,7 +76,6 @@ public class PayResourcesEvent implements EventProtocol {
         if(!activity.payResources(roleID,payResourceType, numberOfResource)){
             this.messenger.sendError("NOT ENOUGH RESOURCES TO PAY");
             return;
-
         }
         player.substractResources(numberOfResource);
         this.sendResponseToUser(player);

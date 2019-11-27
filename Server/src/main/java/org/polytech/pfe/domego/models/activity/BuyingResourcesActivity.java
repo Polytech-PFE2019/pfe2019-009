@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 public class BuyingResourcesActivity  extends Activity implements BuyingAction {
 
-
     public BuyingResourcesActivity(int id, int numbersOfDays, String description, List<PayResources> payResourcesList, List<BuyResources> buyResourcesList) {
         super(id, numbersOfDays, description, payResourcesList);
         this.buyResourcesList = buyResourcesList;

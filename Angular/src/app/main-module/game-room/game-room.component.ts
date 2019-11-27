@@ -12,6 +12,7 @@ import { Globals } from '../../globals';
 import { GameOnService } from '../../service/gameOnService/game-on.service';
 import { Player } from 'src/app/Player';
 import { PlayerdataService } from 'src/app/playerdata.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-game-room',
@@ -54,14 +55,21 @@ export class GameRoomComponent implements OnInit, OnDestroy {
         case 'UPDATE':
           this.users = data.players;
           this.hostID = data.hostID;
+
           for (const r of this.roles) {
+            var taken = false;
+
             if (r.ready) {
               this.userReady++;
             }
             for (const player of this.users) {
               if (r.id === player.roleID) {
                 r.addAttribute(player);
+                taken = true;
               }
+            }
+            if (!taken) {
+              r.removeAttribute();
             }
           }
           console.log(this.roles);

@@ -37,4 +37,10 @@ export class Role {
       this.choosed = false;
     }
   }
+
+  removeAttribute() {
+    this.ready = false;
+    this.choosed = false;
+    this.username = '';
+  }
 }

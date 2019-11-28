@@ -22,11 +22,8 @@ public class UpdateGameEvent implements EventProtocol {
 
     private Game game;
 
-    Set<String> playerIDToPlaySet;
-
     public UpdateGameEvent(Game game) {
         this.game = game;
-        this.playerIDToPlaySet = new HashSet<>();
     }
 
     @Override
@@ -37,21 +34,15 @@ public class UpdateGameEvent implements EventProtocol {
     }
 
     private String createUpdateResponse(Player player) {
-
-
+        Set<String> playerIDToPlaySet = new HashSet<>();
         JsonObject response = new JsonObject();
-
         response.addProperty(GameResponseKey.RESPONSE.key, RoomResponseKey.UPDATE.key);
         response.addProperty(GameResponseKey.GAMEID.key, game.getId());
         response.addProperty(GameResponseKey.CURRENTACTIVITYID.key, game.getCurrentActivity().getId());
         response.addProperty(GameResponseKey.COSTPROJECT.key, game.getProject().getCost());
         response.addProperty(GameResponseKey.DELAYPROJECT.key, game.getProject().getDelay());
         response.addProperty(GameResponseKey.FAILUREPROJECT.key, game.getProject().getFailure());
-
-
         response.add(GameResponseKey.PLAYER.key, createPlayerObject(player));
-
-
         JsonArray activitiesJson = new JsonArray();
         for (Activity activity : game.getActivities()) {
             JsonObject activityJson = new JsonObject();
@@ -60,52 +51,15 @@ public class UpdateGameEvent implements EventProtocol {
             activityJson.addProperty(ActivityResponseKey.TITLE.key, activity.getTitle());
             activityJson.addProperty(ActivityResponseKey.DESCRIPTION.key, activity.getDescription());
             activityJson.addProperty(ActivityResponseKey.STATUS.key, activity.getActivityStatus().toString());
-
-            JsonArray payingActions = new JsonArray();
-
-            for (RoleType role : RoleType.values()) {
-                JsonArray payingActionsByRole = new JsonArray();
-                for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getRoleID() == role.getId()).collect(Collectors.toSet())) {
-                    Optional<Player> playerAction = game.getPlayerByRoleID(payResources.getRoleID());
-                    playerAction.ifPresent(value -> this.playerIDToPlaySet.add(playerAction.get().getID()));
-
-                    JsonObject payingActionJson = new JsonObject();
-                    payingActionJson.addProperty(ActionResponseKey.STATUS.key, payResources.hasPaid());
-
-                    JsonArray payActionsForType = new JsonArray();
-                    payResources.getPriceAndBonusMap().forEach((price,bonus)-> {
-                        JsonObject payActionJson = new JsonObject();
-                        payActionJson.addProperty(ActionResponseKey.AMOUNT_TO_PAY.key,price);
-                        payActionJson.addProperty(ActionResponseKey.BONUS_AMOUNT.key,bonus);
-                        payActionsForType.add(payActionJson);
-
-                    });
-                    payingActionJson.add(ActionResponseKey.ACTIONS.key, payActionsForType);
-                    payingActionJson.addProperty(ActionResponseKey.AMOUNT_PAID.key, payResources.getAmountPaid());
-                    payingActionJson.addProperty(ActionResponseKey.ROLEID.key, payResources.getRoleID());
-                    payingActionJson.addProperty(ActionResponseKey.PAY_TYPE.key, payResources.getPayResourceType().toString());
-                    payingActionJson.addProperty(ActionResponseKey.BONUS_GIVEN.key, payResources.getBonusGiven());
-                    payingActionsByRole.add(payingActionJson);
-                }
-                JsonObject toto = new JsonObject();
-                toto.addProperty(ActionResponseKey.ROLEID.key, role.getId());
-                toto.add(ActionResponseKey.ACTIONS.key, payingActions);;
-                payingActions.add(toto);
-            }
-
-            activityJson.add(ActivityResponseKey.PAYING_ACTIONS.key,payingActions);
-
-
-
-            activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,createBuyingActions(activity, player));
+            activityJson.add(ActivityResponseKey.PAYING_ACTIONS.key,this.createPayingActionsResponse(activity, playerIDToPlaySet));
+            activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,createBuyingActions(activity, player, playerIDToPlaySet));
             JsonArray playerIDListJson = new JsonArray();
-            playerIDToPlaySet.forEach(playerID -> playerIDListJson.add(playerID));
+            playerIDToPlaySet.forEach(playerIDListJson::add);
             activityJson.add(ActivityResponseKey.PLAYER_ID_LIST.key, playerIDListJson);
             activityJson.addProperty(ActivityResponseKey.RISKS.key, 4);
             activitiesJson.add(activityJson);
         }
         response.add(GameResponseKey.ACTIVITIES.key, activitiesJson);
-
         return response.toString();
     }
 
@@ -120,13 +74,13 @@ public class UpdateGameEvent implements EventProtocol {
     }
 
 
-    private JsonArray createBuyingActions(Activity activity, Player player){
+    private JsonArray createBuyingActions(Activity activity, Player player, Set playerIDToPlaySet){
         JsonArray buyingActions = new JsonArray();
         for (BuyResources buyResources : activity.getBuyResourcesList()) {
 
             // ADD PLAYER ID TO LIST (USEFUL ?)
             Optional<Player> playerAction = game.getPlayerByRoleID(buyResources.getRoleID());
-            playerAction.ifPresent(value -> this.playerIDToPlaySet.add(playerAction.get().getID()));
+            playerAction.ifPresent(value -> playerIDToPlaySet.add(playerAction.get().getID()));
 
             if(player.getRole().getId() == buyResources.getRoleID()) {
                 JsonObject buyingActionJson = new JsonObject();
@@ -139,6 +93,46 @@ public class UpdateGameEvent implements EventProtocol {
             }
         }
         return buyingActions;
+    }
+
+
+    private JsonArray createPayingActionsResponse(Activity activity, Set playerIDToPlaySet){
+        JsonArray payingActions = new JsonArray();
+
+        for (RoleType role : RoleType.values()) {
+            JsonArray payingActionsByRole = new JsonArray();
+            for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getRoleID() == role.getId()).collect(Collectors.toSet())) {
+                Optional<Player> playerAction = game.getPlayerByRoleID(payResources.getRoleID());
+                playerAction.ifPresent(value -> playerIDToPlaySet.add(playerAction.get().getID()));
+
+                JsonObject payingActionJson = new JsonObject();
+                payingActionJson.addProperty(ActionResponseKey.STATUS.key, payResources.hasPaid());
+
+                JsonArray payActionsForType = new JsonArray();
+                payResources.getPriceAndBonusMap().forEach((price,bonus)-> {
+                    JsonObject payActionJson = new JsonObject();
+                    payActionJson.addProperty(ActionResponseKey.AMOUNT_TO_PAY.key,price);
+                    payActionJson.addProperty(ActionResponseKey.BONUS_AMOUNT.key,bonus);
+                    payActionsForType.add(payActionJson);
+
+                });
+                payingActionJson.add(ActionResponseKey.ACTIONS.key, payActionsForType);
+                payingActionJson.addProperty(ActionResponseKey.AMOUNT_PAID.key, payResources.getAmountPaid());
+                payingActionJson.addProperty(ActionResponseKey.ROLEID.key, payResources.getRoleID());
+                payingActionJson.addProperty(ActionResponseKey.PAY_TYPE.key, payResources.getPayResourceType().toString());
+                payingActionJson.addProperty(ActionResponseKey.BONUS_GIVEN.key, payResources.getBonusGiven());
+                payingActionsByRole.add(payingActionJson);
+            }
+            if (payingActionsByRole.size() != 0)
+            {
+
+                JsonObject payingAction = new JsonObject();
+                payingAction.addProperty(ActionResponseKey.ROLEID.key, role.getId());
+                payingAction.add(ActionResponseKey.ACTIONS.key, payingActionsByRole);
+                payingActions.add(payingAction);
+            }
+        }
+        return payingActions;
     }
 }
 

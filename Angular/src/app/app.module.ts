@@ -37,6 +37,7 @@ import {LobbyService} from './service/lobbyService/lobby.service';
 import {WebsocketService} from './service/webSocketService/websocket.service';
 import {GameOnService} from './service/gameOnService/game-on.service';
 import { LoadingComponent } from './loading/loading.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 
 registerLocaleData(fr);
 
@@ -62,7 +63,8 @@ registerLocaleData(fr);
     ResourceBuyerComponent,
     ActivityDisplayerComponent,
     RiskCardComponent,
-    LoadingComponent
+    LoadingComponent,
+    LoadingPageComponent
   ],
   imports: [
     BrowserModule,

@@ -15,4 +15,6 @@ export class SocketRequest {
   player: any;
   activities: any;
   currentActivityID: any;
+  numberOfPlayersConnected;
+
 }

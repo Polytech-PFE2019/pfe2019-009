@@ -10,6 +10,9 @@ import {HttpParams} from '@angular/common/http';
 import {Role} from '../../model/role';
 import {Globals} from '../../globals';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {Player} from 'src/app/Player';
+import {PlayerdataService} from 'src/app/playerdata.service';
+import {THIS_EXPR} from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-game-room',
@@ -38,7 +41,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
               private gameService: GameOnService,
               private activatedRoute: ActivatedRoute,
               private subscriptionService: SubscriptionService,
-              private lobbyService: LobbyService) {
+              private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
     for (let r of Roles) {
       r = new Role(r);
       this.roles = this.roles.concat(r);
@@ -74,20 +77,28 @@ export class GameRoomComponent implements OnInit, OnDestroy {
             this.users = data.players;
             this.hostID = data.hostID;
             for (const r of this.roles) {
+              var taken = false;
               if (r.ready) {
                 this.userReady++;
               }
               for (const player of this.users) {
                 if (r.id === player.roleID) {
                   this.addAttribute(r, player);
+                  taken = true;
+                }
+                if (!taken) {
+                  r.removeAttribute();
                 }
               }
             }
-            console.log(this.roles);
+            break;
+          case 'START_GAME':
+            this.goToLoadingPage(data.gameID);
             break;
         }
       }
     });
+
 
     this.subUserId = this.subscriptionService.userID$.subscribe(data => {
       console.log(data);
@@ -157,16 +168,20 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       userID: this.userID.toString()
     };
     console.log(message);
-    const params = {
-      params: new HttpParams()
-        .set('roleID', this.roleID)
-        .set('userName', this.userName)
-    };
+
+
     this.lobbyService.messages.next(message as SocketRequest);
-    // this.isLoding = true;
-    // setTimeout(() => {
-    this.router.navigate(['gameon'], {queryParams: params});
-    // }, 5000);
+  }
+
+  goToLoadingPage(gameID) {
+    const players = {
+      playerID: this.userID.toString(),
+      gameID: gameID.toString()
+    };
+
+    this.playerDataService.player = players as Player;
+    this.router.navigate(['loading']);
+
   }
 
   ready() {

@@ -1,7 +1,8 @@
 <div class="activity2Container">
   <h2>Payer des ressources</h2>
   <div class="column" style="width: 90%">
-    <nz-table nzBordered [nzData]="dataResources"
+    <nz-table nzBordered
+              [nzData]="activities"
               [nzNoAnimation]="false"
               #table [nzFrontPagination]="false">
       <thead>
@@ -12,27 +13,28 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let data of table.data">
+      <tr *ngFor="let item of table.data">
         <td>
           <app-activity-displayer
-            [role]="data?.id"
+            [role]="item?.roleID"
             [type]="'basic'"
             [isActivity]="true"
-            [activitiesBenefits]="data?.basicActions">
+            [activitiesBenefits]="item?.actions[0].actions">
           </app-activity-displayer>
         </td>
         <td>
           <app-activity-displayer
-            [role]="data?.id"
+            [role]="item?.roleID"
             [isActivity]="true"
             (sendPaymentActivity)="getPaymentActivity($event)"
-            [activitiesBenefits]="data?.riskActions"
+            [activitiesBenefits]="item?.actions[1].actions"
             [type]="'risk'"></app-activity-displayer>
         </td>
         <td>
           <app-activity-displayer
-            [role]="data?.id"
-            [activitiesBenefits]="data?.durationActions"
+            [role]="item?.roleID"
+            *ngIf="item?.actions.length > 2"
+            [activitiesBenefits]="item?.actions[2].actions"
             [isActivity]="true"
             (sendPaymentActivity)="getPaymentActivity($event)"
             [type]="'duration'">

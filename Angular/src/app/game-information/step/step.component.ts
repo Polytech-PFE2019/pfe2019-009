@@ -11,10 +11,13 @@ import {ActionSet} from '../../model/action';
 export class StepComponent implements OnInit, OnDestroy {
   @Input() step: any = null;
   @Output() currentStep = new EventEmitter();
+  @Output() sendTestClick = new EventEmitter();
+  @Output() sendStepTest = new EventEmitter();
   buyingActions: any[] = [];
   payingActions: any[] = [];
   dataResources: ActionSet[] = [];
   subActivities: Subscription;
+  test = [1];
   type: string;
   tmpAction: ActionSet = new ActionSet();
 
@@ -23,48 +26,46 @@ export class StepComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(this.step);
-    for (const item of this.step.payingActions) {
-      if (this.dataResources.length === 0) {
-        this.tmpAction.id = item.roleID;
-        switch (item.payType) {
-          case 'RISK':
-            item.actions.push({amountToPay: 0, bonusAmount: 0});
-            this.tmpAction.riskActions = item.actions;
-            break;
-          case 'MANDATORY':
-            this.tmpAction.basicActions = item.actions;
-            break;
-          case 'DAYS':
-            item.actions.push({amountToPay: 0, bonusAmount: 0});
-            this.tmpAction.durationActions = item.actions;
-            break;
-        }
-        this.dataResources.push(this.tmpAction);
-      } else {
-        const alreayExiste = this.dataResources.filter(next => next.id === item.roleID)[0];
-        switch (item.payType) {
-          case 'RISK':
-            item.actions.push({amountToPay: 0, bonusAmount: 0});
-            alreayExiste.riskActions = item.actions;
-            break;
-          case 'MANDATORY':
-            alreayExiste.basicActions = item.actions;
-            break;
-          case 'DAYS':
-            item.actions.push({amountToPay: 0, bonusAmount: 0});
-            alreayExiste.durationActions = item.actions;
-            break;
-        }
-      }
-    }
-    console.log(this.dataResources);
-    this.subscription.sendPayingActions(this.dataResources);
-
   }
 
 
   sendStep() {
-    this.currentStep.emit(this.step.title);
+   // this.currentStep.emit(this.step.title);
+    this.sendTestClick.emit(true);
+    const test = [{
+      roleID: 1,
+      actions: [
+        {
+          roleID: 1,
+          payType: 'MANDATORY',
+          status: false,
+          amountPaid: 0,
+          bonusGiven: 0,
+          actions: [{amountToPay: 1, bonusAmount: 1}]
+        },
+        {
+          roleID: 1,
+          payType: 'RISKS',
+          status: false,
+          amountPaid: 0,
+          bonusGiven: 0,
+          actions: [{amountToPay: 1, bonusAmount: 1}, {amountToPay: 4, bonusAmount: 2}]
+        },
+        {
+          roleID: 1,
+          payType: 'DAYS',
+          status: false,
+          amountPaid: 0,
+          bonusGiven: 0,
+          actions: [{amountToPay: 1, bonusAmount: 2}]
+        },
+      ]
+    }
+    ];
+    // this.subscription.sendPayingActions(test);
+    // this.sendStepTest.emit(test);
+    this.sendStepTest.emit(this.step.payingActions);
+    // this.subscription.sendPayingActions(this.step);
   }
 
 

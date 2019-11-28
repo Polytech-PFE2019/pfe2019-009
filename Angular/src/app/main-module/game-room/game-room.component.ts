@@ -31,6 +31,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   roleID: any;
   userReady = 0;
   hostID: string;
+  isLoding = false;
 
   constructor(private router: Router,
               private globals: Globals,
@@ -62,8 +63,11 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           userID: this.userID
         };
         this.subscriptionService.sendGameId(data.gameID);
-        this.router.navigate(['gameon'], {queryParams: params});
         this.gameService.messages.next(req as SocketRequest);
+        // this.isLoding = true;
+        // setTimeout(() => {
+        this.router.navigate(['gameon'], {queryParams: params});
+        // }, 5000);
       } else {
         switch (data.response) {
           case 'UPDATE':
@@ -75,7 +79,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
               }
               for (const player of this.users) {
                 if (r.id === player.roleID) {
-                  r.addAttribute(player);
+                  this.addAttribute(r, player);
                 }
               }
             }
@@ -123,6 +127,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
             r.ready = false;
           }
           if (this.checkedID === r.id) {
+            r.username = '';
             if (r.ready) {
               this.ready();
             }
@@ -137,6 +142,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
         if (r.id === $event.role) {
           r.choosed = false;
           r.ready = false;
+          r.username = '';
           this.checkedID = null;
         }
       }
@@ -157,7 +163,10 @@ export class GameRoomComponent implements OnInit, OnDestroy {
         .set('userName', this.userName)
     };
     this.lobbyService.messages.next(message as SocketRequest);
+    // this.isLoding = true;
+    // setTimeout(() => {
     this.router.navigate(['gameon'], {queryParams: params});
+    // }, 5000);
   }
 
   ready() {
@@ -169,5 +178,15 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     };
     console.log(req);
     this.lobbyService.messages.next(req as SocketRequest);
+  }
+
+  addAttribute(r, o: any) {
+    r.username = o.username;
+    r.ready = o.ready;
+    if (o.roleID === r.id) {
+      r.choosed = true;
+    } else {
+      r.choosed = false;
+    }
   }
 }

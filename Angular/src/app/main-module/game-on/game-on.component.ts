@@ -31,6 +31,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
   activites: any;
   currentStep: Activity[] = [];
   test: Activity;
+  testClick = false;
+  subPayingActions: Subscription;
+  activities: any = null;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -40,27 +43,32 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(22222222222222);
     this.subGameId = this.subscription.gameID$.subscribe(id => {
       this.gameId = id;
     });
 
-    this.gameService.messages.subscribe(data => {
-      console.log(data);
-      switch (data.response) {
-        case 'UPDATE':
-          console.log(data);
-          this.resourceManager.sendCurrentResource(data.player.resources);
-          this.resourceManager.sendCurrentMonney(data.player.money);
-          this.subscription.sendActivities(data.activities);
-          const testss = JSON.parse(data.activities);
-          for (const activity of testss) {
-            this.test = new Activity(activity);
-            console.log(this.test);
-            this.currentStep.push(this.test);
-            console.log(this.currentStep);
-          }
-      }
-    });
+    this.currentStep = this.gameService.currentStep;
+    console.log(this.currentStep);
+
+    // this.gameService.messages.subscribe(data => {
+    //   console.log(12323423434534534534);
+    //   console.log(data);
+    //   switch (data.response) {
+    //     case 'UPDATE':
+    //       console.log(data);
+    //       this.resourceManager.sendCurrentResource(data.player.resources);
+    //       this.resourceManager.sendCurrentMonney(data.player.money);
+    //       this.subscription.sendActivities(data.activities);
+    //       console.log('after++++++++++++  ' + data.activities);
+    //       for (const activity of data.activities) {
+    //         this.test = new Activity(activity);
+    //         console.log(this.test);
+    //         this.currentStep.push(this.test);
+    //         console.log(this.currentStep);
+    //       }
+    //   }
+    // });
 
     // const testdata = [
     //   {
@@ -115,6 +123,11 @@ export class GameOnComponent implements OnInit, OnDestroy {
     // console.log(this.test);
     // this.currentStep.push(this.test);
     // console.log(this.currentStep);
+    this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
+      console.log(data);
+      this.activities = data;
+      console.log(this.activities.actions);
+    });
   }
 
   getResource(event) {
@@ -161,5 +174,16 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subGameId.unsubscribe();
+    this.subPayingActions.unsubscribe();
+  }
+
+  getClickTest($event: any) {
+    this.testClick = $event;
+  }
+
+  getStepTest($event: any) {
+    this.activities = $event;
+    console.log(this.activities[0]);
+    console.log(this.activities[0].actions[0].actions);
   }
 }

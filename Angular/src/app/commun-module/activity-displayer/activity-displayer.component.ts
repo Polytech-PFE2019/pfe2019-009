@@ -12,7 +12,7 @@ export class ActivityDisplayerComponent implements OnInit {
   @Input() type = 'duration';
   @Input() isActivity = false;
   @Output() sendPaymentActivity = new EventEmitter();
-  @Input() activitiesBenefits: Action[] = [];
+  @Input() activitiesBenefits: any[] = [];
   roleStyle: any;
   roles = Roles;
   value = 0;
@@ -22,9 +22,10 @@ export class ActivityDisplayerComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.role);
-    if (this.type === 'basic') {
-      this.value = this.activitiesBenefits[0].amountToPay;
-    }
+    // if (this.type === 'basic') {
+    //   this.value = this.activitiesBenefits[0].amountToPay;
+    // }
+    console.log(this.activitiesBenefits);
     this.roleStyle = this.getStyleById(this.role).style;
 
   }

@@ -62,7 +62,6 @@ export class RoleComponent implements OnInit, OnDestroy {
       };
       console.log(req);
       this.lobbyService.messages.next(req as SocketRequest);
-
     }
     const data = {
       role: this.role.id,

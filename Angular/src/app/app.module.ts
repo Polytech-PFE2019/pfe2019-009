@@ -36,6 +36,7 @@ import { RiskCardComponent } from './commun-module/risk-card/risk-card.component
 import {LobbyService} from './service/lobbyService/lobby.service';
 import {WebsocketService} from './service/webSocketService/websocket.service';
 import {GameOnService} from './service/gameOnService/game-on.service';
+import { LoadingComponent } from './loading/loading.component';
 
 registerLocaleData(fr);
 
@@ -60,7 +61,8 @@ registerLocaleData(fr);
     NegociationComponent,
     ResourceBuyerComponent,
     ActivityDisplayerComponent,
-    RiskCardComponent
+    RiskCardComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

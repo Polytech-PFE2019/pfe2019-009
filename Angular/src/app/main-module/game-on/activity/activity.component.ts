@@ -13,6 +13,7 @@ import {BuyResourceService} from '../../../service/resources/buy-resource.servic
 import {Subscription} from 'rxjs';
 import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
 import {ActionSet} from '../../../model/action';
+import {GameOnService} from "../../../service/gameOnService/game-on.service";
 
 @Component({
   selector: 'app-activity',
@@ -20,6 +21,7 @@ import {ActionSet} from '../../../model/action';
   styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit, OnDestroy {
+  @Input() activities: any[] = [];
   isVisible = false;
   resBasic = 1;
   riskReduced = 0;
@@ -27,6 +29,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   payForRisk = 0;
   payForDays = 0;
   payment = 0;
+  test = [1];
   payActivity = [{
     payment: 0,
     benefits: 0
@@ -43,11 +46,12 @@ export class ActivityComponent implements OnInit, OnDestroy {
   subCurrentResource: Subscription;
   currentResource: number;
   subPayingActions: Subscription;
-  dataResources: ActionSet = new ActionSet();
+  dataResources: any;
   daysReduced = 0;
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
+              private gameSerivce: GameOnService,
               private changeDetector: ChangeDetectorRef,
               private resourceService: BuyResourceService) {
   }
@@ -57,13 +61,15 @@ export class ActivityComponent implements OnInit, OnDestroy {
       this.currentResource = data;
     });
 
-    this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
-      console.log(data);
-      this.dataResources = data;
-      this.changeDetector.markForCheck();
-      this.changeDetector.detectChanges();
-      console.log(this.dataResources);
-    });
+    // this.activities = this.gameSerivce.currentActivity;
+    // console.log(this.activities);
+
+    // this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
+    //   console.log(data);
+    //   this.activities = data;
+    // });
+    console.log(this.activities);
+    console.log(this.activities[0].roleID);
 
   }
 

@@ -30,7 +30,7 @@ export class LobbyService implements OnDestroy {
           console.log(data);
           let playerList = [];
           if (JSON.stringify(data).includes('players')) {
-            playerList = JSON.parse(data.players);
+            playerList = data.players;
             console.log(playerList);
           }
           if (JSON.stringify(data).includes('userID')) {
@@ -45,10 +45,6 @@ export class LobbyService implements OnDestroy {
               this.subscription.sendRoomID(data.roomID);
             }
           }
-          data.players = playerList.map(player => {
-            console.log(player);
-            return player;
-          });
           console.log(data);
           return data;
         }));

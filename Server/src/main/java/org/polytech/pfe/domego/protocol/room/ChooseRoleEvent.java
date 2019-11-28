@@ -46,7 +46,6 @@ public class ChooseRoleEvent implements EventProtocol {
 
         Optional<Room> optionalRoom = this.roomAccessor.getRoomById(request.get(RoomRequestKey.ROOMID.getKey()));
         if(optionalRoom.isEmpty()){
-            logger.info("Room Not Found");
             this.messenger.sendError("Room not Found");
             return;
         }
@@ -55,7 +54,6 @@ public class ChooseRoleEvent implements EventProtocol {
 
         Optional<Player> optionalPlayer = room.getPlayerById(request.get(RoomRequestKey.USERID.getKey()));
         if(optionalPlayer.isEmpty()){
-            logger.info("Player Not Found");
             this.messenger.sendError("Player not Found");
             return;
         }
@@ -80,16 +78,20 @@ public class ChooseRoleEvent implements EventProtocol {
         player.setRole(role);
 
 
+        this.messenger.sendSpecificMessageToAUser(generateResponse(room,player,role).toString());
+        logger.info("ChooseRoleEvent : In game : " + room.getID() + " the player name : " + player.getName() + " has change role, new role : " + player.getRole().getName().getName());
+
+        new UpdateRoomEvent(room).processEvent();
+
+    }
+
+    private JsonObject generateResponse(Room room, Player player, Role role){
         JsonObject response = new JsonObject();
         response.addProperty("response", "CHOOSE_ROLE");
         response.addProperty("roomID", room.getID());
         response.addProperty("userID", player.getID());
         response.addProperty("roleID", role.getId());
-        this.messenger.sendSpecificMessageToAUser(response.toString());
-        logger.info("In game : " + room.getID() + " the player name : " + player.getName() + " has change role, new role : " + player.getRole().getName().getName());
-
-        new UpdateRoomEvent(room).processEvent();
-
+        return response;
     }
 
     private void checkArgument() throws MissArgumentToRequestException {

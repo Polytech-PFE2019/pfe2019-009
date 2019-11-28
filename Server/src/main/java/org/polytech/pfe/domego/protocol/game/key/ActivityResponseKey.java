@@ -4,6 +4,7 @@ public enum ActivityResponseKey {
 
     ACTIVITY_ID("activityID"),
     NUMBER_OF_DAYS("numberOfDays"),
+    TITLE("title"),
     STATUS("status"),
     DESCRIPTION("description"),
     BUYING_ACTIONS("buyingActions"),

@@ -22,11 +22,6 @@ public class GameRequestHandler implements RequestHandler {
         }
         String requestName = request.get("request");
 
-        System.out.println("REQUETE : ");
-        for (String key : request.keySet()) {
-            System.out.println("KEY : " + key + " VALUE : " + request.get(key));
-        }
-
         switch(GameEventKey.valueOf(requestName)){
             case BUY_RESOURCES :
                 event = new BuyResourceEvent(session, request);

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public abstract class Activity {
     private int id;
     private int numbersOfDays;
+    private String title;
     private String description;
     private List<PayResources> payResourcesList;
     private ActivityStatus activityStatus = ActivityStatus.NOT_STARTED;
@@ -17,9 +18,10 @@ public abstract class Activity {
 
     protected List<BuyResources> buyResourcesList;
 
-    Activity(int id, int numbersOfDays, String description, List<PayResources> payResourcesList){
+    Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
         this.id = id;
         this.numbersOfDays = numbersOfDays;
+        this.title = title;
         this.description = description;
         this.payResourcesList = payResourcesList;
         this.buyResourcesList = new ArrayList<>();
@@ -87,8 +89,23 @@ public abstract class Activity {
         return activityStatus;
     }
 
-    public abstract int getExchangeRateForRoleID(int roleID);
+    public int getExchangeRateForRoleID(int roleID){
+        return 2;
+    }
 
-    public abstract void buyResources(int roleID, int amount);
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void buyResources(int roleID, int amount){
+        BuyResources newPaiement = new BuyResources(roleID,this.getExchangeRateForRoleID(roleID));
+        newPaiement.buyResources(amount);
+        this.buyResourcesList.add(newPaiement);
+    }
+
 
 }

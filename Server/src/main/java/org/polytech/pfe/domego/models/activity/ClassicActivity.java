@@ -5,8 +5,8 @@ import org.polytech.pfe.domego.models.PayResources;
 import java.util.List;
 
 public class ClassicActivity extends Activity {
-    public ClassicActivity(int id, int numbersOfDays, String description, List<PayResources> payResourcesList) {
-        super(id, numbersOfDays, description, payResourcesList);
+    public ClassicActivity(int id, int numbersOfDays,String title ,String description, List<PayResources> payResourcesList) {
+        super(id, numbersOfDays, title ,description, payResourcesList);
     }
 
     @Override

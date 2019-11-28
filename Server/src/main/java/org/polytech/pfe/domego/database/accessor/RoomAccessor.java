@@ -24,6 +24,8 @@ public class RoomAccessor {
 
     public Optional<Room> getRoomById(String id){return this.roomInstance.getRoomById(id);}
 
+    public boolean removeRoom(Room room){ return this.roomInstance.removeRoom(room);}
+
     public int getNumberOfRoom(){
         return roomInstance.numberOfRooms();
     }

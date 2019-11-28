@@ -39,7 +39,6 @@ public class LeaveRoomEvent implements EventProtocol {
 
         Optional<Room> optionalRoom = this.roomAccessor.getRoomById(request.get(RoomRequestKey.ROOMID.getKey()));
         if(optionalRoom.isEmpty()){
-            logger.info("Room Not Found");
             this.messenger.sendError("Room not Found");
             return;
         }
@@ -48,7 +47,6 @@ public class LeaveRoomEvent implements EventProtocol {
 
         Optional<Player> optionalPlayer = room.getPlayerById(request.get(RoomRequestKey.USERID.getKey()));
         if(optionalPlayer.isEmpty()){
-            logger.info("Player Not Found");
             this.messenger.sendError("Player not Found");
             return;
         }
@@ -61,7 +59,7 @@ public class LeaveRoomEvent implements EventProtocol {
         response.addProperty("userID", player.getID());
         messenger.sendSpecificMessageToAUser(response.toString());
         new UpdateRoomEvent(room).processEvent();
-        logger.info("Player name : " + player.getName() + " has leave the room with ID" + room.getID());
+        logger.info("LeaveRoomEvent : Player name : " + player.getName() + " has leave the room with ID" + room.getID());
     }
 
     private void checkParams() throws MissArgumentToRequestException {

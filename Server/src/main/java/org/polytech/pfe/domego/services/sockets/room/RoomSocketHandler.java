@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 public class RoomSocketHandler extends TextWebSocketHandler {
 
     private final RequestHandler requestHandler;
-    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final Logger loggerGlobal = Logger.getGlobal();
+    private final Logger logger = Logger.getLogger(RoomSocketHandler.class.getName());
 
     @Autowired
     public RoomSocketHandler(RoomRequestHandler requestHandler) {
@@ -32,7 +33,7 @@ public class RoomSocketHandler extends TextWebSocketHandler {
         try {
             requestHandler.handleRequest(session,request);
         }catch(Exception e){
-            logger.warning("RoomSocketHandler : Impossible to recognize an event : " + message.getPayload());
+            loggerGlobal.warning("RoomSocketHandler : Impossible to recognize an event : " + message.getPayload());
 
             JsonObject response = new JsonObject();
             response.addProperty("request", "OK");
@@ -42,9 +43,14 @@ public class RoomSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        logger.info("RoomSocketHandler : New user on socket with ip : " + session.getRemoteAddress().toString());
+    }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status){
+        logger.info("RoomSocketHandler : Close session on socket with ip : " + session.getRemoteAddress().toString());
         new DisconnectManager().process(session);
     }
 }

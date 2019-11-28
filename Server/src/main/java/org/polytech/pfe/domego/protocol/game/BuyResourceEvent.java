@@ -14,10 +14,12 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 public class BuyResourceEvent implements EventProtocol {
 
+    private Logger logger = Logger.getGlobal();
     private Map<String,String> request;
     private GameInstance gameInstance;
     private Messenger messenger;
@@ -72,6 +74,7 @@ public class BuyResourceEvent implements EventProtocol {
         activity.buyResources(roleID,numberOfResource);
         player.addResouces(numberOfResource);
         player.substractMoney(numberOfResource * currentPriceOfResource);
+        logger.info("BuyResourceEvent : In game " + game.getId() + " the player named : " + player.getName() + " has buy " + numberOfResource + " resources.");
         this.sendResponseToUser(player);
     }
 

@@ -1,8 +1,8 @@
 package org.polytech.pfe.domego.logger;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.*;
 

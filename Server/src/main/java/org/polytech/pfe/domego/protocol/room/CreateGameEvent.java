@@ -2,7 +2,6 @@ package org.polytech.pfe.domego.protocol.room;
 
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.business.Room;
-import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.protocol.EventProtocol;
@@ -32,17 +31,17 @@ public class CreateGameEvent implements EventProtocol {
             return;
         }
         String username = request.get(RoomRequestKey.USERNAME.getKey());
-        Room newRoom = new Room(username + "'s lobby", RoomInstance.getInstance().getRoomList().size());
+        Room newRoom = new Room(username + "'s lobby");
 
         Player player = new Player(user,username);
         newRoom.addPlayer(player);
         if(new RoomAccessor().addRoom(newRoom)){
             new UpdateRoomEvent(newRoom).processEvent();
-            LOGGER.info(username + " has created a Room named : " + newRoom.getRoomName() + " with ID : " + newRoom.getID());
+            LOGGER.info("CreateGameEvent : " +username + " has created a Room named : " + newRoom.getRoomName() + " with ID : " + newRoom.getID());
 
         }
         else{
-            LOGGER.warning("Error creating room");
+            LOGGER.warning("CreateGameEvent : Error creating room");
             this.messenger.sendError("Error creating game ! Retry please !");
 
         }

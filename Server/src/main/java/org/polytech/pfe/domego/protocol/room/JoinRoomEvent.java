@@ -11,8 +11,11 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class JoinRoomEvent implements EventProtocol {
+
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private Messenger messenger;
     private Map<String, String> request;
@@ -39,11 +42,13 @@ public class JoinRoomEvent implements EventProtocol {
             return;
         }
         Room room = optionalRoom.get();
-        boolean accepted = room.addPlayer(new Player(user,request.get(RoomRequestKey.USERNAME.getKey())));
+        Player player = new Player(user,request.get(RoomRequestKey.USERNAME.getKey()));
+        boolean accepted = room.addPlayer(player);
         if(!accepted){
             this.messenger.sendError("Room full");
             return;
         }
+        logger.info("JoinRoomEvent : New player named : " + player.getName() +"has join the room : " + room.getID());
         new UpdateRoomEvent(room).processEvent();
 
     }

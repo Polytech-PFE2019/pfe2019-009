@@ -60,16 +60,21 @@ public class JoinGameEvent implements EventProtocol {
 
         Player player = optionalPlayer.get();
         player.setSession(newSession);
-        logger.info("Le joueur : " + player.getName() + " a rejoint la partie : " + game.getId());
+        logger.info("JoinGameEvent : Le joueur : " + player.getName() + " a rejoint la partie : " + game.getId());
         List<Player> connectedPlayer = game.getPlayersPresent();
-        String response = createResponseEvent(connectedPlayer.size()).toString();
-        connectedPlayer.forEach(player1 -> new Messenger(player1.getSession()).sendSpecificMessageToAUser(response));
+        int numberOfPlayerConnected = connectedPlayer.size();
+        connectedPlayer.forEach(player1 -> new Messenger(player1.getSession()).sendSpecificMessageToAUser(createResponseEvent(numberOfPlayerConnected,player1.getID(), game.getId()).toString()));
+
+        if (numberOfPlayerConnected == game.getPlayers().size())
+            new UpdateGameEvent(game).processEvent();
 
     }
 
-    private JsonObject createResponseEvent(int numberOfPlayerConnected){
+    private JsonObject createResponseEvent(int numberOfPlayerConnected, String playerId, String gameID){
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key,"OK");
+        response.addProperty(GameResponseKey.USERID.key, playerId);
+        response.addProperty(GameResponseKey.GAMEID.key,gameID);
         response.addProperty(GameResponseKey.NOPC.key, numberOfPlayerConnected);
         return response;
     }

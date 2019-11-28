@@ -57,7 +57,7 @@ public class RoomRequestHandler implements RequestHandler {
                 event = new InvalidEvent(session);
                 break;
         }
-        logger.info("New Room request type : " + event.getClass());
+        logger.info("RoomRequestHandler : New Room request type : " + event.getClass());
         event.processEvent();
     }
 }

@@ -27,6 +27,7 @@ public class UpdateRoomEvent implements EventProtocol {
     private String createUpdateResponse(String userID) {
 
         JsonObject response = new JsonObject();
+
         response.addProperty(RoomResponseKey.RESPONSE.key, RoomResponseKey.UPDATE.key);
         response.addProperty(RoomResponseKey.ROOMID.key, currentRoom.getID());
         response.addProperty(RoomResponseKey.USERID.key, userID);
@@ -40,7 +41,7 @@ public class UpdateRoomEvent implements EventProtocol {
             rep.addProperty(RoomResponseKey.ROLEID.key, player.getRole().getId());
             players.add(rep);
         }
-        response.addProperty(RoomResponseKey.PLAYERS.key, players.toString());
+        response.add(RoomResponseKey.PLAYERS.key, players);
 
         return response.toString();
 

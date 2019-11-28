@@ -265,7 +265,7 @@ class RoomRequestHandlerTest {
         for (Player player : room.getPlayerList()) {
             players.add(createResponseRequest(player, room));
         }
-        response.addProperty("players", players.toString());
+        response.add("players", players);
 
         return response.toString();
 

@@ -29,6 +29,8 @@ public class RoomInstance
         return roomList;
     }
 
+    public boolean removeRoom(Room room){return roomList.remove(room);}
+
     public Optional<Room> getRoomById(String roomId){
         return roomList.stream().filter(room -> room.getID().equals(roomId)).findAny();
     }

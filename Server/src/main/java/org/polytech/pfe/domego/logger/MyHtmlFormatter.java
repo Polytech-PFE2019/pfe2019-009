@@ -5,6 +5,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.regex.Pattern;
 
 // this custom formatter formats parts of a log record to a single line
 class MyHtmlFormatter extends Formatter {
@@ -29,7 +30,22 @@ class MyHtmlFormatter extends Formatter {
         buf.append(calcDate(rec.getMillis()));
         buf.append("</td>\n");
         buf.append("\t<td>");
-        buf.append(formatMessage(rec));
+        String message = formatMessage(rec);
+        Pattern pattern = Pattern.compile(":");
+        if(pattern.matcher(message).find()){
+            String[] messageCut = pattern.split(message);
+            buf.append("<p>");
+            buf.append("<span style=\"color: #4488B3\">");
+            buf.append(messageCut[0] + " : ");
+            buf.append("</span>");
+            for (int i = 1; i < messageCut.length; i++) {
+                buf.append(messageCut[i]);
+            }
+            buf.append("</p>");
+        }else{
+            buf.append(formatMessage(rec));
+        }
+
         buf.append("</td>\n");
         buf.append("</tr>\n");
 

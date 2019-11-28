@@ -43,7 +43,6 @@ public class StartGameEvent implements EventProtocol {
 
         Optional<Room> optionalRoom = this.roomAccessor.getRoomById(request.get(RoomRequestKey.ROOMID.getKey()));
         if(optionalRoom.isEmpty()){
-            logger.info("Room Not Found");
             this.messenger.sendError("Room not Found");
             return;
         }
@@ -52,7 +51,6 @@ public class StartGameEvent implements EventProtocol {
 
         Optional<Player> optionalPlayer = room.getPlayerById(request.get(RoomRequestKey.USERID.getKey()));
         if(optionalPlayer.isEmpty()){
-            logger.info("Player Not Found");
             this.messenger.sendError("Player not Found");
             return;
         }
@@ -80,7 +78,11 @@ public class StartGameEvent implements EventProtocol {
 
         room.getPlayerList().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
 
-        logger.info("Player name : " + player.getName() + " start the game for room with ID" + room.getID());
+        logger.info("StartGameEvent: Player name : " + player.getName() + " start the game for room with ID" + room.getID());
+
+        roomAccessor.removeRoom(room);
+
+        logger.info("StartGameEvent : Delete room : " + room.getID());
     }
 
     private JsonObject createStartGameResponse(Game game){

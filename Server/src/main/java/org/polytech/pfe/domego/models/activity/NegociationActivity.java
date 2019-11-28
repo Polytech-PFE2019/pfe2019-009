@@ -6,8 +6,8 @@ import java.util.List;
 
 public class NegociationActivity extends Activity implements NegociationAction {
 
-    public NegociationActivity(int id, int numbersOfDays, String description, List<PayResources> payResourcesList) {
-        super(id, numbersOfDays, description, payResourcesList);
+    public NegociationActivity(int id, int numbersOfDays,String title ,String description, List<PayResources> payResourcesList) {
+        super(id, numbersOfDays, title,description, payResourcesList);
     }
 
     @Override

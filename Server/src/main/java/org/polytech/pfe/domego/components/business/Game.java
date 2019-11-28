@@ -13,76 +13,23 @@ import java.util.stream.Collectors;
 
 public class Game {
 
-    String id;
-
-    List<Player> players;
-
-    List<Activity> activities = new ArrayList<>();
-
-    int currentActivity;
-
+    private String id;
+    private List<Player> players;
+    private List<Activity> activities;
+    private int currentActivity;
     private Project project;
 
-    public Game() {
 
-        initActivitiesOfGame();
-
-
-    }
-
-    public Game(String id) {
-        this.id = id;
-    }
-
-    public Game(String id, List<Player> players) {
+    public Game(String id, List<Player> players, List<Activity> activities) {
         this.id = id;
         this.players = players;
-        initActivitiesOfGame();
+        this.activities = activities;
+        this.project = new Project();
 
-    }
-
-    public boolean connectToTheGame(){
-        return true;
     }
 
     public Optional<Player> getPlayerById(String playerID){
         return players.stream().filter(player -> player.getID().equals(playerID)).findFirst();
-    }
-
-
-
-    private void initActivitiesOfGame(){
-
-        Map<Integer,Integer> priceAndBonusMap = new HashMap<>();
-
-        priceAndBonusMap.put(1,0);
-
-        PayResources payResources = new PayResources(1,priceAndBonusMap, PayResourceType.MANDATORY);
-
-
-        Map<Integer,Integer> priceAndBonusMap2 = new HashMap<>();
-
-        priceAndBonusMap2.put(1,1);
-
-        priceAndBonusMap2.put(3,2);
-
-        priceAndBonusMap2.put(5,3);
-
-        PayResources payResources2 = new PayResources(1,priceAndBonusMap2, PayResourceType.DAYS);
-
-        List<PayResources> payResourcesList = new ArrayList<>();
-        payResourcesList.add(payResources);
-        payResourcesList.add(payResources2);
-
-        BuyResources buyResources = new BuyResources(1,1);
-        List<BuyResources> buyResourcesList = new ArrayList<>();
-        buyResourcesList.add(buyResources);
-
-        List<Activity> activities = new ArrayList<>();
-        Activity activity = new BuyingResourcesActivity(1,30,"description",payResourcesList,buyResourcesList);
-        activities.add(activity);
-        this.setActivities(activities);
-
     }
 
     public Optional<Player> getPlayerByRoleID(int roleID){
@@ -119,6 +66,10 @@ public class Game {
 
     public List<Player> getPlayersPresent(){
         return players.stream().filter(player -> player.getSession() != null).collect(Collectors.toList());
+    }
+
+    public Project getProject() {
+        return project;
     }
 
     public Activity getCurrentActivity(){

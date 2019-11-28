@@ -56,7 +56,7 @@ class RoomTest {
         players.add(createResponseRequest(player, room));
         players.add(createResponseRequest(player2, room));
 
-        response.addProperty("players", players.toString());
+        response.add("players", players);
 
         assertEquals(response,createUpdateResponse(player,room));
 
@@ -87,7 +87,7 @@ class RoomTest {
         players.add(createResponseRequest(player, room));
         players.add(createResponseRequest(player2,room));
 
-        response.addProperty("players", players.toString());
+        response.add("players", players);
 
         assertEquals(response,this.createUpdateResponse(player,room));
 
@@ -176,7 +176,7 @@ class RoomTest {
         for (Player player : room.getPlayerList()) {
             players.add(createResponseRequest(player,room));
         }
-        response.addProperty("players", players.toString());
+        response.add("players", players);
 
         return response;
 

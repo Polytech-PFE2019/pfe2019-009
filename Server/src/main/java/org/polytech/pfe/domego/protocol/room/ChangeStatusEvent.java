@@ -53,15 +53,20 @@ public class ChangeStatusEvent implements EventProtocol {
         Player player = optionalPlayer.get();
         boolean state = room.changeStateOfPlayer(player);
 
-        JsonObject response = new JsonObject();
-        response.addProperty("response", "CHANGE_STATUS");
-        response.addProperty("ready", state);
-        response.addProperty("userID",player.getID());
-        logger.info("In game : " + room.getID() + " the player name : " + player.getName() + " has change status, new status : " + (state ? "Ready" : "Not Ready"));
-        this.messenger.sendSpecificMessageToAUser(response.toString());
+
+        logger.info("ChangeStatusEvent : In game : " + room.getID() + " the player name : " + player.getName() + " has change status, new status : " + (state ? "Ready" : "Not Ready"));
+        this.messenger.sendSpecificMessageToAUser(generateResponse(player,state).toString());
 
         new UpdateRoomEvent(room).processEvent();
 
+    }
+
+    private JsonObject generateResponse(Player player, boolean ready){
+        JsonObject response = new JsonObject();
+        response.addProperty("response", "CHANGE_STATUS");
+        response.addProperty("ready", ready);
+        response.addProperty("userID",player.getID());
+        return response;
     }
 
 

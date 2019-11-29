@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.polytech.pfe.domego.components.business.Room;
+import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.models.Player;
@@ -89,8 +90,6 @@ class RoomRequestHandlerTest {
 
 
     //In this test the update response sent to all others players in room is tested
-
-
     @Test
     public void testJoiningRoomAndUpdateResponse() throws Exception {
 
@@ -120,9 +119,8 @@ class RoomRequestHandlerTest {
         // Verify that response was sent
         verify(sessionPlayerTest2, times(1)).sendMessage( new TextMessage(this.createResponseRequest(player2ID, lastRoomCreatedID)));
 
-        //TODO CHANGE
-        // Verify response was sent to other player
-        //verify(sessionPlayerTest, times(1)).sendMessage(new TextMessage(lastRoomCreatedID.createUpdateResponse()));
+        playerTestID =lastRoomCreatedID.getPlayerList().get(0).getID();
+        verify(sessionPlayerTest, times(1)).sendMessage(new TextMessage(this.createResponseRequest(playerTestID,lastRoomCreatedID)));
     }
 
     // can't mock the socketID so we changed for UUID.
@@ -196,7 +194,6 @@ class RoomRequestHandlerTest {
                 new TextMessage(response.toString()));
     }
 
-    //TODO Check creation game object in gameInstance
     public void testStartingGame() throws Exception {
         int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
 
@@ -210,6 +207,10 @@ class RoomRequestHandlerTest {
 
 
         handler.handleRequest(sessionPlayerTest, value2);
+
+        GameInstance gameInstance = GameInstance.getInstance();
+
+        assertEquals(1,gameInstance.getGameList().size());
 
         // Verify that response was sent
 

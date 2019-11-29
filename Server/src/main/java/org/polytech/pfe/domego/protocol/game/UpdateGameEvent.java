@@ -16,11 +16,13 @@ import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.polytech.pfe.domego.protocol.room.key.RoomResponseKey;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class UpdateGameEvent implements EventProtocol {
 
     private Game game;
+    private Logger logger = Logger.getGlobal();
 
     public UpdateGameEvent(Game game) {
         this.game = game;
@@ -31,6 +33,8 @@ public class UpdateGameEvent implements EventProtocol {
         for (Player player : game.getPlayers()) {
             new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player));
         }
+        logger.info("UpdateGameEvent : Send Message UpdateGameEvent to all players");
+
     }
 
     private String createUpdateResponse(Player player) {
@@ -52,7 +56,7 @@ public class UpdateGameEvent implements EventProtocol {
             activityJson.addProperty(ActivityResponseKey.DESCRIPTION.key, activity.getDescription());
             activityJson.addProperty(ActivityResponseKey.STATUS.key, activity.getActivityStatus().toString());
             activityJson.add(ActivityResponseKey.PAYING_ACTIONS.key,this.createPayingActionsResponse(activity, playerIDToPlaySet));
-            activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,createBuyingActions(activity, player, playerIDToPlaySet));
+            activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,this.createBuyingActions(activity, player, playerIDToPlaySet));
             JsonArray playerIDListJson = new JsonArray();
             playerIDToPlaySet.forEach(playerIDListJson::add);
             activityJson.add(ActivityResponseKey.PLAYER_ID_LIST.key, playerIDListJson);
@@ -101,7 +105,7 @@ public class UpdateGameEvent implements EventProtocol {
 
         for (RoleType role : RoleType.values()) {
             JsonArray payingActionsByRole = new JsonArray();
-            for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getRoleID() == role.getId()).collect(Collectors.toSet())) {
+            for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getRoleID() == role.getId()).sorted(Comparator.naturalOrder()).collect(Collectors.toList())) {
                 Optional<Player> playerAction = game.getPlayerByRoleID(payResources.getRoleID());
                 playerAction.ifPresent(value -> playerIDToPlaySet.add(playerAction.get().getID()));
 

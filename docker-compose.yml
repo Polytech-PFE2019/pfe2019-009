@@ -15,8 +15,3 @@ services:
       - mongodb
     environment:
       spring.data.mongodb.uri: mongodb://mongodb:27017/domego
-  domegoClient:
-    build: ./Angular
-    image: domego/client
-    ports:
-      - 4200:4200

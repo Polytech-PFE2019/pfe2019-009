@@ -1,12 +1,10 @@
 package org.polytech.pfe.domego.components.business;
 
-import org.polytech.pfe.domego.models.PayResourceType;
-import org.polytech.pfe.domego.models.PayResources;
-import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.Project;
+import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyResources;
 import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
+import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +23,7 @@ public class Game {
         this.players = players;
         this.activities = activities;
         this.project = new Project();
-
+        this.currentActivity = 0;
     }
 
     public Optional<Player> getPlayerById(String playerID){
@@ -42,6 +40,27 @@ public class Game {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean payForCurrentActivity(Player player, List<Payment> payments){
+        Activity activity = this.getCurrentActivity();
+        int roleID = player.getRole().getId();
+        int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
+        if(totalAmount > player.getResourcesAmount())
+            return false;
+
+        for (Payment payment: payments) {
+            if (payment.getAmount() > player.getResourcesAmount()) {
+                return false;
+            }
+            if(!activity.payResources(roleID,payment.getType(), payment.getAmount())){
+                return false;
+            }
+
+        }
+
+        player.substractResources(totalAmount);
+        return true;
     }
 
     public List<Player> getPlayers() {

@@ -27,12 +27,12 @@ public class RoomRequestHandler implements RequestHandler {
     }
 
     @Override
-    public void handleRequest(WebSocketSession session, Map<String, String> request) throws Exception {
+    public void handleRequest(WebSocketSession session, Map request) throws Exception {
         EventProtocol event;
         if(!request.containsKey("request")) {
             throw new Exception("bad request : must be of type {\"request\":\"REQUEST_NAME\'}");
         }
-        String requestName = request.get("request");
+        String requestName = String.valueOf(request.get("request"));
 
         switch(requestName){
             case "CREATE_GAME" :

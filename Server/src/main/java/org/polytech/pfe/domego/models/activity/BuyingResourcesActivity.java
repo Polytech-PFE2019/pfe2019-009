@@ -14,17 +14,17 @@ public class BuyingResourcesActivity  extends Activity implements BuyingAction {
 
     @Override
     public int getExchangeRateForRoleID(int roleID){
-        BuyResources action = getByResourcesByRoleID(roleID);
+        BuyResources action = getBuyResourcesByRoleID(roleID);
         return action.getRate();
     }
 
     @Override
     public void buyResources(int roleID, int amount) {
-        BuyResources action = getByResourcesByRoleID(roleID);
+        BuyResources action = getBuyResourcesByRoleID(roleID);
         action.buyResources(amount);
     }
 
-    private BuyResources getByResourcesByRoleID(int roleID){
+    public BuyResources getBuyResourcesByRoleID(int roleID){
         return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID).findAny().orElse(new BuyResources(roleID,2));
     }
 

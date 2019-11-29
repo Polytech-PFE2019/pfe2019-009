@@ -32,7 +32,7 @@ public abstract class Activity {
         mandatoryPayResourcesList.forEach(payResources -> roleHasPaid.put(payResources.getRoleID(),false));
     }
 
-    private Optional<PayResources> getPayResourcesByRoleAndType(int roleID, PayResourceType payResourceType){
+    public Optional<PayResources> getPayResourcesByRoleAndType(int roleID, PayResourceType payResourceType){
         return payResourcesList.stream().filter(payResources -> ((payResources.getRoleID() == roleID) && payResources.getPayResourceType().equals(payResourceType))).findAny();
 
     }

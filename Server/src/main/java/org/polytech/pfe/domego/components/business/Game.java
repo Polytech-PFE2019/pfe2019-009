@@ -25,6 +25,7 @@ public class Game {
         this.players = players;
         this.activities = activities;
         this.project = new Project();
+        this.currentActivity = 0;
 
     }
 

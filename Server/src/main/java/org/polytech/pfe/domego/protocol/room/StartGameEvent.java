@@ -87,7 +87,7 @@ public class StartGameEvent implements EventProtocol {
 
     private JsonObject createStartGameResponse(Game game){
         JsonObject response = new JsonObject();
-        response.addProperty(RoomResponseKey.RESPONSE.key,"OK");
+        response.addProperty(RoomResponseKey.RESPONSE.key,"START_GAME");
         response.addProperty(RoomResponseKey.GAMEID.key, game.getId());
         return response;
     }

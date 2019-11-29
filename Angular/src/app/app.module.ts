@@ -31,8 +31,6 @@ import { NegociationComponent } from './commun-module/negociation/negociation.co
 import { ResourceBuyerComponent } from './commun-module/resource-buyer/resource-buyer.component';
 import { ActivityDisplayerComponent } from './commun-module/activity-displayer/activity-displayer.component';
 
-import { RiskCardComponent } from './commun-module/risk-card/risk-card.component';
-
 import {LobbyService} from './service/lobbyService/lobby.service';
 import {WebsocketService} from './service/webSocketService/websocket.service';
 import {GameOnService} from './service/gameOnService/game-on.service';
@@ -40,6 +38,8 @@ import { RiskContainerComponent } from './commun-module/risk-back/risk-container
 import { RiskBackComponent } from './commun-module/risk-back/risk-back.component';
 import { LoadingComponent } from './loading/loading.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
+import { PromptComponent } from './game-information/prompt/prompt.component';
+import { WaitComponent } from './game-information/wait/wait.component';
 
 registerLocaleData(fr);
 
@@ -64,11 +64,12 @@ registerLocaleData(fr);
     NegociationComponent,
     ResourceBuyerComponent,
     ActivityDisplayerComponent,
-    RiskCardComponent,
     RiskContainerComponent,
     RiskBackComponent,
     LoadingComponent,
-    LoadingPageComponent
+    LoadingPageComponent,
+    PromptComponent,
+    WaitComponent
   ],
   imports: [
     BrowserModule,

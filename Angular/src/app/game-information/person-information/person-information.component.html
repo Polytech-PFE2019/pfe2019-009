@@ -1,0 +1,33 @@
+<div class="container">
+  <nz-card [nzActions]="[actionEdit, actionEllipsis]">
+    <nz-card-meta
+      nzTitle="Le maître d’ouvrage"
+      nzDescription="This is the description"
+      [nzAvatar]="avatarTemplate"
+    ></nz-card-meta>
+  </nz-card>
+  <ng-template #avatarTemplate>
+    <nz-avatar nzSrc="../../assets/profiles/1.jpeg"></nz-avatar>
+  </ng-template>
+  <ng-template #actionEdit>
+    <i id="buyResource"
+       nz-icon
+       nzType="account-book"
+       nzTheme="outline">
+    </i>
+  </ng-template>
+  <ng-template #actionEllipsis>
+    <i nz-icon nzType="ellipsis"></i>
+  </ng-template>
+  <div class="resource">
+    <div class="inner">
+      <img src="../../../assets/icons/qian-2.png" width="50" height="50">
+      <h3>{{currentMonney}}K</h3>
+    </div>
+    <br>
+    <div class="inner">
+      <div class="resourceCube"></div>
+      <h3>{{currentResource}}</h3>
+    </div>
+  </div>
+</div>

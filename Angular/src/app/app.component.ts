@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { WebsocketService } from "./websocket.service";
-import { LobbyService } from "./lobby.service";
-import { SocketRequest } from 'src/Request';
+import {WebsocketService} from './service/webSocketService/websocket.service';
+import {LobbyService} from './service/lobbyService/lobby.service';
 
+import {Component} from '@angular/core';
+import {SocketRequest} from "../Request";
 
 @Component({
   selector: 'app-root',
@@ -12,34 +12,18 @@ import { SocketRequest } from 'src/Request';
 })
 export class AppComponent {
 
+  test: SocketRequest = new SocketRequest();
+  test1 = [];
 
+  constructor() {
+    if (this.test.gameID === undefined) {
+      console.log('asdfkjalsjdflas');
+    } else {
+      console.log('1230');
+    }
 
-  constructor(private lobbyService: LobbyService) {
-    lobbyService.messages.subscribe(msg => {
-      console.log("Response: " + msg.response)
-
-      // Implement here onMessage methods
-
-      switch (msg.response) {
-        case "UPDATE": this.updateRoom();
-          break;
-      }
-
-
-    });
+    this.test1.push('sdskfhakshdfk');
+    console.log(this.test1);
   }
 
-  updateRoom() {
-
-  }
-
-
-
-  sendRequest() {
-    let message = {
-      request: "CREATE_GAME",
-      username: "TEST"
-    };
-    this.lobbyService.messages.next(message as SocketRequest);
-  }
 }

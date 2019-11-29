@@ -1,0 +1,22 @@
+<div class = "riskContainer">
+  <button nz-button nzType="link"
+          [disabled]=riskUnavailable
+          style="width: 200px"
+          (click) = "drawCard()">
+    <nz-card *ngIf="cardNb === 0"
+             style="background: black">
+      <div class="cardContainer">
+        <h2 style="color: white;margin: 5px">
+          Risque
+        </h2>
+        <div class="circle">{{step}}</div>
+        <div style="color: white">
+        </div>
+      </div>
+    </nz-card>
+    <div *ngIf="cardNb !== 0">
+      <app-risk-container [risk] = "test"></app-risk-container>
+    </div>
+  </button>
+
+</div>

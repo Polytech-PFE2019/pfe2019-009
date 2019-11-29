@@ -1,0 +1,49 @@
+.container{
+  text-align: center;
+}
+
+.activity2Container{
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.row_plain{
+  display: flex;
+  flex-direction: row;
+}
+
+.column{
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column_plain{
+  display: flex;
+  flex-direction: column;
+}
+
+img{
+  width:20px;
+  height:20px;
+}
+
+.information{
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.column{
+  text-align: center;
+}

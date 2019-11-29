@@ -1,1 +1,45 @@
-<p>home-page works!</p>
+<div class="container">
+  <h1 nz-title>DOMEGO</h1>
+  <span nz-text><u>Un jeu sérieux pédagogique</u></span>
+  <div class="creationContainer">
+    <!--    <img src="../../assets/icons/arrow.png" width="200" height="200" alt="Picture">-->
+    <!--    <button id="createSalon" nz-button nzType="default" (click)="createASalon()">Créer un salon</button>-->
+    <!--    <button id="joinSalon" nz-button nzType="default" (click)="joinASalon()">Join un salon</button>-->
+    <nz-card>
+      <h4>Entréez votre nom!</h4>
+      <input nz-input placeholder="Entréez votre nom" [(ngModel)]="value" (ngModelChange)="getUsername()"/>
+      <div class="choice">
+        <button class="create" (click)="createASalon()">Créer une partie</button>
+      </div>
+      <nz-table #filterTable
+                [nzShowPagination]="false"
+                [nzData]="listOfDisplayData"
+                nzTitle="Parties disponibles">
+        <thead>
+        <tr>
+          <th>
+            ID
+          </th>
+          <th>Creator</th>
+          <th>
+            Nombre de joueurs
+          </th>
+          <th>Join</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of filterTable.data">
+          <td>{{ data?.roomID}}</td>
+          <td>{{ data?.creator}}</td>
+          <td>{{ data?.numberOfPlayer }}</td>
+          <td>
+            <button nz-button (click)="joinSalon(data)">Join</button>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+  <app-game-creator #gameCreator (test)="testdd($event)" [userName]="value"></app-game-creator>
+</div>

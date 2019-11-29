@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+Angular/.idea/workspace.xml
+Angular/.idea/codeStyles/codeStyleConfig.xml
+Angular/.idea/modules.xml
+Angular/.idea/inspectionProfiles/Project_Default.xml
+Angular/.idea/codeStyles/Project.xml

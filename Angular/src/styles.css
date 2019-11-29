@@ -1,3 +1,133 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-zorro-antd/style/index.min.css"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/index.min.css"; /* 引入组件样式 */
+
+.money{
+  background: #ffcb0f;
+  height:30px;
+  width: 30px;
+  display: flex;
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.blue_square{
+  background: #2f63d4;
+  height:30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.green_square{
+  background: #4cc916;
+  height:30px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.yellow_square{
+  background: #f7e80c;
+  height:30px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.black_square{
+  background: #000000;
+  height:30px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.red_square{
+  background: #ff0000;
+  height:30px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.purple_square{
+  background: #cc00b4;
+  height:30px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.blue_rounding{
+  background: #2f63d4;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.green_rounding{
+  background: #4cc916;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.yellow_rounding{
+  background: #f7e80c;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.black_rounding{
+  background: #000000;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.red_rounding{
+  background: #ff0000;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.purple_rounding{
+  background: #cc00b4;
+  height:30px;
+  width: 30px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}

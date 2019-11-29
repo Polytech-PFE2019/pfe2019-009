@@ -1,0 +1,42 @@
+<div class="container" *ngIf="!isLoding">
+  <div class="information">
+    <div class="listContainer">
+      <h4>Liste de joureurs</h4>
+      <nz-list [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+        <ng-template #item let-item>
+          <nz-list-item>
+            <nz-list-item-meta
+              [nzTitle]="nzTitle"
+              nzAvatar="../../assets/profiles/test.jpg">
+              <ng-template #nzTitle>
+                <a>{{ item?.username}}</a>
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </div>
+    <h1 nz-title>Choissisez vore rôle</h1>
+  </div>
+  <div nz-row [nzGutter]="6" style="margin-top: 100px">
+    <div nz-col [nzSpan]="4" *ngFor="let role of roles">
+      <app-role #Role [roomID]="roomID"
+                [role]="role"
+                [disableChoose]="role.username!=='' && role.username!= userName"
+                [choosed]="role.choosed"
+                [readyed]="role.ready"
+                (checkNum)="getCheckedNum($event)"></app-role>
+      <label nz-checkbox
+             [disabled]="role.username!=='' && role.username!= userName"
+             *ngIf="role.choosed"
+             [(ngModel)]="role.ready" (ngModelChange)="ready()">Prêt</label>
+    </div>
+  </div>
+
+  <button id="start"
+          *ngIf="userID === hostID"
+          nz-button nzType="default"
+          (click)="gameStart()">Démarrer
+  </button>
+</div>
+<app-loading *ngIf="isLoding"></app-loading>

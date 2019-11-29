@@ -1,0 +1,49 @@
+.container{
+  width: 96%;
+  margin-top: 6px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.templateTitle{
+  display: flex;
+}
+
+
+.durationContainer{
+  width: 50px;
+  height: 30px;
+  margin-left: 10px;
+  background-color: #e9911d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f0f2f5;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.risk{
+  background-color: #c54e3c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  margin-left: 5px;
+  border-radius: 5px;
+  color: #f0f2f5;
+}
+
+
+.cell{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

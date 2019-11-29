@@ -1,0 +1,29 @@
+<h2 nz-title>Domego - {{step}}</h2>
+<div nz-row class="container">
+  <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
+    <div class="activityContainer">
+      <div class="activity">
+        <app-activity *ngIf="testClick" [activities]="activities"></app-activity>
+      </div>
+      <div class="activity">
+        <app-buy-resources></app-buy-resources>
+      </div>
+      <div class="activity" id="personnal">
+        <app-person-information>
+        </app-person-information>
+      </div>
+      <div class="activity">
+        <app-projet-information></app-projet-information>
+      </div>
+    </div>
+
+    <button id="end" nz-button *ngIf="step==='Étape 12'" (click)="closeGame()"><b>Terminer</b></button>
+  </div>
+  <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
+    <div class="stepContainer" *ngFor="let s of currentStep">
+      <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"  (sendStepTest)="getStepTest($event)"></app-step>
+    </div>
+<!--    <app-step (sendTestClick)="getClickTest($event)" (sendStepTest)="getStepTest($event)"></app-step>-->
+  </div>
+</div>
+

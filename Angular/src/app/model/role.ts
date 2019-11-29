@@ -28,14 +28,10 @@ export class Role {
     this.money = '';
   }
 
-  addAttribute(o: any) {
+  addThisAttributes(o: any) {
     this.username = o.username;
     this.ready = o.ready;
-    if (o.roleID === this.id) {
-      this.choosed = true;
-    } else {
-      this.choosed = false;
-    }
+    this.choosed = o.roleID === this.id;
   }
 
   removeAttribute() {

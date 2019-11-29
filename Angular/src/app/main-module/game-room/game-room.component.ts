@@ -76,21 +76,23 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           case 'UPDATE':
             this.users = data.players;
             this.hostID = data.hostID;
+
             for (const r of this.roles) {
-              var taken = false;
+              let taken = false;
               if (r.ready) {
                 this.userReady++;
               }
               for (const player of this.users) {
                 if (r.id === player.roleID) {
-                  this.addAttribute(r, player);
+                  r.addThisAttributes(player);
                   taken = true;
                 }
-                if (!taken) {
-                  r.removeAttribute();
-                }
+              }
+              if (!taken) {
+                r.removeAttribute();
               }
             }
+            console.log(this.roles);
             break;
           case 'START_GAME':
             this.goToLoadingPage(data.gameID);
@@ -195,13 +197,4 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     this.lobbyService.messages.next(req as SocketRequest);
   }
 
-  addAttribute(r, o: any) {
-    r.username = o.username;
-    r.ready = o.ready;
-    if (o.roleID === r.id) {
-      r.choosed = true;
-    } else {
-      r.choosed = false;
-    }
-  }
 }

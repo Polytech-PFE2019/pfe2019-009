@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface RequestHandler {
 
-    void handleRequest(WebSocketSession session, Map<String, String> request) throws Exception;
+    void handleRequest(WebSocketSession session, Map request) throws Exception;
 }

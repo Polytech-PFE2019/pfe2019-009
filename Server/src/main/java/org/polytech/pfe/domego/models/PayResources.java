@@ -2,7 +2,7 @@ package org.polytech.pfe.domego.models;
 
 import java.util.Map;
 
-public class PayResources {
+public class PayResources implements Comparable<PayResources> {
     private int roleID;
     private Map<Integer, Integer> priceAndBonusMap;
     private int amountPaid;
@@ -67,5 +67,13 @@ public class PayResources {
 
     public int getAmountLeft() {
         return amountLeft;
+    }
+
+    @Override
+    public int compareTo(PayResources o) {
+        Integer oID = o.getPayResourceType().getId();
+        Integer thisID = this.getPayResourceType().getId();
+
+        return thisID.compareTo(oID);
     }
 }

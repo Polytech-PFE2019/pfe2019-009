@@ -68,7 +68,7 @@ public abstract class Activity {
     }
 
     public List<PayResources> getPayResourcesList() {
-        return payResourcesList;
+        return payResourcesList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
     }
 
     public List<BuyResources> getBuyResourcesList() { return buyResourcesList; }

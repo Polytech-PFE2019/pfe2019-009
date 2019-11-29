@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -147,10 +148,16 @@ class GameRequestHandlerTest {
         request.addProperty("request","PAY_RESOURCES");
         request.addProperty("gameID", game.getId());
         request.addProperty("userID", player.getID());
-        request.addProperty("amount", "1");
-        request.addProperty("type", "MANDATORY");
 
-        Map<String,String> value = new Gson().fromJson(request, Map.class);
+        JsonArray payments = new JsonArray();
+        JsonObject paymentMandatory = new JsonObject();
+        paymentMandatory.addProperty("amount", "1");
+        paymentMandatory.addProperty("type", "MANDATORY");
+        payments.add(paymentMandatory);
+        request.add("payments",payments);
+
+
+        Map<String,?> value = new Gson().fromJson(request, Map.class);
 
         int moneyPlayer = player.getMoney();
         int resourcesPlayer = player.getResourcesAmount();
@@ -178,7 +185,7 @@ class GameRequestHandlerTest {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
-        response.addProperty(GameResponseKey.BONUSTYPE.key, "MANDATORY");
+        //response.addProperty(GameResponseKey.BONUSTYPE.key, "MANDATORY");
 
         verify(sessionPlayerTest, times(1)).sendMessage(
                 new TextMessage(response.toString()));

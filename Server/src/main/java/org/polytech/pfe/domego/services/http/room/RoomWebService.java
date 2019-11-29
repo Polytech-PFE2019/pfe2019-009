@@ -1,8 +1,8 @@
 package org.polytech.pfe.domego.services.http.room;
 
+import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.exceptions.room.RoomNotFoundException;
-import org.polytech.pfe.domego.models.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +45,7 @@ public class RoomWebService implements RoomService {
     @Override
     @RequestMapping(value = "/NumberRooms", method = RequestMethod.GET)
     public ResponseEntity<String> getTotalOfRoom() {
-        return null;
+        return ResponseEntity.ok(String.valueOf(roomAccessor.getNumberOfRoom()));
     }
 
     private Map<String, Object> createResponseForRoom(Room room){

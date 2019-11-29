@@ -1,73 +1,85 @@
 package org.polytech.pfe.domego.models;
 
-import com.google.gson.JsonObject;
 import org.springframework.web.socket.WebSocketSession;
+
+import java.util.UUID;
 
 public class Player {
     private WebSocketSession session;
-    private String socketID;
+    private String id;
     private String name;
     private Role role;
-    private boolean ready = false;
-    private int points = 0;
+    private int resourcesAmount;
+    private int money;
 
     public Player(WebSocketSession session, String name ){
         this.session = session;
-        this.socketID = session.getId();
+        this.id = UUID.randomUUID().toString();
         this.role = new Role();
         this.name = name;
+        this.resourcesAmount = 0;
+        this.money = 0;
+    }
+
+    public Player(Player player) {
+        this.id = player.id;
+        this.role = player.role;
+        this.name = player.name;
+        this.resourcesAmount = player.resourcesAmount;
+        this.money = player.money;
+        this.session = null;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getSocketID() {
-        return socketID;
+    public String getID() {
+        return id;
     }
 
     public void setRole(Role role){
         this.role = role;
+        this.money = role.getBudget();
     }
 
     public Role getRole(){
         return role;
     }
 
-    public int getPoints(){
-        return points;
-    }
-
-    public boolean isReady() {
-        return ready;
-    }
-
-    public void changeReady(){
-        if(ready){
-            ready = false;
-        }
-        else{
-            ready = true;
-        }
-    }
-    public void setReady(boolean ready) {
-        this.ready = ready;
-    }
-    public void addPoints(int points){
-        this.points += points;
-    }
-
-    public String createResponseRequest(){
-
-        JsonObject response = new JsonObject();
-        response.addProperty("username", name);
-        response.addProperty("ready", ready);
-        response.addProperty("roleID", (role != null ? role.getId() : 0));
-
-        return response.toString();
-    }
-
     public WebSocketSession getSession() {
         return session;
     }
+
+    public void setSession(WebSocketSession session) {
+        this.session = session;
+    }
+
+    public int getResourcesAmount() {
+        return resourcesAmount;
+    }
+
+
+    public void addResouces(int amount){
+        resourcesAmount += amount;
+    }
+
+    public void substractResources(int amount){
+        resourcesAmount -= amount;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+
+    public void addMoney(int amount){
+        money += amount;
+    }
+
+    public void substractMoney(int amount){
+        money -= amount;
+    }
+
+
 }

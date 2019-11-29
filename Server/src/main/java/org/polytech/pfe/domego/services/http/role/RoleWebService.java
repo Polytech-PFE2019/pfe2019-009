@@ -1,8 +1,8 @@
 package org.polytech.pfe.domego.services.http.role;
 
+import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.exceptions.role.RoleNotFoundException;
 import org.polytech.pfe.domego.models.Role;
-import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

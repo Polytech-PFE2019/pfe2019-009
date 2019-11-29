@@ -5,7 +5,7 @@ public enum RoleType {
     MAITRE_D_OUVRAGE("MANAGER", 1),
     MAITRE_D_OEUVRE("ARCHITECT",2),
     BUREAU_D_ETUDE("OFFICER",3),
-    BUREAU_DE_CONTROLE("CONTROLER",4),
+    BUREAU_DE_CONTROLE("CONTROLLER",4),
     ENTREPRISE_GROS_OEUVRE("",5),
     ENTREPRISE_CORPS_ETAT_SECONDAIRE("SECONDARY",6);
 
@@ -26,7 +26,7 @@ public enum RoleType {
     }
 
     public static int getNumberOfRole(){
-        return RoleType.values().length -1;
+        return RoleType.values().length;
     }
 
     public static RoleType getRoleType(int roleID){

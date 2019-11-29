@@ -36,6 +36,8 @@ import { RiskCardComponent } from './commun-module/risk-card/risk-card.component
 import {LobbyService} from './service/lobbyService/lobby.service';
 import {WebsocketService} from './service/webSocketService/websocket.service';
 import {GameOnService} from './service/gameOnService/game-on.service';
+import { RiskContainerComponent } from './commun-module/risk-back/risk-container/risk-container.component';
+import { RiskBackComponent } from './commun-module/risk-back/risk-back.component';
 
 registerLocaleData(fr);
 
@@ -60,7 +62,9 @@ registerLocaleData(fr);
     NegociationComponent,
     ResourceBuyerComponent,
     ActivityDisplayerComponent,
-    RiskCardComponent
+    RiskCardComponent,
+    RiskContainerComponent,
+    RiskBackComponent
   ],
   imports: [
     BrowserModule,

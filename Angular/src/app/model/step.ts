@@ -1,5 +1,6 @@
 export const Steps = [
   {
+    id: 1,
     title: 'Étape 1',
     description: 'ALLOCATION DE RESSOURCES \nMAITRE D’OUVRAGE',
     duration: '2j',
@@ -8,6 +9,7 @@ export const Steps = [
       ' Il se les procure en conséquence.',
   },
   {
+    id: 2,
     title: 'Étape 2',
     description: 'ETUDES DE FAISABILITÉ',
     duration: '15j',
@@ -22,6 +24,7 @@ export const Steps = [
       ' s’il doit simplement être abandonné.',
   },
   {
+    id: 3,
     title: 'Étape 3',
     description: 'NEGOCIATION ET CONTRACTUALISATION \nMAITRE D’OUVRAGE –MAITRE D’OEUVRE',
     duration: '8j',
@@ -31,6 +34,7 @@ export const Steps = [
       'Ce contrat précisera notamment le délai ainsi que les coûts prévus.',
   },
   {
+    id: 4,
     title: 'Étape 4',
     description: 'NEGOCIATION ET CONTRACTUALISATION\n MAITRE D’OEUVRE –ENTREPRISES –BUREAU CONTROLE',
     duration: '15j',
@@ -43,6 +47,7 @@ export const Steps = [
       'peuvent alors être signés. ',
   },
   {
+    id: 5,
     title: 'Étape 5',
     description: 'ALLOCATION DE RESSOURCES \nMAITRE D’ŒUVRE, BUREAU D’ETUDES ET DE CONTROLE',
     duration: '5j',
@@ -51,6 +56,7 @@ export const Steps = [
       'avoir besoin durant l’opération de construction',
   },
   {
+    id: 6,
     title: 'Étape 6',
     description: 'CONCEPTION PRELIMINAIRE',
     duration: '20j',
@@ -62,6 +68,7 @@ export const Steps = [
       'fonctionnelle,la structure spatiale et l’aspect général.',
   },
   {
+    id: 7,
     title: 'Étape 7',
     description: 'CONCEPTION DEFINITIVE',
     duration: '30j',
@@ -73,6 +80,7 @@ export const Steps = [
       'Une date de démarrage des travaux est prévue.',
   },
   {
+    id: 8,
     title: 'Étape 8',
     description: 'PREPARATION DE CHANTIER',
     duration: '20j',
@@ -85,6 +93,7 @@ export const Steps = [
       'à son déroulement.',
   },
   {
+    id: 9,
     title: 'Étape 9',
     description: 'TERRASSEMENT ET FONDATIONS ',
     duration: '50j',
@@ -100,6 +109,7 @@ export const Steps = [
       'sous un poteau est dite « semelleisolée ».\n',
   },
   {
+    id: 10,
     title: 'Étape 10',
     description: 'GROS-OEUVRE',
     duration: '80j',
@@ -113,6 +123,7 @@ export const Steps = [
       'à l\'exclusion de leurs parties mobiles(couverture).',
   },
   {
+    id: 11,
     title: 'Étape 11',
     description: 'CORPS D’ETAT SECONDAIRE',
     duration: '100j',
@@ -123,6 +134,7 @@ export const Steps = [
       'tels	que	la	plomberie 	ou	l’électricité.',
   },
   {
+    id: 12,
     title: 'Étape 12',
     description: 'LIVRAISON ET RECEPTION',
     duration: '30j',

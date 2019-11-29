@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Steps} from '../../model/step';
 
 @Component({
   selector: 'app-step',

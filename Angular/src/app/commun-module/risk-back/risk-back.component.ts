@@ -2,16 +2,18 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Risks} from '../../model/risks';
 
 @Component({
-  selector: 'app-risk-card',
-  templateUrl: './risk-card.component.html',
-  styleUrls: ['./risk-card.component.css']
+  selector: 'app-risk-back',
+  templateUrl: './risk-back.component.html',
+  styleUrls: ['./risk-back.component.css']
 })
-export class RiskCardComponent implements OnInit {
+export class RiskBackComponent implements OnInit {
   @Input() step: number;
   risks: any = Risks;
   random = 0;
   riskRemainNb = 2;
   cardNb = 0;
+  riskUnavailable = (this.riskRemainNb === 0);
+  currentRiskTotal = 5; // to be input
   testid = 0;
   test = {
     id: 0,
@@ -19,15 +21,18 @@ export class RiskCardComponent implements OnInit {
     title: '',
     risk: [1, 2]
   };
-  riskUnavailable = (this.riskRemainNb === 0);
   constructor() { }
+  getRandomFromSon(event) {
+    this.random = event;
+    this.drawCard();
+  }
   drawCard(): void {
     if (this.riskRemainNb !== 0) {
       this.riskRemainNb --;
       this.cardNb++;
     }
     this.riskUnavailable = (this.riskRemainNb === 0);
-    this.random = Math.ceil(Math.random() * 5);
+    this.random = Math.ceil(Math.random() * this.currentRiskTotal);
     console.log(this.random);
     console.log(this.risks);
     this.getId(this.random);

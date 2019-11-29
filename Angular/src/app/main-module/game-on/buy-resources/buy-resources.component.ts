@@ -27,7 +27,12 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   }
 
   popConfirm(): void {
-    this.isVisible = true;
+    this.price = this.resourceNb * this.multiple;
+    if ( this.currentMonney >= this.price ) {
+      this.isVisible = true;
+    } else {
+      this.nzMessageService.info('Votre agent ne suffit pas');
+    }
   }
 
   handleOk(): void {

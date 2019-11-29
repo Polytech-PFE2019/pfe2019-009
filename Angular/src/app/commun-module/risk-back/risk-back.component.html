@@ -1,10 +1,10 @@
 <div class = "riskContainer">
-  <button *ngIf="cardNb === 0"
-          nz-button nzType="link"
+  <button nz-button nzType="link"
           [disabled]=riskUnavailable
           style="width: 200px"
           (click) = "drawCard()">
-    <nz-card style="background: black">
+    <nz-card *ngIf="cardNb === 0"
+             style="background: black">
       <div class="cardContainer">
         <h2 style="color: white;margin: 5px">
           Risque
@@ -14,15 +14,9 @@
         </div>
       </div>
     </nz-card>
-  </button>
-  <div *ngIf="cardNb !== 0">
-    <div >
-      <app-risk-container
-        [risk] = "test"
-        [id]="random">
-      </app-risk-container>
+    <div *ngIf="cardNb !== 0">
+      <app-risk-container [risk] = "test"></app-risk-container>
     </div>
-      <div *ngIf="cardNb === 10"></div>
-  </div>
+  </button>
 
 </div>

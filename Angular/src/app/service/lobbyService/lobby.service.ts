@@ -22,7 +22,7 @@ export class LobbyService implements OnDestroy {
     this.subUserName = this.subscription.userName$.subscribe(name => {
       this.username = name;
     });
-    this.messages = <Subject<SocketRequest>> wsService
+    this.messages = <Subject<SocketRequest>>wsService
       .connect(URLRoom)
       .pipe(
         map((response: MessageEvent): SocketRequest => {
@@ -30,21 +30,21 @@ export class LobbyService implements OnDestroy {
           console.log(data);
           let playerList = [];
           if (JSON.stringify(data).includes('players')) {
-            playerList = JSON.parse(data.players);
+            playerList = data.players;
             console.log(playerList);
           }
           if (JSON.stringify(data).includes('userID')) {
-            console.log('send userID');
-            this.subscription.sendUserID(data.userID);
+            if (data.userID !== undefined) {
+              console.log('send userID');
+              this.subscription.sendUserID(data.userID);
+            }
           }
           if (JSON.stringify(data).includes('roomID')) {
-            console.log('send roomID');
-            this.subscription.sendRoomID(data.roomID);
+            if (data.userID !== undefined) {
+              console.log('send roomID');
+              this.subscription.sendRoomID(data.roomID);
+            }
           }
-          data.players = playerList.map(player => {
-            console.log(player);
-            return player;
-          });
           console.log(data);
           return data;
         }));

@@ -38,6 +38,8 @@ import {WebsocketService} from './service/webSocketService/websocket.service';
 import {GameOnService} from './service/gameOnService/game-on.service';
 import { RiskContainerComponent } from './commun-module/risk-back/risk-container/risk-container.component';
 import { RiskBackComponent } from './commun-module/risk-back/risk-back.component';
+import { LoadingComponent } from './loading/loading.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 
 registerLocaleData(fr);
 
@@ -64,7 +66,9 @@ registerLocaleData(fr);
     ActivityDisplayerComponent,
     RiskCardComponent,
     RiskContainerComponent,
-    RiskBackComponent
+    RiskBackComponent,
+    LoadingComponent,
+    LoadingPageComponent
   ],
   imports: [
     BrowserModule,

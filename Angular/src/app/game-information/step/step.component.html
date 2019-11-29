@@ -18,7 +18,7 @@
       <div nz-row style="margin-top: 10px">
         <div nz-col nzSpan="24">
           <nz-card style="" nzTitle="Activités">
-            <nz-table nzBordered [nzData]="datasets" #table [nzFrontPagination]="false">
+            <nz-table nzBordered [nzData]="test" #table [nzFrontPagination]="false">
               <thead>
               <tr>
                 <th><img src="../../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
@@ -27,18 +27,30 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let data of table.data">
+              <tr *ngFor="let data of step?.payingActions; let t of table.data">
                 <td>
-                  <app-activity-displayer [role]="1"
-                                          [type]="'basic'"
-                                          [activitiesBenefits]="[{payment: 0,duration: 0}]">
+                  <app-activity-displayer
+                    [role]="data?.roleID"
+                    [type]="'basic'"
+                    [activitiesBenefits]="data?.actions[0].actions">
                   </app-activity-displayer>
                 </td>
                 <td>
-                  <app-activity-displayer [role]="1" [isActivity]="false" [type]="'risk'"></app-activity-displayer>
+                  <app-activity-displayer
+                    [role]="data?.roleID"
+                    *ngIf="data?.actions.length > 1"
+                    [isActivity]="false"
+                    [activitiesBenefits]="data?.actions[1].actions"
+                    [type]="'risk'"></app-activity-displayer>
                 </td>
                 <td>
-                  <app-activity-displayer [role]="1" [isActivity]="false" [type]="'duration'"></app-activity-displayer>
+                  <app-activity-displayer
+                    *ngIf="data?.actions.length > 2"
+                    [role]="data?.roleID"
+                    [activitiesBenefits]="data?.actions[2].actions"
+                    [isActivity]="false"
+                    [type]="'duration'">
+                  </app-activity-displayer>
                 </td>
               </tr>
               </tbody>
@@ -51,14 +63,14 @@
   </nz-card>
 </div>
 <ng-template #extraTemplate>
-  <a nz-tooltip [nzTooltipTitle]="step?.detail">Détail</a>
+  <a nz-tooltip [nzTooltipTitle]="step?.description">Détail</a>
 </ng-template>
 
 <ng-template #titleTemplate>
   <div class="templateTitle">
     <h4 nz-title>{{step?.title}}</h4>
-    <div class="durationContainer"><b>+{{step?.duration}}</b></div>
-    <div class="risk" *ngFor="let item of counter(numOfRisks); let i=index">
+    <div class="durationContainer"><b>+{{step?.numberOfDays}}</b></div>
+    <div class="risk" *ngFor="let item of counter(step?.risks); let i=index">
       Risque{{i + 1}}
     </div>
   </div>

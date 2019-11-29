@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Roles} from '../../model/roles';
+import {Action} from '../../model/action';
 
 @Component({
   selector: 'app-activity-displayer',
@@ -11,28 +12,22 @@ export class ActivityDisplayerComponent implements OnInit {
   @Input() type = 'duration';
   @Input() isActivity = false;
   @Output() sendPaymentActivity = new EventEmitter();
-  @Input() activitiesBenefits: any[] = [
-    {
-      payment: 0,
-      benefits: 0
-    },
-    {
-      payment: 2,
-      benefits: 1
-    },
-    {
-      payment: 4,
-      benefits: 2
-    },
-  ];
+  @Input() activitiesBenefits: any[] = [];
   roleStyle: any;
   roles = Roles;
+  value = 0;
 
   constructor() {
   }
 
   ngOnInit() {
+    console.log(this.role);
+    // if (this.type === 'basic') {
+    //   this.value = this.activitiesBenefits[0].amountToPay;
+    // }
+    console.log(this.activitiesBenefits);
     this.roleStyle = this.getStyleById(this.role).style;
+
   }
 
   getStyleById(userId) {
@@ -40,7 +35,12 @@ export class ActivityDisplayerComponent implements OnInit {
   }
 
   getClickItem(item: any) {
-    this.sendPaymentActivity.emit(item.payment);
+    const i = {
+      amountToPay: item.amountToPay,
+      type: this.type,
+      bonusAmount: item.bonusAmount
+    };
+    this.sendPaymentActivity.emit(i);
 
   }
 }

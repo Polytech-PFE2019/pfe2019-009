@@ -10,6 +10,9 @@ import {HttpParams} from '@angular/common/http';
 import {Role} from '../../model/role';
 import {Globals} from '../../globals';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {Player} from 'src/app/Player';
+import {PlayerdataService} from 'src/app/playerdata.service';
+import {THIS_EXPR} from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-game-room',
@@ -31,13 +34,14 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   roleID: any;
   userReady = 0;
   hostID: string;
+  isLoding = false;
 
   constructor(private router: Router,
               private globals: Globals,
               private gameService: GameOnService,
               private activatedRoute: ActivatedRoute,
               private subscriptionService: SubscriptionService,
-              private lobbyService: LobbyService) {
+              private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
     for (let r of Roles) {
       r = new Role(r);
       this.roles = this.roles.concat(r);
@@ -49,40 +53,52 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       console.log(data);
       this.userReady = 0;
       console.log(data.gameID);
-      // if (JSON.stringify(data).includes('gameID')) {
-      //   const params = {
-      //     params: new HttpParams()
-      //       .set('roleID', this.roleID)
-      //       .set('userName', this.userName)
-      //       .set('gameID', data.gameID)
-      //   };
-      //   const req = {
-      //     request: 'JOIN_GAME',
-      //     gameID: data.gameID,
-      //     userID: this.userID
-      //   };
-      //   this.router.navigate(['gameon'], {queryParams: params});
-      //   this.gameService.messages.next(req as SocketRequest);
-      // } else {
+      if (data.gameID !== undefined) {
+        const params = {
+          params: new HttpParams()
+            .set('roleID', this.roleID)
+            .set('userName', this.userName)
+            .set('gameID', data.gameID)
+        };
+        const req = {
+          request: 'JOIN_GAME',
+          gameID: data.gameID.toString(),
+          userID: this.userID
+        };
+        this.subscriptionService.sendGameId(data.gameID);
+        this.gameService.messages.next(req as SocketRequest);
+        // this.isLoding = true;
+        // setTimeout(() => {
+        this.router.navigate(['gameon'], {queryParams: params});
+        // }, 5000);
+      } else {
         switch (data.response) {
           case 'UPDATE':
             this.users = data.players;
             this.hostID = data.hostID;
             for (const r of this.roles) {
+              var taken = false;
               if (r.ready) {
                 this.userReady++;
               }
               for (const player of this.users) {
                 if (r.id === player.roleID) {
-                  r.addAttribute(player);
+                  this.addAttribute(r, player);
+                  taken = true;
+                }
+                if (!taken) {
+                  r.removeAttribute();
                 }
               }
             }
-            console.log(this.roles);
+            break;
+          case 'START_GAME':
+            this.goToLoadingPage(data.gameID);
             break;
         }
-     // }
+      }
     });
+
 
     this.subUserId = this.subscriptionService.userID$.subscribe(data => {
       console.log(data);
@@ -122,6 +138,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
             r.ready = false;
           }
           if (this.checkedID === r.id) {
+            r.username = '';
             if (r.ready) {
               this.ready();
             }
@@ -136,6 +153,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
         if (r.id === $event.role) {
           r.choosed = false;
           r.ready = false;
+          r.username = '';
           this.checkedID = null;
         }
       }
@@ -150,13 +168,20 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       userID: this.userID.toString()
     };
     console.log(message);
-    const params = {
-      params: new HttpParams()
-        .set('roleID', this.roleID)
-        .set('userName', this.userName)
-    };
+
+
     this.lobbyService.messages.next(message as SocketRequest);
-    this.router.navigate(['gameon'], {queryParams: params});
+  }
+
+  goToLoadingPage(gameID) {
+    const players = {
+      playerID: this.userID.toString(),
+      gameID: gameID.toString()
+    };
+
+    this.playerDataService.player = players as Player;
+    this.router.navigate(['loading']);
+
   }
 
   ready() {
@@ -168,5 +193,15 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     };
     console.log(req);
     this.lobbyService.messages.next(req as SocketRequest);
+  }
+
+  addAttribute(r, o: any) {
+    r.username = o.username;
+    r.ready = o.ready;
+    if (o.roleID === r.id) {
+      r.choosed = true;
+    } else {
+      r.choosed = false;
+    }
   }
 }

@@ -39,7 +39,7 @@ export class BuyResourceService {
   }
 
   sendCurrentMonney(msg) {
-    console.log('subscription current monney' + msg);
+    console.log('subscription current money' + msg);
     this.currentMonney.next(msg);
   }
 

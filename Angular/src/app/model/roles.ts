@@ -12,7 +12,7 @@ export const Roles = [
     mission: 'missions',
     src: '../../assets/Maitre d’ouvrage.jpg',
     profile: '../../assets/profiles/1.jpeg',
-    monney: 150,
+    money: 150,
     style: {
       background: '#2f63d4',
       height: '30px',
@@ -35,7 +35,7 @@ export const Roles = [
     mission: 'missions',
     src: '../../assets/Architecte.png',
     profile: '../../assets/profiles/2.jpg',
-    monney: 30,
+    money: 30,
     style: {
       background: '#4cc916',
       height: '30px',
@@ -57,7 +57,7 @@ export const Roles = [
     mission: 'missions',
     src: '../../assets/Bureau d\'etude.png',
     profile: '../../assets/profiles/4.jpeg',
-    monney: 20,
+    money: 20,
     style: {
       background: '#f7e80c',
       height: '30px',
@@ -81,7 +81,7 @@ export const Roles = [
     mission: 'missions',
     src: '../../assets/Bureau de contrôle.jpg',
     profile: '../../assets/profiles/7.jpg',
-    monney: 20,
+    money: 20,
     style: {
       background: '#000000',
       height: '30px',
@@ -103,7 +103,7 @@ export const Roles = [
     mission: 'missions',
     src: '../../assets/Entreprise Corps Etat Secondaire.png',
     profile: '../../assets/profiles/8.jpg',
-    monney: 30,
+    money: 30,
     style: {
       background: '#cc00b4',
       height: '30px',
@@ -126,7 +126,7 @@ export const Roles = [
     mission: 'missions',
     src: '../../assets/Entreprise Gros Œuvre.png',
     profile: '../../assets/profiles/grilla.jpg',
-    monney: 30,
+    money: 30,
     style: {
       background: '#ff0000',
       height: '30px',

@@ -2,6 +2,9 @@ import {Component, OnInit, EventEmitter, Output, Input, OnDestroy} from '@angula
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {BuyResourceService} from '../../../service/resources/buy-resource.service';
 import {Subscription} from 'rxjs';
+import {GameOnService} from '../../../service/gameOnService/game-on.service';
+import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
+import {SocketRequest} from '../../../../Request';
 
 @Component({
   selector: 'app-buy-resources',
@@ -15,14 +18,32 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   price = 0;
   subCurrentMonney: Subscription;
   currentMonney = 30;
+  gameID: string;
+  subGameId: Subscription;
+  userID: string;
+  subUserId: Subscription;
 
   constructor(private nzMessageService: NzMessageService,
+              private gameService: GameOnService,
+              private subscription: SubscriptionService,
               private resourceService: BuyResourceService) {
   }
 
   ngOnInit() {
     this.subCurrentMonney = this.resourceService.currentMonney$.subscribe(data => {
       this.currentMonney = data;
+    });
+
+    this.gameService.messages.subscribe(data => {
+      console.log(data);
+    });
+
+    this.subGameId = this.subscription.gameID$.subscribe(id => {
+      this.gameID = id;
+    });
+
+    this.subUserId = this.subscription.userID$.subscribe(data => {
+      this.userID = data;
     });
   }
 
@@ -44,6 +65,14 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     console.log('multiple' + this.multiple);
     this.isVisible = false;
     this.nzMessageService.info('Achat réussi');
+    const req = {
+      request: 'BUY_RESOURCES',
+      gameID: this.gameID.toString(),
+      userID: this.userID,
+      amount: this.resourceNb.toString()
+    };
+    console.log(req);
+    this.gameService.messages.next(req as SocketRequest);
     this.resourceNb = 0;
   }
 
@@ -54,6 +83,8 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subCurrentMonney.unsubscribe();
+    this.subUserId.unsubscribe();
+    this.subGameId.unsubscribe();
   }
 
 }

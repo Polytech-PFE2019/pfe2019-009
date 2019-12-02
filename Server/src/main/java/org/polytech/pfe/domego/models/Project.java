@@ -19,6 +19,8 @@ public class Project {
         return cost;
     }
 
+    public int getFailure() {return failure; }
+
     public void addCost(int cost){
         this.cost += cost;
     }

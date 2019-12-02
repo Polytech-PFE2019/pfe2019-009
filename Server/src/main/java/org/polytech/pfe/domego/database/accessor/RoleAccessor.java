@@ -29,8 +29,9 @@ public class RoleAccessor {
     }
 
     void initDBRole(){
-        if(roleDB.count() != 6){
+        if(roleDB.count() != 7){
             roleDB.deleteAll();
+            roleDB.save(new Role(RoleType.NON_DEFINI.getId(),RoleType.NON_DEFINI,"",0,""));
             roleDB.save(new Role(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OUVRAGE,"Le maître d’ouvrage est la personne pour laquelle est réalisée l’ouvrage. Le maître d'ouvrage est le porteur du projet, il définit l'objectif du projet, son calendrier et le budget. Le résultat attendu du projet est la réalisation et la livraison d'un résultat, appelé l'ouvrage.",150,"Budget projet : 135k\n" + "Délai : 380 j\n" + "Défaillance : 20"));
             roleDB.save(new Role(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.MAITRE_D_OEUVRE,"Le maitre d’oeuvre (souvent l’architecte) est le chef de projet de construction, la personne physique ou morale qui dirige et vérifie la bonne exécution des travaux. En tant qu’architecte, il doit aussi concevoir le projet en répondant aux exigences du maitre d’ouvrage.",30,"Objectif négociation :\n" + "Recevoir entre 80k et 115k"));
             roleDB.save(new Role(RoleType.BUREAU_D_ETUDE.getId(),RoleType.BUREAU_D_ETUDE,"Le bureau d’étude doit assister l’architecte sur les spécificités techniques qui relèvent de sa compétence. Ils assurent des études techniques spécifiques : étude de la structure, étude de sol, étude thermique, étude acoustique, étude des réseaux...",20,"Objectif négociation :\n" + "Recevoir entre 10k et 20k"));

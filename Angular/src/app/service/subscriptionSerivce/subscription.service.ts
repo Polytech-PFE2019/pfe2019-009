@@ -10,18 +10,25 @@ export class SubscriptionService {
 
   userID = new Subject<any>();
   userID$ = this.userID.asObservable();
+  userId: any;
 
   userName = new Subject<any>();
   userName$ = this.userName.asObservable();
 
-  gameID = new Subject<any>();
-  gameID$ = this.gameID.asObservable();
-
+  gameID: any;
   activites = new Subject<any>();
   activites$ = this.activites.asObservable();
 
   payingActions = new Subject<any>();
   payingActions$ = this.payingActions.asObservable();
+
+  playersWithRoles = new Subject<any>();
+  playersWithRoles$ = this.playersWithRoles.asObservable();
+
+  roles: any[] = [];
+
+  currentActivity = new Subject<any>();
+  currentActivity$ = this.currentActivity.asObservable();
 
   constructor() {
   }
@@ -29,6 +36,7 @@ export class SubscriptionService {
   sendUserID(message) {
     console.log('subscription userID' + message);
     this.userID.next(message);
+    this.userId = message;
   }
 
   sendRoomID(message) {
@@ -42,8 +50,7 @@ export class SubscriptionService {
   }
 
   sendGameId(message) {
-    console.log('subscription gameID' + message);
-    this.gameID.next(message);
+    this.gameID = message;
   }
 
   sendActivities(message) {
@@ -54,5 +61,16 @@ export class SubscriptionService {
   sendPayingActions(message) {
     console.log('subscription activities' + message);
     this.payingActions.next(message);
+  }
+
+  sendPlayersWithRoles(msg) {
+    this.roles = msg;
+    console.log('subscription players with role' + msg);
+    this.payingActions.next(msg);
+  }
+
+  sendCurrentActivity(msg) {
+    console.log('sendCurrentActivity' + msg);
+    this.currentActivity.next(msg);
   }
 }

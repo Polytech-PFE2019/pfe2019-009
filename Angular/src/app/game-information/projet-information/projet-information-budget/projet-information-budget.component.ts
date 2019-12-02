@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {GameOnService} from "../../../service/gameOnService/game-on.service";
 
 @Component({
   selector: 'app-projet-information-budget',
@@ -9,12 +10,19 @@ export class ProjetInformationBudgetComponent implements OnInit {
 
   list: any = [];
   current = 0;
-  constructor() { }
+
+  money = 0;
+
+  constructor(private gameService: GameOnService) {
+  }
 
   ngOnInit() {
     for (let i = 1; i < 101; i++) {
       this.list.push(i);
     }
+
+    this.money = this.gameService.costProject;
+    console.log(this.money);
   }
 
 }

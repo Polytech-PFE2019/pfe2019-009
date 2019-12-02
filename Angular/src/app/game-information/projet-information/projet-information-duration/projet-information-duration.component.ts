@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {GameOnService} from "../../../service/gameOnService/game-on.service";
 
 @Component({
   selector: 'app-projet-information-duration',
@@ -9,14 +10,18 @@ export class ProjetInformationDurationComponent implements OnInit {
 
   list: any = [];
   current = 0;
+  days = 0;
 
-  constructor() {
+  constructor(private gameService: GameOnService) {
   }
 
   ngOnInit() {
     for (let i = 1; i < 101; i++) {
       this.list.push(i);
     }
+
+    this.days = this.gameService.delayProject;
+    console.log(this.days);
   }
 
 }

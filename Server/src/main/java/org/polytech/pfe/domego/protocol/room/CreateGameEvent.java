@@ -1,48 +1,50 @@
 package org.polytech.pfe.domego.protocol.room;
 
-import org.polytech.pfe.domego.components.statefull.RoomInstance;
+import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.components.business.Room;
+import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.Room;
 import org.polytech.pfe.domego.protocol.EventProtocol;
-import org.springframework.web.socket.TextMessage;
+import org.polytech.pfe.domego.protocol.room.key.RoomRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class CreateGameEvent implements EventProtocol {
 
+    private final static Logger LOGGER = Logger.getGlobal();
     private Map<String,String> request;
+    private Messenger messenger;
     private WebSocketSession user;
 
-    public CreateGameEvent(WebSocketSession session, Map<String,String> request) {
+    public CreateGameEvent(WebSocketSession session, Map request) {
         this.user = session;
+        this.messenger = new Messenger(session);
         this.request = request;
     }
 
     @Override
     public void processEvent() {
-        if(!request.containsKey(RoomRequestKey.USERNAME.key)) {
-            sendMessageToUser(user);
+        if(!request.containsKey(RoomRequestKey.USERNAME.getKey())) {
+            this.messenger.sendErrorCuzMissingArgument(RoomRequestKey.USERNAME.getKey());
             return;
         }
-        String username = request.get(RoomRequestKey.USERNAME.key);
+        String username = request.get(RoomRequestKey.USERNAME.getKey());
         Room newRoom = new Room(username + "'s lobby");
 
         Player player = new Player(user,username);
         newRoom.addPlayer(player);
-        RoomInstance.getInstance().addRoom(newRoom);
+        if(new RoomAccessor().addRoom(newRoom)){
+            new UpdateRoomEvent(newRoom).processEvent();
+            LOGGER.info("CreateGameEvent : " +username + " has created a Room named : " + newRoom.getRoomName() + " with ID : " + newRoom.getID());
 
-        //session.sendMessage(new TextMessage(room.createResponseRequest(player.getSocketID())));
-    }
-
-
-
-    private void sendMessageToUser(WebSocketSession session){
-        try {
-            user.sendMessage(new TextMessage("{response : \"KO\", message : \"bad request\"}"));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        else{
+            LOGGER.warning("CreateGameEvent : Error creating room");
+            this.messenger.sendError("Error creating game ! Retry please !");
+
+        }
+
     }
 }

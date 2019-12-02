@@ -1,4 +1,4 @@
-package org.polytech.pfe.domego.models;
+package org.polytech.pfe.domego.models.activity;
 
 public enum ActivityStatus {
     ONGOING,

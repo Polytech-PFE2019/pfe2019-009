@@ -9,7 +9,20 @@ export const Roles = [
       ' Le résultat attendu du projet est ' +
       'la réalisation et la livraison d\'un résultat,\n' +
       'appelé l\'ouvrage.',
-    mission: 'missions',
+    mission: {
+      pointsDeVistore:
+        [
+          '+1/j d’avance',
+          '+1/k économisé',
+          '+1/défaillance évitée'
+        ],
+      specialActivity:
+        [
+          'Budget projet : 135k',
+          'Délai : 380 j',
+          'Défaillance : 20'
+        ]
+    },
     src: '../../assets/Maitre d’ouvrage.jpg',
     profile: '../../assets/profiles/1.jpeg',
     money: 150,
@@ -32,7 +45,18 @@ export const Roles = [
       'et vérifie la bonne exécution des travaux. ' +
       'En tant qu’architecte, il doit aussi concevoir' +
       ' le projet en répondant aux exigences du maitred’ouvrage.',
-    mission: 'missions',
+    mission: {
+      pointsDeVistore:
+        [
+          '+5 si resp. bud. & temps',
+          '+1/défaillance évitée',
+          '+1/k gagné (bénéfice)'
+        ],
+      specialActivity:
+        [
+          'Objectif négociation : Recevoir entre 80k et 115k',
+        ]
+    },
     src: '../../assets/Architecte.png',
     profile: '../../assets/profiles/2.jpg',
     money: 30,
@@ -54,7 +78,18 @@ export const Roles = [
       ' Ils assurent des études techniques spécifiques : ' +
       'étudedelastructure, étude de sol, étude thermique,' +
       ' étude acoustique, étude des réseaux...',
-    mission: 'missions',
+    mission: {
+      pointsDeVistore:
+        [
+          '+2/k gagné (bénéfice)',
+          '+2 si respect délai projet',
+          '+2 si respect défaillance projet'
+        ],
+      specialActivity:
+        [
+          'Objectif négociation : Recevoir entre 10k et 20k',
+        ]
+    },
     src: '../../assets/Bureau d\'etude.png',
     profile: '../../assets/profiles/4.jpeg',
     money: 20,
@@ -78,7 +113,18 @@ export const Roles = [
       ' appelées souvent « règles de l\'art ». ' +
       'Il a une responsabilité juridique vis à vis ' +
       'du respects des différentes normesetréglementation.',
-    mission: 'missions',
+    mission: {
+      pointsDeVistore:
+        [
+          '+1/k gagné (bénéfice)',
+          '+1 si respect délai projet',
+          '+5 si respect défaillance projet'
+        ],
+      specialActivity:
+        [
+          'Objectif négociation : Recevoir entre 10k et 25k',
+        ]
+    },
     src: '../../assets/Bureau de contrôle.jpg',
     profile: '../../assets/profiles/7.jpg',
     money: 20,
@@ -100,7 +146,18 @@ export const Roles = [
       'Il s’agit des cloisons et plâtrerie, de la peinture,' +
       ' de l’électricité, de la ventilation, des menuiseries, ' +
       'des revêtement de sol,delaplomberie…',
-    mission: 'missions',
+    mission: {
+      pointsDeVistore:
+        [
+          '+2/k gagné (bénéfice)',
+          '+2 si respect délai projet',
+          '+2 si respect défaillance projet'
+        ],
+      specialActivity:
+        [
+          'Objectif négociation : Recevoir entre 20k et 40k',
+        ]
+    },
     src: '../../assets/Entreprise Corps Etat Secondaire.png',
     profile: '../../assets/profiles/8.jpg',
     money: 30,
@@ -123,7 +180,18 @@ export const Roles = [
       'les murs, la charpente, le dallage… ' +
       'Ils ont aussi souvent en charge les installations ' +
       'de chantier et le terrassement.',
-    mission: 'missions',
+    mission: {
+      pointsDeVistore:
+        [
+          '+2/k gagné (bénéfice)',
+          '+2 si respect délai projet',
+          '+2 si respect défaillance projet'
+        ],
+      specialActivity:
+        [
+          'Objectif négociation : Recevoir entre 25k et 50k',
+        ]
+    },
     src: '../../assets/Entreprise Gros Œuvre.png',
     profile: '../../assets/profiles/grilla.jpg',
     money: 30,

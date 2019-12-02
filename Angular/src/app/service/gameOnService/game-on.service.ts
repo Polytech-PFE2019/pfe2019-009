@@ -16,6 +16,12 @@ export class GameOnService {
   currentStep: Activity[] = [];
   currentActivityID: any;
   currentActivity: any;
+  gameID: any;
+  userID: any;
+  costProject: any;
+  delayProject: any;
+  failureProject: any;
+  current: any;
 
   constructor(private wsService: WebsocketService,
               private subscription: SubscriptionService) {
@@ -31,6 +37,7 @@ export class GameOnService {
           if (JSON.stringify(data).includes('userID')) {
             if (data.userID !== undefined) {
               console.log('send userID');
+              this.userID = data.userID;
               this.subscription.sendUserID(data.userID);
             }
           }
@@ -45,10 +52,23 @@ export class GameOnService {
             console.log('send roomID');
             if (data.gameID !== undefined) {
               this.subscription.sendGameId(data.gameID);
+              this.gameID = data.gameID;
             }
           }
 
-          if (data.response === 'UPDATE') {
+          if (data.costProject !== undefined) {
+            this.costProject = data.costProject;
+          }
+
+          if (data.delayProject !== undefined) {
+            this.delayProject = data.delayProject;
+          }
+
+          if (data.failureProject !== undefined) {
+            this.failureProject = data.failureProject;
+          }
+
+          if (data.response === 'LAUNCH_GAME') {
             console.log(data);
             this.subscription.sendActivities(data.activities);
             this.currentActivityID = data.currentActivityID;
@@ -57,11 +77,17 @@ export class GameOnService {
               this.test = new Activity(activity);
               console.log(this.test);
               this.currentStep.push(this.test);
-              console.log(this.currentStep);
-              this.currentActivity = this.currentStep[activity.activityID - 1];
-              console.log(activity);
             }
-
+            this.currentActivity = this.currentStep[0];
+            console.log(this.currentStep);
+            console.log(this.currentActivity);
+            this.subscription.sendCurrentActivity(this.currentActivity);
+          }
+          if (data.response === 'CHANGE_ACTIVITY') {
+            const currentId = data.activityID;
+            this.currentActivity = this.currentStep[currentId - 1];
+            console.log(this.currentActivity);
+            this.subscription.sendCurrentActivity(this.currentActivity);
           }
           console.log(data);
           return data;

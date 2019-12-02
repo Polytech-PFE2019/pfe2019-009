@@ -12,7 +12,7 @@
           </nz-card>
         </div>
         <div nz-col nzSpan="10">
-          <app-risk-back [step] = "step?.id"></app-risk-back>
+          <app-risk-back [step] = "step?.title"></app-risk-back>
         </div>
       </div>
       <div nz-row style="margin-top: 10px">
@@ -31,7 +31,7 @@
                 <td>
                   <app-activity-displayer
                     [role]="data?.roleID"
-                    [type]="'basic'"
+                    [type]="'MANDATORY'"
                     [activitiesBenefits]="data?.actions[0].actions">
                   </app-activity-displayer>
                 </td>
@@ -41,7 +41,7 @@
                     *ngIf="data?.actions.length > 1"
                     [isActivity]="false"
                     [activitiesBenefits]="data?.actions[1].actions"
-                    [type]="'risk'"></app-activity-displayer>
+                    [type]="'RISKS'"></app-activity-displayer>
                 </td>
                 <td>
                   <app-activity-displayer
@@ -49,7 +49,7 @@
                     [role]="data?.roleID"
                     [activitiesBenefits]="data?.actions[2].actions"
                     [isActivity]="false"
-                    [type]="'duration'">
+                    [type]="'DAYS'">
                   </app-activity-displayer>
                 </td>
               </tr>
@@ -68,7 +68,7 @@
 
 <ng-template #titleTemplate>
   <div class="templateTitle">
-    <h4 nz-title>{{step?.title}}</h4>
+    <h4 nz-title>Etape {{step?.title}}</h4>
     <div class="durationContainer"><b>+{{step?.numberOfDays}}</b></div>
     <div class="risk" *ngFor="let item of counter(step?.risks); let i=index">
       Risque{{i + 1}}

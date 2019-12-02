@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
 
 @Component({
   selector: 'app-person-information',
@@ -8,13 +10,23 @@ import {BuyResourceService} from '../../service/resources/buy-resource.service';
   styleUrls: ['./person-information.component.css']
 })
 export class PersonInformationComponent implements OnInit, OnDestroy {
+  playersWithRoles: any[] = [];
   subResourcesBuyed: Subscription;
   subPayment: Subscription;
   currentMonney = 30;
   subReduced: Subscription;
   currentResource = 0;
+  subPlayersWithRoles: Subscription;
+  userName: string;
+  subUserName: Subscription;
+  myInformation: any;
+  isPointsVistoire = false;
+  isSpecial = false;
+  isDescription = true;
 
-  constructor(private resourceService: BuyResourceService) {
+  constructor(private resourceService: BuyResourceService,
+              private lobbyService: LobbyService,
+              private subscription: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -33,10 +45,51 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
       this.currentResource = this.currentResource - data;
       this.resourceService.sendCurrentResource(this.currentResource);
     });
+
+    this.subPlayersWithRoles = this.subscription.playersWithRoles$.subscribe(data => {
+      console.log(data);
+      // this.playersWithRoles = data;
+    });
+
+    this.playersWithRoles = this.subscription.roles;
+
+    console.log(this.lobbyService.username);
+    //
+    // this.subUserName = this.subscription.userName$.subscribe(data => {
+    //   console.log(data);
+    //   this.userName = data;
+    // });
+    this.userName = this.lobbyService.username;
+
+    console.log(this.userName);
+    console.log(this.playersWithRoles);
+    this.myInformation = this.playersWithRoles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
   }
 
   ngOnDestroy(): void {
     this.subResourcesBuyed.unsubscribe();
     this.subPayment.unsubscribe();
+    this.subReduced.unsubscribe();
+    this.subPlayersWithRoles.unsubscribe();
+    this.subUserName.unsubscribe();
+  }
+
+  showPointsVistoire() {
+    this.isPointsVistoire = true;
+    this.isSpecial = false;
+    this.isDescription = false;
+  }
+
+  showSpecial() {
+    this.isSpecial = true;
+    this.isPointsVistoire = false;
+    this.isDescription = false;
+  }
+
+  showDescription() {
+    this.isDescription = true;
+    this.isPointsVistoire = false;
+    this.isSpecial = false;
   }
 }

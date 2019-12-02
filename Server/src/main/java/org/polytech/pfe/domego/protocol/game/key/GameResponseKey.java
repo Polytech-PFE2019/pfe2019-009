@@ -16,7 +16,13 @@ public enum GameResponseKey {
     DELAYPROJECT("delayProject"),
     COSTPROJECT("costProject"),
     FAILUREPROJECT("failureProject"),
-    ACTIVITIES("activities");
+    ACTIVITIES("activities"),
+    GIVERID("giverID"),
+    RECEIVERID("receiverID"),
+    NEGOCIATIONID("negociationID"),
+    MESSAGE("message"),
+    DECLINETYPE("declineType");
+
 
     public final String key;
 

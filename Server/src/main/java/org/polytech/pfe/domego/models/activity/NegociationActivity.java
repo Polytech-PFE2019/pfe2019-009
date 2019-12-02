@@ -1,22 +1,18 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.polytech.pfe.domego.models.PayResources;
-
 import java.util.List;
+import java.util.Optional;
 
 public class NegociationActivity extends Activity implements NegociationAction {
 
-    public NegociationActivity(int id, int numbersOfDays,String title ,String description, List<PayResources> payResourcesList) {
+
+    public NegociationActivity(int id, int numbersOfDays,String title ,String description, List<PayResources> payResourcesList, List<Negociation> negociationList) {
         super(id, numbersOfDays, title,description, payResourcesList);
+        super.negociationList = negociationList;
     }
 
-    @Override
-    public int getExchangeRateForRoleID(int roleID) {
-        return 0;
+    public Optional<Negociation> getNegocationByRoleIDs(int giverRoleID, int receiverRoleID){
+        return negociationList.stream().filter(negociation -> negociation.getGiverRoleID() == giverRoleID && negociation.getReceiverRoleID() == receiverRoleID).findAny();
     }
 
-    @Override
-    public void buyResources(int roleID, int amount) {
-
-    }
 }

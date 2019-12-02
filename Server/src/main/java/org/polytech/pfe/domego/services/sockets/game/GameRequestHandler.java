@@ -5,6 +5,8 @@ import org.polytech.pfe.domego.protocol.InvalidEvent;
 import org.polytech.pfe.domego.protocol.game.BuyResourceEvent;
 import org.polytech.pfe.domego.protocol.game.JoinGameEvent;
 import org.polytech.pfe.domego.protocol.game.PayResourcesEvent;
+import org.polytech.pfe.domego.protocol.game.negociation.EndNegociationEvent;
+import org.polytech.pfe.domego.protocol.game.negociation.StartNegociationEvent;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -31,6 +33,12 @@ public class GameRequestHandler implements RequestHandler {
                 break;
             case JOIN_GAME:
                 event = new JoinGameEvent(session,request);
+                break;
+            case START_NEGOCIATION:
+                event = new StartNegociationEvent(session,request);
+                break;
+            case END_NEGOCIATION:
+                event = new EndNegociationEvent(session,request);
                 break;
             default:
                 event = new InvalidEvent(session);

@@ -1,7 +1,6 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.polytech.pfe.domego.models.PayResourceType;
-import org.polytech.pfe.domego.models.PayResources;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +17,10 @@ public abstract class Activity {
 
     protected List<BuyResources> buyResourcesList;
 
+    protected List<Negociation> negociationList;
+
+    private List<PayPlayer> payPlayerList;
+
     Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
         this.id = id;
         this.numbersOfDays = numbersOfDays;
@@ -25,6 +28,8 @@ public abstract class Activity {
         this.description = description;
         this.payResourcesList = payResourcesList;
         this.buyResourcesList = new ArrayList<>();
+        this.negociationList = new ArrayList<>();
+        this.payPlayerList = new ArrayList<>();
         List<PayResources> mandatoryPayResourcesList = payResourcesList.stream().filter(payResources ->
                 payResources.getPayResourceType().equals(PayResourceType.MANDATORY)).collect(Collectors.toList());
 
@@ -51,6 +56,15 @@ public abstract class Activity {
 
     }
 
+    public void setPayPlayerList(List<PayPlayer> payPlayerList) {
+        this.payPlayerList = payPlayerList;
+    }
+
+    public Optional<PayPlayer> getPayPlayerByRoleIDs(int giverID, int receiverID){
+        return this.payPlayerList.stream().filter(payPlayer -> payPlayer.getNegociation().getGiverRoleID() == giverID
+                && payPlayer.getNegociation().getReceiverRoleID() == receiverID ).findAny();
+    }
+
     public boolean hasRolePaidMandatory(int roleID){
         return roleHasPaid.get(roleID);
     }
@@ -72,6 +86,9 @@ public abstract class Activity {
     }
 
     public List<BuyResources> getBuyResourcesList() { return buyResourcesList; }
+
+    public List<Negociation> getNegociationList() { return negociationList; }
+
 
     public void startActivity(){
         activityStatus = ActivityStatus.ONGOING;

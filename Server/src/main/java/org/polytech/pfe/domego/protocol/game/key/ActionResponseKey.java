@@ -13,7 +13,6 @@ public enum ActionResponseKey {
     MONEY_PAID("moneyPaid"),
     ACTIONS("actions");
 
-
     public final String key;
 
     ActionResponseKey(String key) {

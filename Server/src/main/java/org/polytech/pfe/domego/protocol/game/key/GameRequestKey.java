@@ -10,7 +10,12 @@ public enum GameRequestKey implements RequestArgumentKey {
     AMOUNT("amount"),
     USERNAME("username"),
     ROLEID("roleID"),
-    TYPE("type");
+    TYPE("type"),
+    RECEIVERID("receiverID"),
+    GIVERID("giverID"),
+    MESSAGE("message"),
+    DECLINETYPE("declineType");
+
 
     private String key;
 

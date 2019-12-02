@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-history',
@@ -9,15 +10,38 @@ import {BuyResourceService} from '../../service/resources/buy-resource.service';
 })
 export class HistoryComponent implements OnInit, OnDestroy {
   resourceBuyed = 0;
+  cardHistory = {
+    risk: null,
+    resource: null,
+    day: null,
+    money: null,
+  };
   @Input() listOfData: any;
+  @Input() getCardHistory: any;
   data: any[] = [];
   total = 0;
   subResource: Subscription;
+  titleList: any[] = [];
+  riskList: any[] = [];
 
-  constructor(private resourceService: BuyResourceService) {
+  constructor(private resourceService: BuyResourceService,
+              private subSerive: SubscriptionService) {
   }
 
   ngOnInit() {
+    this.titleList = [];
+    this.riskList = this.subSerive.riskHistory;
+    for (const i of this.riskList){
+      this.titleList.push(i.title);
+    }
+    console.log(this.titleList);
+    console.log(this.getCardHistory.title);
+    this.titleList.push(this.getCardHistory.title);
+    if (this.getCardHistory.risk !== null) { this.cardHistory.risk = this.getCardHistory.risk; }
+    if (this.getCardHistory.resource !== null) { this.cardHistory.resource = this.getCardHistory.resource; }
+    if (this.getCardHistory.day !== null) { this.cardHistory.day = this.getCardHistory.day; }
+    if (this.getCardHistory.money !== null) { this.cardHistory.money = this.getCardHistory.money; }
+
     this.resourceBuyed = this.resourceService.money;
     this.data = [];
     this.total = 0;

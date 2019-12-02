@@ -110,7 +110,6 @@ public class LaunchGameEvent implements EventProtocol {
             for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getRoleID() == role.getId()).sorted(Comparator.naturalOrder()).collect(Collectors.toList())) {
 
                 JsonObject payingActionJson = new JsonObject();
-                payingActionJson.addProperty(ActionResponseKey.STATUS.key, payResources.hasPaid());
 
                 JsonArray payActionsForType = new JsonArray();
                 payResources.getPriceAndBonusMap().forEach((price,bonus)-> {
@@ -121,10 +120,8 @@ public class LaunchGameEvent implements EventProtocol {
 
                 });
                 payingActionJson.add(ActionResponseKey.ACTIONS.key, payActionsForType);
-                payingActionJson.addProperty(ActionResponseKey.AMOUNT_PAID.key, payResources.getAmountPaid());
                 payingActionJson.addProperty(ActionResponseKey.ROLEID.key, payResources.getRoleID());
                 payingActionJson.addProperty(ActionResponseKey.PAY_TYPE.key, payResources.getPayResourceType().toString());
-                payingActionJson.addProperty(ActionResponseKey.BONUS_GIVEN.key, payResources.getBonusGiven());
                 payingActionsByRole.add(payingActionJson);
             }
             if (payingActionsByRole.size() != 0)

@@ -15,6 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -79,7 +80,10 @@ public class ChooseRoleEvent implements EventProtocol {
 
 
         this.messenger.sendSpecificMessageToAUser(generateResponse(room,player,role).toString());
-        logger.info("ChooseRoleEvent : In game : " + room.getID() + " the player name : " + player.getName() + " has change role, new role : " + player.getRole().getName().getName());
+        logger.log(Level.INFO,
+                "ChooseRoleEvent : In game : {0} the player name : {1} has change role, new role : {2}",
+                new Object[]{room.getID(),player.getName(), player.getRole().getName().getName()}
+        );
 
         new UpdateRoomEvent(room).processEvent();
 

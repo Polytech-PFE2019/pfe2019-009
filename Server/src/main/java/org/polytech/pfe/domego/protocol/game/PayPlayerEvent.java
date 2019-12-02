@@ -42,17 +42,17 @@ public class PayPlayerEvent implements EventProtocol {
         int percentage = payPlayer.getPercentage();
         negociation.pay(percentage);
         int amountPaid = negociation.getLastPayment();
-        giver.substractMoney(amountPaid);
+        giver.subtractMoney(amountPaid);
         receiver.addMoney(amountPaid);
         payPlayer.setPaid();
 
-        new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver, giver.getID(),receiver.getID(),amountPaid));
-        new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, giver.getID(), receiver.getID(), amountPaid));
+        new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver,amountPaid));
+        new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, amountPaid));
 
 
     }
 
-    private String createResponseToUser(Player player,String giverID, String receiverID, int amountPaid) {
+    private String createResponseToUser(Player player, int amountPaid) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_PLAYER");
         response.addProperty(GameResponseKey.GIVERID.key, giver.getID());

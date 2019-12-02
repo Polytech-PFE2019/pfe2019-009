@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego.services.sockets.room;
 
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
+import org.polytech.pfe.domego.exceptions.InvalidRequestException;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.InvalidEvent;
 import org.polytech.pfe.domego.protocol.room.*;
@@ -27,10 +28,10 @@ public class RoomRequestHandler implements RequestHandler {
     }
 
     @Override
-    public void handleRequest(WebSocketSession session, Map request) throws Exception {
+    public void handleRequest(WebSocketSession session, Map request) throws InvalidRequestException {
         EventProtocol event;
         if(!request.containsKey("request")) {
-            throw new Exception("bad request : must be of type {\"request\":\"REQUEST_NAME\'}");
+            throw new InvalidRequestException();
         }
         String requestName = String.valueOf(request.get("request"));
 

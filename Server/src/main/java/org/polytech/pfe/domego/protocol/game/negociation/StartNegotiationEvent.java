@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class PriceNegociationEvent implements EventProtocol {
+public class StartNegotiationEvent implements EventProtocol {
 
 
     private Logger logger = Logger.getGlobal();
@@ -25,7 +25,7 @@ public class PriceNegociationEvent implements EventProtocol {
     private GameInstance gameInstance;
     private Messenger messenger;
 
-    public PriceNegociationEvent(WebSocketSession session, Map request) {
+    public StartNegotiationEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
         gameInstance = GameInstance.getInstance();
@@ -42,22 +42,22 @@ public class PriceNegociationEvent implements EventProtocol {
         }
 
         Optional<Game> optionalGame = gameInstance.getSpecificGameByID(request.get(GameRequestKey.GAMEID.getKey()));
-        if(!optionalGame.isPresent()){
+        if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
         }
 
         Game game = optionalGame.get();
-        Optional<Player> optionalPlayer = game.getPlayers().stream().filter(player -> player.getID().equals(request.get(GameRequestKey.GIVERID.getKey()))).findAny();
+        Optional<Player> optionalPlayer = game.getPlayerById(request.get(GameRequestKey.GIVERID.getKey()));
 
-        if (!optionalPlayer.isPresent()){
+        if (optionalPlayer.isEmpty()){
             this.messenger.sendError("GIVER NOT FOUND");
             return;
         }
 
-        Optional<Player> optionalPlayer2 = game.getPlayers().stream().filter(player -> player.getID().equals(request.get(GameRequestKey.RECEIVERID.getKey()))).findAny();
+        Optional<Player> optionalPlayer2 = game.getPlayerById(request.get(GameRequestKey.RECEIVERID.getKey()));
 
-        if (!optionalPlayer2.isPresent()){
+        if (optionalPlayer2.isEmpty()){
             this.messenger.sendError("RECEIVER NOT FOUND");
             return;
         }
@@ -70,8 +70,9 @@ public class PriceNegociationEvent implements EventProtocol {
         NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
 
         Optional<Negociation> negociationOptional = activity.getNegocationByRoleIDs(giverID,receiverID);
-        if(!negociationOptional.isPresent()){
+        if(negociationOptional.isEmpty()){
             this.messenger.sendError("NEGOCIATION NOT FOUND");
+            return;
         }
 
         Negociation negociation = negociationOptional.get();
@@ -83,12 +84,10 @@ public class PriceNegociationEvent implements EventProtocol {
 
     private void sendResponseToUser(Player giver, Player receiver, Negociation negociation) {
         JsonObject response = new JsonObject();
-        response.addProperty(GameResponseKey.RESPONSE.key, "MSG_NEGOCIATE");
+        response.addProperty(GameResponseKey.RESPONSE.key, "START_NEGOCIATE");
         response.addProperty(GameResponseKey.GIVERID.key,giver.getID());
         response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getID());
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negociation.getId());
-        response.addProperty(GameResponseKey.AMOUNT.key, request.get(GameRequestKey.AMOUNT.getKey()));
-
         messenger.sendSpecificMessageToAUser(response.toString());
     }
 
@@ -99,7 +98,5 @@ public class PriceNegociationEvent implements EventProtocol {
             throw new MissArgumentToRequestException(GameRequestKey.GIVERID);
         if(!request.containsKey(GameRequestKey.RECEIVERID.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.RECEIVERID);
-        if(!request.containsKey(GameRequestKey.AMOUNT.getKey()))
-            throw new MissArgumentToRequestException(GameRequestKey.AMOUNT);
     }
 }

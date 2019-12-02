@@ -26,7 +26,7 @@ public enum GameResponseKey {
     NEGOCIATIONID("negociationID"),
     MESSAGE("message"),
     DECLINETYPE("declineType"),
-
+    BONUS("bonus"),
     BONUS_TYPE("bonusType"),
     CURRENT_ACTIVITY_ID("currentActivityID"),
     DELAY_PROJECT("delayProject"),

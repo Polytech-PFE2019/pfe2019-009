@@ -195,7 +195,7 @@ class GameRequestHandlerTest {
         for(int i=0; i<6; i++){
             Player player = new Player(sessionPlayerTest,"name");
             player.addMoney(30000);
-            player.addResouces(10);
+            player.addResources(10);
 
             Role role;
             switch(i){

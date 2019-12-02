@@ -9,7 +9,6 @@ public class PayResources implements Comparable<PayResources> {
     private int bonusGiven;
     private PayResourceType payResourceType;
     private boolean hasPaid;
-    private int amountLeft;
 
     public PayResources(int roleID, Map<Integer,Integer> priceAndBonusMap, PayResourceType payResourceType){
         this.amountPaid = 0;
@@ -48,7 +47,6 @@ public class PayResources implements Comparable<PayResources> {
     }
 
     public boolean pay(int amount){
-
         priceAndBonusMap.forEach((price,bonus)-> {
             if(price <= amount){
                 this.amountPaid = price;
@@ -58,15 +56,8 @@ public class PayResources implements Comparable<PayResources> {
         if(amountPaid == 0){
             return false;
         }
-        if(this.amountPaid > amount){
-            this.amountLeft = amountPaid-amount;
-        }
         setHasPaid(true);
         return true;
-    }
-
-    public int getAmountLeft() {
-        return amountLeft;
     }
 
     @Override
@@ -76,4 +67,10 @@ public class PayResources implements Comparable<PayResources> {
 
         return thisID.compareTo(oID);
     }
+
+
+
+
+
+
 }

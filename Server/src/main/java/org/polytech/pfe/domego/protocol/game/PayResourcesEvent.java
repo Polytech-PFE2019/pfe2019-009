@@ -44,7 +44,7 @@ public class PayResourcesEvent implements EventProtocol {
         }
 
         Optional<Game> optionalGame = gameInstance.getSpecificGameByID(String.valueOf(request.get(GameRequestKey.GAMEID.getKey())));
-        if(!optionalGame.isPresent()){
+        if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
         }
@@ -54,7 +54,7 @@ public class PayResourcesEvent implements EventProtocol {
 
         Optional<Player> optionalPlayer = game.getPlayers().stream().filter(player -> player.getID().equals(String.valueOf(request.get(GameRequestKey.USERID.getKey())))).findAny();
 
-        if (!optionalPlayer.isPresent()){
+        if (optionalPlayer.isEmpty()){
             this.messenger.sendError("USER NOT FOUND");
             return;
         }
@@ -70,17 +70,13 @@ public class PayResourcesEvent implements EventProtocol {
         Type founderListType = new TypeToken<ArrayList<Payment>>(){}.getType();
         List<Payment> payments = new Gson().fromJson(request.get("payments").toString(), founderListType);
         game.payForCurrentActivity(player, payments);
-        this.sendResponseToUser(game.getPlayerById(player.getID()).get());
-
-
-        //new UpdateGameEvent(game).processEvent();
+        game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);
     }
 
     private void sendResponseToUser(Player player) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
-        //response.addProperty(GameResponseKey.BONUSTYPE.key, request.get(GameRequestKey.TYPE.getKey()));
         messenger.sendSpecificMessageToAUser(response.toString());
     }
 

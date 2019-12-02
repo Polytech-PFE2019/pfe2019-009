@@ -1,20 +1,18 @@
 package org.polytech.pfe.domego.models;
 
-import org.polytech.pfe.domego.models.activity.Negociation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Player {
+    @JsonIgnore
     private WebSocketSession session;
     private String id;
     private String name;
     private Role role;
     private int resourcesAmount;
     private int money;
-    private List<Negociation> negociationList;
 
     public Player(WebSocketSession session, String name ){
         this.session = session;
@@ -23,7 +21,6 @@ public class Player {
         this.name = name;
         this.resourcesAmount = 0;
         this.money = 0;
-        this.negociationList = new ArrayList<>();
     }
 
     public Player(Player player) {
@@ -48,10 +45,6 @@ public class Player {
         this.money = role.getBudget();
     }
 
-    public void addNegociation(Negociation negociation){
-        this.negociationList.add(negociation);
-    }
-
     public Role getRole(){
         return role;
     }
@@ -69,11 +62,11 @@ public class Player {
     }
 
 
-    public void addResouces(int amount){
+    public void addResources(int amount){
         resourcesAmount += amount;
     }
 
-    public void substractResources(int amount){
+    public void subtractResources(int amount){
         resourcesAmount -= amount;
     }
 
@@ -86,7 +79,7 @@ public class Player {
         money += amount;
     }
 
-    public void substractMoney(int amount){
+    public void subtractMoney(int amount){
         money -= amount;
     }
 

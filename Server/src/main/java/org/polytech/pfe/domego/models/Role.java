@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,16 +14,18 @@ public class Role {
 
     private RoleType name;
 
+    @JsonIgnore
     private String description;
 
     private int budget;
 
+    @JsonIgnore
     private String special;
 
 
 
     public Role() {
-        this.id = RoleType.NON_DEFINI.getId();;
+        this.id = RoleType.NON_DEFINI.getId();
         this.name = RoleType.NON_DEFINI;
         this.description = "";
         this.budget = 0;
@@ -67,6 +70,14 @@ public class Role {
 
     public void setBudget(int budget) {
         this.budget = budget;
+    }
+
+    public String getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
     }
 
     @Override

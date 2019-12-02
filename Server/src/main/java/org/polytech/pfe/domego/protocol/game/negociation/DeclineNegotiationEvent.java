@@ -3,7 +3,7 @@ package org.polytech.pfe.domego.protocol.game.negociation;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Negociation;
@@ -17,18 +17,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class DeclineNegociationEvent implements EventProtocol {
+public class DeclineNegotiationEvent implements EventProtocol {
 
 
     private Logger logger = Logger.getGlobal();
     private Map<String,String> request;
-    private GameInstance gameInstance;
     private Messenger messenger;
+    private GameAccessor gameAccessor;
 
-    public DeclineNegociationEvent(WebSocketSession session, Map request) {
+    public DeclineNegotiationEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
-        gameInstance = GameInstance.getInstance();
+        this.gameAccessor = new GameAccessor();
 
     }
 
@@ -41,23 +41,23 @@ public class DeclineNegociationEvent implements EventProtocol {
             return;
         }
 
-        Optional<Game> optionalGame = gameInstance.getSpecificGameByID(request.get(GameRequestKey.GAMEID.getKey()));
-        if(!optionalGame.isPresent()){
+        Optional<Game> optionalGame = this.gameAccessor.getGameById(request.get(GameRequestKey.GAMEID.getKey()));
+        if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
         }
 
         Game game = optionalGame.get();
-        Optional<Player> optionalPlayer = game.getPlayers().stream().filter(player -> player.getID().equals(request.get(GameRequestKey.GIVERID.getKey()))).findAny();
+        Optional<Player> optionalPlayer = game.getPlayerById(request.get(GameRequestKey.GIVERID.getKey()));
 
-        if (!optionalPlayer.isPresent()){
+        if (optionalPlayer.isEmpty()){
             this.messenger.sendError("GIVER NOT FOUND");
             return;
         }
 
-        Optional<Player> optionalPlayer2 = game.getPlayers().stream().filter(player -> player.getID().equals(request.get(GameRequestKey.RECEIVERID.getKey()))).findAny();
+        Optional<Player> optionalPlayer2 = game.getPlayerById(request.get(GameRequestKey.RECEIVERID.getKey()));
 
-        if (!optionalPlayer2.isPresent()){
+        if (optionalPlayer2.isEmpty()){
             this.messenger.sendError("RECEIVER NOT FOUND");
             return;
         }
@@ -70,8 +70,9 @@ public class DeclineNegociationEvent implements EventProtocol {
         NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
 
         Optional<Negociation> negociationOptional = activity.getNegocationByRoleIDs(giverID,receiverID);
-        if(!negociationOptional.isPresent()){
+        if(negociationOptional.isEmpty()){
             this.messenger.sendError("NEGOCIATION NOT FOUND");
+            return;
         }
 
         Negociation negociation = negociationOptional.get();

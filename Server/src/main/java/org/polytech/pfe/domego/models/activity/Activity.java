@@ -1,5 +1,7 @@
 package org.polytech.pfe.domego.models.activity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,6 +9,7 @@ public abstract class Activity {
     private int id;
     private int numbersOfDays;
     private String title;
+    @JsonIgnore
     private String description;
     private List<PayResources> payResourcesList;
     private ActivityStatus activityStatus = ActivityStatus.NOT_STARTED;

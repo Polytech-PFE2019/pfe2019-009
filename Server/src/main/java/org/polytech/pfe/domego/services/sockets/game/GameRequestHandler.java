@@ -1,12 +1,13 @@
 package org.polytech.pfe.domego.services.sockets.game;
 
+import org.polytech.pfe.domego.exceptions.InvalidRequestException;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.InvalidEvent;
 import org.polytech.pfe.domego.protocol.game.BuyResourceEvent;
 import org.polytech.pfe.domego.protocol.game.JoinGameEvent;
 import org.polytech.pfe.domego.protocol.game.PayResourcesEvent;
-import org.polytech.pfe.domego.protocol.game.negociation.EndNegociationEvent;
-import org.polytech.pfe.domego.protocol.game.negociation.StartNegociationEvent;
+import org.polytech.pfe.domego.protocol.game.negociation.EndNegotiationEvent;
+import org.polytech.pfe.domego.protocol.game.negociation.StartNegotiationEvent;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -17,10 +18,10 @@ import java.util.Map;
 public class GameRequestHandler implements RequestHandler {
 
     @Override
-    public void handleRequest(WebSocketSession session, Map request) throws Exception {
+    public void handleRequest(WebSocketSession session, Map request) throws InvalidRequestException {
         EventProtocol event;
         if(!request.containsKey("request")) {
-            throw new Exception("bad request : must be of type {\"request\":\"REQUEST_NAME\'}");
+            throw new InvalidRequestException();
         }
         String requestName = String.valueOf(request.get("request"));
 
@@ -35,10 +36,10 @@ public class GameRequestHandler implements RequestHandler {
                 event = new JoinGameEvent(session,request);
                 break;
             case START_NEGOCIATION:
-                event = new StartNegociationEvent(session,request);
+                event = new StartNegotiationEvent(session,request);
                 break;
             case END_NEGOCIATION:
-                event = new EndNegociationEvent(session,request);
+                event = new EndNegotiationEvent(session,request);
                 break;
             default:
                 event = new InvalidEvent(session);

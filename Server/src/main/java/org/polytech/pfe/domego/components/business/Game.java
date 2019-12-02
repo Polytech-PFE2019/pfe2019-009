@@ -67,8 +67,8 @@ public class Game {
             }
 
         }
-        player.substractResources(totalAmount);
-        new UpdatePaymentGameEvent(activity,players,payments, roleID).processEvent();
+        player.subtractResources(totalAmount);
+        new UpdatePaymentGameEvent(activity,players,activity.getPayResourcesList(), roleID).processEvent();
         if (this.getCurrentActivity().getActivityStatus().equals(ActivityStatus.FINISHED)){
             this.updateProject();
             this.drawRiskCard();
@@ -93,7 +93,7 @@ public class Game {
     private void updateProject(){
         Activity activity = this.getCurrentActivity();
         this.project.addDelay(activity.getNumberOfDays());
-        int totalAmount = activity.getBuyResourcesList().stream().filter(buyResources -> buyResources.hasPaid()).mapToInt(BuyResources::getAmountPaid).sum();
+        int totalAmount = activity.getBuyResourcesList().stream().filter(BuyResources::hasPaid).mapToInt(BuyResources::getAmountPaid).sum();
         this.project.addCost(totalAmount);
     }
 

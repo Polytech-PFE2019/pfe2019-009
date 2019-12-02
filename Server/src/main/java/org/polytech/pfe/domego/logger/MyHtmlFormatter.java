@@ -60,6 +60,7 @@ class MyHtmlFormatter extends Formatter {
 
     // this method is called just after the handler using this
     // formatter is created
+    @Override
     public String getHead(Handler h) {
         return "<!DOCTYPE html>\n<head>\n<style>\n"
                 + "table { width: 100% }\n"
@@ -80,6 +81,7 @@ class MyHtmlFormatter extends Formatter {
 
     // this method is called just after the handler using this
     // formatter is closed
+    @Override
     public String getTail(Handler h) {
         return "</table>\n</body>\n</html>";
     }

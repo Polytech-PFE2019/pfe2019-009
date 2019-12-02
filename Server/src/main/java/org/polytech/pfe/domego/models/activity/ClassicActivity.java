@@ -12,8 +12,4 @@ public class ClassicActivity extends Activity {
         return 0;
     }
 
-    @Override
-    public void buyResources(int roleID, int amount) {
-
-    }
 }

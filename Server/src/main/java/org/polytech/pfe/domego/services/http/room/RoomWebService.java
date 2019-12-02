@@ -5,10 +5,7 @@ import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.exceptions.room.RoomNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -23,17 +20,15 @@ public class RoomWebService implements RoomService {
     }
 
     @Override
-    @RequestMapping(value = "/Rooms", method = RequestMethod.GET)
+    @GetMapping(value = "/Rooms")
     public ResponseEntity getAllSalons() {
         List<Map<String, Object>> response = new ArrayList<>();
-        this.roomAccessor.getAllRooms().forEach(room -> {
-            response.add(createResponseForRoom(room));
-        });
+        this.roomAccessor.getAllRooms().forEach(room -> response.add(createResponseForRoom(room)));
         return ResponseEntity.ok(response);
     }
 
     @Override
-    @RequestMapping(value = "/Room/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/Room/{id}")
     public ResponseEntity getSalonById(@PathVariable String id) {
         Optional<Room> room = this.roomAccessor.getRoomById(id);
         if(room.isPresent())

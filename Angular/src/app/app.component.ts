@@ -15,6 +15,7 @@ export class AppComponent {
   test: SocketRequest = new SocketRequest();
   test1 = [];
 
+
   constructor() {
     if (this.test.gameID === undefined) {
       console.log('asdfkjalsjdflas');
@@ -25,5 +26,6 @@ export class AppComponent {
     this.test1.push('sdskfhakshdfk');
     console.log(this.test1);
   }
+
 
 }

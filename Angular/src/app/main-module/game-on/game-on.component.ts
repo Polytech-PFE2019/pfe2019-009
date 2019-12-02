@@ -34,7 +34,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
   test: Activity;
   testClick = false;
   subPayingActions: Subscription;
+  subPlayersWithRoles: Subscription;
   activities: any = null;
+  roles: any[] = [];
+  userName: any;
+  myInformation: any;
+  currentActivity: any;
+  subCurrentActivity: Subscription;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -46,162 +52,27 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(22222222222222);
-    // this.subGameId = this.subscription.gameID$.subscribe(id => {
-    //   this.gameId = id;
-    // });
-    this.gameId = this.playerDataService.player.gameID;
+    this.gameId = this.subscription.gameID;
 
+    this.subPlayersWithRoles = this.subscription.playersWithRoles$.subscribe(data => {
+      console.log(data);
+      this.roles = data;
+    });
+
+    this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
+      this.currentActivity = data;
+      console.log(this.currentActivity);
+    });
 
     this.currentStep = this.gameService.currentStep;
     console.log(this.currentStep);
 
-    // this.gameService.messages.subscribe(data => {
-    //   console.log(12323423434534534534);
-    //   console.log(data);
-    //   switch (data.response) {
-    //     case 'UPDATE':
-    //       console.log(data);
-    //       this.resourceManager.sendCurrentResource(data.player.resources);
-    //       this.resourceManager.sendCurrentMonney(data.player.money);
-    //       this.subscription.sendActivities(data.activities);
-    //       console.log('after++++++++++++  ' + data.activities);
-    //       for (const activity of data.activities) {
-    //         this.test = new Activity(activity);
-    //         console.log(this.test);
-    //         this.currentStep.push(this.test);
-    //         console.log(this.currentStep);
-    //       }
-    //   }
-    // });
-
-    // const testdata = [
-    //   {
-    //     activityID: 1,
-    //     playersID: [1, 2],
-    //     risks: 3,
-    //     numberOfDays: 100,
-    //     status: 'FINISHED',
-    //     description: 'text',
-    //     buyingActions: [{
-    //       status: false,
-    //       amount: 0,
-    //       roleID: 1
-    //     }],
-    //     payingActions: [{
-    //       status: false,
-    //       roleID: 1,
-    //       payType: 'RISK',
-    //       bonusGiven: 0,
-    //       amountPaid: 0,
-    //       actions: [
-    //         {amountToPay: 1, bonusAmount: 1},
-    //         {amountToPay: 4, bonusAmount: 2}
-    //       ]
-    //     },
-    //       {
-    //         status: false,
-    //         roleID: 1,
-    //         payType: 'DAYS',
-    //         bonusGiven: 0,
-    //         amountPaid: 0,
-    //         actions: [
-    //           {amountToPay: 2, bonusAmount: 1},
-    //           {amountToPay: 4, bonusAmount: 2}
-    //         ]
-    //       },
-    //       {
-    //         status: false,
-    //         roleID: 1,
-    //         payType: 'MANDATORY',
-    //         bonusGiven: 0,
-    //         amountPaid: 0,
-    //         actions: [
-    //           {amountToPay: 1, bonusAmount: 0},
-    //         ]
-    //       },
-    //     ]
-    //   },
-    // ];
-    //
-    // this.test = new Activity(testdata[0]);
-    // console.log(this.test);
-    // this.currentStep.push(this.test);
-    // console.log(this.currentStep);
     this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
       console.log(data);
       this.activities = data;
       console.log(this.activities.actions);
     });
-    const testdata = [
-      {
-        activityID: 1,
-        playersID: [1, 2],
-        risks: 3,
-        numberOfDays: 100,
-        status: 'FINISHED',
-        description: 'text',
-        buyingActions: [{
-          status: false,
-          amount: 0,
-          roleID: 1
-        }],
-        payingActions: [{
-          status: false,
-          roleID: 1,
-          payType: 'RISK',
-          bonusGiven: 0,
-          amountPaid: 0,
-          actions: [
-            {amountToPay: 1, bonusAmount: 0},
-            {amountToPay: 4, bonusAmount: 2}
-          ]
-        },
-          {
-            status: false,
-            roleID: 1,
-            payType: 'DAYS',
-            bonusGiven: 0,
-            amountPaid: 0,
-            actions: [
-              {amountToPay: 2, bonusAmount: 1},
-              {amountToPay: 4, bonusAmount: 2}
-            ]
-          },
-        ]
-      },
-    ];
 
-    this.test = new Activity(testdata[0]);
-    console.log(this.test);
-    this.currentStep.push(this.test);
-    console.log(this.currentStep);
-  }
-
-  getResource(event) {
-    console.log('payresource ' + event);
-    this.getDataFromParent = event;
-  }
-
-  // the price paid by user
-  getPrice(event) {
-    console.log('price is in ' + event);
-    this.getPriceFromParent = event;
-  }
-
-  // how many resource user has to pay
-  getPayment(event) {
-    console.log('payactivity ' + event);
-    this.getDataFromActivity = event;
-  }
-
-  // how many money user remains
-  getMoney(event) {
-    this.getMoneyFromPerson = event;
-  }
-
-  // how many resource user remains
-  getRemainResource(event) {
-    this.getResourceFromPerson = event;
   }
 
   getCurrentStep($event: any) {
@@ -225,11 +96,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   getStepTest($event: any) {
     this.activities = $event;
-    console.log(this.activities[0]);
+    console.log(this.activities);
     console.log(this.activities[0].actions[0].actions);
   }
 
   ngOnDestroy(): void {
-    throw new Error("Method not implemented.");
+    this.subPayingActions.unsubscribe();
+    this.subPlayersWithRoles.unsubscribe();
+    this.subCurrentActivity.unsubscribe();
   }
 }

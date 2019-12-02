@@ -32,6 +32,13 @@ h2 {
   background-color: #efefef;
 }
 
+.wait {
+  width: calc(90% + 30px);
+  height: 350px;
+  margin-left: 30px;
+  margin-top: 30px;
+}
+
 .activityContainer {
   display: flex;
   justify-content: center;
@@ -48,6 +55,3 @@ h2 {
   margin-left: 42%;
 }
 
-#personnal{
-  border: 2px solid #1d39af;
-}

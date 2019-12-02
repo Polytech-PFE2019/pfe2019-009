@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RiskCardComponent } from './risk-card.component';
+import { WaitComponent } from './wait.component';
 
-describe('RiskCardComponent', () => {
-  let component: RiskCardComponent;
-  let fixture: ComponentFixture<RiskCardComponent>;
+describe('WaitComponent', () => {
+  let component: WaitComponent;
+  let fixture: ComponentFixture<WaitComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RiskCardComponent ]
+      declarations: [ WaitComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RiskCardComponent);
+    fixture = TestBed.createComponent(WaitComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

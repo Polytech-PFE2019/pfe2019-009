@@ -38,9 +38,11 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
       console.log(data);
     });
 
-    this.subGameId = this.subscription.gameID$.subscribe(id => {
-      this.gameID = id;
-    });
+    // this.subGameId = this.subscription.gameID$.subscribe(id => {
+    //   this.gameID = id;
+    // });
+
+    this.gameID = this.subscription.gameID;
 
     this.subUserId = this.subscription.userID$.subscribe(data => {
       this.userID = data;
@@ -49,7 +51,7 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
 
   popConfirm(): void {
     this.price = this.resourceNb * this.multiple;
-    if ( this.currentMonney >= this.price ) {
+    if (this.currentMonney >= this.price) {
       this.isVisible = true;
     } else {
       this.nzMessageService.info('Votre agent ne suffit pas');

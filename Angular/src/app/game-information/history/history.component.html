@@ -1,0 +1,29 @@
+<div class="history">
+  <h3>Budget dépensé: {{resourceBuyed}}</h3>
+  <h3>Mes activités effectuées</h3>
+  <div>
+    <nz-table #basicTable [nzData]="data" [nzShowPagination]="false">
+      <thead>
+      <tr>
+        <th>Activité</th>
+        <th>Resources depensées</th>
+        <th>Résultat</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>
+          <img [src]="data.src" [height]="20" [width]="20">
+          {{data.activity}}
+        </td>
+        <td>{{ data.money }}</td>
+        <td>{{ data.result }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <h3>Cartes de risque piochées</h3>
+  <div>carte</div>
+</div>
+
+

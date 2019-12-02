@@ -1,15 +1,15 @@
-<div class="activity2Container">
-  <h2>Payer des ressources</h2>
+<div class="activity2Container" *ngIf="currentActivity?.rolesID.includes(myInformation.id)">
+  <h3>Etape {{currentActivity.title}} - Payer des ressources</h3>
   <div class="column" style="width: 90%">
     <nz-table nzBordered
-              [nzData]="activities"
+              [nzData]="myDataSource"
               [nzNoAnimation]="false"
               #table [nzFrontPagination]="false">
       <thead>
       <tr>
-        <th><img src="../../../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
-        <th><img src="../../../../assets/icons/faillante.png" width="20" height="20" alt="faillante"></th>
-        <th><img src="../../../../assets/icons/duration.png" width="20" height="20" alt="duration"></th>
+        <th><img src="../../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
+        <th><img src="../../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
+        <th><img src="../../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
       </tr>
       </thead>
       <tbody>
@@ -17,8 +17,9 @@
         <td>
           <app-activity-displayer
             [role]="item?.roleID"
-            [type]="'basic'"
-            [isActivity]="true"
+            [type]="'MANDATORY'"
+            [isActivity]="false"
+            (sendPaymentActivity)="getPaymentActivity($event)"
             [activitiesBenefits]="item?.actions[0].actions">
           </app-activity-displayer>
         </td>
@@ -28,7 +29,7 @@
             [isActivity]="true"
             (sendPaymentActivity)="getPaymentActivity($event)"
             [activitiesBenefits]="item?.actions[1].actions"
-            [type]="'risk'"></app-activity-displayer>
+            [type]="'RISKS'"></app-activity-displayer>
         </td>
         <td>
           <app-activity-displayer
@@ -37,7 +38,7 @@
             [activitiesBenefits]="item?.actions[2].actions"
             [isActivity]="true"
             (sendPaymentActivity)="getPaymentActivity($event)"
-            [type]="'duration'">
+            [type]="'DAYS'">
           </app-activity-displayer>
         </td>
       </tr>
@@ -55,4 +56,7 @@
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <p>Êtes-vous sûr d'payer {{totalRes}} ressources?</p>
   </nz-modal>
+</div>
+<div *ngIf="!currentActivity?.rolesID.includes(myInformation.id)">
+  <app-prompt></app-prompt>
 </div>

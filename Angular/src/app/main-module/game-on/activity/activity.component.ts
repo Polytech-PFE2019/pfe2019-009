@@ -13,7 +13,10 @@ import {BuyResourceService} from '../../../service/resources/buy-resource.servic
 import {Subscription} from 'rxjs';
 import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
 import {ActionSet} from '../../../model/action';
-import {GameOnService} from "../../../service/gameOnService/game-on.service";
+import {GameOnService} from '../../../service/gameOnService/game-on.service';
+import {SocketRequest} from '../../../../Request';
+import {LobbyService} from "../../../service/lobbyService/lobby.service";
+import {isCombinedNodeFlagSet} from "tslint";
 
 @Component({
   selector: 'app-activity',
@@ -28,30 +31,31 @@ export class ActivityComponent implements OnInit, OnDestroy {
   totalRes = this.resBasic;
   payForRisk = 0;
   payForDays = 0;
-  payment = 0;
   test = [1];
-  payActivity = [{
-    payment: 0,
-    benefits: 0
-  },
-    {
-      payment: 2,
-      benefits: 1
-    },
-    {
-      payment: 4,
-      benefits: 2
-    },
-  ];
   subCurrentResource: Subscription;
   currentResource: number;
   subPayingActions: Subscription;
-  dataResources: any;
   daysReduced = 0;
+  subGameId: Subscription;
+  gameID: any;
+  request = {
+    RISKS: null,
+    DAYS: null,
+    MANDATORY: null
+  };
+  subUserId: Subscription;
+  userID: any;
+  currentActivity: any;
+  userName: any;
+  myInformation: any;
+  roles: any[];
+  subCurrentActivity: Subscription;
+  myDataSource: any[] = [];
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
               private gameSerivce: GameOnService,
+              private lobbyService: LobbyService,
               private changeDetector: ChangeDetectorRef,
               private resourceService: BuyResourceService) {
   }
@@ -61,6 +65,26 @@ export class ActivityComponent implements OnInit, OnDestroy {
       this.currentResource = data;
     });
 
+    this.userName = this.lobbyService.username;
+    this.roles = this.subscription.roles;
+    this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
+
+    // this.currentActivity = this.gameSerivce.currentActivity;
+    // console.log(this.currentActivity);
+    this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
+      this.currentActivity = data;
+      this.myDataSource = [];
+      console.log(this.currentActivity);
+      if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
+        const tmp = (this.currentActivity.payingActions.filter(next =>
+          next.roleID === this.myInformation.id)[0]);
+        this.myDataSource.push(tmp);
+        console.log(this.myDataSource);
+      }
+    });
+
+
     // this.activities = this.gameSerivce.currentActivity;
     // console.log(this.activities);
 
@@ -68,8 +92,16 @@ export class ActivityComponent implements OnInit, OnDestroy {
     //   console.log(data);
     //   this.activities = data;
     // });
+    // this.subGameId = this.subscription.gameID$.subscribe(data => {
+    //   this.gameID = data;
+    // });
+    this.gameID = this.subscription.gameID;
+    console.log('game id+++' + this.gameID);
+    // this.subUserId = this.subscription.userID$.subscribe(data => {
+    //   this.userID = data;
+    // });
+    this.userID = this.subscription.userId;
     console.log(this.activities);
-    console.log(this.activities[0].roleID);
 
   }
 
@@ -86,10 +118,34 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.resourceService.sendResourcesReduced(this.totalRes);
     this.isVisible = false;
     this.nzMessageService.info('Paiement réussi');
+    const payment = [];
+    if (this.request.RISKS !== null) {
+      payment.push(this.request.RISKS);
+    }
+    if (this.request.MANDATORY !== null) {
+      payment.push(this.request.MANDATORY);
+    }
+    if (this.request.DAYS !== null) {
+      payment.push(this.request.DAYS);
+    }
     const req = {
       request: 'PAY_RESOURCES',
-      // activityID:
+      gameID: this.gameID,
+      userID: this.userID,
+      payments: payment
     };
+    console.log(req);
+    this.gameSerivce.messages.next(req as SocketRequest);
+    this.request = {
+      RISKS: null,
+      DAYS: null,
+      MANDATORY: null
+    };
+    this.totalRes = 0;
+    this.payForDays = 0;
+    this.payForRisk = 0;
+    this.daysReduced = 0;
+    this.riskReduced = 0;
   }
 
   handleCancel(): void {
@@ -100,27 +156,34 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   getPaymentActivity($event) {
     const i = $event;
+    console.log($event);
     switch (i.type) {
-      case 'risk':
+      case 'RISKS':
+        this.request.RISKS = i.info;
         this.riskReduced = $event.bonusAmount;
-        this.payForRisk = $event.amountToPay;
+        this.payForRisk = i.info.amount;
         break;
-      case 'duration':
+      case 'DAYS':
+        this.request.DAYS = i.info;
         this.daysReduced = $event.bonusAmount;
-        this.payForDays = $event.amountToPay;
+        this.payForDays = i.info.amount;
+        break;
+      case 'MANDATORY':
+        this.request.MANDATORY = i.info;
+        this.resBasic = i.info.amount;
         break;
     }
     this.totalRes = 0;
+    console.log(this.payForRisk, this.payForDays, this.resBasic);
     this.totalRes = this.payForDays + this.payForRisk + this.resBasic;
-  }
-
-  getItemByOayment(payment) {
-    return this.payActivity.filter(next => next.payment === payment)[0];
   }
 
   ngOnDestroy(): void {
     this.subCurrentResource.unsubscribe();
     this.subPayingActions.unsubscribe();
+    this.subGameId.unsubscribe();
+    this.subUserId.unsubscribe();
+    this.subCurrentActivity.unsubscribe();
   }
 
 }

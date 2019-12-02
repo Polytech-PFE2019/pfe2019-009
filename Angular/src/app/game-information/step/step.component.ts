@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Steps} from '../../model/step';
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {ActionSet} from '../../model/action';
+import {GameOnService} from "../../service/gameOnService/game-on.service";
+import {LobbyService} from "../../service/lobbyService/lobby.service";
+import {NzMessageService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-step',
@@ -22,48 +23,31 @@ export class StepComponent implements OnInit, OnDestroy {
   test = [1];
   type: string;
   tmpAction: ActionSet = new ActionSet();
+  isHistory = false;
+  subHistory: Subscription;
+  roleID: any;
+  userName: any;
+  roles: any[] = [];
+  myInformation: any;
 
-  constructor(private subscription: SubscriptionService) {
+  constructor(private subscription: SubscriptionService,
+              private nzMessage: NzMessageService,
+              private lobbyService: LobbyService,
+              private gameService: GameOnService) {
   }
 
   ngOnInit() {
     console.log(this.step);
+    this.userName = this.lobbyService.username;
+    this.roles = this.subscription.roles;
+    this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
   }
 
 
   sendStep() {
-   // this.currentStep.emit(this.step.title);
+    // this.currentStep.emit(this.step.title);
     this.sendTestClick.emit(true);
-    const test = [{
-      roleID: 1,
-      actions: [
-        {
-          roleID: 1,
-          payType: 'MANDATORY',
-          status: false,
-          amountPaid: 0,
-          bonusGiven: 0,
-          actions: [{amountToPay: 1, bonusAmount: 1}]
-        },
-        {
-          roleID: 1,
-          payType: 'RISKS',
-          status: false,
-          amountPaid: 0,
-          bonusGiven: 0,
-          actions: [{amountToPay: 1, bonusAmount: 1}, {amountToPay: 4, bonusAmount: 2}]
-        },
-        {
-          roleID: 1,
-          payType: 'DAYS',
-          status: false,
-          amountPaid: 0,
-          bonusGiven: 0,
-          actions: [{amountToPay: 1, bonusAmount: 2}]
-        },
-      ]
-    }
-    ];
     // this.subscription.sendPayingActions(test);
     // this.sendStepTest.emit(test);
     this.sendStepTest.emit(this.step.payingActions);
@@ -77,5 +61,13 @@ export class StepComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subActivities.unsubscribe();
+  }
+
+  openHistory() {
+    if (this.step.histoty !== null) {
+      this.isHistory = !this.isHistory;
+    } else {
+      this.nzMessage.create('warning', 'Aucun historique!');
+    }
   }
 }

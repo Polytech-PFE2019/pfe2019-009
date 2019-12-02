@@ -13,6 +13,7 @@ export class BuyResourceService {
 
   payment = new Subject<any>();
   payment$ = this.payment.asObservable();
+  money: any;
 
   currentMonney = new Subject<any>();
   currentMonney$ = this.currentMonney.asObservable();
@@ -36,6 +37,7 @@ export class BuyResourceService {
   sendPayment(message) {
     console.log('subscription payment' + message);
     this.payment.next(message);
+    this.money = message;
   }
 
   sendCurrentMonney(msg) {

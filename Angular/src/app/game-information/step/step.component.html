@@ -13,7 +13,7 @@
             </nz-card>
           </div>
           <div nz-col nzSpan="10">
-            <app-risk-back [step]="step?.title"></app-risk-back>
+            <app-risk-back [step]="step?.title" (sendCard)="getCard($event)"></app-risk-back>
           </div>
         </div>
         <div nz-row style="margin-top: 10px">
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="history" *ngIf="isHistory">
-      <app-history [listOfData]="step.history"></app-history>
+      <app-history [listOfData]="step.history" [getCardHistory]="testCard"></app-history>
     </div>
   </nz-card>
 </div>

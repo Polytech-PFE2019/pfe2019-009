@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {ActionSet} from '../../model/action';
-import {GameOnService} from "../../service/gameOnService/game-on.service";
-import {LobbyService} from "../../service/lobbyService/lobby.service";
-import {NzMessageService} from "ng-zorro-antd";
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-step',
@@ -16,6 +16,15 @@ export class StepComponent implements OnInit, OnDestroy {
   @Output() currentStep = new EventEmitter();
   @Output() sendTestClick = new EventEmitter();
   @Output() sendStepTest = new EventEmitter();
+  testCard = {
+    id: 0,
+    step: 0,
+    title: '',
+    risk: null,
+    resource: null,
+    day: null,
+    money: null,
+  };
   buyingActions: any[] = [];
   payingActions: any[] = [];
   dataResources: ActionSet[] = [];
@@ -44,6 +53,9 @@ export class StepComponent implements OnInit, OnDestroy {
     console.log(this.myInformation);
   }
 
+  getCard(event) {
+    this.testCard = event;
+  }
 
   sendStep() {
     // this.currentStep.emit(this.step.title);

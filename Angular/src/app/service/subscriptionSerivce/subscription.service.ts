@@ -30,7 +30,14 @@ export class SubscriptionService {
   currentActivity = new Subject<any>();
   currentActivity$ = this.currentActivity.asObservable();
 
+  riskHistory: any[] = [];
+
   constructor() {
+  }
+
+  sendHistory(risk) {
+    this.riskHistory = this.riskHistory.concat(risk);
+    console.log(this.riskHistory);
   }
 
   sendUserID(message) {

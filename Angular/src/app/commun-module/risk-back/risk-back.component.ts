@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Risks} from '../../model/risks';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-risk-back',
@@ -8,6 +9,7 @@ import {Risks} from '../../model/risks';
 })
 export class RiskBackComponent implements OnInit {
   @Input() step: number;
+  @Output() sendCard = new EventEmitter();
   risks: any = Risks;
   random = 0;
   riskRemainNb = 2;
@@ -19,9 +21,12 @@ export class RiskBackComponent implements OnInit {
     id: 0,
     step: 0,
     title: '',
-    risk: [1, 2]
+    risk: null,
+    resource: null,
+    day: null,
+    money: null,
   };
-  constructor() { }
+  constructor(private subService: SubscriptionService) { }
   getRandomFromSon(event) {
     this.random = event;
     this.drawCard();
@@ -45,6 +50,13 @@ export class RiskBackComponent implements OnInit {
     console.log(this.risks.filter(next => next.id === this.testid )[0]);
     this.test.id = this.risks.filter(next => next.id === this.testid )[0].id;
     this.test.title = this.risks.filter(next => next.id === this.testid )[0].title;
+    this.test.risk = this.risks.filter(next => next.id === this.testid )[0].risk;
+    this.test.day = this.risks.filter(next => next.id === this.testid )[0].day;
+    this.test.money = this.risks.filter(next => next.id === this.testid )[0].money;
+    this.test.resource = this.risks.filter(next => next.id === this.testid )[0].resource;
+    this.subService.sendHistory(this.test);
+    console.log(this.test);
+    console.log(this.subService.riskHistory);
   }
   ngOnInit() {
   }

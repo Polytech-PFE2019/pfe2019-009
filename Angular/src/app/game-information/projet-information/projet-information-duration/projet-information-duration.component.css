@@ -15,3 +15,19 @@
   align-items: center;
   margin-top: 1px;
 }
+
+.current{
+  display: flex;
+  flex-wrap: wrap;
+  width: 40px;
+  height:35px;
+  border: 1px solid #efefef;
+  margin-left: 1px;
+  color: #f0f2f5;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1px;
+  background-image: url('../../../../assets/redflag.png');
+  background-size: 40px;
+}
+

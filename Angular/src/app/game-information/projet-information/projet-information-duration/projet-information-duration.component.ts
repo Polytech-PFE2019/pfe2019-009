@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 export class ProjetInformationDurationComponent implements OnInit {
 
   list: any = [];
+  current = 0;
 
   constructor() {
   }

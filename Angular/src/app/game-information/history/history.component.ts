@@ -8,7 +8,7 @@ import {SubscriptionService} from '../../service/subscriptionSerivce/subscriptio
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent implements OnInit, OnDestroy {
+export class HistoryComponent implements OnInit{
   resourceBuyed = 0;
   cardHistory = {
     risk: null,

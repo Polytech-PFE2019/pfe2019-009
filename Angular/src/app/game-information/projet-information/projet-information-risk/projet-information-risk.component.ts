@@ -8,7 +8,7 @@ import {GameOnService} from "../../../service/gameOnService/game-on.service";
 })
 export class ProjetInformationRiskComponent implements OnInit {
   list: any = [];
-  current = 0;
+  current = 56;
   risks = 0;
 
   constructor(private gameService: GameOnService) {

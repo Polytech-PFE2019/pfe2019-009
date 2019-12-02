@@ -41,6 +41,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   myInformation: any;
   currentActivity: any;
   subCurrentActivity: Subscription;
+  isChat = false;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -104,5 +105,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subPayingActions.unsubscribe();
     this.subPlayersWithRoles.unsubscribe();
     this.subCurrentActivity.unsubscribe();
+  }
+
+  openChat() {
+    this.isChat = true;
+  }
+
+  closeChat($event: any) {
+    this.isChat = $event;
   }
 }

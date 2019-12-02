@@ -26,5 +26,8 @@
       <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"  (sendStepTest)="getStepTest($event)"></app-step>
     </div>
   </div>
+
+  <input *ngIf="!isChat" type="image" src="../../../assets/icons/Chat.png" (click)="openChat()"/>
+  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>
 </div>
 

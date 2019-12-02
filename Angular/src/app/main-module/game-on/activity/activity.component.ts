@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
@@ -12,11 +10,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {BuyResourceService} from '../../../service/resources/buy-resource.service';
 import {Subscription} from 'rxjs';
 import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
-import {ActionSet} from '../../../model/action';
 import {GameOnService} from '../../../service/gameOnService/game-on.service';
 import {SocketRequest} from '../../../../Request';
-import {LobbyService} from "../../../service/lobbyService/lobby.service";
-import {isCombinedNodeFlagSet} from "tslint";
+import {LobbyService} from '../../../service/lobbyService/lobby.service';
 
 @Component({
   selector: 'app-activity',
@@ -69,9 +65,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.roles = this.subscription.roles;
     this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
     console.log(this.myInformation);
-
-    // this.currentActivity = this.gameSerivce.currentActivity;
-    // console.log(this.currentActivity);
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
       this.myDataSource = [];
@@ -83,23 +76,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
         console.log(this.myDataSource);
       }
     });
-
-
-    // this.activities = this.gameSerivce.currentActivity;
-    // console.log(this.activities);
-
-    // this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
-    //   console.log(data);
-    //   this.activities = data;
-    // });
-    // this.subGameId = this.subscription.gameID$.subscribe(data => {
-    //   this.gameID = data;
-    // });
     this.gameID = this.subscription.gameID;
     console.log('game id+++' + this.gameID);
-    // this.subUserId = this.subscription.userID$.subscribe(data => {
-    //   this.userID = data;
-    // });
     this.userID = this.subscription.userId;
     console.log(this.activities);
 

@@ -6,6 +6,7 @@ export class Activity {
   buyingActions: any[];
   payingActions: any[];
   risks: number;
+  rolesID: any[];
 
 
   constructor(r) {
@@ -16,6 +17,7 @@ export class Activity {
     this.buyingActions = r.buyingActions;
     this.payingActions = r.payingActions;
     this.risks = r.risks;
+    this.rolesID = r.rolesID;
   }
 
   addAttributes(activity) {

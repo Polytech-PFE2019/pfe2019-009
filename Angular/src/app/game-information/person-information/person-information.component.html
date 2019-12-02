@@ -23,7 +23,7 @@
     </div>
   </nz-card>
   <ng-template #avatarTemplate>
-    <nz-avatar nzSrc="../../assets/profiles/1.jpeg"></nz-avatar>
+    <nz-avatar [nzSrc]="myInformation.src"></nz-avatar>
   </ng-template>
   <ng-template #pointVictoire style="position: absolute; bottom: 0">
     <span (click)="showPointsVistoire()">
@@ -51,12 +51,12 @@
   <ng-template #extra>
     <div class="resource">
       <div class="inner">
-        <img src="../../../assets/icons/qian-2.png" width="30" height="30">
+        <img src="../../../assets/moneybag.png" [width]="30" [height]="30">
         <h3>{{currentMonney}}K</h3>
       </div>
       <br>
       <div class="inner" style="margin-left: 30px">
-        <div class="resourceCube"></div>
+        <div class="resourceCube" [ngStyle]="{backgroundColor: myInformation.style.background}"></div>
         <h3>{{currentResource}}</h3>
       </div>
     </div>

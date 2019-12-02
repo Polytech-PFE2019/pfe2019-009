@@ -17,5 +17,8 @@ export class SocketRequest {
   currentActivityID: any;
   payments: any;
   numberOfPlayersConnected;
+  costProject: any;
+  delayProject: any;
+  failureProject: any;
 
 }

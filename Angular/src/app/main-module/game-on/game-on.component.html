@@ -3,15 +3,11 @@
   <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
     <div class="activityContainer">
       <div class="activity">
-        <app-activity *ngIf="testClick" [activities]="activities"></app-activity>
+        <app-activity [activities]="activities"></app-activity>
       </div>
       <div class="activity">
         <app-buy-resources></app-buy-resources>
       </div>
-      <!--<div class="wait">-->
-        <!--<app-wait></app-wait>-->
-      <!--</div>-->
-      <!--<div class="wait">-->
         <!--<app-prompt></app-prompt>-->
       <!--</div>-->
       <div class="activity" id="personnal">

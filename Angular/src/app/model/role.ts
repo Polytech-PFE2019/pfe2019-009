@@ -24,7 +24,7 @@ export class Role {
     this.ready = false;
     this.username = '';
     this.profile = r.profile;
-    this.style = {};
+    this.style = r.style;
     this.money = r.money;
   }
 

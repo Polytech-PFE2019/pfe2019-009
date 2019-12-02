@@ -15,6 +15,7 @@ import {SubscriptionService} from '../../../service/subscriptionSerivce/subscrip
 import {ActionSet} from '../../../model/action';
 import {GameOnService} from '../../../service/gameOnService/game-on.service';
 import {SocketRequest} from '../../../../Request';
+import {LobbyService} from "../../../service/lobbyService/lobby.service";
 
 @Component({
   selector: 'app-activity',
@@ -29,25 +30,10 @@ export class ActivityComponent implements OnInit, OnDestroy {
   totalRes = this.resBasic;
   payForRisk = 0;
   payForDays = 0;
-  payment = 0;
   test = [1];
-  payActivity = [{
-    payment: 0,
-    benefits: 0
-  },
-    {
-      payment: 2,
-      benefits: 1
-    },
-    {
-      payment: 4,
-      benefits: 2
-    },
-  ];
   subCurrentResource: Subscription;
   currentResource: number;
   subPayingActions: Subscription;
-  dataResources: any;
   daysReduced = 0;
   subGameId: Subscription;
   gameID: any;
@@ -58,10 +44,16 @@ export class ActivityComponent implements OnInit, OnDestroy {
   };
   subUserId: Subscription;
   userID: any;
+  currentActivity: any;
+  userName: any;
+  myInformation: any;
+  roles: any[];
+  subCurrentActivity: Subscription;
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
               private gameSerivce: GameOnService,
+              private lobbyService: LobbyService,
               private changeDetector: ChangeDetectorRef,
               private resourceService: BuyResourceService) {
   }
@@ -69,6 +61,18 @@ export class ActivityComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subCurrentResource = this.resourceService.currentMonney$.subscribe(data => {
       this.currentResource = data;
+    });
+
+    this.userName = this.lobbyService.username;
+    this.roles = this.subscription.roles;
+    this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
+
+    // this.currentActivity = this.gameSerivce.currentActivity;
+    // console.log(this.currentActivity);
+    this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
+      this.currentActivity = data;
+      console.log(this.currentActivity);
     });
 
     // this.activities = this.gameSerivce.currentActivity;
@@ -81,13 +85,13 @@ export class ActivityComponent implements OnInit, OnDestroy {
     // this.subGameId = this.subscription.gameID$.subscribe(data => {
     //   this.gameID = data;
     // });
-    this.gameID = this.gameSerivce.gameID;
+    this.gameID = this.subscription.gameID;
     console.log('game id+++' + this.gameID);
-    this.subUserId = this.subscription.userID$.subscribe(data => {
-      this.userID = data;
-    });
+    // this.subUserId = this.subscription.userID$.subscribe(data => {
+    //   this.userID = data;
+    // });
+    this.userID = this.subscription.userId;
     console.log(this.activities);
-    console.log(this.activities[0].roleID);
 
   }
 
@@ -105,21 +109,33 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.isVisible = false;
     this.nzMessageService.info('Paiement réussi');
     const payment = [];
-    payment.push(this.request.RISKS);
-    payment.push(this.request.MANDATORY);
-    payment.push(this.request.DAYS);
+    if (this.request.RISKS !== null) {
+      payment.push(this.request.RISKS);
+    }
+    if (this.request.MANDATORY !== null) {
+      payment.push(this.request.MANDATORY);
+    }
+    if (this.request.DAYS !== null) {
+      payment.push(this.request.DAYS);
+    }
     const req = {
       request: 'PAY_RESOURCES',
       gameID: this.gameID,
       userID: this.userID,
       payments: payment
     };
+    console.log(req);
     this.gameSerivce.messages.next(req as SocketRequest);
     this.request = {
       RISKS: null,
       DAYS: null,
       MANDATORY: null
     };
+    this.totalRes = 0;
+    this.payForDays = 0;
+    this.payForRisk = 0;
+    this.daysReduced = 0;
+    this.riskReduced = 0;
   }
 
   handleCancel(): void {
@@ -152,15 +168,12 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.totalRes = this.payForDays + this.payForRisk + this.resBasic;
   }
 
-  getItemByOayment(payment) {
-    return this.payActivity.filter(next => next.payment === payment)[0];
-  }
-
   ngOnDestroy(): void {
     this.subCurrentResource.unsubscribe();
     this.subPayingActions.unsubscribe();
     this.subGameId.unsubscribe();
     this.subUserId.unsubscribe();
+    this.subCurrentActivity.unsubscribe();
   }
 
 }

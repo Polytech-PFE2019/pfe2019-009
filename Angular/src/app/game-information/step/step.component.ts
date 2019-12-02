@@ -32,36 +32,6 @@ export class StepComponent implements OnInit, OnDestroy {
   sendStep() {
    // this.currentStep.emit(this.step.title);
     this.sendTestClick.emit(true);
-    const test = [{
-      roleID: 1,
-      actions: [
-        {
-          roleID: 1,
-          payType: 'MANDATORY',
-          status: false,
-          amountPaid: 0,
-          bonusGiven: 0,
-          actions: [{amountToPay: 1, bonusAmount: 1}]
-        },
-        {
-          roleID: 1,
-          payType: 'RISKS',
-          status: false,
-          amountPaid: 0,
-          bonusGiven: 0,
-          actions: [{amountToPay: 1, bonusAmount: 1}, {amountToPay: 4, bonusAmount: 2}]
-        },
-        {
-          roleID: 1,
-          payType: 'DAYS',
-          status: false,
-          amountPaid: 0,
-          bonusGiven: 0,
-          actions: [{amountToPay: 1, bonusAmount: 2}]
-        },
-      ]
-    }
-    ];
     // this.subscription.sendPayingActions(test);
     // this.sendStepTest.emit(test);
     this.sendStepTest.emit(this.step.payingActions);

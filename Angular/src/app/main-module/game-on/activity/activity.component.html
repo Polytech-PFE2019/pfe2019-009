@@ -1,8 +1,8 @@
-<div class="activity2Container">
-  <h2>Payer des ressources</h2>
+<div class="activity2Container" *ngIf="currentActivity?.rolesID.includes(myInformation.id)">
+  <h3>Etape {{currentActivity.title}} - Payer des ressources</h3>
   <div class="column" style="width: 90%">
     <nz-table nzBordered
-              [nzData]="activities"
+              [nzData]="currentActivity.payingActions"
               [nzNoAnimation]="false"
               #table [nzFrontPagination]="false">
       <thead>
@@ -19,6 +19,7 @@
             [role]="item?.roleID"
             [type]="'MANDATORY'"
             [isActivity]="false"
+            (sendPaymentActivity)="getPaymentActivity($event)"
             [activitiesBenefits]="item?.actions[0].actions">
           </app-activity-displayer>
         </td>
@@ -55,4 +56,7 @@
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <p>Êtes-vous sûr d'payer {{totalRes}} ressources?</p>
   </nz-modal>
+</div>
+<div *ngIf="!currentActivity?.rolesID.includes(myInformation.id)">
+  <app-prompt></app-prompt>
 </div>

@@ -105,6 +105,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       this.userID = data;
     });
 
+    this.userID = this.subscriptionService.userId;
     this.subRoomId = this.subscriptionService.roomID$.subscribe(roomId => {
       console.log(roomId);
       this.roomID = roomId;

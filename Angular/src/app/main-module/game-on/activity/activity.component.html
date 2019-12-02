@@ -2,14 +2,14 @@
   <h3>Etape {{currentActivity.title}} - Payer des ressources</h3>
   <div class="column" style="width: 90%">
     <nz-table nzBordered
-              [nzData]="currentActivity.payingActions"
+              [nzData]="myDataSource"
               [nzNoAnimation]="false"
               #table [nzFrontPagination]="false">
       <thead>
       <tr>
-        <th><img src="../../../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
-        <th><img src="../../../../assets/icons/faillante.png" width="20" height="20" alt="faillante"></th>
-        <th><img src="../../../../assets/icons/duration.png" width="20" height="20" alt="duration"></th>
+        <th><img src="../../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
+        <th><img src="../../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
+        <th><img src="../../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
       </tr>
       </thead>
       <tbody>

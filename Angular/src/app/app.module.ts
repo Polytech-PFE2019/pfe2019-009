@@ -40,6 +40,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { PromptComponent } from './game-information/prompt/prompt.component';
 import { WaitComponent } from './game-information/wait/wait.component';
+import { HistoryComponent } from './game-information/history/history.component';
 
 registerLocaleData(fr);
 
@@ -69,7 +70,8 @@ registerLocaleData(fr);
     LoadingComponent,
     LoadingPageComponent,
     PromptComponent,
-    WaitComponent
+    WaitComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

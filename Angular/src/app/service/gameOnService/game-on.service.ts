@@ -22,6 +22,8 @@ export class GameOnService {
   delayProject: any;
   failureProject: any;
   current: any;
+  history = new Subject<any>();
+  history$ = this.history.asObservable();
 
   constructor(private wsService: WebsocketService,
               private subscription: SubscriptionService) {
@@ -88,6 +90,12 @@ export class GameOnService {
             this.currentActivity = this.currentStep[currentId - 1];
             console.log(this.currentActivity);
             this.subscription.sendCurrentActivity(this.currentActivity);
+          }
+
+          if (data.response === 'UPDATE_PAYMENT') {
+            const currentId = data.activityID;
+            this.currentStep[currentId - 1].history = data;
+            console.log(this.currentStep[currentId - 1].history);
           }
           console.log(data);
           return data;

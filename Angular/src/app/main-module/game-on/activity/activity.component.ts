@@ -16,6 +16,7 @@ import {ActionSet} from '../../../model/action';
 import {GameOnService} from '../../../service/gameOnService/game-on.service';
 import {SocketRequest} from '../../../../Request';
 import {LobbyService} from "../../../service/lobbyService/lobby.service";
+import {isCombinedNodeFlagSet} from "tslint";
 
 @Component({
   selector: 'app-activity',
@@ -49,6 +50,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   myInformation: any;
   roles: any[];
   subCurrentActivity: Subscription;
+  myDataSource: any[] = [];
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
@@ -72,8 +74,16 @@ export class ActivityComponent implements OnInit, OnDestroy {
     // console.log(this.currentActivity);
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
+      this.myDataSource = [];
       console.log(this.currentActivity);
+      if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
+        const tmp = (this.currentActivity.payingActions.filter(next =>
+          next.roleID === this.myInformation.id)[0]);
+        this.myDataSource.push(tmp);
+        console.log(this.myDataSource);
+      }
     });
+
 
     // this.activities = this.gameSerivce.currentActivity;
     // console.log(this.activities);

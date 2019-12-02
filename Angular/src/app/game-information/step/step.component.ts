@@ -2,6 +2,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {ActionSet} from '../../model/action';
+import {GameOnService} from "../../service/gameOnService/game-on.service";
+import {LobbyService} from "../../service/lobbyService/lobby.service";
+import {NzMessageService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-step',
@@ -20,17 +23,30 @@ export class StepComponent implements OnInit, OnDestroy {
   test = [1];
   type: string;
   tmpAction: ActionSet = new ActionSet();
+  isHistory = false;
+  subHistory: Subscription;
+  roleID: any;
+  userName: any;
+  roles: any[] = [];
+  myInformation: any;
 
-  constructor(private subscription: SubscriptionService) {
+  constructor(private subscription: SubscriptionService,
+              private nzMessage: NzMessageService,
+              private lobbyService: LobbyService,
+              private gameService: GameOnService) {
   }
 
   ngOnInit() {
     console.log(this.step);
+    this.userName = this.lobbyService.username;
+    this.roles = this.subscription.roles;
+    this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
   }
 
 
   sendStep() {
-   // this.currentStep.emit(this.step.title);
+    // this.currentStep.emit(this.step.title);
     this.sendTestClick.emit(true);
     // this.subscription.sendPayingActions(test);
     // this.sendStepTest.emit(test);
@@ -45,5 +61,13 @@ export class StepComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subActivities.unsubscribe();
+  }
+
+  openHistory() {
+    if (this.step.histoty !== null) {
+      this.isHistory = !this.isHistory;
+    } else {
+      this.nzMessage.create('warning', 'Aucun historique!');
+    }
   }
 }

@@ -17,19 +17,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class StartNegotiationEvent implements EventProtocol {
+public class StartNegotiationEvent extends NegotiationEvent implements EventProtocol {
 
 
     private Logger logger = Logger.getGlobal();
-    private Map<String,String> request;
-    private GameInstance gameInstance;
-    private Messenger messenger;
 
-    public StartNegotiationEvent(WebSocketSession session, Map request) {
-        this.messenger = new Messenger(session);
-        this.request = request;
-        gameInstance = GameInstance.getInstance();
-
+    public StartNegotiationEvent(WebSocketSession session, Map<String,String> request) {
+        super(session,request);
     }
 
     @Override
@@ -41,61 +35,18 @@ public class StartNegotiationEvent implements EventProtocol {
             return;
         }
 
-        Optional<Game> optionalGame = gameInstance.getSpecificGameByID(request.get(GameRequestKey.GAMEID.getKey()));
-        if(optionalGame.isEmpty()){
-            this.messenger.sendError("GAME NOT FOUND");
-            return;
-        }
+        super.processRequest();
 
-        Game game = optionalGame.get();
-        String negotiationID = request.get(GameRequestKey.NEGOTIATIONID.getKey());
-
-        NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
-
-        Optional<Negociation> negotiationOptional = activity.getNegotiationByID(negotiationID);
-        if(negotiationOptional.isEmpty()){
-            this.messenger.sendError("NEGOCIATION NOT FOUND");
-            return;
-        }
-        Negociation negotiation = negotiationOptional.get();
-
-        Optional<Player> optionalGiver = game.getPlayerByRoleID(negotiation.getGiverRoleID());
-
-        if (!optionalGiver.isPresent()){
-            this.messenger.sendError("GIVER NOT FOUND");
-            return;
-        }
-
-        Optional<Player> optionalReceiver = game.getPlayerByRoleID(negotiation.getReceiverRoleID());
-
-        if (!optionalReceiver.isPresent()){
-            this.messenger.sendError("RECEIVER NOT FOUND");
-            return;
-        }
-
-        Player giver = optionalGiver.get();
-        Player receiver = optionalReceiver.get();
-
-        sendResponseToUsers(giver,receiver,negotiation);
+        sendResponseToUsers(negotiation);
 
     }
 
-    private void sendResponseToUsers(Player giver, Player receiver, Negociation negociation) {
+    private void sendResponseToUsers(Negociation negociation) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "START_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negociation.getId());
 
-        Messenger otherPlayerMessenger;
-
-        if(giver.getSession() == messenger.getSession()){
-            otherPlayerMessenger = new Messenger(receiver.getSession());
-        }
-        else {
-            otherPlayerMessenger = new Messenger(giver.getSession());
-        }
-
-        messenger.sendSpecificMessageToAUser(response.toString());
-        otherPlayerMessenger.sendSpecificMessageToAUser(response.toString());;
+        super.sendResponses(response.toString());
     }
 
     private void checkArgumentOfRequest() throws MissArgumentToRequestException {

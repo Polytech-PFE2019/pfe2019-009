@@ -38,7 +38,7 @@ public class RoomWebService implements RoomService {
     }
 
     @Override
-    @RequestMapping(value = "/NumberRooms", method = RequestMethod.GET)
+    @GetMapping(value = "/NumberRooms")
     public ResponseEntity<String> getTotalOfRoom() {
         return ResponseEntity.ok(String.valueOf(roomAccessor.getNumberOfRoom()));
     }

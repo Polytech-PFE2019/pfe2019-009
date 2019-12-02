@@ -35,7 +35,6 @@ public class GameSocketHandler extends TextWebSocketHandler {
         }catch(InvalidRequestException e){
             loggerGlobal.warning("GameSocketHandler : Impossible to recognize an event : " + message.getPayload());
             new Messenger(session).sendErrorCuzMissingArgument("REQUEST");
-            return;
         }
 
 

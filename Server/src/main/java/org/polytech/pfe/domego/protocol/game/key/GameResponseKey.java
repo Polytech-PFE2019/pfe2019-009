@@ -2,6 +2,9 @@ package org.polytech.pfe.domego.protocol.game.key;
 
 public enum GameResponseKey {
     RESPONSE("response"),
+    FINISH("FINISH"),
+    RANKING("ranking"),
+    RANK("rank"),
     RESOURCES("resources"),
     UPDATE_PAYMENT("UPDATE_PAYMENT"),
     LAUNCH_GAME("LAUNCH_GAME"),
@@ -33,7 +36,8 @@ public enum GameResponseKey {
     COST_PROJECT("costProject"),
     FAILURE_PROJECT("failureProject"),
     PAYMENTS("payments"),
-    CHANGE_ACTIVITY("CHANGE_ACTIVITY");
+    CHANGE_ACTIVITY("CHANGE_ACTIVITY"),
+    NOVP("NumberOfVictoryPoints");
 
     public final String key;
 

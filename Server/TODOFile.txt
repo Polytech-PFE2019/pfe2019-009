@@ -1,0 +1,1 @@
+Informer le client sur le coût min/max du projet en termes de ressources, durée, defaillance, risk.

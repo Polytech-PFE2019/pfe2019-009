@@ -36,7 +36,7 @@ public class GameWebService implements GameService {
     }
 
     @Override
-    @RequestMapping(value = "/NumberGames", method = RequestMethod.GET)
+    @GetMapping(value = "/NumberGames")
     public ResponseEntity<String> getTotalOfGame() {
         return ResponseEntity.ok(String.valueOf(gameAccessor.numberOfGame()));
     }

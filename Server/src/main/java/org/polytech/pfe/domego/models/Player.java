@@ -84,4 +84,7 @@ public class Player {
     }
 
 
+    public int getVictoryPoints() {
+        return 0;
+    }
 }

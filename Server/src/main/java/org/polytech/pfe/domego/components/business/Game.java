@@ -7,6 +7,7 @@ import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.BuyResources;
 import org.polytech.pfe.domego.protocol.game.ChangeActivityEvent;
+import org.polytech.pfe.domego.protocol.game.FinishGameEvent;
 import org.polytech.pfe.domego.protocol.game.UpdatePaymentGameEvent;
 
 import java.util.List;
@@ -78,8 +79,9 @@ public class Game {
     }
 
     private void updateGame() {
-        if (currentActivity + 1 == activities.size())
-            logger.log(Level.INFO,"Game : The game {0} is now Finished", this.getId());
+        if (currentActivity + 1 == activities.size()){
+            new FinishGameEvent(this).processEvent();
+        }
         else{
             currentActivity++;
             this.getCurrentActivity().startActivity();

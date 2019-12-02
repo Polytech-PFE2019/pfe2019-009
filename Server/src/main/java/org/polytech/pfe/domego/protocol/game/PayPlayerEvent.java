@@ -19,6 +19,7 @@ public class PayPlayerEvent implements EventProtocol {
     private Game game;
     private Player giver;
     private Player receiver;
+
     public PayPlayerEvent(Game game, Player giver, Player receiver) {
         this.game = game;
         this.giver = giver;

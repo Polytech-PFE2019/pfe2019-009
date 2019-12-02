@@ -15,6 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EndNegotiationEvent implements EventProtocol {
@@ -46,64 +47,71 @@ public class EndNegotiationEvent implements EventProtocol {
         }
 
         Game game = optionalGame.get();
-        Optional<Player> optionalPlayer = game.getPlayerById(request.get(GameRequestKey.GIVERID.getKey()));
+        String negotiationID = request.get(GameRequestKey.NEGOTIATIONID.getKey());
 
-        if (!optionalPlayer.isPresent()){
+        NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
+
+        Optional<Negociation> negotiationOptional = activity.getNegotiationByID(negotiationID);
+        if(negotiationOptional.isEmpty()){
+            this.messenger.sendError("NEGOCIATION NOT FOUND");
+            return;
+        }
+        Negociation negotiation = negotiationOptional.get();
+
+        Optional<Player> optionalGiver = game.getPlayerByRoleID(negotiation.getGiverRoleID());
+
+        if (!optionalGiver.isPresent()){
             this.messenger.sendError("GIVER NOT FOUND");
             return;
         }
 
-        Optional<Player> optionalPlayer2 = game.getPlayerById(request.get(GameRequestKey.RECEIVERID.getKey()));
+        Optional<Player> optionalReceiver = game.getPlayerByRoleID(negotiation.getReceiverRoleID());
 
-        if (!optionalPlayer2.isPresent()){
+        if (!optionalReceiver.isPresent()){
             this.messenger.sendError("RECEIVER NOT FOUND");
             return;
         }
 
-        Player giver = optionalPlayer.get();
-        Player receiver = optionalPlayer2.get();
+        Player giver = optionalGiver.get();
+        Player receiver = optionalReceiver.get();
 
-        this.negociate(game,giver, receiver);
-    }
-
-    private void negociate(Game game, Player giver, Player receiver){
-
-        int giverID = giver.getRole().getId();
-        int receiverID = receiver.getRole().getId();
-        NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
         int amount = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
 
-        Optional<Negociation> negociationOptional = activity.getNegocationByRoleIDs(giverID,receiverID);
-        if(!negociationOptional.isPresent()){
-            this.messenger.sendError("NEGOCIATION NOT FOUND");
-            return;
-        }
-        Negociation negociation = negociationOptional.get();
-        negociation.negociate(amount);
-        sendResponseToUser(giver,negociation);
-        sendResponseToUser(receiver,negociation);
+        negotiation.negociate(amount);
 
+        logger.log(Level.INFO,
+                "BuyResourceEvent : In game  {0} the negocation beetween {1} and {2} is over. The amount of the negociation is {3}.",
+                new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  negotiation.getAmountNegociated()});
+
+        sendResponseToUsers(giver, receiver, negotiation);
 
 
     }
-    private void sendResponseToUser(Player player, Negociation negociation) {
+    private void sendResponseToUsers(Player giver, Player receiver, Negociation negociation) {
         JsonObject response = new JsonObject();
-        response.addProperty(GameResponseKey.RESPONSE.key, "END_NEGOCIATION");
-        response.addProperty(GameResponseKey.GIVERID.key, player.getResourcesAmount());
-        response.addProperty(GameResponseKey.RECEIVERID.key, player.getResourcesAmount());
+        response.addProperty(GameResponseKey.RESPONSE.key, "END_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negociation.getId());
-        response.addProperty(GameResponseKey.AMOUNT.key, player.getResourcesAmount());
+        response.addProperty(GameResponseKey.AMOUNT.key, negociation.getAmountNegociated());
+
+        Messenger otherPlayerMessenger;
+
+        if(giver.getSession() == messenger.getSession()){
+            otherPlayerMessenger = new Messenger(receiver.getSession());
+        }
+        else {
+            otherPlayerMessenger = new Messenger(giver.getSession());
+        }
+
         messenger.sendSpecificMessageToAUser(response.toString());
+        otherPlayerMessenger.sendSpecificMessageToAUser(response.toString());
 
     }
 
     private void checkArgumentOfRequest() throws MissArgumentToRequestException {
         if(!request.containsKey(GameRequestKey.GAMEID.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.GAMEID);
-        if(!request.containsKey(GameRequestKey.GIVERID.getKey()))
-            throw new MissArgumentToRequestException(GameRequestKey.GIVERID);
-        if(!request.containsKey(GameRequestKey.RECEIVERID.getKey()))
-            throw new MissArgumentToRequestException(GameRequestKey.RECEIVERID);
+        if(!request.containsKey(GameRequestKey.NEGOTIATIONID.getKey()))
+            throw new MissArgumentToRequestException(GameRequestKey.NEGOTIATIONID);
         if(!request.containsKey(GameRequestKey.AMOUNT.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.AMOUNT);
 

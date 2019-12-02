@@ -4,5 +4,5 @@ import java.util.Optional;
 
 public interface NegociationAction {
 
-    Optional<Negociation> getNegocationByRoleIDs(int giverRoleID, int receiverRoleID);
+    Optional<Negociation> getNegotiationByID(String id);
 }

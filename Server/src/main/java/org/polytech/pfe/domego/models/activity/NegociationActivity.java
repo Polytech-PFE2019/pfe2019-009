@@ -11,8 +11,8 @@ public class NegociationActivity extends Activity implements NegociationAction {
         super.negociationList = negociationList;
     }
 
-    public Optional<Negociation> getNegocationByRoleIDs(int giverRoleID, int receiverRoleID){
-        return negociationList.stream().filter(negociation -> negociation.getGiverRoleID() == giverRoleID && negociation.getReceiverRoleID() == receiverRoleID).findAny();
+    public Optional<Negociation> getNegotiationByID(String id){
+        return negociationList.stream().filter(negociation -> negociation.getId().equals(id)).findAny();
     }
 
 }

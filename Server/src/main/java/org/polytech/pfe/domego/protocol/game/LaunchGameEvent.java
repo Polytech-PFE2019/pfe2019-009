@@ -8,6 +8,7 @@ import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyResources;
+import org.polytech.pfe.domego.models.activity.Negociation;
 import org.polytech.pfe.domego.models.activity.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.ActionResponseKey;
@@ -53,6 +54,7 @@ public class LaunchGameEvent implements EventProtocol {
             activityJson.addProperty(ActivityResponseKey.STATUS.key, activity.getActivityStatus().toString());
             activityJson.add(ActivityResponseKey.PAYING_ACTIONS.key,this.createPayingActionsResponse(activity));
             activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,this.createBuyingActions(activity, player));
+            activityJson.add(ActivityResponseKey.NEGOTIATION_ACTIONS.key, this.createNegotiationActionsResponse(activity));
             JsonArray roleIDListJson = new JsonArray();
             activity.getRoleIdHasToPlayDuringThisActivity().forEach(roleIDListJson::add);
             activityJson.add(ActivityResponseKey.ROLE_ID_LIST.key, roleIDListJson);
@@ -134,5 +136,17 @@ public class LaunchGameEvent implements EventProtocol {
             }
         }
         return payingActions;
+    }
+
+    private JsonArray createNegotiationActionsResponse(Activity activity){
+        JsonArray negotiationActions = new JsonArray();
+        for(Negociation negotiation : activity.getNegociationList()){
+            JsonObject negotiationAction = new JsonObject();
+            negotiationAction.addProperty(ActionResponseKey.NEGOTIATIONID.key, negotiation.getId());
+            negotiationAction.addProperty(ActionResponseKey.GIVERID.key, negotiation.getGiverRoleID());
+            negotiationAction.addProperty(ActionResponseKey.RECEIVERID.key, negotiation.getReceiverRoleID());
+            negotiationActions.add(negotiationAction);
+        }
+        return negotiationActions;
     }
 }

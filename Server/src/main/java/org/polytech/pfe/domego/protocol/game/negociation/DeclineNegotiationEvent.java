@@ -9,6 +9,7 @@ import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Negociation;
 import org.polytech.pfe.domego.models.activity.NegociationActivity;
 import org.polytech.pfe.domego.protocol.EventProtocol;
+import org.polytech.pfe.domego.protocol.RequestArgumentKey;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.springframework.web.socket.WebSocketSession;
@@ -48,58 +49,69 @@ public class DeclineNegotiationEvent implements EventProtocol {
         }
 
         Game game = optionalGame.get();
-        Optional<Player> optionalPlayer = game.getPlayerById(request.get(GameRequestKey.GIVERID.getKey()));
 
-        if (optionalPlayer.isEmpty()){
+        String negotiationID = request.get(GameRequestKey.NEGOTIATIONID.getKey());
+
+        NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
+
+        Optional<Negociation> negotiationOptional = activity.getNegotiationByID(negotiationID);
+        if(negotiationOptional.isEmpty()){
+            this.messenger.sendError("NEGOCIATION NOT FOUND");
+            return;
+        }
+        Negociation negotiation = negotiationOptional.get();
+
+        Optional<Player> optionalGiver = game.getPlayerByRoleID(negotiation.getGiverRoleID());
+
+        if (!optionalGiver.isPresent()){
             this.messenger.sendError("GIVER NOT FOUND");
             return;
         }
 
-        Optional<Player> optionalPlayer2 = game.getPlayerById(request.get(GameRequestKey.RECEIVERID.getKey()));
+        Optional<Player> optionalReceiver = game.getPlayerByRoleID(negotiation.getReceiverRoleID());
 
-        if (optionalPlayer2.isEmpty()){
+        if (!optionalReceiver.isPresent()){
             this.messenger.sendError("RECEIVER NOT FOUND");
             return;
         }
 
-        Player giver = optionalPlayer.get();
-        Player receiver = optionalPlayer2.get();
+        Player giver = optionalGiver.get();
+        Player receiver = optionalReceiver.get();
 
-        int giverID = giver.getRole().getId();
-        int receiverID = receiver.getRole().getId();
-        NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
-
-        Optional<Negociation> negociationOptional = activity.getNegocationByRoleIDs(giverID,receiverID);
-        if(negociationOptional.isEmpty()){
-            this.messenger.sendError("NEGOCIATION NOT FOUND");
-            return;
-        }
-
-        Negociation negociation = negociationOptional.get();
-        sendResponseToUser(giver,receiver,negociation);
-        sendResponseToUser(giver,receiver,negociation);
+        sendResponseToUsers(giver,receiver,negotiation);
 
 
     }
 
-    private void sendResponseToUser(Player giver, Player receiver, Negociation negociation) {
+    private void sendResponseToUsers(Player giver, Player receiver, Negociation negociation) {
         JsonObject response = new JsonObject();
-        response.addProperty(GameResponseKey.RESPONSE.key, "DECLINE_NEGOCIATE");
-        response.addProperty(GameResponseKey.GIVERID.key,giver.getID());
-        response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getID());
+        response.addProperty(GameResponseKey.RESPONSE.key, "DECLINE_NEGOTIATE");
+        response.addProperty(GameResponseKey.USERID.key,request.get(GameRequestKey.USERID.getKey()));
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negociation.getId());
         response.addProperty(GameResponseKey.DECLINETYPE.key, request.get(GameRequestKey.DECLINETYPE.getKey()));
 
+        Messenger otherPlayerMessenger;
+
+        if(giver.getSession() == messenger.getSession()){
+            otherPlayerMessenger = new Messenger(receiver.getSession());
+        }
+        else {
+            otherPlayerMessenger = new Messenger(giver.getSession());
+        }
+
         messenger.sendSpecificMessageToAUser(response.toString());
+        otherPlayerMessenger.sendSpecificMessageToAUser(response.toString());
+
+
     }
 
     private void checkArgumentOfRequest() throws MissArgumentToRequestException {
         if(!request.containsKey(GameRequestKey.GAMEID.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.GAMEID);
-        if(!request.containsKey(GameRequestKey.GIVERID.getKey()))
-            throw new MissArgumentToRequestException(GameRequestKey.GIVERID);
-        if(!request.containsKey(GameRequestKey.RECEIVERID.getKey()))
-            throw new MissArgumentToRequestException(GameRequestKey.RECEIVERID);
+        if(!request.containsKey(GameRequestKey.NEGOTIATIONID.getKey()))
+            throw new MissArgumentToRequestException(GameRequestKey.NEGOTIATIONID);
+        if(!request.containsKey(GameRequestKey.USERID.getKey()))
+            throw new MissArgumentToRequestException(GameRequestKey.USERID);
         if(!request.containsKey(GameRequestKey.DECLINETYPE.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.DECLINETYPE);
     }

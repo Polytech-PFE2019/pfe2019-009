@@ -15,7 +15,8 @@ public enum GameRequestKey implements RequestArgumentKey {
     RECEIVERID("receiverID"),
     GIVERID("giverID"),
     MESSAGE("message"),
-    DECLINETYPE("declineType");
+    DECLINETYPE("declineType"),
+    NEGOTIATIONID("negotiationID");
 
 
     private String key;

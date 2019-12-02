@@ -15,6 +15,9 @@ import org.polytech.pfe.domego.database.accessor.RoleAccessor;
 import org.polytech.pfe.domego.generator.InitialGameGenerator;
 import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.*;
+import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.BuyResources;
+import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.polytech.pfe.domego.services.sockets.game.GameRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,8 +88,8 @@ class GameRequestHandlerTest {
 
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key,"OK");
-        response.addProperty(GameResponseKey.USERID.key, player.getID());
-        response.addProperty(GameResponseKey.GAMEID.key,game.getId());
+        response.addProperty(GameResponseKey.USER_ID.key, player.getID());
+        response.addProperty(GameResponseKey.GAME_ID.key,game.getId());
         response.addProperty(GameResponseKey.NOPC.key, game.getPlayersPresent().size());
 
 
@@ -151,6 +154,7 @@ class GameRequestHandlerTest {
         payments.add(paymentMandatory);
         request.add("payments",payments);
 
+        Activity activity = game.getCurrentActivity();
 
         Map<String,?> value = new Gson().fromJson(request, Map.class);
 
@@ -160,7 +164,7 @@ class GameRequestHandlerTest {
         handler.handleRequest(sessionPlayerTest, value);
 
         //The first activity must be of this type. //If not, set the current activity as the one you want.
-        Activity activity = game.getCurrentActivity();
+
         //One of the PayResource of the activity must be for roleID Maitre D'ouvrage.
         //and amount needed must be one for mandatory type
 

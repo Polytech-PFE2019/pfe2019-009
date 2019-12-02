@@ -1,7 +1,5 @@
 package org.polytech.pfe.domego.models.activity;
 
-import com.google.gson.internal.$Gson$Types;
-
 public class PayPlayer {
     private Negociation negociation;
     private int percentage;

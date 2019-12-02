@@ -1,7 +1,5 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,7 +11,6 @@ public abstract class Activity {
     private List<PayResources> payResourcesList;
     private ActivityStatus activityStatus = ActivityStatus.NOT_STARTED;
     //Map to know easily if the mandatory has been paid by the roles
-    private Map<Integer, Boolean> roleHasPaid;
 
     protected List<BuyResources> buyResourcesList;
 
@@ -30,11 +27,7 @@ public abstract class Activity {
         this.buyResourcesList = new ArrayList<>();
         this.negociationList = new ArrayList<>();
         this.payPlayerList = new ArrayList<>();
-        List<PayResources> mandatoryPayResourcesList = payResourcesList.stream().filter(payResources ->
-                payResources.getPayResourceType().equals(PayResourceType.MANDATORY)).collect(Collectors.toList());
 
-        roleHasPaid = new HashMap<>();
-        mandatoryPayResourcesList.forEach(payResources -> roleHasPaid.put(payResources.getRoleID(),false));
     }
 
     public Optional<PayResources> getPayResourcesByRoleAndType(int roleID, PayResourceType payResourceType){
@@ -43,6 +36,7 @@ public abstract class Activity {
     }
 
     public boolean payResources(int roleID, PayResourceType payResourceType, int amount){
+
         Optional<PayResources> payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
 
         if(payResources.isEmpty()){
@@ -52,6 +46,8 @@ public abstract class Activity {
         if(!payResources.get().pay(amount)){
             return false;
         }
+        if (allMandatoryResourcesHaveBeenPayed())
+            this.finishActivity();
         return true;
 
     }
@@ -65,12 +61,14 @@ public abstract class Activity {
                 && payPlayer.getNegociation().getReceiverRoleID() == receiverID ).findAny();
     }
 
-    public boolean hasRolePaidMandatory(int roleID){
-        return roleHasPaid.get(roleID);
+    public Set<Integer> getRoleIdHasToPlayDuringThisActivity(){
+        return payResourcesList.stream().map(PayResources::getRoleID).collect(Collectors.toSet());
     }
 
-    public void setRolePaidMandatory(int roleID){
-        roleHasPaid.put(roleID,true);
+    private boolean allMandatoryResourcesHaveBeenPayed(){
+        return payResourcesList.stream()
+                .filter(payResources ->payResources.getPayResourceType().equals(PayResourceType.MANDATORY))
+                .noneMatch(payResources -> !payResources.hasPaid());
     }
 
     public int getNumberOfDays(){

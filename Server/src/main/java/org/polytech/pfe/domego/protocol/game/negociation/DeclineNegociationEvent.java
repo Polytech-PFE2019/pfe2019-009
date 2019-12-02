@@ -6,7 +6,6 @@ import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.Negociation;
 import org.polytech.pfe.domego.models.activity.NegociationActivity;
 import org.polytech.pfe.domego.protocol.EventProtocol;

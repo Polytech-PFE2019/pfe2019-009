@@ -1,8 +1,6 @@
 package org.polytech.pfe.domego.generator;
 
 import org.polytech.pfe.domego.components.business.Game;
-import org.polytech.pfe.domego.models.activity.PayResourceType;
-import org.polytech.pfe.domego.models.activity.PayResources;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.*;
 

@@ -9,6 +9,7 @@ import {GameOnService} from "../../../service/gameOnService/game-on.service";
 export class ProjetInformationDurationComponent implements OnInit {
 
   list: any = [];
+  current = 0;
   days = 0;
 
   constructor(private gameService: GameOnService) {

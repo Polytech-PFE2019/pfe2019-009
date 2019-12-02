@@ -34,7 +34,7 @@
           <td>{{ data?.creator}}</td>
           <td>{{ data?.numberOfPlayer }}</td>
           <td>
-            <button nz-button (click)="joinSalon(data)">Join</button>
+            <button nz-button (click)="joinSalon(data)" [disabled]="data.numberOfPlayer===6">Join</button>
           </td>
         </tr>
         </tbody>

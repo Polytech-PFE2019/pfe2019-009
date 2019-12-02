@@ -23,6 +23,11 @@ export class SubscriptionService {
   payingActions = new Subject<any>();
   payingActions$ = this.payingActions.asObservable();
 
+  playersWithRoles = new Subject<any>();
+  playersWithRoles$ = this.playersWithRoles.asObservable();
+
+  roles: any[] =[];
+
   constructor() {
   }
 
@@ -54,5 +59,11 @@ export class SubscriptionService {
   sendPayingActions(message) {
     console.log('subscription activities' + message);
     this.payingActions.next(message);
+  }
+
+  sendPlayersWithRoles(msg) {
+    this.roles = msg;
+    console.log('subscription players with role' + msg);
+    this.payingActions.next(msg);
   }
 }

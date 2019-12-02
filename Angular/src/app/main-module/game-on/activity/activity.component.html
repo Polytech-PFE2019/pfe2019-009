@@ -17,8 +17,8 @@
         <td>
           <app-activity-displayer
             [role]="item?.roleID"
-            [type]="'basic'"
-            [isActivity]="true"
+            [type]="'MANDATORY'"
+            [isActivity]="false"
             [activitiesBenefits]="item?.actions[0].actions">
           </app-activity-displayer>
         </td>
@@ -28,7 +28,7 @@
             [isActivity]="true"
             (sendPaymentActivity)="getPaymentActivity($event)"
             [activitiesBenefits]="item?.actions[1].actions"
-            [type]="'risk'"></app-activity-displayer>
+            [type]="'RISKS'"></app-activity-displayer>
         </td>
         <td>
           <app-activity-displayer
@@ -37,7 +37,7 @@
             [activitiesBenefits]="item?.actions[2].actions"
             [isActivity]="true"
             (sendPaymentActivity)="getPaymentActivity($event)"
-            [type]="'duration'">
+            [type]="'DAYS'">
           </app-activity-displayer>
         </td>
       </tr>

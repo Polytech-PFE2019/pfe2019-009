@@ -65,12 +65,10 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           gameID: data.gameID.toString(),
           userID: this.userID
         };
+        this.subscriptionService.sendPlayersWithRoles(this.roles);
         this.subscriptionService.sendGameId(data.gameID);
         this.gameService.messages.next(req as SocketRequest);
-        // this.isLoding = true;
-        // setTimeout(() => {
         this.router.navigate(['gameon'], {queryParams: params});
-        // }, 5000);
       } else {
         switch (data.response) {
           case 'UPDATE':

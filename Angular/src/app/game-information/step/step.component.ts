@@ -1,5 +1,3 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Steps} from '../../model/step';
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';

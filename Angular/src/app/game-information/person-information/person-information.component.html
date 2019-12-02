@@ -1,33 +1,64 @@
 <div class="container">
-  <nz-card [nzActions]="[actionEdit, actionEllipsis]">
+  <nz-card [nzActions]="[description, pointVictoire, special]">
     <nz-card-meta
-      nzTitle="Le maître d’ouvrage"
-      nzDescription="This is the description"
-      [nzAvatar]="avatarTemplate"
-    ></nz-card-meta>
+      [nzDescription]="extra"
+      [nzTitle]="myInformation.title"
+      [nzAvatar]="avatarTemplate">
+    </nz-card-meta>
+    <div *ngIf="isPointsVistoire" class="content-container">
+      <h6>Points de victoire:</h6>
+      <p *ngFor="let item of myInformation?.mission.pointsDeVistore">
+        {{item}}
+      </p>
+    </div>
+    <div *ngIf="isSpecial" class="content-container">
+      <h6>Spécial:</h6>
+      <p *ngFor="let item of myInformation?.mission.specialActivity">
+        {{item}}
+      </p>
+    </div>
+    <div *ngIf="isDescription" class="content-container">
+      <h6>Description:</h6>
+      <p>{{myInformation.description}}</p>
+    </div>
   </nz-card>
   <ng-template #avatarTemplate>
     <nz-avatar nzSrc="../../assets/profiles/1.jpeg"></nz-avatar>
   </ng-template>
-  <ng-template #actionEdit>
-    <i id="buyResource"
-       nz-icon
-       nzType="account-book"
-       nzTheme="outline">
-    </i>
+  <ng-template #pointVictoire style="position: absolute; bottom: 0">
+    <span (click)="showPointsVistoire()">
+      <i class="iconfont icon-mubiao">
+      </i><br>
+      Points de victoire
+    </span>
   </ng-template>
-  <ng-template #actionEllipsis>
-    <i nz-icon nzType="ellipsis"></i>
+  <ng-template #special>
+    <span (click)="showSpecial()">
+      <i class="iconfont icon-hetong">
+      </i>
+      <br>
+    Spécial
+    </span>
   </ng-template>
-  <div class="resource">
-    <div class="inner">
-      <img src="../../../assets/icons/qian-2.png" width="50" height="50">
-      <h3>{{currentMonney}}K</h3>
+  <ng-template #description>
+    <span (click)="showDescription()">
+      <i id="description" class="iconfont icon-description"></i>
+      <br>
+      Description
+    </span>
+  </ng-template>
+
+  <ng-template #extra>
+    <div class="resource">
+      <div class="inner">
+        <img src="../../../assets/icons/qian-2.png" width="30" height="30">
+        <h3>{{currentMonney}}K</h3>
+      </div>
+      <br>
+      <div class="inner" style="margin-left: 30px">
+        <div class="resourceCube"></div>
+        <h3>{{currentResource}}</h3>
+      </div>
     </div>
-    <br>
-    <div class="inner">
-      <div class="resourceCube"></div>
-      <h3>{{currentResource}}</h3>
-    </div>
-  </div>
+  </ng-template>
 </div>

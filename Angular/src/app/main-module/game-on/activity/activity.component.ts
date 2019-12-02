@@ -13,7 +13,8 @@ import {BuyResourceService} from '../../../service/resources/buy-resource.servic
 import {Subscription} from 'rxjs';
 import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
 import {ActionSet} from '../../../model/action';
-import {GameOnService} from "../../../service/gameOnService/game-on.service";
+import {GameOnService} from '../../../service/gameOnService/game-on.service';
+import {SocketRequest} from '../../../../Request';
 
 @Component({
   selector: 'app-activity',
@@ -48,6 +49,15 @@ export class ActivityComponent implements OnInit, OnDestroy {
   subPayingActions: Subscription;
   dataResources: any;
   daysReduced = 0;
+  subGameId: Subscription;
+  gameID: any;
+  request = {
+    RISKS: null,
+    DAYS: null,
+    MANDATORY: null
+  };
+  subUserId: Subscription;
+  userID: any;
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
@@ -68,6 +78,14 @@ export class ActivityComponent implements OnInit, OnDestroy {
     //   console.log(data);
     //   this.activities = data;
     // });
+    // this.subGameId = this.subscription.gameID$.subscribe(data => {
+    //   this.gameID = data;
+    // });
+    this.gameID = this.gameSerivce.gameID;
+    console.log('game id+++' + this.gameID);
+    this.subUserId = this.subscription.userID$.subscribe(data => {
+      this.userID = data;
+    });
     console.log(this.activities);
     console.log(this.activities[0].roleID);
 
@@ -86,9 +104,21 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.resourceService.sendResourcesReduced(this.totalRes);
     this.isVisible = false;
     this.nzMessageService.info('Paiement réussi');
+    const payment = [];
+    payment.push(this.request.RISKS);
+    payment.push(this.request.MANDATORY);
+    payment.push(this.request.DAYS);
     const req = {
       request: 'PAY_RESOURCES',
-      // activityID:
+      gameID: this.gameID,
+      userID: this.userID,
+      payments: payment
+    };
+    this.gameSerivce.messages.next(req as SocketRequest);
+    this.request = {
+      RISKS: null,
+      DAYS: null,
+      MANDATORY: null
     };
   }
 
@@ -100,17 +130,25 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   getPaymentActivity($event) {
     const i = $event;
+    console.log($event);
     switch (i.type) {
-      case 'risk':
+      case 'RISKS':
+        this.request.RISKS = i.info;
         this.riskReduced = $event.bonusAmount;
-        this.payForRisk = $event.amountToPay;
+        this.payForRisk = i.info.amount;
         break;
-      case 'duration':
+      case 'DAYS':
+        this.request.DAYS = i.info;
         this.daysReduced = $event.bonusAmount;
-        this.payForDays = $event.amountToPay;
+        this.payForDays = i.info.amount;
+        break;
+      case 'MANDATORY':
+        this.request.MANDATORY = i.info;
+        this.resBasic = i.info.amount;
         break;
     }
     this.totalRes = 0;
+    console.log(this.payForRisk, this.payForDays, this.resBasic);
     this.totalRes = this.payForDays + this.payForRisk + this.resBasic;
   }
 
@@ -121,6 +159,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subCurrentResource.unsubscribe();
     this.subPayingActions.unsubscribe();
+    this.subGameId.unsubscribe();
+    this.subUserId.unsubscribe();
   }
 
 }

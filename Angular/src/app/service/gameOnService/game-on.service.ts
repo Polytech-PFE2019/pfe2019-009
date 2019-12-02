@@ -16,6 +16,7 @@ export class GameOnService {
   currentStep: Activity[] = [];
   currentActivityID: any;
   currentActivity: any;
+  gameID: any;
 
   constructor(private wsService: WebsocketService,
               private subscription: SubscriptionService) {
@@ -45,6 +46,7 @@ export class GameOnService {
             console.log('send roomID');
             if (data.gameID !== undefined) {
               this.subscription.sendGameId(data.gameID);
+              this.gameID = data.gameID;
             }
           }
 

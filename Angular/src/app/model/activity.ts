@@ -9,7 +9,7 @@ export class Activity {
 
 
   constructor(r) {
-    this.title = 'Etape' + r.activityID;
+    this.title = r.activityID;
     this.numberOfDays = r.numberOfDays;
     this.status = r.status;
     this.description = r.description;
@@ -19,7 +19,7 @@ export class Activity {
   }
 
   addAttributes(activity) {
-    this.title = 'Etape ' + activity.activityID;
+    this.title = activity.activityID;
     this.numberOfDays = activity.description;
     this.status = activity.status;
     this.buyingActions = activity.buyingActions;

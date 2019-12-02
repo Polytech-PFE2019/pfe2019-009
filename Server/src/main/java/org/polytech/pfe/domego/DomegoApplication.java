@@ -20,7 +20,8 @@ public class DomegoApplication {
 		} catch (IOException | URISyntaxException e) {
 			logger.warning("Problems with creating the log files");
 			throw new RuntimeException("Problems with creating the log files");
-		}*/
+		}
+		*/
 		SpringApplication.run(DomegoApplication.class, args);
 	}
 

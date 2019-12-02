@@ -4,7 +4,7 @@ export class Role {
   detail: string;
   src: string;
   description: string;
-  mission: string;
+  mission: any;
   username: string;
   ready: boolean;
   choosed: boolean;
@@ -25,7 +25,7 @@ export class Role {
     this.username = '';
     this.profile = r.profile;
     this.style = {};
-    this.money = '';
+    this.money = r.money;
   }
 
   addThisAttributes(o: any) {

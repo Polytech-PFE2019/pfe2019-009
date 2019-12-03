@@ -2,7 +2,7 @@ package org.polytech.pfe.domego.models.activity.negotiation;
 
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.PayResources;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +40,4 @@ public class NegotiationActivity extends Activity implements NegotiationAction {
         return this.negotiationList;
     }
 
-    //BuyResourcesAction abstract implementation
-    @Override
-    public List<Integer> getBuyingRoleIDList() {
-        return null;
-    }
 }

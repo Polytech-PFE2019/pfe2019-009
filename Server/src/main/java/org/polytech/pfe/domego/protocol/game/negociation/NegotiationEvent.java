@@ -4,8 +4,8 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
-import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -38,9 +38,9 @@ public abstract class NegotiationEvent {
         this.game = optionalGame.get();
         String negotiationID = request.get(GameRequestKey.NEGOTIATIONID.getKey());
 
-        NegotiationActivity activity = (NegotiationActivity) game.getCurrentActivity();
+        Activity activity = game.getCurrentActivity();
 
-        Optional<Negotiation> negotiationOptional = activity.getNegotiationByID(negotiationID);
+        Optional<Negotiation> negotiationOptional = activity.getNegotiationList().stream().filter(negotiation -> negotiation.getId().equals(negotiationID)).findAny();
         if(negotiationOptional.isEmpty()){
             this.messenger.sendError("NEGOCIATION NOT FOUND");
             return false;
@@ -50,14 +50,14 @@ public abstract class NegotiationEvent {
 
         Optional<Player> optionalGiver = game.getPlayerByRoleID(negotiation.getGiverRoleID());
 
-        if (!optionalGiver.isPresent()){
+        if (optionalGiver.isEmpty()){
             this.messenger.sendError("GIVER NOT FOUND");
             return false;
         }
 
         Optional<Player> optionalReceiver = game.getPlayerByRoleID(negotiation.getReceiverRoleID());
 
-        if (!optionalReceiver.isPresent()){
+        if (optionalReceiver.isEmpty()){
             this.messenger.sendError("RECEIVER NOT FOUND");
             return false;
         }

@@ -6,19 +6,13 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.PayResources;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
-import java.util.List;
-
 public class UpdatePaymentGameEvent implements EventProtocol {
 
-    private Activity activity;
-    private List<Player> players;
-    private List<PayResources> payments;
-    private int roleId;
+    private Player player;
     private Game game;
     private InfoProjectGameCalculator projectGameCalculator;
     private int minTime;
@@ -27,12 +21,9 @@ public class UpdatePaymentGameEvent implements EventProtocol {
     private int maxFailure;
 
 
-    public UpdatePaymentGameEvent(Game game, Activity activity, List<Player> players, List<PayResources> payments, int roleID) {
-        this.activity = activity;
+    public UpdatePaymentGameEvent(Game game, Player player) {
+        this.player = player;
         this.game = game;
-        this.players = players;
-        this.payments = payments;
-        this.roleId = roleID;
         this.projectGameCalculator = new InfoProjectGameCalculator(game);
         minTime = projectGameCalculator.getMinTimeOfProject();
         maxTime = projectGameCalculator.getMaxTimeOfProject();
@@ -50,11 +41,11 @@ public class UpdatePaymentGameEvent implements EventProtocol {
     private JsonObject createJSONResponse(Player player){
         JsonObject updatePayment = new JsonObject();
         updatePayment.addProperty(GameResponseKey.RESPONSE.key, GameResponseKey.UPDATE_PAYMENT.key);
-        updatePayment.addProperty(GameResponseKey.ACTIVITY_ID.key,activity.getId());
-        updatePayment.addProperty(GameResponseKey.ROLE_ID.key,roleId);
+        updatePayment.addProperty(GameResponseKey.ACTIVITY_ID.key,game.getCurrentActivity().getId());
+        updatePayment.addProperty(GameResponseKey.ROLE_ID.key,player.getRole().getId());
         updatePayment.add(GameResponseKey.PROJECT.key, createProjectObject(player));
         JsonArray paymentsJSON = new JsonArray();
-        for (PayResources payment: payments) {
+        for (PayResources payment: game.getCurrentActivity().getPayResourcesList()) {
             JsonObject paymentJSon = new JsonObject();
             paymentJSon.addProperty(GameResponseKey.AMOUNT.key, payment.getAmountPaid());
             paymentJSon.addProperty(GameResponseKey.TYPE.key, payment.getPayResourceType().getName());
@@ -76,7 +67,7 @@ public class UpdatePaymentGameEvent implements EventProtocol {
         projectJson.addProperty(GameResponseKey.MIN_TIME.key, minTime);
         projectJson.addProperty(GameResponseKey.MAX_TIME.key, maxTime);
         projectJson.addProperty(GameResponseKey.MIN_FAILURE.key, minFailure);
-        projectJson.addProperty(GameResponseKey.MAX_FAILURE.key, maxTime);
+        projectJson.addProperty(GameResponseKey.MAX_FAILURE.key, maxFailure);
 
         return projectJson;
     }

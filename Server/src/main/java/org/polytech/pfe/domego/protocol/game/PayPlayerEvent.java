@@ -5,8 +5,8 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.PayPlayer;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
+import org.polytech.pfe.domego.models.activity.pay.PayPlayer;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
@@ -31,8 +31,8 @@ public class PayPlayerEvent implements EventProtocol {
 
         Activity activity = game.getCurrentActivity();
 
-        Optional<PayPlayer> payPlayerOptional = activity.getPayPlayerByRoleIDs(giver.getRole().getId(), receiver.getRole().getId());
-
+        //Optional<PayPlayer> payPlayerOptional = activity.getPayPlayerList().stream().filter(payPlayer -> payPlayer.getNegotiation().getGiverRoleID() == giver.getID()&& payPlayer.getNegotiation().getReceiverRoleID() == receiver.getID() ).findAny();;
+        Optional<PayPlayer> payPlayerOptional = Optional.empty();
         if(!payPlayerOptional.isPresent()){
             //todo throw some error
            return;

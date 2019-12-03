@@ -2,10 +2,15 @@ package org.polytech.pfe.domego.generator;
 
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.models.RoleType;
-import org.polytech.pfe.domego.models.activity.*;
+import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.ClassicActivity;
+import org.polytech.pfe.domego.models.activity.PayResourceType;
+import org.polytech.pfe.domego.models.activity.buying.BuyResources;
+import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
 import org.polytech.pfe.domego.models.activity.negotiation.Contract;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.*;
 import java.util.stream.Collectors;

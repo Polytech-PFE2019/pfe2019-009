@@ -82,7 +82,7 @@ public class PayResourcesEvent implements EventProtocol {
         }
 
         logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
-
+        new UpdatePaymentGameEvent(game, player).processEvent();
         if(currentActivity.getActivityStatus().equals(ActivityStatus.FINISHED)){
             if(currentActivity.getId() == game.getActivities().size())
                 new FinishGameEvent(game).processEvent();
@@ -91,6 +91,7 @@ public class PayResourcesEvent implements EventProtocol {
                 new ChangeActivityEvent(game).processEvent();
             }
         }
+
         game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);
     }
 

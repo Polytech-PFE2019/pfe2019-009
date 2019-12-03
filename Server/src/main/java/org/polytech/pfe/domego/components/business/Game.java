@@ -3,7 +3,7 @@ package org.polytech.pfe.domego.components.business;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.PayResources;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.List;
 import java.util.Optional;

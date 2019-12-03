@@ -16,8 +16,9 @@ import org.polytech.pfe.domego.generator.InitialGameGenerator;
 import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.*;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.BuyResources;
-import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
+import org.polytech.pfe.domego.models.activity.buying.BuyResources;
+import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.polytech.pfe.domego.services.sockets.game.GameRequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,7 +169,7 @@ class GameRequestHandlerTest {
         //One of the PayResource of the activity must be for roleID Maitre D'ouvrage.
         //and amount needed must be one for mandatory type
 
-        Optional<PayResources> payResourcesOpt = activity.getPayResourcesByRoleAndType(RoleType.MAITRE_D_OUVRAGE.getId(), PayResourceType.MANDATORY);
+        Optional<PayResources> payResourcesOpt = activity.getPayResourcesList().stream().filter(payResource -> ((payResource.getRoleID() == RoleType.MAITRE_D_OUVRAGE.getId()) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY))).findAny();
 
         assertTrue(payResourcesOpt.isPresent());
 

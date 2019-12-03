@@ -1,4 +1,4 @@
-package org.polytech.pfe.domego.models.activity;
+package org.polytech.pfe.domego.models.activity.buying;
 
 public class BuyResources {
     private int roleID;

@@ -1,4 +1,6 @@
-package org.polytech.pfe.domego.models.activity;
+package org.polytech.pfe.domego.models.activity.pay;
+
+import org.polytech.pfe.domego.models.activity.PayResourceType;
 
 import java.util.Map;
 

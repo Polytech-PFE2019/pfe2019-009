@@ -5,7 +5,7 @@ import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.PayResourceType;
-import org.polytech.pfe.domego.models.activity.PayResources;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.ArrayList;
 import java.util.Collections;

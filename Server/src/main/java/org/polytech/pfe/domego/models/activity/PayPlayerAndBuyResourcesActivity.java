@@ -1,8 +1,9 @@
 package org.polytech.pfe.domego.models.activity;
 
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
-import org.polytech.pfe.domego.models.activity.negotiation.NegotiationAction;
+import org.polytech.pfe.domego.models.activity.buying.BuyResources;
+import org.polytech.pfe.domego.models.activity.pay.PayPlayer;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,13 +22,12 @@ public class PayPlayerAndBuyResourcesActivity extends Activity {
         this.buyResourcesList = buyResourcesList;
     }
 
-    @Override
+
     public Optional<PayPlayer> getPayPlayerByRoleIDs(int giverID, int receiverID){
         return this.payPlayerList.stream().filter(payPlayer -> payPlayer.getNegotiation().getGiverRoleID() == giverID
                 && payPlayer.getNegotiation().getReceiverRoleID() == receiverID ).findAny();
     }
 
-    @Override
     public Optional<PayPlayer> getPayPlayerByID(String id){
         return this.payPlayerList.stream().filter(payPlayer -> payPlayer.getId().equals(id)).findAny();
     }
@@ -46,25 +46,13 @@ public class PayPlayerAndBuyResourcesActivity extends Activity {
         player.subtractMoney(amount * action.getRate());
     }
 
-    @Override
-    public BuyResources getBuyResourcesByRoleID(int roleID){
+    private BuyResources getBuyResourcesByRoleID(int roleID){
         return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID).findAny().orElse(new BuyResources(roleID,2));
     }
 
-    @Override
     public List<Integer> getBuyingRoleIDList(){
         return buyResourcesList.stream().map(BuyResources::getRoleID).collect(Collectors.toList());
     }
 
-    //NegotiationAction abstract implementation
 
-    @Override
-    public Optional<Negotiation> getNegotiationByID(String id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public void checkForMultiplicityForOneRole() {
-
-    }
 }

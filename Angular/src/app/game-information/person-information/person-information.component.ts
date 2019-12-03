@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {GameOnService} from "../../service/gameOnService/game-on.service";
 
 @Component({
   selector: 'app-person-information',
@@ -23,9 +24,17 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   isPointsVistoire = false;
   isSpecial = false;
   isDescription = true;
+  isPlan = false;
+  subCost: Subscription;
+  subDays: Subscription;
+  subRisk: Subscription;
+  cost: any;
+  day: any;
+  risk: any;
 
   constructor(private resourceService: BuyResourceService,
               private lobbyService: LobbyService,
+              private gameService: GameOnService,
               private subscription: SubscriptionService) {
   }
 
@@ -60,6 +69,17 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
       // this.playersWithRoles = data;
     });
 
+    this.subRisk = this.subscription.failures$.subscribe(data => {
+      this.risk = data;
+    });
+
+    this.subDays = this.subscription.days$.subscribe(data => {
+      this.day = data;
+    });
+
+    this.subCost = this.subscription.costs$.subscribe(data => {
+      this.cost = data;
+    });
 
     console.log(this.lobbyService.username);
 
@@ -76,22 +96,35 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
     this.subReduced.unsubscribe();
     this.subPlayersWithRoles.unsubscribe();
     this.subUserName.unsubscribe();
+    this.subCost.unsubscribe();
+    this.subDays.unsubscribe();
+    this.subRisk.unsubscribe();
   }
 
   showPointsVistoire() {
     this.isPointsVistoire = true;
     this.isSpecial = false;
     this.isDescription = false;
+    this.isPlan = false;
   }
 
   showSpecial() {
     this.isSpecial = true;
     this.isPointsVistoire = false;
     this.isDescription = false;
+    this.isPlan = false;
   }
 
   showDescription() {
     this.isDescription = true;
+    this.isPointsVistoire = false;
+    this.isSpecial = false;
+    this.isPlan = false;
+  }
+
+  showPlan() {
+    this.isPlan = true;
+    this.isDescription = false;
     this.isPointsVistoire = false;
     this.isSpecial = false;
   }

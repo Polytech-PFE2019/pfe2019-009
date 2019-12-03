@@ -30,6 +30,11 @@ export class ProjetInformationRiskComponent implements OnInit, OnDestroy, AfterC
     this.risks = this.gameService.failureProject;
     console.log(this.risks);
 
+    this.subRisk = this.subscription.failures$.subscribe(data => {
+      this.minRisk = data.minFailure;
+      this.maxRisk = data.maxFailure;
+    });
+
 
     // if (this.maxRisk - this.currentRisk <= 5) {
     //   this.signal.nativeElement.style.backgroundColor = '#C50E05';

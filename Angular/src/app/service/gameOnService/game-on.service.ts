@@ -83,7 +83,7 @@ export class GameOnService {
               minFailure: data.project.minFailure,
               maxFailure: data.project.maxFailure
             };
-            this.subscription.sendCosts(failure);
+            this.subscription.sendFailures(failure);
             this.subscription.sendActivities(data.activities);
             this.currentActivityID = data.currentActivityID;
             console.log('after++++++++++++  ' + data.activities);

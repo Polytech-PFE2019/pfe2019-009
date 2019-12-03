@@ -35,10 +35,17 @@ export class ChatDialogueComponent implements OnInit {
       console.log(data)
       switch (data.response) {
         case "MSG_NEGOTIATE":
+          let isSender = false;
+          if (data.userID === this.userID) {
+            isSender = true;
+          }
+          console.log(this.userID);
           const message = {
             message: data.message,
-            userID: data.userID
+            userID: data.userID,
+            isSender: isSender
           } as DialogueMessage
+          console.log(message)
           this.messages.push(message)
       }
     })

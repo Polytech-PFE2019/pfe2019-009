@@ -24,12 +24,6 @@ export class GameOnService {
   current: any;
   history = new Subject<any>();
   history$ = this.history.asObservable();
-  minCost = 0;
-  maxCost = 0;
-  minTime = 0;
-  maxTime = 0;
-  minFailure = 0;
-  maxFailure = 0;
 
   constructor(private wsService: WebsocketService,
               private subscription: SubscriptionService) {
@@ -42,16 +36,9 @@ export class GameOnService {
           if (JSON.stringify(data).includes('players')) {
 
           }
-          if (JSON.stringify(data).includes('userID')) {
-            if (data.userID !== undefined) {
-              console.log('send userID');
-              this.userID = data.userID;
-              this.subscription.sendUserID(data.userID);
-            }
-          }
           if (JSON.stringify(data).includes('roomID')) {
             console.log('send roomID');
-            if (data.userID !== undefined) {
+            if (data.roomID !== undefined) {
               this.subscription.sendRoomID(data.roomID);
             }
           }
@@ -64,26 +51,32 @@ export class GameOnService {
             }
           }
 
+          if (data.costProject !== undefined) {
+            this.costProject = data.costProject;
+          }
+
+          if (data.delayProject !== undefined) {
+            this.delayProject = data.delayProject;
+          }
+
+          if (data.failureProject !== undefined) {
+            this.failureProject = data.failureProject;
+          }
 
           if (data.response === 'LAUNCH_GAME') {
-            console.log(data);
-            const cost = {
-              minCost: data.project.minCost,
-              maxCost: data.project.maxCost
-            };
-            this.subscription.sendCosts(cost);
-
-            const days = {
-              minTime: data.project.minTime,
-              maxTime: data.project.maxTime
-            };
-            this.subscription.sendDays(days);
-
+            this.userID = data.player.USERID;
             const failure = {
               minFailure: data.project.minFailure,
               maxFailure: data.project.maxFailure
             };
             this.subscription.sendFailures(failure);
+            if (data.player.userID !== undefined) {
+              console.log('send userID');
+              this.userID = data.player.userID;
+              this.subscription.sendUserID(data.player.userID);
+            }
+
+            console.log(data);
             this.subscription.sendActivities(data.activities);
             this.currentActivityID = data.currentActivityID;
             console.log('after++++++++++++  ' + data.activities);
@@ -102,40 +95,12 @@ export class GameOnService {
             this.currentActivity = this.currentStep[currentId - 1];
             console.log(this.currentActivity);
             this.subscription.sendCurrentActivity(this.currentActivity);
-            if (data.costProject !== undefined) {
-              this.costProject = data.costProject;
-            }
-
-            if (data.delayProject !== undefined) {
-              this.delayProject = data.delayProject;
-            }
-
-            if (data.failureProject !== undefined) {
-              this.failureProject = data.failureProject;
-            }
           }
 
           if (data.response === 'UPDATE_PAYMENT') {
             const currentId = data.activityID;
             this.currentStep[currentId - 1].history = data;
             console.log(this.currentStep[currentId - 1].history);
-            const cost = {
-              minCost: data.project.minCost,
-              maxCost: data.project.maxCost
-            };
-            this.subscription.sendCosts(cost);
-
-            const days = {
-              minTime: data.project.minTime,
-              maxTime: data.project.maxTime
-            };
-            this.subscription.sendDays(days);
-
-            const failure = {
-              minFailure: data.project.minFailure,
-              maxFailure: data.project.maxFailure
-            };
-            this.subscription.sendFailures(failure);
           }
           console.log(data);
           return data;

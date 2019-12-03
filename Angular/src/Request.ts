@@ -20,5 +20,6 @@ export class SocketRequest {
   costProject: any;
   delayProject: any;
   failureProject: any;
+  project: any;
 
 }

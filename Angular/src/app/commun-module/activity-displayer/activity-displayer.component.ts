@@ -77,6 +77,7 @@ export class ActivityDisplayerComponent implements OnInit {
       console.log(this.previous, this.value);
     } else {
       this.value = null;
+      this.previous = null;
       console.log('11111111', this.previous, this.value);
     }
   }

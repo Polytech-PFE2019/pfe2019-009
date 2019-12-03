@@ -31,6 +31,14 @@ export class SubscriptionService {
   currentActivity$ = this.currentActivity.asObservable();
 
   riskHistory: any[] = [];
+  days = new Subject<any>();
+  days$ = this.days.asObservable();
+
+  costs = new Subject<any>();
+  costs$ = this.costs.asObservable();
+
+  failures = new Subject<any>();
+  failures$ = this.failures.asObservable();
 
   constructor() {
   }
@@ -79,5 +87,20 @@ export class SubscriptionService {
   sendCurrentActivity(msg) {
     console.log('sendCurrentActivity' + msg);
     this.currentActivity.next(msg);
+  }
+
+  sendCosts(msg) {
+    console.log('sendCosts' + msg);
+    this.costs.next(msg);
+  }
+
+  sendDays(msg) {
+    console.log('sendDays' + msg);
+    this.days.next(msg);
+  }
+
+  sendFailures(msg) {
+    console.log('sendFailures' + msg);
+    this.failures.next(msg);
   }
 }

@@ -57,14 +57,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subCurrentResource = this.resourceService.currentMonney$.subscribe(data => {
-      this.currentResource = data;
-    });
-
-    this.userName = this.lobbyService.username;
-    this.roles = this.subscription.roles;
-    this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
-    console.log(this.myInformation);
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
       this.myDataSource = [];
@@ -76,6 +68,15 @@ export class ActivityComponent implements OnInit, OnDestroy {
         console.log(this.myDataSource);
       }
     });
+
+    this.subCurrentResource = this.resourceService.currentResource$.subscribe(data => {
+      this.currentResource = data;
+    });
+
+    this.userName = this.lobbyService.username;
+    this.roles = this.subscription.roles;
+    this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
     this.gameID = this.subscription.gameID;
     console.log('game id+++' + this.gameID);
     this.userID = this.subscription.userId;

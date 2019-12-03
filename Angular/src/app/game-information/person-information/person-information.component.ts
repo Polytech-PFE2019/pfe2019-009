@@ -13,7 +13,7 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   playersWithRoles: any[] = [];
   subResourcesBuyed: Subscription;
   subPayment: Subscription;
-  currentMonney = 30;
+  currentMonney: any;
   subReduced: Subscription;
   currentResource = 0;
   subPlayersWithRoles: Subscription;
@@ -30,6 +30,15 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.userName = this.lobbyService.username;
+    this.playersWithRoles = this.subscription.roles;
+
+    console.log(this.userName);
+    console.log(this.playersWithRoles);
+    this.myInformation = this.playersWithRoles.filter(next => next.username === this.userName)[0];
+    console.log(this.myInformation);
+    this.currentMonney = this.myInformation.money;
+
     this.subResourcesBuyed = this.resourceService.resources$.subscribe(data => {
       console.log('resourceBuyed' + data);
       this.currentResource = data + this.currentResource;
@@ -51,20 +60,14 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
       // this.playersWithRoles = data;
     });
 
-    this.playersWithRoles = this.subscription.roles;
 
     console.log(this.lobbyService.username);
+
     //
     // this.subUserName = this.subscription.userName$.subscribe(data => {
     //   console.log(data);
     //   this.userName = data;
     // });
-    this.userName = this.lobbyService.username;
-
-    console.log(this.userName);
-    console.log(this.playersWithRoles);
-    this.myInformation = this.playersWithRoles.filter(next => next.username === this.userName)[0];
-    console.log(this.myInformation);
   }
 
   ngOnDestroy(): void {

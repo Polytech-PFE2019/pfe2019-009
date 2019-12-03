@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Roles} from "../../model/roles";
+import {Roles} from '../../model/roles';
 
 @Component({
   selector: 'app-resource-buyer',

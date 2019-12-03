@@ -5,6 +5,7 @@ export class Activity {
   description: string;
   buyingActions: any[];
   payingActions: any[];
+  negotiationActions: any[];
   risks: number;
   rolesID: any[];
   history: any;
@@ -17,6 +18,7 @@ export class Activity {
     this.description = r.description;
     this.buyingActions = r.buyingActions;
     this.payingActions = r.payingActions;
+    this.negotiationActions = r.negotiationActions;
     this.risks = r.risks;
     this.rolesID = r.rolesID;
     this.history = null;

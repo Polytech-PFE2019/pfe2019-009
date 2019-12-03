@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Steps} from '../../model/step';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {SocketRequest} from '../../../Request';
@@ -16,7 +16,7 @@ import {PlayerdataService} from 'src/app/playerdata.service';
   styleUrls: ['./game-on.component.css']
 })
 export class GameOnComponent implements OnInit, OnDestroy {
-
+  @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
   steps: any = Steps;
   step = 'Étape 1';
   getDataFromParent = 0;

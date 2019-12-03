@@ -1,6 +1,21 @@
+.allContainer{
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 280px;
+  overflow-y: auto;
+  width: 100%;
+}
+
 .container{
-  display: inline-flex;
+  width: 40px;
+  height: 35px;
+  color: #f0f2f5;
+  display: flex;
   background-color: #e9911d;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1px;
+  border: 1px solid #efefef;
 }
 
 .day{
@@ -29,5 +44,19 @@
   margin-top: 1px;
   background-image: url('../../../../assets/redflag.png');
   background-size: 40px;
+}
+
+.isCurrent{
+  background-image: url('../../../../assets/redflag.png');
+  background-size: 40px;
+  width: 40px;
+  height:35px;
+  color: #f0f2f5;
+  display: flex;
+  background-color: #e9911d;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1px;
+  border: 1px solid #efefef;
 }
 

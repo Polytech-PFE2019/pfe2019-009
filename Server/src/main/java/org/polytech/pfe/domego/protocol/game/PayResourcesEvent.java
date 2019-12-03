@@ -8,6 +8,7 @@ import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Payment;
+import org.polytech.pfe.domego.models.PaymentStatus;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
@@ -69,7 +70,7 @@ public class PayResourcesEvent implements EventProtocol {
     private void payResources(Game game, Player player){
         Type founderListType = new TypeToken<ArrayList<Payment>>(){}.getType();
         List<Payment> payments = new Gson().fromJson(request.get("payments").toString(), founderListType);
-        game.payForCurrentActivity(player, payments);
+        PaymentStatus status = game.payForCurrentActivity(player, payments);
         game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);
     }
 

@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego.components.business;
 
 import org.polytech.pfe.domego.models.Payment;
+import org.polytech.pfe.domego.models.PaymentStatus;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -51,31 +52,35 @@ public class Game {
         this.id = id;
     }
 
-    public boolean payForCurrentActivity(Player player, List<Payment> payments){
+    public PaymentStatus payForCurrentActivity(Player player, List<Payment> payments){
         Activity activity = this.getCurrentActivity();
         int roleID = player.getRole().getId();
         int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
         if(totalAmount > player.getResourcesAmount()){
-            return false;
+            logger.log(Level.INFO,
+                    "PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay",
+                    new Object[]{this.getId(), player.getID(),player.getResourcesAmount(), totalAmount});
+            return PaymentStatus.NOT_ENOUGH_RESOURCES;
         }
 
         for (Payment payment: payments) {
-            if (payment.getAmount() > player.getResourcesAmount()) {
-                return false;
-            }
             if(!activity.payResources(roleID,payment.getType(), payment.getAmount())){
-                return false;
+                logger.log(Level.INFO,"PaymentResourcesEvent : Error not paid");
+                return PaymentStatus.NOT_PAID;
             }
 
         }
+        logger.log(Level.INFO,
+                "PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}",
+                new Object[]{this.getId(), player.getID(),payments.size(), activity.getId()});
         player.subtractResources(totalAmount);
-        new UpdatePaymentGameEvent(activity,players,activity.getPayResourcesList(), roleID).processEvent();
+        new UpdatePaymentGameEvent(this,activity,players,activity.getPayResourcesList(), roleID).processEvent();
         if (this.getCurrentActivity().getActivityStatus().equals(ActivityStatus.FINISHED)){
             this.updateProject();
             this.drawRiskCard();
             this.updateGame();
         }
-        return true;
+        return PaymentStatus.GOOD;
     }
 
     private void updateGame() {
@@ -83,6 +88,7 @@ public class Game {
             new FinishGameEvent(this).processEvent();
         }
         else{
+            getCurrentActivity().getPayResourcesList().forEach(payResources -> payResources.setHasPaid(true));
             currentActivity++;
             this.getCurrentActivity().startActivity();
             new ChangeActivityEvent(players,getCurrentActivity(),project).processEvent();

@@ -3,24 +3,23 @@ package org.polytech.pfe.domego.models.activity.negotiation;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.PayResources;
-import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
-import org.polytech.pfe.domego.models.activity.negotiation.NegociationAction;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class NegociationActivity extends Activity implements NegociationAction {
+public class NegotiationActivity extends Activity implements NegotiationAction {
 
+    private List<Negotiation> negotiationList;
 
-    public NegociationActivity(int id, int numbersOfDays, String title , String description, List<PayResources> payResourcesList, List<Negociation> negociationList) {
+    public NegotiationActivity(int id, int numbersOfDays, String title , String description, List<PayResources> payResourcesList, List<Negotiation> negociationList) {
         super(id, numbersOfDays, title,description, payResourcesList);
-        super.negociationList = negociationList;
+        this.negotiationList = negociationList;
         checkForMultiplicityForOneRole();
     }
 
-    public Optional<Negociation> getNegotiationByID(String id){
-        return negociationList.stream().filter(negotiation -> negotiation.getId().equals(id)).findAny();
+    public Optional<Negotiation> getNegotiationByID(String id){
+        return negotiationList.stream().filter(negotiation -> negotiation.getId().equals(id)).findAny();
     }
 
     /**
@@ -28,10 +27,15 @@ public class NegociationActivity extends Activity implements NegociationAction {
      */
     public void checkForMultiplicityForOneRole(){
         for (RoleType role : RoleType.values()) {
-            List<Negociation> negotiationsForOneRole = negociationList.stream().filter(negotiation -> negotiation.getGiverRoleID() == (role.getId())).collect(Collectors.toList());
+            List<Negotiation> negotiationsForOneRole = negotiationList.stream().filter(negotiation -> negotiation.getGiverRoleID() == (role.getId())).collect(Collectors.toList());
             int number = negotiationsForOneRole.size();
             negotiationsForOneRole.forEach(negotiation -> {negotiation.multiplicateTime(number);});
         }
+    }
+
+    @Override
+    public List<Negotiation> getNegotiationList() {
+        return this.negotiationList;
     }
 
 }

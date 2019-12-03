@@ -4,11 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyResources;
-import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
+import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.ActionResponseKey;
@@ -30,10 +31,10 @@ public class LaunchGameEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-        for (Player player : game.getPlayers()) {
-            new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player));
-        }
-        logger.info("LaunchGameEvent : Send Message LaunchGameEvent to all players");
+       game.getPlayers().parallelStream().forEach(
+               player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player))
+       );
+       logger.info("LaunchGameEvent : Send Message LaunchGameEvent to all players");
 
     }
 
@@ -43,6 +44,8 @@ public class LaunchGameEvent implements EventProtocol {
         this.addInfosToCurrentGame(response);
 
         this.addPlayerObject(response, player);
+
+        this.addProjectObject(response, player);
 
         JsonArray activitiesJson = new JsonArray();
         for (Activity activity : game.getActivities()) {
@@ -83,6 +86,19 @@ public class LaunchGameEvent implements EventProtocol {
         playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
 
         response.add(GameResponseKey.PLAYER.key, playerJson);
+    }
+
+    private void addProjectObject(JsonObject response, Player player){
+        JsonObject projectJson = new JsonObject();
+        InfoProjectGameCalculator projectGameCalculator = new InfoProjectGameCalculator(game);
+        projectJson.addProperty(GameResponseKey.MIN_COST.key, projectGameCalculator.getMinResourcesToPay(player.getRole().getName()));
+        projectJson.addProperty(GameResponseKey.MAX_COST.key, projectGameCalculator.getMaxResourcesToPay(player.getRole().getName()));
+        projectJson.addProperty(GameResponseKey.MIN_TIME.key, projectGameCalculator.getMinTimeOfProject());
+        projectJson.addProperty(GameResponseKey.MAX_TIME.key, projectGameCalculator.getMaxTimeOfProject());
+        projectJson.addProperty(GameResponseKey.MIN_FAILURE.key, projectGameCalculator.getMinFailureOfProject());
+        projectJson.addProperty(GameResponseKey.MAX_TIME.key, projectGameCalculator.getMaxFailureOfProject());
+
+        response.add(GameResponseKey.PROJECT.key, projectJson);
     }
 
 
@@ -140,7 +156,7 @@ public class LaunchGameEvent implements EventProtocol {
 
     private JsonArray createNegotiationActionsResponse(Activity activity){
         JsonArray negotiationActions = new JsonArray();
-        for(Negociation negotiation : activity.getNegociationList()){
+        for(Negotiation negotiation : activity.getNegotiationList()){
             JsonObject negotiationAction = new JsonObject();
             negotiationAction.addProperty(ActionResponseKey.NEGOTIATIONID.key, negotiation.getId());
             negotiationAction.addProperty(ActionResponseKey.GIVERID.key, negotiation.getGiverRoleID());

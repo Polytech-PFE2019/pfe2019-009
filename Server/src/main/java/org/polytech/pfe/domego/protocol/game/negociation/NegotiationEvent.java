@@ -4,8 +4,8 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
-import org.polytech.pfe.domego.models.activity.negotiation.NegociationActivity;
+import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
+import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public abstract class NegotiationEvent {
     protected Game game;
-    protected Negociation negotiation;
+    protected Negotiation negotiation;
     protected Player giver;
     protected Player receiver;
     protected Messenger messenger;
@@ -38,9 +38,9 @@ public abstract class NegotiationEvent {
         this.game = optionalGame.get();
         String negotiationID = request.get(GameRequestKey.NEGOTIATIONID.getKey());
 
-        NegociationActivity activity = (NegociationActivity) game.getCurrentActivity();
+        NegotiationActivity activity = (NegotiationActivity) game.getCurrentActivity();
 
-        Optional<Negociation> negotiationOptional = activity.getNegotiationByID(negotiationID);
+        Optional<Negotiation> negotiationOptional = activity.getNegotiationByID(negotiationID);
         if(negotiationOptional.isEmpty()){
             this.messenger.sendError("NEGOCIATION NOT FOUND");
             return;

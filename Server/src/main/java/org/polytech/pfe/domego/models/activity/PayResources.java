@@ -26,7 +26,7 @@ public class PayResources implements Comparable<PayResources> {
         return hasPaid;
     }
 
-    private void setHasPaid(boolean hasPaid){
+    public void setHasPaid(boolean hasPaid){
         this.hasPaid = hasPaid;
     }
 

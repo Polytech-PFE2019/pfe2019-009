@@ -1,20 +1,20 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
+import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 
 public class PayPlayer {
-    private Negociation negociation;
+    private Negotiation negotiation;
     private int percentage;
     private boolean status;
 
-    public PayPlayer(Negociation negociation, int percentage){
+    public PayPlayer(Negotiation negotiation, int percentage){
         this.status = false;
-        this.negociation = negociation;
+        this.negotiation = negotiation;
         this.percentage = percentage;
     }
 
-    public Negociation getNegociation() {
-        return negociation;
+    public Negotiation getNegotiation() {
+        return negotiation;
     }
 
     public int getPercentage() {

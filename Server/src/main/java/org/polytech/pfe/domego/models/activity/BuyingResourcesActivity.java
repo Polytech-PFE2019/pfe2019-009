@@ -10,6 +10,7 @@ public class BuyingResourcesActivity  extends Activity implements BuyingAction {
         this.buyResourcesList = buyResourcesList;
     }
 
+
     @Override
     public int getExchangeRateForRoleID(int roleID){
         BuyResources action = getBuyResourcesByRoleID(roleID);

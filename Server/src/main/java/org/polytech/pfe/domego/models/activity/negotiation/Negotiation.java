@@ -2,7 +2,7 @@ package org.polytech.pfe.domego.models.activity.negotiation;
 
 import java.util.UUID;
 
-public class Negociation {
+public class Negotiation {
     private int giverRoleID;
     private int receiverRoleID;
     private int amountNegociated;
@@ -13,7 +13,7 @@ public class Negociation {
     private Contract contract;
     private NegotiationStatus negotiationStatus;
 
-    public Negociation(int giverRoleID, int receiverRoleID, Contract contract){
+    public Negotiation(int giverRoleID, int receiverRoleID, Contract contract){
         this.time = 180;
         this.id = UUID.randomUUID().toString();
         this.giverRoleID = giverRoleID;
@@ -22,7 +22,7 @@ public class Negociation {
         this.negotiationStatus = NegotiationStatus.NOT_STARTED;
     }
 
-    public void negociate(int amount){
+    public void negotiate(int amount){
         this.amountNegociated = amount;
         this.amountLeftToPay = amountNegociated;
         this.negotiationStatus = NegotiationStatus.SUCCESS;
@@ -59,7 +59,7 @@ public class Negociation {
         return receiverRoleID;
     }
 
-    public int getAmountNegociated() {
+    public int getAmountNegotiated() {
         return amountNegociated;
     }
 

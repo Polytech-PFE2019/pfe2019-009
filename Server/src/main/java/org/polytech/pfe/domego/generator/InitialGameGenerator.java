@@ -4,8 +4,8 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.*;
 import org.polytech.pfe.domego.models.activity.negotiation.Contract;
-import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
-import org.polytech.pfe.domego.models.activity.negotiation.NegociationActivity;
+import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
+import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -109,11 +109,11 @@ public class InitialGameGenerator implements GameGenerator {
         String description = "Le maître d’ouvrage négocie avec le maître d’oeuvre afin de déterminerla rémunération de ce dernier. Une fois qu’ils se sont entendus, le contrat peut alors être signé. Ce contrat précisera notamment le délai ainsi que les coûts prévus.";
 
         Contract contract = new Contract(80,115);
-        Negociation negociation = new Negociation(1,2,contract);
-        List<Negociation> negociationList = new ArrayList<>();
+        Negotiation negociation = new Negotiation(1,2,contract);
+        List<Negotiation> negociationList = new ArrayList<>();
         negociationList.add(negociation);
 
-        return new NegociationActivity(3,8,title,description,payResourcesList, negociationList);
+        return new NegotiationActivity(3,8,title,description,payResourcesList, negociationList);
     }
 
     private Activity generateFourthActivity(){
@@ -138,22 +138,22 @@ public class InitialGameGenerator implements GameGenerator {
         String description = "Le maître d’oeuvre et les entreprises négocient afin de tomber d’accord sur un montant qui satisfera les différents intervenants. Le maître d’ouvrage négocie avec le bureau de contrôle afin de déterminer la rémunération de ce dernier. Une fois que les acteurs se sont entendus, les contrats peuvent alors être signés.";
 
         Contract contract1 = new Contract(10,25);
-        Negociation negociation1 = new Negociation(1,4,contract1);
+        Negotiation negociation1 = new Negotiation(1,4,contract1);
         Contract contract2 = new Contract(25,50);
-        Negociation negociation2 = new Negociation(2,5,contract2);
+        Negotiation negociation2 = new Negotiation(2,5,contract2);
         Contract contract3 = new Contract(20,40);
-        Negociation negociation3 = new Negociation(2,6,contract3);
+        Negotiation negociation3 = new Negotiation(2,6,contract3);
         Contract contract4 = new Contract(10,20);
-        Negociation negociation4 = new Negociation(2,3,contract4);
+        Negotiation negociation4 = new Negotiation(2,3,contract4);
 
-        List<Negociation> negociationList = new ArrayList<>();
+        List<Negotiation> negociationList = new ArrayList<>();
         negociationList.add(negociation1);
         negociationList.add(negociation2);
         negociationList.add(negociation3);
         negociationList.add(negociation4);
 
 
-        return new NegociationActivity(4,15,title,description,payResourcesList, negociationList);
+        return new NegotiationActivity(4,15,title,description,payResourcesList, negociationList);
     }
 
     private Activity generateFifthActivity(){

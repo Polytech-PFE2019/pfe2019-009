@@ -8,40 +8,31 @@
   </div>
   <div class="negociation">
     <h4>Contract {{contractNumber}}</h4>
-    <button *ngIf="listOfSend.length>0" nz-button nzType="primary" nzSize="small" nzShape="circle"><i nz-icon
-                                                                                                      nzType="check"></i>
-    </button>
     <h4>0/2</h4>
   </div>
   <div class="context">
-    <div *ngFor="let s of listOfSend">
-      <div class="sender" *ngIf="s.class === 'sender'">
-        <app-chat-sender [description]="s.description"></app-chat-sender>
+    <div *ngFor="let message of messages">
+      <div class="sender" *ngIf="message.userID === userID">
+        <app-chat-message [message]="message.message"></app-chat-message>
       </div>
-      <div class="receiver" *ngIf="s.class === 'receiver'">
-        <app-chat-sender [isReceiver]="true" [description]="s.description" [contract]="s.contract"></app-chat-sender>
+      <div class="receiver" *ngIf="message.userID === userID">
+        <app-chat-message [message]="message.message"></app-chat-message>
       </div>
     </div>
   </div>
-
-  <button (click)="testAddReceiver()">teststststts</button>
 
   <div class="senderBox">
     <div class="contract-container">
       <p>Un contrat:
-        <nz-input-number
-          [(ngModel)]="value"
-          [nzMin]="0"
-          [nzMax]="1000"
-          [nzStep]="1">
+        <nz-input-number [(ngModel)]="value" [nzMin]="0" [nzMax]="1000" [nzStep]="1">
         </nz-input-number>
         <b> K</b>
       </p>
-      <button (click)="senContract()">Send contract</button>
+      <button (click)="sendContract()">Proposer un contrat</button>
     </div>
     <div class="desc-container">
-      <textarea rows="4" nz-input [(ngModel)]="inputValue" placeholder="Description"></textarea>
-      <button id="sendBnt" nz-button (click)="sendDescription()" nzShape="circle">
+      <input #message rows="4" nz-input [(ngModel)]="inputValue" placeholder="..." />
+      <button id="sendBnt" nz-button (click)="sendMessage(message.value)" nzShape="circle">
         <i class="iconfont icon-send">
         </i>
       </button>

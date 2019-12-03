@@ -1,5 +1,5 @@
-import {Player} from './app/Player';
-import {Activity} from './app/model/activity';
+import { Player } from './app/Player';
+import { Activity } from './app/model/activity';
 
 export class SocketRequest {
   request: string;
@@ -21,5 +21,7 @@ export class SocketRequest {
   delayProject: any;
   failureProject: any;
   project: any;
+  message: string;
+  negotiationID: string;
 
 }

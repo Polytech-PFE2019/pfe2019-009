@@ -1,4 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { GameOnService } from '../service/gameOnService/game-on.service';
+import { DialogueMessage } from './dialogueMessage';
+import { SocketRequest } from 'src/Request';
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -12,19 +15,34 @@ export class ChatDialogueComponent implements OnInit {
     description: 40,
   };
   @Input() isOpenDialog = false;
+  @Input() negotiationID: string;
   @Output() sendCloseDialog = new EventEmitter();
   value = 100;
   contractNumber = 0;
   inputValue: string;
   isChated = false;
-  listOfSend: any[] = [];
   isDialog = false;
+  userID;
 
-  constructor() {
+  messages: DialogueMessage[] = []
+
+  constructor(private gameService: GameOnService) {
   }
 
   ngOnInit() {
-    this.listOfSend.push(this.receiver);
+    this.userID = this.gameService.userID;
+    this.gameService.messages.subscribe(data => {
+      console.log(data)
+      switch (data.response) {
+        case "MSG_NEGOTIATE":
+          const message = {
+            message: data.message,
+            userID: data.userID
+          } as DialogueMessage
+          this.messages.push(message)
+      }
+    })
+
   }
 
   closeChat() {
@@ -39,27 +57,25 @@ export class ChatDialogueComponent implements OnInit {
       contract: this.value,
       description: this.inputValue,
     };
-    this.listOfSend.push(i);
-    console.log(this.listOfSend);
   }
 
   testAddReceiver() {
-    this.listOfSend.push(this.receiver);
   }
 
-  senContract() {
+  sendContract() {
     this.contractNumber = this.value;
   }
 
-  sendDescription() {
+  sendMessage(message: string) {
     this.isChated = true;
-    const i = {
-      class: 'sender',
-      isSend: true,
-      contract: this.value,
-      description: this.inputValue,
-    };
-    this.listOfSend.push(i);
-    console.log(this.listOfSend);
+    const request = {
+      request: 'MSG_NEGOTIATE',
+      message: message,
+      userID: this.gameService.userID,
+      gameID: this.gameService.gameID,
+      negotiationID: message
+    } as SocketRequest;
+
+    this.gameService.messages.next(request)
   }
 }

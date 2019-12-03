@@ -1,0 +1,86 @@
+.container {
+  background-color: #f0f2f5;
+  width: 400px;
+  height: 400px;
+  overflow-y: auto;
+  position: absolute;
+  right: 330px;
+  bottom: 0;
+}
+
+.context {
+  height: 225px;
+  background-color: #cacaca;
+  overflow-y: auto;
+}
+
+.senderBox {
+  height: 140px;
+  background-color: #e0e0e0;
+  overflow-y: auto;
+  border-top: 2px solid #efefef;
+  display: inline-block;
+}
+
+.header {
+  width: 400px;
+  height: 35px;
+  background-color: #cacaca;
+  display: inline-block;
+  position: fixed;
+}
+
+nz-avatar {
+  float: left;
+}
+
+h5 {
+  float: left;
+  margin-top: 6px;
+}
+
+
+button {
+  float: right;
+}
+
+#sendBnt {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.sender {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.receiver {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2px;
+}
+
+.negociation {
+  display: flex;
+  position: fixed;
+  height: 50px;
+  margin-left: 150px;
+  margin-top: 35px;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.contract-container{
+  float: left;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.desc-container{
+  float: right;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}

@@ -1,0 +1,6 @@
+.container{
+  min-height: 40px;
+  width: 120px;
+  border: #737373 1px solid;
+  border-end-start-radius: 50%;
+}

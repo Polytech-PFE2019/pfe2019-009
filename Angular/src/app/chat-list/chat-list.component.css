@@ -1,0 +1,18 @@
+.container {
+  position: absolute;
+  background-color: #f0f2f5;
+  width: 300px;
+  height: 400px;
+  bottom: 0;
+  right: 20px;
+  overflow-y: auto;
+}
+
+.header{
+  width: 300px;
+  height: 35px;
+  background-color: #cacaca;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

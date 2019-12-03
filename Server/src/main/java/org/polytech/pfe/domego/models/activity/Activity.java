@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego.models.activity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public abstract class Activity {
 
     private List<PayPlayer> payPlayerList;
 
-    Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
+    public Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
         this.id = id;
         this.numbersOfDays = numbersOfDays;
         this.title = title;

@@ -57,10 +57,6 @@ export class StepComponent implements OnInit, OnDestroy {
     console.log(this.myInformation);
     this.numOfRisks = this.step.risks;
 
-    this.subRisks = this.buyResourceService.risksReduced$.subscribe(data => {
-      console.log(data);
-      this.numOfRisks = this.numOfRisks - data;
-    });
   }
 
   getCard(event) {

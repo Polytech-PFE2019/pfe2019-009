@@ -24,6 +24,9 @@ export class BuyResourceService {
   risksReduced = new Subject<any>();
   risksReduced$ = this.risksReduced.asObservable();
 
+  daysReduced = new Subject<any>();
+  daysReduced$ = this.daysReduced.asObservable();
+
   constructor() {
   }
 
@@ -56,5 +59,10 @@ export class BuyResourceService {
   sendReducedRisk(msg) {
     console.log('sendReducedRisk' + msg);
     this.risksReduced.next(msg);
+  }
+
+  sendDaysReduced(msg) {
+    console.log('sendDaysReduced' + msg);
+    this.daysReduced.next(msg);
   }
 }

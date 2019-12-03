@@ -42,6 +42,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
   currentActivity: any;
   subCurrentActivity: Subscription;
   isChat = false;
+  subRisks: Subscription;
+  subDays: Subscription;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -63,6 +65,16 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
       console.log(this.currentActivity);
+    });
+
+    this.subRisks = this.resourceManager.risksReduced$.subscribe(data => {
+      console.log(data);
+      this.currentActivity.risks = this.currentActivity.risks - data;
+    });
+
+    this.subDays = this.resourceManager.daysReduced$.subscribe(data => {
+      console.log(data);
+      this.currentActivity.numberOfDays = this.currentActivity.numberOfDays - data;
     });
 
     this.currentStep = this.gameService.currentStep;
@@ -105,6 +117,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subPayingActions.unsubscribe();
     this.subPlayersWithRoles.unsubscribe();
     this.subCurrentActivity.unsubscribe();
+    this.subRisks.unsubscribe();
+    this.subDays.unsubscribe();
   }
 
   openChat() {

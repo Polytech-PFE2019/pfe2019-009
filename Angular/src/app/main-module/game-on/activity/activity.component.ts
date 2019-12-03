@@ -95,6 +95,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
   handleOk(): void {
     // this.payResource();
     this.resourceService.sendResourcesReduced(this.totalRes);
+    this.resourceService.sendReducedRisk(this.riskReduced);
+    this.resourceService.sendDaysReduced(this.daysReduced);
     this.isVisible = false;
     this.nzMessageService.info('Paiement réussi');
     const payment = [];

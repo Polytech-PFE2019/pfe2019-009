@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GameOnService } from '../service/gameOnService/game-on.service';
-import { DialogueMessage } from './dialogueMessage';
-import { SocketRequest } from 'src/Request';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {GameOnService} from '../service/gameOnService/game-on.service';
+import {DialogueMessage} from './dialogueMessage';
+import {SocketRequest} from 'src/Request';
+import {SubscriptionService} from "../service/subscriptionSerivce/subscription.service";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -26,29 +27,29 @@ export class ChatDialogueComponent implements OnInit {
 
   messages: DialogueMessage[] = []
 
-  constructor(private gameService: GameOnService) {
+  constructor(private gameService: GameOnService,private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {
-    this.userID = this.gameService.userID;
+    this.userID = this.subsciption.userId;
     this.gameService.messages.subscribe(data => {
-      console.log(data)
+      console.log(data);
       switch (data.response) {
-        case "MSG_NEGOTIATE":
+        case 'MSG_NEGOTIATE':
           let isSender = false;
-          if (data.userID === this.userID) {
+          if (data.USERID === this.userID) {
             isSender = true;
           }
           console.log(this.userID);
           const message = {
             message: data.message,
-            userID: data.userID,
+            userID: data.USERID,
             isSender: isSender
-          } as DialogueMessage
-          console.log(message)
-          this.messages.push(message)
+          } as DialogueMessage;
+          console.log(message);
+          this.messages.push(message);
       }
-    })
+    });
 
   }
 

@@ -64,7 +64,7 @@ export class GameOnService {
           }
 
           if (data.response === 'LAUNCH_GAME') {
-            this.userID = data.player.USERID;
+            this.userID = data.player.userID;
             const failure = {
               minFailure: data.project.minFailure,
               maxFailure: data.project.maxFailure

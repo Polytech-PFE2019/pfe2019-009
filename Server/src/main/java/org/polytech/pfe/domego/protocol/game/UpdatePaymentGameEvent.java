@@ -76,7 +76,7 @@ public class UpdatePaymentGameEvent implements EventProtocol {
         projectJson.addProperty(GameResponseKey.MIN_TIME.key, minTime);
         projectJson.addProperty(GameResponseKey.MAX_TIME.key, maxTime);
         projectJson.addProperty(GameResponseKey.MIN_FAILURE.key, minFailure);
-        projectJson.addProperty(GameResponseKey.MAX_TIME.key, maxTime);
+        projectJson.addProperty(GameResponseKey.MAX_FAILURE.key, maxTime);
 
         return projectJson;
     }

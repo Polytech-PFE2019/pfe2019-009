@@ -1,9 +1,13 @@
 package org.polytech.pfe.domego.models.activity;
 
+import org.polytech.pfe.domego.models.Player;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BuyingResourcesActivity  extends Activity implements BuyingAction {
+
+    private List<BuyResources> buyResourcesList;
 
     public BuyingResourcesActivity(int id, int numbersOfDays,String title ,String description, List<PayResources> payResourcesList, List<BuyResources> buyResourcesList) {
         super(id, numbersOfDays, title,description, payResourcesList);
@@ -18,9 +22,11 @@ public class BuyingResourcesActivity  extends Activity implements BuyingAction {
     }
 
     @Override
-    public void buyResources(int roleID, int amount) {
-        BuyResources action = getBuyResourcesByRoleID(roleID);
+    public void buyResources(Player player, int amount) {
+        BuyResources action = getBuyResourcesByRoleID(player.getRole().getId());
         action.buyResources(amount);
+        player.addResources(amount);
+        player.subtractMoney(amount * action.getRate());
     }
 
     public BuyResources getBuyResourcesByRoleID(int roleID){

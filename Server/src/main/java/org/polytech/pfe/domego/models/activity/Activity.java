@@ -1,10 +1,13 @@
 package org.polytech.pfe.domego.models.activity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.polytech.pfe.domego.models.Payment;
+import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public abstract class Activity {
     private int id;
@@ -14,7 +17,6 @@ public abstract class Activity {
     private String description;
     private List<PayResources> payResourcesList;
     private ActivityStatus activityStatus;
-    protected List<BuyResources> buyResourcesList;
     private List<PayPlayer> payPlayerList;
 
     public Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
@@ -23,22 +25,24 @@ public abstract class Activity {
         this.title = title;
         this.description = description;
         this.payResourcesList = payResourcesList;
-        this.buyResourcesList = new ArrayList<>();
         this.payPlayerList = new ArrayList<>();
         this.activityStatus = ActivityStatus.NOT_STARTED;
     }
 
-    public boolean payResources(int roleID, PayResourceType payResourceType, int amount){
-        Optional<PayResources> payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
-        if(payResources.isEmpty())
+    public boolean payResources(Player player, List<Payment> payments){
+        int roleID = player.getRole().getId();
+        int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
+        if(totalAmount > player.getResourcesAmount())
             return false;
 
-        if(!payResources.get().pay(amount))
-            return false;
-
+        for (Payment payment: payments) {
+            Optional<PayResources> payResources = getPayResourcesByRoleAndType(roleID, payment.getType());
+            payResources.ifPresent(payResources1 -> payResources1.pay(payment.getAmount()));
+        }
         if (allMandatoryResourcesHaveBeenPayed())
             this.finishActivity();
 
+        player.subtractResources(totalAmount);
         return true;
     }
 
@@ -48,10 +52,10 @@ public abstract class Activity {
                 .noneMatch(payResources -> !payResources.hasPaid());
     }
 
-    public void buyResources(int roleID, int amount){
-        BuyResources newPaiement = new BuyResources(roleID,this.getExchangeRateForRoleID(roleID));
-        newPaiement.buyResources(amount);
-        this.buyResourcesList.add(newPaiement);
+    public void buyResources(Player player, int amount){
+        int exchangeRate = this.getExchangeRateForRoleID(player.getRole().getId());
+        player.addResources(amount);
+        player.subtractMoney(amount * exchangeRate);
     }
 
     public void setPayPlayerList(List<PayPlayer> payPlayerList) {
@@ -68,10 +72,6 @@ public abstract class Activity {
 
     }
 
-    public Set<Integer> getRoleIdHasToPlayDuringThisActivity(){
-        return payResourcesList.stream().map(PayResources::getRoleID).collect(Collectors.toSet());
-    }
-
     public int getNumberOfDays(){
         return numbersOfDays;
     }
@@ -81,10 +81,8 @@ public abstract class Activity {
     }
 
     public List<PayResources> getPayResourcesList() {
-        return payResourcesList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        return payResourcesList;
     }
-
-    public List<BuyResources> getBuyResourcesList() { return buyResourcesList; }
 
     public List<Negotiation> getNegotiationList(){
         return new ArrayList<>();

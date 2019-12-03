@@ -8,8 +8,9 @@ import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Payment;
-import org.polytech.pfe.domego.models.PaymentStatus;
 import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class PayResourcesEvent implements EventProtocol {
@@ -27,6 +30,7 @@ public class PayResourcesEvent implements EventProtocol {
     private Map<String, ?> request;
     private GameInstance gameInstance;
     private Messenger messenger;
+    private final Logger logger = Logger.getGlobal();
 
     public PayResourcesEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
@@ -70,7 +74,23 @@ public class PayResourcesEvent implements EventProtocol {
     private void payResources(Game game, Player player){
         Type founderListType = new TypeToken<ArrayList<Payment>>(){}.getType();
         List<Payment> payments = new Gson().fromJson(request.get("payments").toString(), founderListType);
-        PaymentStatus status = game.payForCurrentActivity(player, payments);
+        Activity currentActivity = game.getCurrentActivity();
+        if (!currentActivity.payResources(player, payments)){
+            int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
+            logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay", new Object[]{game.getId(), player.getID(),player.getResourcesAmount(), totalAmount});
+            return;
+        }
+
+        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
+
+        if(currentActivity.getActivityStatus().equals(ActivityStatus.FINISHED)){
+            if(currentActivity.getId() == game.getActivities().size())
+                new FinishGameEvent(game).processEvent();
+            else{
+                game.goToTheNextActivity();
+                new ChangeActivityEvent(game).processEvent();
+            }
+        }
         game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);
     }
 

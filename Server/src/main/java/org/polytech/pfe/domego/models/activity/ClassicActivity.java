@@ -1,6 +1,5 @@
 package org.polytech.pfe.domego.models.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClassicActivity extends Activity {

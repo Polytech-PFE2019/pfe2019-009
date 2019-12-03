@@ -72,9 +72,8 @@ public class BuyResourceEvent implements EventProtocol {
             this.messenger.sendError("USER HAS NOT ENOUGH MONEY");
             return;
         }
-        activity.buyResources(roleID,numberOfResource);
-        player.addResources(numberOfResource);
-        player.subtractMoney(numberOfResource * currentPriceOfResource);
+        activity.buyResources(player,numberOfResource);
+
         logger.log(Level.INFO,
                 "BuyResourceEvent : In game  {0} the player named : {1} has buy {2} resources. He has now : {3} resources and : {4} money.",
                 new Object[]{game.getId(), player.getName(), numberOfResource, player.getResourcesAmount(), player.getMoney()});

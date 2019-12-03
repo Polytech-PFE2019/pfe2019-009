@@ -7,7 +7,9 @@ import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.PayResourceType;
 import org.polytech.pfe.domego.models.activity.PayResources;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class InfoProjectGameCalculator {

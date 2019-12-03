@@ -12,10 +12,10 @@
   </div>
   <div class="context">
     <div *ngFor="let message of messages">
-      <div class="sender" *ngIf="message.userID === userID">
+      <div class="sender" *ngIf="message.isSender">
         <app-chat-message [message]="message.message"></app-chat-message>
       </div>
-      <div class="receiver" *ngIf="message.userID === userID">
+      <div class="receiver" *ngIf="!message.isSender">
         <app-chat-message [message]="message.message"></app-chat-message>
       </div>
     </div>

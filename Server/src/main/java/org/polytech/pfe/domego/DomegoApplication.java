@@ -3,7 +3,6 @@ package org.polytech.pfe.domego;
 import org.polytech.pfe.domego.logger.MyLogger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;

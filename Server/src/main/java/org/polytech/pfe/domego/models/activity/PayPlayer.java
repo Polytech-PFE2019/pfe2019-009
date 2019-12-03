@@ -1,5 +1,7 @@
 package org.polytech.pfe.domego.models.activity;
 
+import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
+
 public class PayPlayer {
     private Negociation negociation;
     private int percentage;

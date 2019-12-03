@@ -3,6 +3,9 @@ package org.polytech.pfe.domego.generator;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.*;
+import org.polytech.pfe.domego.models.activity.negotiation.Contract;
+import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
+import org.polytech.pfe.domego.models.activity.negotiation.NegociationActivity;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,7 +108,8 @@ public class InitialGameGenerator implements GameGenerator {
         String title = "NEGOCIATION ET CONTRACTUALISATION\n" + "Maitre d’ouvrage – Maitre d’oeuvre";
         String description = "Le maître d’ouvrage négocie avec le maître d’oeuvre afin de déterminerla rémunération de ce dernier. Une fois qu’ils se sont entendus, le contrat peut alors être signé. Ce contrat précisera notamment le délai ainsi que les coûts prévus.";
 
-        Negociation negociation = new Negociation(1,2);
+        Contract contract = new Contract(80,115);
+        Negociation negociation = new Negociation(1,2,contract);
         List<Negociation> negociationList = new ArrayList<>();
         negociationList.add(negociation);
 
@@ -130,13 +134,17 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.MAITRE_D_OUVRAGE.getId(),mandatoryMap, PayResourceType.MANDATORY));
         payResourcesList.add(new PayResources(RoleType.MAITRE_D_OUVRAGE.getId(),riskMap, PayResourceType.RISKS));
         payResourcesList.add(new PayResources(RoleType.MAITRE_D_OUVRAGE.getId(),timeMap, PayResourceType.DAYS));
-        String title = "NEGOCIATION ET CONTRACTUALISATION\n" + "Maitre d’oeuvre – ENTREPRISES – BUREAU CONTROLE";
+        String title = "NEGOCIATION ET CONTRACTUALISATION\n" + "Maitre d’oeuvre – ENTREPRI  SES – BUREAU CONTROLE";
         String description = "Le maître d’oeuvre et les entreprises négocient afin de tomber d’accord sur un montant qui satisfera les différents intervenants. Le maître d’ouvrage négocie avec le bureau de contrôle afin de déterminer la rémunération de ce dernier. Une fois que les acteurs se sont entendus, les contrats peuvent alors être signés.";
 
-        Negociation negociation1 = new Negociation(1,4);
-        Negociation negociation2 = new Negociation(2,5);
-        Negociation negociation3 = new Negociation(2,6);
-        Negociation negociation4 = new Negociation(2,3);
+        Contract contract1 = new Contract(10,25);
+        Negociation negociation1 = new Negociation(1,4,contract1);
+        Contract contract2 = new Contract(25,50);
+        Negociation negociation2 = new Negociation(2,5,contract2);
+        Contract contract3 = new Contract(20,40);
+        Negociation negociation3 = new Negociation(2,6,contract3);
+        Contract contract4 = new Contract(10,20);
+        Negociation negociation4 = new Negociation(2,3,contract4);
 
         List<Negociation> negociationList = new ArrayList<>();
         negociationList.add(negociation1);

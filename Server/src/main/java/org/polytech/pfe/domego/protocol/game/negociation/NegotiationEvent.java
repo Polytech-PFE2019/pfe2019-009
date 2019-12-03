@@ -4,8 +4,8 @@ import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.Negociation;
-import org.polytech.pfe.domego.models.activity.NegociationActivity;
+import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
+import org.polytech.pfe.domego.models.activity.negotiation.NegociationActivity;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -19,6 +19,7 @@ public abstract class NegotiationEvent {
     protected Player receiver;
     protected Messenger messenger;
     protected Map<String,String> request;
+    protected Messenger otherPlayerMessenger;
     private GameAccessor gameAccessor;
 
     public NegotiationEvent(WebSocketSession session, Map<String,String> request){
@@ -66,7 +67,6 @@ public abstract class NegotiationEvent {
     }
 
     protected void sendResponses(String response){
-        Messenger otherPlayerMessenger;
 
         if(giver.getSession() == messenger.getSession()){
             otherPlayerMessenger = new Messenger(receiver.getSession());

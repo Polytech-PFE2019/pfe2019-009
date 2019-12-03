@@ -1,20 +1,14 @@
 package org.polytech.pfe.domego.protocol.game.negociation;
 
 import com.google.gson.JsonObject;
-import org.polytech.pfe.domego.components.business.Game;
-import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
-import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.Negociation;
-import org.polytech.pfe.domego.models.activity.NegociationActivity;
+import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

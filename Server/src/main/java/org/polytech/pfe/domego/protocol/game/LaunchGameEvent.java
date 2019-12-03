@@ -8,7 +8,7 @@ import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.BuyResources;
-import org.polytech.pfe.domego.models.activity.Negociation;
+import org.polytech.pfe.domego.models.activity.negotiation.Negociation;
 import org.polytech.pfe.domego.models.activity.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.ActionResponseKey;

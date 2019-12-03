@@ -28,7 +28,9 @@ public class EndNegotiationEvent extends NegotiationEvent implements EventProtoc
             return;
         }
 
-        super.processRequest();
+        if(!super.processRequest()){
+            return;
+        }
 
         int amount = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
 

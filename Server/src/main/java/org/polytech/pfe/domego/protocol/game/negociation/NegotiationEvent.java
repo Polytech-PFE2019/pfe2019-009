@@ -28,11 +28,11 @@ public abstract class NegotiationEvent {
         this.request = request;
     }
 
-    protected void processRequest(){
+    protected boolean processRequest(){
         Optional<Game> optionalGame = this.gameAccessor.getGameById(request.get(GameRequestKey.GAMEID.getKey()));
         if(!optionalGame.isPresent()){
             this.messenger.sendError("GAME NOT FOUND");
-            return;
+            return false;
         }
 
         this.game = optionalGame.get();
@@ -43,7 +43,7 @@ public abstract class NegotiationEvent {
         Optional<Negotiation> negotiationOptional = activity.getNegotiationByID(negotiationID);
         if(negotiationOptional.isEmpty()){
             this.messenger.sendError("NEGOCIATION NOT FOUND");
-            return;
+            return false;
         }
 
         this.negotiation = negotiationOptional.get();
@@ -52,18 +52,20 @@ public abstract class NegotiationEvent {
 
         if (!optionalGiver.isPresent()){
             this.messenger.sendError("GIVER NOT FOUND");
-            return;
+            return false;
         }
 
         Optional<Player> optionalReceiver = game.getPlayerByRoleID(negotiation.getReceiverRoleID());
 
         if (!optionalReceiver.isPresent()){
             this.messenger.sendError("RECEIVER NOT FOUND");
-            return;
+            return false;
         }
 
         this.giver = optionalGiver.get();
         this.receiver = optionalReceiver.get();
+
+        return true;
     }
 
     protected void sendResponses(String response){

@@ -8,6 +8,7 @@ import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.BuyResources;
 import org.polytech.pfe.domego.models.activity.PayResources;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.protocol.EventProtocol;
@@ -55,6 +56,7 @@ public class LaunchGameEvent implements EventProtocol {
             activityJson.addProperty(ActivityResponseKey.DESCRIPTION.key, activity.getDescription());
             activityJson.addProperty(ActivityResponseKey.STATUS.key, activity.getActivityStatus().toString());
             activityJson.add(ActivityResponseKey.PAYING_ACTIONS.key,this.createPayingActionsResponse(activity));
+            activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,this.createBuyingActions(activity, player));
             activityJson.add(ActivityResponseKey.NEGOTIATION_ACTIONS.key, this.createNegotiationActionsResponse(activity));
             JsonArray roleIDListJson = new JsonArray();
             activity.getPayResourcesList().stream().map(PayResources::getRoleID).collect(Collectors.toSet()).forEach(roleIDListJson::add);
@@ -86,7 +88,7 @@ public class LaunchGameEvent implements EventProtocol {
         response.add(GameResponseKey.PLAYER.key, playerJson);
     }
 
-    private void addProjectObject(JsonObject response, Player player){
+    private void addProjectObject(JsonObject response, Player player) {
         JsonObject projectJson = new JsonObject();
         InfoProjectGameCalculator projectGameCalculator = new InfoProjectGameCalculator(game);
         projectJson.addProperty(GameResponseKey.MIN_COST.key, projectGameCalculator.getMinResourcesToPay(player.getRole().getName()));
@@ -94,9 +96,26 @@ public class LaunchGameEvent implements EventProtocol {
         projectJson.addProperty(GameResponseKey.MIN_TIME.key, projectGameCalculator.getMinTimeOfProject());
         projectJson.addProperty(GameResponseKey.MAX_TIME.key, projectGameCalculator.getMaxTimeOfProject());
         projectJson.addProperty(GameResponseKey.MIN_FAILURE.key, projectGameCalculator.getMinFailureOfProject());
-        projectJson.addProperty(GameResponseKey.MAX_FAILURE.key, projectGameCalculator.getMaxFailureOfProject());
+        projectJson.addProperty(GameResponseKey.MAX_TIME.key, projectGameCalculator.getMaxFailureOfProject());
 
         response.add(GameResponseKey.PROJECT.key, projectJson);
+    }
+
+    private JsonArray createBuyingActions(Activity activity, Player player){
+        JsonArray buyingActions = new JsonArray();
+        for (BuyResources buyResources : activity.getBuyResourcesList()) {
+
+            if(player.getRole().getId() == buyResources.getRoleID()) {
+                JsonObject buyingActionJson = new JsonObject();
+                buyingActionJson.addProperty(ActionResponseKey.STATUS.key, buyResources.hasPaid());
+                buyingActionJson.addProperty(ActionResponseKey.RATE.key, buyResources.getRate());
+                buyingActionJson.addProperty(ActionResponseKey.ROLEID.key, buyResources.getRoleID());
+                buyingActionJson.addProperty(ActionResponseKey.RESOURCES_GIVEN.key, buyResources.getResourcesGiven());
+                buyingActionJson.addProperty(ActionResponseKey.MONEY_PAID.key, buyResources.getAmountPaid());
+                buyingActions.add(buyingActionJson);
+            }
+        }
+        return buyingActions;
     }
 
 

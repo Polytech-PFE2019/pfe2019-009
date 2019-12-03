@@ -30,7 +30,9 @@ public class PriceNegotiationEvent extends NegotiationEvent implements EventProt
             return;
         }
 
-       super.processRequest();
+        if(!super.processRequest()){
+            return;
+        }
 
         sendResponseToUsers();
 

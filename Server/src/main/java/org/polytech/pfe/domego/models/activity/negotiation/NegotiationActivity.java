@@ -18,6 +18,7 @@ public class NegotiationActivity extends Activity implements NegotiationAction {
         checkForMultiplicityForOneRole();
     }
 
+    @Override
     public Optional<Negotiation> getNegotiationByID(String id){
         return negotiationList.stream().filter(negotiation -> negotiation.getId().equals(id)).findAny();
     }
@@ -25,6 +26,7 @@ public class NegotiationActivity extends Activity implements NegotiationAction {
     /**
      * if one role has several negotiations, multiply the time of each by the number of negotiations he has.
      */
+    @Override
     public void checkForMultiplicityForOneRole(){
         for (RoleType role : RoleType.values()) {
             List<Negotiation> negotiationsForOneRole = negotiationList.stream().filter(negotiation -> negotiation.getGiverRoleID() == (role.getId())).collect(Collectors.toList());
@@ -38,4 +40,9 @@ public class NegotiationActivity extends Activity implements NegotiationAction {
         return this.negotiationList;
     }
 
+    //BuyResourcesAction abstract implementation
+    @Override
+    public List<Integer> getBuyingRoleIDList() {
+        return null;
+    }
 }

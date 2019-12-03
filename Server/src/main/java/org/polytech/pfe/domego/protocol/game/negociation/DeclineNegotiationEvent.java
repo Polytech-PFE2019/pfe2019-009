@@ -29,7 +29,9 @@ public class DeclineNegotiationEvent extends NegotiationEvent implements EventPr
             return;
         }
 
-        super.processRequest();
+        if(!super.processRequest()){
+            return;
+        }
         sendResponseToUsers();
 
 

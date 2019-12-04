@@ -81,7 +81,7 @@ export class ChatDialogueComponent implements OnInit {
       amount: amount,
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
-      negotiationID: "id"
+      negotiationID: this.negotiationID
     } as SocketRequest;
 
     this.gameService.messages.next(request);
@@ -95,7 +95,7 @@ export class ChatDialogueComponent implements OnInit {
       message: message,
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
-      negotiationID: message
+      negotiationID: this.negotiationID
     } as SocketRequest;
 
     this.gameService.messages.next(request);

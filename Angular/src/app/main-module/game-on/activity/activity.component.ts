@@ -61,32 +61,24 @@ export class ActivityComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
 
-      switch (data.response) {
-        case "LAUNCH_GAME":
+      this.currentActivity = data;
+      this.myDataSource = [];
+      console.log(this.currentActivity);
 
-          this.currentActivity = data;
-          this.myDataSource = [];
-          console.log(this.currentActivity);
+      this.currentActivity.negotiationActions.forEach(nego => {
+        if (nego.giverID == this.myInformation.id) {
+          this.hasNegotiation = true;
+          this.negotiationIDs.push(nego.negotiationID);
+        }
+      });
 
-          this.currentActivity.negotiationActions.forEach(nego => {
-            if (nego.giverID == this.myInformation.id) {
-              this.hasNegotiation = true;
-              this.negotiationIDs.push(nego.negotiationID);
-            }
-          });
-
-          if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
-            const tmp = (this.currentActivity.payingActions.filter(next =>
-              next.roleID === this.myInformation.id)[0]);
-            this.myDataSource.push(tmp);
-            console.log(this.myDataSource);
-          }
-          break;
-        case "START_NEGOTIATE":
-          //MAKE POP UP THE NEGOTIATION COMPONENT
-          //Input the negotiationID in it
-          break;
+      if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
+        const tmp = (this.currentActivity.payingActions.filter(next =>
+          next.roleID === this.myInformation.id)[0]);
+        this.myDataSource.push(tmp);
+        console.log(this.myDataSource);
       }
+
     });
 
     this.subCurrentResource = this.resourceService.currentResource$.subscribe(data => {
@@ -101,6 +93,16 @@ export class ActivityComponent implements OnInit, OnDestroy {
     console.log('game id+++' + this.gameID);
     this.userID = this.subscription.userId;
     console.log(this.activities);
+
+    this.gameService.messages.subscribe(data => {
+      switch (data.response) {
+        case "START_NEGOTIATE":
+          //POP UP THE Negociation component 
+          // with negotiation id in it
+          //data.negotiationID
+          break;
+      }
+    })
 
   }
 

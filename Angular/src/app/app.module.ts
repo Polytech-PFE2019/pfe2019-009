@@ -46,6 +46,9 @@ import { ChatDialogueComponent } from './chat-dialogue/chat-dialogue.component';
 import { ChatReceiverComponent } from './chat-receiver/chat-receiver.component';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 
+import { CountdownModule } from 'ngx-countdown';
+
+
 registerLocaleData(fr);
 
 @NgModule({
@@ -88,6 +91,7 @@ registerLocaleData(fr);
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    CountdownModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }, Globals, LobbyService, WebsocketService, GameOnService],
   bootstrap: [AppComponent]

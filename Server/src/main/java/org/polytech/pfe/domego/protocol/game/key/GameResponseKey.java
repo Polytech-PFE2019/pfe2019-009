@@ -45,7 +45,8 @@ public enum GameResponseKey {
     PAYMENTS("payments"),
     CHANGE_ACTIVITY("CHANGE_ACTIVITY"),
     NOVP("NumberOfVictoryPoints"),
-    OTHER_USER_NAME("otherUserName");
+    OTHER_USER_NAME("otherUserName"),
+    TIME("time");
 
     public final String key;
 

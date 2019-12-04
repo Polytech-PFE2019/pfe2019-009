@@ -6,6 +6,7 @@ import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
+import org.polytech.pfe.domego.models.activity.negotiation.NegotiationStatus;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -44,11 +45,16 @@ public abstract class NegotiationEvent {
 
         Optional<Negotiation> negotiationOptional = activity.getNegotiationList().stream().filter(negotiation -> negotiation.getId().equals(negotiationID)).findAny();
         if(negotiationOptional.isEmpty()){
-            this.messenger.sendError("NEGOCIATION NOT FOUND");
+            this.messenger.sendError("NEGOTIATION NOT FOUND");
             return false;
         }
 
         this.negotiation = negotiationOptional.get();
+
+        if(this.negotiation.getNegotiationStatus() == NegotiationStatus.SUCCESS || this.negotiation.getNegotiationStatus() == NegotiationStatus.FAILURE ){
+            this.messenger.sendError("NEGOTIATION ALREADY FINISHED");
+            return false;
+        }
 
         Optional<Player> optionalGiver = game.getPlayerByRoleID(negotiation.getGiverRoleID());
 

@@ -47,6 +47,7 @@ public class StartNegotiationEvent extends NegotiationEvent implements EventProt
     private void sendResponseToUsers() {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "START_NEGOTIATE");
+        response.addProperty(GameResponseKey.TIME.key, negotiation.getTime());
         Player otherPlayer;
         if(giver.getSession() == session){
             otherPlayer = receiver;

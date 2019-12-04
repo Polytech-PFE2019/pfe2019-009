@@ -40,7 +40,7 @@ public class MessageNegotiationEvent extends NegotiationEvent implements EventPr
     private void sendResponseToUsers() {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "MSG_NEGOTIATE");
-        response.addProperty(GameResponseKey.USERID.key,request.get(GameRequestKey.USERID.getKey()));
+        response.addProperty(GameResponseKey.USER_ID.key,request.get(GameRequestKey.USERID.getKey()));
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiation.getId());
         response.addProperty(GameResponseKey.MESSAGE.key, request.get(GameRequestKey.MESSAGE.getKey()));
 

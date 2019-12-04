@@ -4,6 +4,7 @@ import {DialogueMessage} from './dialogueMessage';
 import {SocketRequest} from 'src/Request';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
+import {NzNotificationService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -39,7 +40,9 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     backgroundColor: '#c54e3c'
   };
 
-  constructor(private gameService: GameOnService, private subsciption: SubscriptionService) {
+  constructor(private gameService: GameOnService,
+              private notification: NzNotificationService,
+              private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -85,6 +88,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
         case 'END_NEGOTIATE':
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
+            this.createBasicNotification();
           }
           break;
       }
@@ -153,5 +157,12 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     };
     console.log(req);
     this.gameService.messages.next(req as SocketRequest);
+  }
+
+  createBasicNotification(): void {
+    this.notification.blank(
+      'Résultat de négociation',
+      'Vous avez négocié un contrat de ' + this.contractNumber + ' K.'
+    );
   }
 }

@@ -4,13 +4,13 @@ import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 
 import java.util.UUID;
 
-public class PayPlayer {
+public class PayContract {
     private Negotiation negotiation;
     private int percentage;
     private boolean status;
     private String id;
 
-    public PayPlayer(Negotiation negotiation, int percentage){
+    public PayContract(Negotiation negotiation, int percentage){
         this.status = false;
         this.negotiation = negotiation;
         this.percentage = percentage;

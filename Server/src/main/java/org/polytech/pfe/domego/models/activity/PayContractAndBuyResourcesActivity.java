@@ -2,34 +2,34 @@ package org.polytech.pfe.domego.models.activity;
 
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
-import org.polytech.pfe.domego.models.activity.pay.PayPlayer;
+import org.polytech.pfe.domego.models.activity.pay.PayContract;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PayPlayerAndBuyResourcesActivity extends Activity {
+public class PayContractAndBuyResourcesActivity extends Activity {
 
-    private List<PayPlayer> payPlayerList;
+    private List<PayContract> payContractList;
     protected List<BuyResources> buyResourcesList;
 
-    public PayPlayerAndBuyResourcesActivity(int id, int numbersOfDays, String title, String description,
-                                            List<PayResources> payResourcesList, List<PayPlayer> payPlayerList,
-                                            List<BuyResources> buyResourcesList) {
+    public PayContractAndBuyResourcesActivity(int id, int numbersOfDays, String title, String description,
+                                              List<PayResources> payResourcesList, List<PayContract> payContractList,
+                                              List<BuyResources> buyResourcesList) {
         super(id, numbersOfDays, title, description, payResourcesList);
-        this.payPlayerList = payPlayerList;
+        this.payContractList = payContractList;
         this.buyResourcesList = buyResourcesList;
     }
 
 
-    public Optional<PayPlayer> getPayPlayerByRoleIDs(int giverID, int receiverID){
-        return this.payPlayerList.stream().filter(payPlayer -> payPlayer.getNegotiation().getGiverRoleID() == giverID
+    public Optional<PayContract> getPayPlayerByRoleIDs(int giverID, int receiverID){
+        return this.payContractList.stream().filter(payPlayer -> payPlayer.getNegotiation().getGiverRoleID() == giverID
                 && payPlayer.getNegotiation().getReceiverRoleID() == receiverID ).findAny();
     }
 
-    public Optional<PayPlayer> getPayPlayerByID(String id){
-        return this.payPlayerList.stream().filter(payPlayer -> payPlayer.getId().equals(id)).findAny();
+    public Optional<PayContract> getPayPlayerByID(String id){
+        return this.payContractList.stream().filter(payPlayer -> payPlayer.getId().equals(id)).findAny();
     }
 
     @Override

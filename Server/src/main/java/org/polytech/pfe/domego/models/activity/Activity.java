@@ -5,7 +5,7 @@ import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.buying.BuyingAction;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
-import org.polytech.pfe.domego.models.activity.pay.PayPlayer;
+import org.polytech.pfe.domego.models.activity.pay.PayContract;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public abstract class Activity implements BuyingAction {
         return new ArrayList<>();
     }
 
-    public List<PayPlayer> getPayPlayerList(){
+    public List<PayContract> getPayContractList(){
         return new ArrayList<>();
     }
 

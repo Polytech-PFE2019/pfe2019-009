@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
+import org.polytech.pfe.domego.exceptions.InvalidRequestException;
 import org.polytech.pfe.domego.generator.InitialGameGenerator;
 import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.*;
@@ -19,14 +21,24 @@ import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
+import org.polytech.pfe.domego.protocol.game.LaunchGameEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
+import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.polytech.pfe.domego.services.sockets.game.GameRequestHandler;
+import org.polytech.pfe.domego.services.sockets.game.GameSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketHttpHeaders;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.sockjs.client.WebSocketClientSockJsSession;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.URI;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,8 +106,34 @@ class GameRequestHandlerTest {
         response.addProperty(GameResponseKey.NOPC.key, game.getPlayersPresent().size());
 
 
+
         verify(sessionPlayerTest, times(1)).sendMessage(
                 new TextMessage(response.toString()));
+    }
+
+    @Test
+    public void testLaunchGame() throws Exception {
+        for (Player player : game.getPlayers() ) {
+            JsonObject request = new JsonObject();
+            request.addProperty("request","JOIN_GAME");
+            request.addProperty("gameID", game.getId());
+            request.addProperty("userID", player.getID());
+
+            Map<String,String> value = new Gson().fromJson(request, Map.class);
+
+            handler.handleRequest(sessionPlayerTest, value);
+
+        }
+
+        assertEquals(game.getPlayers().size(),game.getPlayersPresent().size());
+        for (Player player : game.getPlayers()) {
+            assertEquals(sessionPlayerTest, player.getSession());
+            verify(sessionPlayerTest, times(1)).sendMessage(
+                    new TextMessage(new LaunchGameEvent(game).createUpdateResponse(player)));
+        }
+
+
+
     }
 
     @Test
@@ -234,6 +272,7 @@ class GameRequestHandlerTest {
         game.getPlayers().get(0).setSession(sessionPlayerTest);
         for(int i=1; i<6;i++){
             WebSocketSession session = mock(WebSocketSession.class);
+
             game.getPlayers().get(i).setSession(session);
         }
 

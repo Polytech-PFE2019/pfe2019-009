@@ -2,6 +2,7 @@ package org.polytech.pfe.domego.protocol.game.negociation;
 
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
+import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.negotiation.NegotiationStatus;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
@@ -46,6 +47,14 @@ public class StartNegotiationEvent extends NegotiationEvent implements EventProt
     private void sendResponseToUsers() {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "START_NEGOTIATE");
+        Player otherPlayer;
+        if(giver.getSession() == session){
+            otherPlayer = receiver;
+        }
+        else {
+            otherPlayer = giver;
+        }
+        response.addProperty(GameResponseKey.OTHER_USER_NAME.key, otherPlayer.getRole().getName().toString());
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiation.getId());
 
         super.sendResponses(response.toString());

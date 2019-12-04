@@ -51,8 +51,4 @@ public class Messenger {
             logger.warning("Messenger : can't sendError : " + response.toString());
         }
     }
-
-    public WebSocketSession getSession() {
-        return session;
-    }
 }

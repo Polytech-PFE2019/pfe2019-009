@@ -42,7 +42,6 @@ public class DeclineNegotiationEvent extends NegotiationEvent implements EventPr
         response.addProperty(GameResponseKey.RESPONSE.key, "DECLINE_NEGOTIATE");
         response.addProperty(GameResponseKey.USER_ID.key,request.get(GameRequestKey.USERID.getKey()));
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiation.getId());
-        response.addProperty(GameResponseKey.DECLINETYPE.key, request.get(GameRequestKey.DECLINETYPE.getKey()));
 
        super.sendResponses(response.toString());
 
@@ -56,7 +55,5 @@ public class DeclineNegotiationEvent extends NegotiationEvent implements EventPr
             throw new MissArgumentToRequestException(GameRequestKey.NEGOTIATIONID);
         if(!request.containsKey(GameRequestKey.USERID.getKey()))
             throw new MissArgumentToRequestException(GameRequestKey.USERID);
-        if(!request.containsKey(GameRequestKey.DECLINETYPE.getKey()))
-            throw new MissArgumentToRequestException(GameRequestKey.DECLINETYPE);
     }
 }

@@ -21,8 +21,10 @@ public abstract class NegotiationEvent {
     protected Map<String,String> request;
     protected Messenger otherPlayerMessenger;
     private GameAccessor gameAccessor;
+    protected WebSocketSession session;
 
     public NegotiationEvent(WebSocketSession session, Map<String,String> request){
+        this.session = session;
         this.messenger = new Messenger(session);
         this.gameAccessor = new GameAccessor();
         this.request = request;
@@ -70,7 +72,7 @@ public abstract class NegotiationEvent {
 
     protected void sendResponses(String response){
 
-        if(giver.getSession() == messenger.getSession()){
+        if(giver.getSession() == session){
             otherPlayerMessenger = new Messenger(receiver.getSession());
         }
         else {

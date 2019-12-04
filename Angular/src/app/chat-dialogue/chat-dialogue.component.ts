@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GameOnService } from '../service/gameOnService/game-on.service';
-import { DialogueMessage } from './dialogueMessage';
-import { SocketRequest } from 'src/Request';
-import { SubscriptionService } from "../service/subscriptionSerivce/subscription.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {GameOnService} from '../service/gameOnService/game-on.service';
+import {DialogueMessage} from './dialogueMessage';
+import {SocketRequest} from 'src/Request';
+import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -16,7 +16,6 @@ export class ChatDialogueComponent implements OnInit {
     description: 40,
   };
   @Input() isOpenDialog = false;
-  @Input() negotiationID: string;
   @Output() sendCloseDialog = new EventEmitter();
   value = 100;
   contractNumber = 0;
@@ -24,8 +23,11 @@ export class ChatDialogueComponent implements OnInit {
   isChated = false;
   isDialog = false;
   userID;
+  contract = 0;
+  negotiationID: string;
 
-  messages: DialogueMessage[] = []
+  messages: DialogueMessage[] = [];
+  msg = '';
 
   constructor(private gameService: GameOnService, private subsciption: SubscriptionService) {
   }
@@ -35,22 +37,28 @@ export class ChatDialogueComponent implements OnInit {
     this.gameService.messages.subscribe(data => {
       console.log(data);
       switch (data.response) {
+        case 'START_NEGOTIATE':
+          this.negotiationID = data.negociationID;
+          this.isOpenDialog = true;
+          break;
         case 'MSG_NEGOTIATE':
-          let isSender = false;
+          let isSenders = false;
           if (data.userID === this.userID) {
-            isSender = true;
+            isSenders = true;
           }
           console.log(this.userID);
           const message = {
             message: data.message,
             userID: data.userID,
-            isSender: isSender
+            isSender: isSenders
           } as DialogueMessage;
           console.log(message);
           this.messages.push(message);
+          console.log(this.messages);
           break;
-        case 'PRICE_NEGOTIATE':
-          this.contractNumber = parseInt(data.amount);
+        case 'PRICE_NEGOCIATE':
+          console.log(data.amount);
+          this.contractNumber = parseInt(data.amount, 10);
           break;
       }
     });
@@ -74,32 +82,33 @@ export class ChatDialogueComponent implements OnInit {
   testAddReceiver() {
   }
 
-  sendContract(amount) {
-    (<HTMLInputElement>document.getElementById("contract")).value = "";
+  sendContract() {
     const request = {
       request: 'PRICE_NEGOTIATE',
-      amount: amount,
+      amount: this.contract.toString(),
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
     } as SocketRequest;
 
+    console.log(request);
     this.gameService.messages.next(request);
+    this.contract = 0;
 
   }
 
-  sendMessage(message: string) {
+  sendMessage() {
     this.isChated = true;
     const request = {
       request: 'MSG_NEGOTIATE',
-      message: message,
+      message: this.msg,
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
     } as SocketRequest;
+    console.log(request);
 
     this.gameService.messages.next(request);
-
-    (<HTMLInputElement>document.getElementById("msg")).value = "";
+    this.msg = '';
   }
 }

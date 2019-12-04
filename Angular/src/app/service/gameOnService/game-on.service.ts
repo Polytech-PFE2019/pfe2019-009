@@ -70,6 +70,18 @@ export class GameOnService {
               maxFailure: data.project.maxFailure
             };
             this.subscription.sendFailures(failure);
+
+            const cost = {
+              minCost: data.project.minCost,
+              maxCost: data.project.maxCost
+            };
+            this.subscription.sendCosts(cost);
+
+            const days = {
+              minTime: data.project.minTime,
+              maxTime: data.project.maxTime
+            };
+            this.subscription.sendDays(days);
             if (data.player.userID !== undefined) {
               console.log('send userID');
               this.userID = data.player.userID;

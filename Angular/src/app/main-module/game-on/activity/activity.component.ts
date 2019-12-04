@@ -6,13 +6,13 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { BuyResourceService } from '../../../service/resources/buy-resource.service';
-import { Subscription } from 'rxjs';
-import { SubscriptionService } from '../../../service/subscriptionSerivce/subscription.service';
-import { GameOnService } from '../../../service/gameOnService/game-on.service';
-import { SocketRequest } from '../../../../Request';
-import { LobbyService } from '../../../service/lobbyService/lobby.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {BuyResourceService} from '../../../service/resources/buy-resource.service';
+import {Subscription} from 'rxjs';
+import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
+import {GameOnService} from '../../../service/gameOnService/game-on.service';
+import {SocketRequest} from '../../../../Request';
+import {LobbyService} from '../../../service/lobbyService/lobby.service';
 
 @Component({
   selector: 'app-activity',
@@ -50,23 +50,23 @@ export class ActivityComponent implements OnInit, OnDestroy {
   hasNegotiation = false;
   negotiationIDs: string[] = [];
 
+
   constructor(private nzMessageService: NzMessageService,
-    private subscription: SubscriptionService,
-    private gameService: GameOnService,
-    private lobbyService: LobbyService,
-    private changeDetector: ChangeDetectorRef,
-    private resourceService: BuyResourceService) {
+              private subscription: SubscriptionService,
+              private gameService: GameOnService,
+              private lobbyService: LobbyService,
+              private changeDetector: ChangeDetectorRef,
+              private resourceService: BuyResourceService) {
   }
 
   ngOnInit() {
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
-
       this.currentActivity = data;
       this.myDataSource = [];
       console.log(this.currentActivity);
 
       this.currentActivity.negotiationActions.forEach(nego => {
-        if (nego.giverID == this.myInformation.id) {
+        if (nego.giverID === this.myInformation.id) {
           this.hasNegotiation = true;
           this.negotiationIDs.push(nego.negotiationID);
         }
@@ -96,13 +96,13 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
     this.gameService.messages.subscribe(data => {
       switch (data.response) {
-        case "START_NEGOTIATE":
-          //POP UP THE Negociation component 
+        case 'START_NEGOTIATE':
+          // POP UP THE Negociation component
           // with negotiation id in it
-          //data.negotiationID
+          // data.negotiationID
           break;
       }
-    })
+    });
 
   }
 
@@ -190,7 +190,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   launchNegotiation() {
-
+    console.log(this.negotiationIDs);
     this.negotiationIDs.forEach(negoID => {
       const request = {
         request: 'START_NEGOTIATE',
@@ -199,7 +199,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
       } as SocketRequest;
 
       this.gameService.messages.next(request);
-    })
+    });
 
   }
 

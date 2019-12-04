@@ -22,6 +22,8 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   subGameId: Subscription;
   userID: string;
   subUserId: Subscription;
+  subCost: Subscription;
+  cost: any = null;
 
   constructor(private nzMessageService: NzMessageService,
               private gameService: GameOnService,
@@ -32,6 +34,12 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subCurrentMonney = this.resourceService.currentMonney$.subscribe(data => {
       this.currentMonney = data;
+    });
+
+
+    this.subCost = this.subscription.costs$.subscribe(data => {
+      console.log(data);
+      this.cost = data;
     });
 
     this.gameService.messages.subscribe(data => {
@@ -87,6 +95,7 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     this.subCurrentMonney.unsubscribe();
     this.subUserId.unsubscribe();
     this.subGameId.unsubscribe();
+    this.subCost.unsubscribe();
   }
 
 }

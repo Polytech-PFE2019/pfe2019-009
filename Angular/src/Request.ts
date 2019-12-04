@@ -24,5 +24,6 @@ export class SocketRequest {
   message: any;
   negotiationID: string;
   USERID: any;
+  negociationID: string;
 
 }

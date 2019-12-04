@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {GameOnService} from '../service/gameOnService/game-on.service';
-import {DialogueMessage} from './dialogueMessage';
-import {SocketRequest} from 'src/Request';
-import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { GameOnService } from '../service/gameOnService/game-on.service';
+import { DialogueMessage } from './dialogueMessage';
+import { SocketRequest } from 'src/Request';
+import { SubscriptionService } from '../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -70,14 +70,15 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
             this.contractNumber = parseInt(data.amount, 10);
           }
           break;
+        case "FAIL_NEGOTIATE":
+          if (data.negociationID === this.negotiationID) {
+            this.isOpenDialog = false;
+            alert("La négociation a échoué ! Un contrat de montant " + data.amount + "k a été tiré au sort")
+
+          }
       }
     });
 
-  }
-
-  closeChat() {
-    this.isOpenDialog = false;
-    this.sendCloseDialog.emit(false);
   }
 
   send() {

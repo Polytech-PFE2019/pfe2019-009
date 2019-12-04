@@ -1,14 +1,8 @@
 <div class="container" *ngIf="isOpenDialog">
   <countdown [config]="{leftTime: data.time}"></countdown>
   <div class="header">
-    <div style="width: 200px">
-      <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
-      <h4>{{title}}</h4>
-    </div>
-
-    <button nz-button nzType="danger" (click)="closeChat()" nzShape="circle">
-      <i nz-icon nzType="close"></i>
-    </button>
+    <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
+    <h5>with someone</h5>
   </div>
   <div class="receiverBox">
     <div class="negociation">
@@ -32,36 +26,23 @@
     <div class="contract-container">
       <h4>Un contrat:</h4>
       <div style="display: flex; flex-direction: row">
-        <input nz-input type="number"
-               placeholder="0"
-               [max]="1000"
-               [min]="0"
-               [(ngModel)]="contract"
-               style="margin-right: 10px;width: 100px">
+        <input nz-input type="number" placeholder="0" [max]="1000" [min]="0" [(ngModel)]="contract"
+          style="margin-right: 10px;width: 100px">
         <b> K</b>
       </div>
-        <button nz-button
-                nzType="default"
-                style="width: 160px; margin-top: 15px; margin-left: 6px;margin-bottom: 10px;"
-                (click)="sendContract()">
-          Proposer un contrat
-        </button>
+      <button nz-button nzType="default" style="width: 160px; margin-top: 15px; margin-left: 6px;margin-bottom: 10px;"
+        (click)="sendContract()">
+        Proposer un contrat
+      </button>
     </div>
     <div class="desc-container">
-      <textarea nz-input
-                [(ngModel)]="msg"
-                id="msg"
-                rows="4"
-                placeholder="..."></textarea>
-      <button id="sendBnt"
-              nz-button (click)="sendMessage()"
-              nzShape="circle"
-              style="margin-bottom: 12px; margin-right: 10px;">
+      <textarea nz-input [(ngModel)]="msg" id="msg" rows="4" placeholder="..."></textarea>
+      <button id="sendBnt" nz-button (click)="sendMessage()" nzShape="circle"
+        style="margin-bottom: 12px; margin-right: 10px;">
         <i class="iconfont icon-send">
         </i>
       </button>
     </div>
   </div>
 </div>
-<input id="open" *ngIf="!isOpenDialog" type="image" src="../../assets/icons/Chat.png" (click)="openChat()"/>
-
+<input id="open" *ngIf="!isOpenDialog" type="image" src="../../assets/icons/Chat.png" (click)="openChat()" />

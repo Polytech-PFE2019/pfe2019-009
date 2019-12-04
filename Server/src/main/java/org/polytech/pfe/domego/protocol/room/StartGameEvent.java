@@ -77,7 +77,7 @@ public class StartGameEvent implements EventProtocol {
         Game game = gameAccessor.createNewGameFromRoom(room);
         String response = createStartGameResponse(game).toString();
 
-        room.getPlayerList().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
+        room.getPlayerList().parallelStream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
 
         logger.log(Level.INFO,
                 "StartGameEvent: Player name : {0} start the game for room with ID {1}",

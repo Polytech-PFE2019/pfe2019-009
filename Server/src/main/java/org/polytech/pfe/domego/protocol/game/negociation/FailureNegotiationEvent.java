@@ -16,16 +16,12 @@ public class FailureNegotiationEvent implements EventProtocol {
     private Negotiation negotiation;
     private Player giver;
     private Player receiver;
-    private Messenger messenger;
-    private Messenger messenger2;
     private Logger logger = Logger.getGlobal();
 
 
-    public FailureNegotiationEvent(Game game, Negotiation negotiation, Messenger messenger, Messenger messenger2, Player giver, Player receiver){
+    public FailureNegotiationEvent(Game game, Negotiation negotiation, Player giver, Player receiver){
         this.game = game;
         this.negotiation = negotiation;
-        this.messenger = messenger;
-        this.messenger2 = messenger2;
         this.receiver = receiver;
         this.giver = giver;
     }
@@ -36,7 +32,7 @@ public class FailureNegotiationEvent implements EventProtocol {
             negotiation.fail();
             sendFailureResponseToUsers();
             logger.log(Level.INFO,
-                    "BuyResourceEvent : In game {0} the negotiation beetween {1} and {2} failed. The amount of the contract drew randomly is {3}.",
+                    "FailureNegociationEvent : In game {0} the negotiation beetween {1} and {2} failed. The amount of the contract drew randomly is {3}.",
                     new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  negotiation.getAmountNegotiated()});
     }
 
@@ -45,7 +41,7 @@ public class FailureNegotiationEvent implements EventProtocol {
         response.addProperty(GameResponseKey.RESPONSE.key, "FAIL_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiation.getId());
         response.addProperty(GameResponseKey.AMOUNT.key, negotiation.getAmountNegotiated());
-        messenger.sendSpecificMessageToAUser(response.toString());
-        messenger2.sendSpecificMessageToAUser(response.toString());
+        new Messenger(giver.getSession()).sendSpecificMessageToAUser(response.toString());
+        new Messenger(receiver.getSession()).sendSpecificMessageToAUser(response.toString());
     }
 }

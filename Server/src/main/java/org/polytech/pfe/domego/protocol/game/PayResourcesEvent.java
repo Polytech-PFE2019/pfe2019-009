@@ -80,19 +80,17 @@ public class PayResourcesEvent implements EventProtocol {
             logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay", new Object[]{game.getId(), player.getID(),player.getResourcesAmount(), totalAmount});
             return;
         }
+        game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);//Send Message to the player that payment is ok
+        if (currentActivity.allMandatoryResourcesHaveBeenPayed())
+            currentActivity.doneActivity();
+
 
         logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
         new UpdatePaymentGameEvent(game, player).processEvent();
-        if(currentActivity.getActivityStatus().equals(ActivityStatus.FINISHED)){
-            if(currentActivity.getId() == game.getActivities().size())
-                new FinishGameEvent(game).processEvent();
-            else{
-                game.goToTheNextActivity();
-                new ChangeActivityEvent(game).processEvent();
-            }
-        }
+        if (currentActivity.getActivityStatus().equals(ActivityStatus.DONE))
+            new DrawRiskCardEvent(game).processEvent();
 
-        game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);
+
     }
 
     private void sendResponseToUser(Player player) {

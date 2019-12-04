@@ -2,6 +2,7 @@ package org.polytech.pfe.domego.protocol.game.key;
 
 public enum GameResponseKey {
     RESPONSE("response"),
+    DRAW_RISK("drawRisk"),
     FINISH("FINISH"),
     RANKING("ranking"),
     RANK("rank"),
@@ -37,6 +38,8 @@ public enum GameResponseKey {
     MESSAGE("message"),
     DECLINETYPE("declineType"),
     BONUS("bonus"),
+    DESCRIPTION("description"),
+    RISK_OF_ACTIVITY_ID("riskOfActivityId"),
     BONUS_TYPE("bonusType"),
     CURRENT_ACTIVITY_ID("currentActivityID"),
     DELAY_PROJECT("delayProject"),

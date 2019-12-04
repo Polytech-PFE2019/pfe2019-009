@@ -63,7 +63,7 @@ public class JoinGameEvent implements EventProtocol {
         logger.info("JoinGameEvent : Le joueur : " + player.getName() + " a rejoint la partie : " + game.getId());
         List<Player> connectedPlayer = game.getPlayersPresent();
         int numberOfPlayerConnected = connectedPlayer.size();
-        connectedPlayer.forEach(player1 -> new Messenger(player1.getSession()).sendSpecificMessageToAUser(createResponseEvent(numberOfPlayerConnected,player1.getID(), game.getId()).toString()));
+        connectedPlayer.parallelStream().forEach(player1 -> new Messenger(player1.getSession()).sendSpecificMessageToAUser(createResponseEvent(numberOfPlayerConnected,player1.getID(), game.getId()).toString()));
 
         if (numberOfPlayerConnected == game.getPlayers().size())
             new LaunchGameEvent(game).processEvent();

@@ -37,7 +37,7 @@ public class EndNegotiationEvent extends NegotiationEvent implements EventProtoc
         negotiation.negotiate(amount);
 
         logger.log(Level.INFO,
-                "BuyResourceEvent : In game {0} the negotiation beetween {1} and {2} is over. The amount of the negociation is {3}.",
+                "EndNegotiationEvent : In game {0} the negotiation beetween {1} and {2} is over. The amount of the negociation is {3}.",
                 new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  negotiation.getAmountNegotiated()});
 
         sendResponseToUsers(negotiation);

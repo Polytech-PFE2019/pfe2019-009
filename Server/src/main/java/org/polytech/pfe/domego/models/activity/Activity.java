@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.models.activity;
 
+import org.polytech.pfe.domego.components.game.RiskCard;
 import org.polytech.pfe.domego.models.Payment;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
@@ -14,23 +15,25 @@ import java.util.Optional;
 
 public abstract class Activity implements BuyingAction {
     private int id;
-    private int numbersOfDays;
+    private int numberOfDays;
     private String title;
     private String description;
     private List<PayResources> payResourcesList;
     private ActivityStatus activityStatus;
+    private List<RiskCard> riskCardList;
 
-    public Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
+    public Activity(int id, int numberOfDays, String title , String description, List<PayResources> payResourcesList){
         this.id = id;
-        this.numbersOfDays = numbersOfDays;
+        this.numberOfDays = numberOfDays;
         this.title = title;
         this.description = description;
         this.payResourcesList = payResourcesList;
         this.activityStatus = ActivityStatus.NOT_STARTED;
+        this.riskCardList = new ArrayList<>();
     }
 
 
-    private boolean allMandatoryResourcesHaveBeenPayed(){
+    public boolean allMandatoryResourcesHaveBeenPayed(){
         return payResourcesList.stream()
                 .filter(payResources ->payResources.getPayResourceType().equals(PayResourceType.MANDATORY))
                 .allMatch(payResources -> payResources.hasPaid());
@@ -47,12 +50,11 @@ public abstract class Activity implements BuyingAction {
             Optional<PayResources> payResources = payResourcesList.stream().filter(payResource -> ((payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(payment.getType()))).findAny();
             payResources.ifPresent(payResources1 -> payResources1.pay(payment.getAmount()));
         }
-        if (allMandatoryResourcesHaveBeenPayed())
-            this.finishActivity();
 
         player.subtractResources(totalAmount);
         return true;
     }
+
 
 
     @Override
@@ -77,6 +79,10 @@ public abstract class Activity implements BuyingAction {
         return payResourcesList;
     }
 
+    public void addPayResources(PayResources payResources){
+        this.payResourcesList.add(payResources);
+    }
+
     public List<BuyResources> getBuyResourcesList() {
         return new ArrayList<>();
     }
@@ -86,7 +92,7 @@ public abstract class Activity implements BuyingAction {
     }
 
     public int getNumberOfDays(){
-        return numbersOfDays;
+        return numberOfDays;
     }
 
     public String getDescription() {
@@ -95,6 +101,10 @@ public abstract class Activity implements BuyingAction {
 
     public void startActivity(){
         activityStatus = ActivityStatus.ONGOING;
+    }
+
+    public void doneActivity(){
+        activityStatus = ActivityStatus.DONE;
     }
 
     public void finishActivity(){
@@ -113,5 +123,11 @@ public abstract class Activity implements BuyingAction {
         return title;
     }
 
+    public void addDays(int numberOfDays) {
+        this.numberOfDays += numberOfDays;
+    }
 
+    public List<RiskCard> getRiskCardList() {
+        return riskCardList;
+    }
 }

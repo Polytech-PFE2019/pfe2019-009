@@ -1,6 +1,6 @@
 package org.polytech.pfe.domego.generator;
 
-import org.polytech.pfe.domego.components.business.Game;
+import org.polytech.pfe.domego.database.repository.RiskActionRepository;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
@@ -11,11 +11,15 @@ import org.polytech.pfe.domego.models.activity.negotiation.Contract;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class InitialGameGenerator implements GameGenerator {
+
+    @Autowired
+    private RiskActionRepository riskDB;
 
     private static final int rateResourceWhenBuyingActivity = 1;
 
@@ -42,11 +46,6 @@ public class InitialGameGenerator implements GameGenerator {
     @Override
     public List<Activity> getAllActivitiesOfTheGame() {
         return activities.stream().sorted(Comparator.comparing(Activity::getId)).collect(Collectors.toList());
-    }
-
-    @Override
-    public Game generateGame() {
-        return null;
     }
 
 

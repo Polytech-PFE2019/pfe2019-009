@@ -48,11 +48,10 @@ public class Game {
 
     public void goToTheNextActivity(){
         this.updateProject();
-        this.drawRiskCard();
-        this.updateGame();
+        this.changeActivity();
     }
 
-    private void updateGame() {
+    private void changeActivity() {
         if (currentActivity + 1 != activities.size()) {
             Activity oldActivity = this.getCurrentActivity();
             oldActivity.finishActivity();
@@ -62,14 +61,13 @@ public class Game {
         }
     }
 
-    private void drawRiskCard() {
-    }
-
     private void updateProject(){
         Activity activity = this.getCurrentActivity();
         this.project.addDelay(activity.getNumberOfDays());
         int totalAmount = activity.getPayResourcesList().stream().mapToInt(PayResources::getAmountPaid).sum();
         this.project.addCost(totalAmount);
+        int totalFailure = activity.getRiskCardList().size();
+        this.project.addFailure(totalFailure);
     }
 
     public List<Player> getPlayers() {

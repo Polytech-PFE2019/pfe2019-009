@@ -26,7 +26,7 @@ public class FinishGameEvent implements EventProtocol {
     public void processEvent() {
 
         logger.log(Level.INFO,"Game : The game {0} is now Finished", this.game.getId());
-        this.game.getPlayers().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
+        this.game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
 
     }
 

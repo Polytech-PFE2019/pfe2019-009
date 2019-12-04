@@ -2,13 +2,14 @@
   <countdown [config]="{leftTime: data.time}"></countdown>
   <div class="header">
     <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
-    <h5>with someone</h5>
+    <h5>{{data?.otherUserName}}</h5>
     <button nz-button nzType="danger" (click)="closeChat()" nzShape="circle">
       <i nz-icon nzType="close"></i>
     </button>
   </div>
   <div class="negociation">
     <h4>Contract {{contractNumber}}</h4>
+    <button *ngIf="!isProposer" (click)="accepteContract()" [ngStyle]="accepteStyle">Accepeter</button>
   </div>
   <div class="context">
     <div *ngFor="let message of messages">
@@ -39,5 +40,4 @@
     </div>
   </div>
 </div>
-<input id="open" *ngIf="!isOpenDialog" type="image" src="../../assets/icons/Chat.png" (click)="openChat()"/>
 

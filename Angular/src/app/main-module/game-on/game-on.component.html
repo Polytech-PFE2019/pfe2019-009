@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <button id="end" nz-button *ngIf="step==='Étape 12'" (click)="closeGame()"><b>Terminer</b></button>
+    <button id="end" nz-button *ngIf="this.currentActivity.title === 12" (click)="closeGame()"><b>Terminer</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
     <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">

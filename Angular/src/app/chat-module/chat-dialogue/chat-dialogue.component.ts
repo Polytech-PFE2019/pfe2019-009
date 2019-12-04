@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {GameOnService} from '../service/gameOnService/game-on.service';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
 import {DialogueMessage} from './dialogueMessage';
 import {SocketRequest} from 'src/Request';
-import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -32,6 +32,11 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
 
   messages: DialogueMessage[] = [];
   msg = '';
+  isProposer = true;
+  isProposed = false;
+  accepteStyle = {
+    backgroundColor: '#c54e3c'
+  };
 
   constructor(private gameService: GameOnService, private subsciption: SubscriptionService) {
   }
@@ -66,6 +71,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
         case 'PRICE_NEGOCIATE':
           if (data.negociationID === this.negotiationID) {
             console.log(data.amount);
+            this.isProposer = this.userID === data.userID;
             this.contractNumber = parseInt(data.amount, 10);
           }
           break;
@@ -128,5 +134,17 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
 
   openChat() {
     this.isOpenDialog = true;
+  }
+
+  accepteContract() {
+    this.accepteStyle.backgroundColor = '#4E8014';
+    const req = {
+      request: 'END_NEGOTIATE',
+      gameID: this.gameService.gameID,
+      negotiationID: this.negotiationID,
+      amount: this.contractNumber.toString()
+    };
+    console.log(req);
+    this.gameService.messages.next(req as SocketRequest);
   }
 }

@@ -1,4 +1,5 @@
 <div class="container" *ngIf="isOpenDialog">
+  <countdown [config]="{leftTime: data.time}"></countdown>
   <div class="header">
     <div style="width: 200px">
       <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
@@ -62,3 +63,5 @@
     </div>
   </div>
 </div>
+<input id="open" *ngIf="!isOpenDialog" type="image" src="../../assets/icons/Chat.png" (click)="openChat()"/>
+

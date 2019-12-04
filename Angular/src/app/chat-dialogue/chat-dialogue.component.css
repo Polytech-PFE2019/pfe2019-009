@@ -4,9 +4,7 @@
   width: 400px;
   height: 400px;
   overflow-y: auto;
-  position: absolute;
-  right: 330px;
-  bottom: 0;
+  margin-right: 40px;
 }
 
 .context {
@@ -58,11 +56,6 @@ button {
   float: right;
 }
 
-#sendBnt {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
 
 .sender {
   display: flex;
@@ -109,4 +102,12 @@ button {
   width: 200px;
   margin: 5px;
   padding-right: 5px;
+}
+
+#open{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }

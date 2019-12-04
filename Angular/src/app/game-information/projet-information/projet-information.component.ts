@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GameOnService} from "../../service/gameOnService/game-on.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-projet-information',
   templateUrl: './projet-information.component.html',
   styleUrls: ['./projet-information.component.css']
 })
-export class ProjetInformationComponent implements OnInit {
+export class ProjetInformationComponent implements OnInit,OnDestroy {
   currentTime = 0;
   currentCost = 0;
   currentFailure = 0;
@@ -33,7 +34,7 @@ export class ProjetInformationComponent implements OnInit {
   costs: any;
   days: any;
   risks: any;
-
+  subGame: Subscription;
   constructor(private gameService: GameOnService) {
   }
 
@@ -43,7 +44,7 @@ export class ProjetInformationComponent implements OnInit {
   // failureProject: 0
 
   ngOnInit() {
-    this.gameService.messages.subscribe(data => {
+    this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
       switch (data.response) {
         case 'LAUNCH_GAME':
@@ -85,6 +86,10 @@ export class ProjetInformationComponent implements OnInit {
       }
     });
 
+  }
+
+  ngOnDestroy(): void {
+    this.subGame.unsubscribe();
   }
 
 }

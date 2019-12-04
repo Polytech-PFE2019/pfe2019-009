@@ -1,6 +1,6 @@
 import {
   ChangeDetectorRef,
-  Component,
+  Component, EventEmitter,
   Input,
   OnDestroy,
   OnInit,
@@ -21,6 +21,7 @@ import {LobbyService} from '../../../service/lobbyService/lobby.service';
 })
 export class ActivityComponent implements OnInit, OnDestroy {
   @Input() activities: any[] = [];
+  @Output() sendInitDialog = new EventEmitter();
   isVisible = false;
   resBasic = 1;
   riskReduced = 0;
@@ -65,6 +66,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
       this.myDataSource = [];
       console.log(this.currentActivity);
 
+      this.negotiationIDs = [];
+      this.sendInitDialog.emit(true);
       this.currentActivity.negotiationActions.forEach(nego => {
         if (nego.giverID === this.myInformation.id) {
           this.hasNegotiation = true;

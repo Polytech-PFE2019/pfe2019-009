@@ -2,7 +2,7 @@ import {WebsocketService} from './service/webSocketService/websocket.service';
 import {LobbyService} from './service/lobbyService/lobby.service';
 
 import {Component} from '@angular/core';
-import {SocketRequest} from "../Request";
+import {SocketRequest} from '../Request';
 
 @Component({
   selector: 'app-root',
@@ -17,14 +17,21 @@ export class AppComponent {
 
 
   constructor() {
-    if (this.test.gameID === undefined) {
-      console.log('asdfkjalsjdflas');
-    } else {
-      console.log('1230');
-    }
-
-    this.test1.push('sdskfhakshdfk');
-    console.log(this.test1);
+    const i = {
+      negociationID: '179f781a-1be1-40df-882d-e7dd74bacb48',
+      response: 'START_NEGOTIATE'
+    };
+    const k = {
+      negociationID: '1be1-40df-882d-e7dd74bacb48',
+      response: 'START_NEGOTIATE'
+    };
+    const j = {
+      negociationID: '179f781a-1be1-40df-882dacb48',
+      response: 'START_NEGOTIATE'
+    };
+    this.test1.push(i);
+    this.test1.push(k);
+    this.test1.push(j);
   }
 
 

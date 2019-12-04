@@ -62,3 +62,11 @@ input{
   bottom: 0;
   right: 30px;
 }
+
+.dialog-container{
+  height: 400px;
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  display: flex;
+}

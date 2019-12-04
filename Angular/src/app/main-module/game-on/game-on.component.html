@@ -3,12 +3,12 @@
   <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
     <div class="activityContainer">
       <div class="activity">
-        <app-activity [activities]="activities"></app-activity>
+        <app-activity [activities]="activities" (sendInitDialog)="initDialog($event)"></app-activity>
       </div>
       <div class="activity">
         <app-buy-resources></app-buy-resources>
       </div>
-        <!--<app-prompt></app-prompt>-->
+      <!--<app-prompt></app-prompt>-->
       <!--</div>-->
       <div class="activity">
         <app-person-information>
@@ -22,12 +22,17 @@
     <button id="end" nz-button *ngIf="step==='Étape 12'" (click)="closeGame()"><b>Terminer</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
-    <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title" >
-      <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"  (sendStepTest)="getStepTest($event)"></app-step>
+    <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
+      <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
+                (sendStepTest)="getStepTest($event)"></app-step>
     </div>
   </div>
 
-  <input *ngIf="!isChat" type="image" src="../../../assets/icons/Chat.png" (click)="openChat()"/>
-  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>
+  <!--  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>-->
+  <div class="dialog-container">
+    <div *ngFor="let i of listOfDialog">
+      <app-chat-dialogue [data]="i"></app-chat-dialogue>
+    </div>
+  </div>
 </div>
 

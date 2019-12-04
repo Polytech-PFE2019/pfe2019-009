@@ -44,6 +44,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
   isChat = false;
   subRisks: Subscription;
   subDays: Subscription;
+  listOfDialog: any[] = [];
+  subGame: Subscription;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -86,6 +88,14 @@ export class GameOnComponent implements OnInit, OnDestroy {
       console.log(this.activities.actions);
     });
 
+    this.subGame = this.gameService.reponses$.subscribe(data => {
+      console.log(data);
+      if (data.response === 'START_NEGOTIATE') {
+        this.listOfDialog.push(data);
+        console.log(this.listOfDialog);
+      }
+    });
+
   }
 
   getCurrentStep($event: any) {
@@ -119,6 +129,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subCurrentActivity.unsubscribe();
     this.subRisks.unsubscribe();
     this.subDays.unsubscribe();
+    this.subGame.unsubscribe();
   }
 
   openChat() {
@@ -127,5 +138,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   closeChat($event: any) {
     this.isChat = $event;
+  }
+
+  initDialog($event: any) {
+    this.listOfDialog = [];
   }
 }

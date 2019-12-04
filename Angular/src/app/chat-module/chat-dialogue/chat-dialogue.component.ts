@@ -80,8 +80,13 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
             alert('La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort');
-
           }
+          break;
+        case 'END_NEGOTIATE':
+          if (data.negociationID === this.negotiationID) {
+            this.isOpenDialog = false;
+          }
+          break;
       }
     });
 

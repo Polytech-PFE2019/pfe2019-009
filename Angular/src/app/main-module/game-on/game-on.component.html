@@ -31,7 +31,7 @@
   <!--  <input *ngIf="!isChat" type="image" src="../../../assets/icons/Chat.png" (click)="openChat()"/>-->
   <!--  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>-->
   <div *ngFor="let i of listOfDialog">
-    <app-chat-dialogue></app-chat-dialogue>
+    <app-chat-dialogue [data]="i"></app-chat-dialogue>
   </div>
 </div>
 

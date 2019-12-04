@@ -12,6 +12,7 @@ import {Subscription} from "rxjs";
 })
 export class ChatDialogueComponent implements OnInit, OnDestroy {
   @Output() sendCloseDialog = new EventEmitter();
+  @Input() data: any;
   @Input() receiver = {
     class: 'receiver',
     contract: 20,
@@ -37,14 +38,13 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userID = this.subsciption.userId;
+    if (this.data.response === 'START_NEGOTIATE') {
+      console.log(this.data);
+      this.negotiationID = this.data.negociationID;
+    }
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
       switch (data.response) {
-        case 'START_NEGOTIATE':
-          console.log(data);
-          this.negotiationID = data.negociationID;
-          // this.listOfNegociation.push(data.)
-          break;
         case 'MSG_NEGOTIATE':
           let isSenders = false;
           if (data.userID === this.userID) {

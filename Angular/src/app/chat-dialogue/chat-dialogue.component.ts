@@ -1,22 +1,23 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {GameOnService} from '../service/gameOnService/game-on.service';
 import {DialogueMessage} from './dialogueMessage';
 import {SocketRequest} from 'src/Request';
 import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-dialogue',
   templateUrl: './chat-dialogue.component.html',
   styleUrls: ['./chat-dialogue.component.css']
 })
-export class ChatDialogueComponent implements OnInit {
+export class ChatDialogueComponent implements OnInit, OnDestroy {
+  @Output() sendCloseDialog = new EventEmitter();
   @Input() receiver = {
     class: 'receiver',
     contract: 20,
     description: 40,
   };
-  @Input() isOpenDialog = false;
-  @Output() sendCloseDialog = new EventEmitter();
+  isOpenDialog = true;
   value = 100;
   contractNumber = 0;
   inputValue: string;
@@ -25,6 +26,8 @@ export class ChatDialogueComponent implements OnInit {
   userID;
   contract = 0;
   negotiationID: string;
+  listOfNegociation: any[] = [];
+  subGame: Subscription;
 
   messages: DialogueMessage[] = [];
   msg = '';
@@ -34,12 +37,13 @@ export class ChatDialogueComponent implements OnInit {
 
   ngOnInit() {
     this.userID = this.subsciption.userId;
-    this.gameService.messages.subscribe(data => {
+    this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
       switch (data.response) {
         case 'START_NEGOTIATE':
+          console.log(data);
           this.negotiationID = data.negociationID;
-          this.isOpenDialog = true;
+          // this.listOfNegociation.push(data.)
           break;
         case 'MSG_NEGOTIATE':
           let isSenders = false;
@@ -110,5 +114,9 @@ export class ChatDialogueComponent implements OnInit {
 
     this.gameService.messages.next(request);
     this.msg = '';
+  }
+
+  ngOnDestroy(): void {
+    this.subGame.unsubscribe();
   }
 }

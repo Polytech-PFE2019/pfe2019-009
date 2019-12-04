@@ -125,4 +125,8 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subGame.unsubscribe();
   }
+
+  openChat() {
+    this.isOpenDialog = true;
+  }
 }

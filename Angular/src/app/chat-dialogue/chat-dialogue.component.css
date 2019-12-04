@@ -78,3 +78,11 @@ button {
   flex-direction: column;
   width: 200px;
 }
+
+#open{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

@@ -15,6 +15,7 @@ export class ChatDialogueComponent implements OnInit {
     contract: 20,
     description: 40,
   };
+  @Input() title ='';
   @Input() isOpenDialog = false;
   @Output() sendCloseDialog = new EventEmitter();
   value = 100;

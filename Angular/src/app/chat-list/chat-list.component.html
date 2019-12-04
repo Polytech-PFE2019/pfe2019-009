@@ -8,7 +8,7 @@
   <div class="list">
     <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
       <ng-template #item let-item>
-        <nz-list-item (click)="getChat()">
+        <nz-list-item (click)="getChat(item.title)">
           <nz-list-item-meta
             [nzTitle]="nzTitle"
             [nzAvatar]="'../../assets/icons/Chat.png'">
@@ -22,4 +22,4 @@
   </div>
 </div>
 
-<app-chat-dialogue [isOpenDialog]="isDialog" (sendCloseDialog)="ifCloseDialog($event)"></app-chat-dialogue>
+<app-chat-dialogue [isOpenDialog]="isDialog" [title] = "title" (sendCloseDialog)="ifCloseDialog($event)"></app-chat-dialogue>

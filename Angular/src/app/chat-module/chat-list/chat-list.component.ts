@@ -9,6 +9,7 @@ export class ChatListComponent implements OnInit {
   @Input() isChat = false;
   @Output() close = new EventEmitter();
   isDialog = false;
+  title = '';
   data = [
     {
       title: 'Ant Design Title 1'
@@ -35,8 +36,9 @@ export class ChatListComponent implements OnInit {
     this.close.emit(false);
   }
 
-  getChat() {
+  getChat(t) {
     console.log('getChat');
+    this.title = t;
     this.isDialog = true;
   }
 

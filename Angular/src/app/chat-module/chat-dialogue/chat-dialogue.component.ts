@@ -18,6 +18,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     contract: 20,
     description: 40,
   };
+  @Input() title = '';
   isOpenDialog = true;
   value = 100;
   contractNumber = 0;
@@ -75,14 +76,15 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
             this.contractNumber = parseInt(data.amount, 10);
           }
           break;
+        case 'FAIL_NEGOTIATE':
+          if (data.negociationID === this.negotiationID) {
+            this.isOpenDialog = false;
+            alert('La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort');
+
+          }
       }
     });
 
-  }
-
-  closeChat() {
-    this.isOpenDialog = false;
-    this.sendCloseDialog.emit(false);
   }
 
   send() {

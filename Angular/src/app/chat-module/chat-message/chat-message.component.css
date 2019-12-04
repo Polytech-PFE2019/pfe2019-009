@@ -20,7 +20,6 @@
   width: 200px;
   min-height: 50px;
   background-color: #d9edf7;
-  /*position: absolute;*/
-  /*right: 0;*/
-  /*top: 45px;*/
+  border-radius: 10px;
+  margin: 5px;
 }

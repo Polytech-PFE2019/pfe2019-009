@@ -1,4 +1,5 @@
 <div class="container" *ngIf="isOpenDialog">
+  <countdown [config]="{leftTime: data.time}"></countdown>
   <div class="header">
     <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
     <h5>with someone</h5>
@@ -23,11 +24,7 @@
   <div class="senderBox">
     <div class="contract-container">
       <p>Un contrat:
-        <input nz-input type="number"
-               placeholder="0"
-               [max]="1000"
-               [min]="0"
-               [(ngModel)]="contract">
+        <input nz-input type="number" placeholder="0" [max]="1000" [min]="0" [(ngModel)]="contract">
         <b> K</b>
         <button (click)="sendContract()">Proposer un contrat</button>
       </p>

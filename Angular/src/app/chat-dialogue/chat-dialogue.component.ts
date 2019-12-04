@@ -19,8 +19,6 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     description: 40,
   };
   @Input() title ='';
-  @Input() isOpenDialog = false;
-  @Output() sendCloseDialog = new EventEmitter();
   isOpenDialog = true;
   value = 100;
   contractNumber = 0;

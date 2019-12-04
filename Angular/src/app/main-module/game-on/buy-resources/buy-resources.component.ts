@@ -42,9 +42,9 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
       this.cost = data;
     });
 
-    this.gameService.messages.subscribe(data => {
-      console.log(data);
-    });
+    // this.gameService.messages.subscribe(data => {
+    //   console.log(data);
+    // });
 
     // this.subGameId = this.subscription.gameID$.subscribe(id => {
     //   this.gameID = id;

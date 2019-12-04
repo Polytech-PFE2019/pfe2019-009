@@ -11,7 +11,9 @@ import {ActionSet} from '../../model/action';
 @Injectable()
 export class GameOnService {
 
-  public messages: Subject<SocketRequest>;
+  public messages = new Subject<SocketRequest>();
+  reponses = new Subject<any>();
+  reponses$ = this.reponses.asObservable();
   test: Activity;
   currentStep: Activity[] = [];
   currentActivityID: any;
@@ -115,6 +117,7 @@ export class GameOnService {
             console.log(this.currentStep[currentId - 1].history);
           }
           console.log(data);
+          this.reponses.next(data);
           return data;
         })) as Subject<SocketRequest>;
   }

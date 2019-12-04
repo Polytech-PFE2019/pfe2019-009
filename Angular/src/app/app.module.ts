@@ -87,7 +87,7 @@ registerLocaleData(fr);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }, Globals, LobbyService, WebsocketService, GameOnService],
   bootstrap: [AppComponent]

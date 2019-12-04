@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameOnService} from '../service/gameOnService/game-on.service';
-import {DialogueMessage} from './dialogueMessage';
-import {SocketRequest} from 'src/Request';
-import {SubscriptionService} from "../service/subscriptionSerivce/subscription.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { GameOnService } from '../service/gameOnService/game-on.service';
+import { DialogueMessage } from './dialogueMessage';
+import { SocketRequest } from 'src/Request';
+import { SubscriptionService } from "../service/subscriptionSerivce/subscription.service";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -27,7 +27,7 @@ export class ChatDialogueComponent implements OnInit {
 
   messages: DialogueMessage[] = []
 
-  constructor(private gameService: GameOnService,private subsciption: SubscriptionService) {
+  constructor(private gameService: GameOnService, private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -37,17 +37,21 @@ export class ChatDialogueComponent implements OnInit {
       switch (data.response) {
         case 'MSG_NEGOTIATE':
           let isSender = false;
-          if (data.USERID === this.userID) {
+          if (data.userID === this.userID) {
             isSender = true;
           }
           console.log(this.userID);
           const message = {
             message: data.message,
-            userID: data.USERID,
+            userID: data.userID,
             isSender: isSender
           } as DialogueMessage;
           console.log(message);
           this.messages.push(message);
+          break;
+        case 'PRICE_NEGOTIATE':
+          this.contractNumber = parseInt(data.amount);
+          break;
       }
     });
 
@@ -70,8 +74,18 @@ export class ChatDialogueComponent implements OnInit {
   testAddReceiver() {
   }
 
-  sendContract() {
-    this.contractNumber = this.value;
+  sendContract(amount) {
+    (<HTMLInputElement>document.getElementById("contract")).value = "";
+    const request = {
+      request: 'PRICE_NEGOTIATE',
+      amount: amount,
+      userID: this.gameService.userID,
+      gameID: this.gameService.gameID,
+      negotiationID: "id"
+    } as SocketRequest;
+
+    this.gameService.messages.next(request);
+
   }
 
   sendMessage(message: string) {
@@ -84,6 +98,8 @@ export class ChatDialogueComponent implements OnInit {
       negotiationID: message
     } as SocketRequest;
 
-    this.gameService.messages.next(request)
+    this.gameService.messages.next(request);
+
+    (<HTMLInputElement>document.getElementById("msg")).value = "";
   }
 }

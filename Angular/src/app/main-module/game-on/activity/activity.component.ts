@@ -6,13 +6,13 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {BuyResourceService} from '../../../service/resources/buy-resource.service';
-import {Subscription} from 'rxjs';
-import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
-import {GameOnService} from '../../../service/gameOnService/game-on.service';
-import {SocketRequest} from '../../../../Request';
-import {LobbyService} from '../../../service/lobbyService/lobby.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { BuyResourceService } from '../../../service/resources/buy-resource.service';
+import { Subscription } from 'rxjs';
+import { SubscriptionService } from '../../../service/subscriptionSerivce/subscription.service';
+import { GameOnService } from '../../../service/gameOnService/game-on.service';
+import { SocketRequest } from '../../../../Request';
+import { LobbyService } from '../../../service/lobbyService/lobby.service';
 
 @Component({
   selector: 'app-activity',
@@ -47,25 +47,45 @@ export class ActivityComponent implements OnInit, OnDestroy {
   roles: any[];
   subCurrentActivity: Subscription;
   myDataSource: any[] = [];
+  hasNegotiation = false;
+  negotiationIDs: string[] = [];
 
   constructor(private nzMessageService: NzMessageService,
-              private subscription: SubscriptionService,
-              private gameSerivce: GameOnService,
-              private lobbyService: LobbyService,
-              private changeDetector: ChangeDetectorRef,
-              private resourceService: BuyResourceService) {
+    private subscription: SubscriptionService,
+    private gameService: GameOnService,
+    private lobbyService: LobbyService,
+    private changeDetector: ChangeDetectorRef,
+    private resourceService: BuyResourceService) {
   }
 
   ngOnInit() {
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
-      this.currentActivity = data;
-      this.myDataSource = [];
-      console.log(this.currentActivity);
-      if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
-        const tmp = (this.currentActivity.payingActions.filter(next =>
-          next.roleID === this.myInformation.id)[0]);
-        this.myDataSource.push(tmp);
-        console.log(this.myDataSource);
+
+      switch (data.response) {
+        case "LAUNCH_GAME":
+
+          this.currentActivity = data;
+          this.myDataSource = [];
+          console.log(this.currentActivity);
+
+          this.currentActivity.negotiationActions.forEach(nego => {
+            if (nego.giverID == this.myInformation.id) {
+              this.hasNegotiation = true;
+              this.negotiationIDs.push(nego.negotiationID);
+            }
+          });
+
+          if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
+            const tmp = (this.currentActivity.payingActions.filter(next =>
+              next.roleID === this.myInformation.id)[0]);
+            this.myDataSource.push(tmp);
+            console.log(this.myDataSource);
+          }
+          break;
+        case "START_NEGOTIATE":
+          //MAKE POP UP THE NEGOTIATION COMPONENT
+          //Input the negotiationID in it
+          break;
       }
     });
 
@@ -116,7 +136,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
       payments: payment
     };
     console.log(req);
-    this.gameSerivce.messages.next(req as SocketRequest);
+    this.gameService.messages.next(req as SocketRequest);
     this.request = {
       RISKS: null,
       DAYS: null,
@@ -165,6 +185,20 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.subGameId.unsubscribe();
     this.subUserId.unsubscribe();
     this.subCurrentActivity.unsubscribe();
+  }
+
+  launchNegotiation() {
+
+    this.negotiationIDs.forEach(negoID => {
+      const request = {
+        request: 'START_NEGOTIATE',
+        negotiationID: negoID,
+        gameID: this.gameID
+      } as SocketRequest;
+
+      this.gameService.messages.next(request);
+    })
+
   }
 
 }

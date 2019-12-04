@@ -15,7 +15,7 @@
       <div class="sender" *ngIf="message.isSender">
         <app-chat-message [message]="message.message"></app-chat-message>
       </div>
-      <div class="receiver" *ngIf="!message.isSender">
+      <div class="receiver" *ngIf="message.isSender">
         <app-chat-message [message]="message.message"></app-chat-message>
       </div>
     </div>
@@ -23,19 +23,24 @@
 
   <div class="senderBox">
     <div class="contract-container">
-      <p>Un contrat:
-        <nz-input-number [(ngModel)]="value" [nzMin]="0" [nzMax]="1000" [nzStep]="1">
-        </nz-input-number>
-        <b> K</b>
-      </p>
-      <button (click)="sendContract()">Proposer un contrat</button>
+      <form>
+        <p>Un contrat:
+          <input type="number" id="contract" min="0" max="1000" step="1" placeholder=0 maxlength="4">
+          <b> K</b>
+          <button type="submit" (click)="sendContract()">Proposer un contrat</button>
+        </p>
+      </form>
+
     </div>
     <div class="desc-container">
-      <input #message rows="4" nz-input [(ngModel)]="inputValue" placeholder="..." />
-      <button id="sendBnt" nz-button (click)="sendMessage(message.value)" nzShape="circle">
-        <i class="iconfont icon-send">
-        </i>
-      </button>
+      <form>
+        <input #message id="msg" rows="4" nz-input placeholder="...">
+        <button type="submit" id="sendBnt" nz-button (click)="sendMessage(message.value)" nzShape="circle">
+          <i class="iconfont icon-send">
+          </i>
+        </button>
+      </form>
+
     </div>
   </div>
 </div>

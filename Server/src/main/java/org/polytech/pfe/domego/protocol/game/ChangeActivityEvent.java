@@ -20,6 +20,7 @@ public class ChangeActivityEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
+        game.goToTheNextActivity();
         logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
         game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
     }

@@ -40,7 +40,6 @@ public class DrawRiskCardEvent implements EventProtocol {
             if(currentActivity.getId() == game.getActivities().size())
                 new FinishGameEvent(game).processEvent();
             else{
-                game.goToTheNextActivity();
                 new ChangeActivityEvent(game).processEvent();
             }
         }

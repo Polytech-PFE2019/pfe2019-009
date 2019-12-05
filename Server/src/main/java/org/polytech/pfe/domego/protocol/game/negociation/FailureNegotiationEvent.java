@@ -4,8 +4,11 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.protocol.EventProtocol;
+import org.polytech.pfe.domego.protocol.game.DrawRiskCardEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
 import java.util.logging.Level;
@@ -34,6 +37,14 @@ public class FailureNegotiationEvent implements EventProtocol {
             logger.log(Level.INFO,
                     "FailureNegociationEvent : In game {0} the negotiation beetween {1} and {2} failed. The amount of the contract drew randomly is {3}.",
                     new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  negotiation.getAmountNegotiated()});
+
+            Activity currentActivity = game.getCurrentActivity();
+            if (currentActivity.isActivityDone()) {
+                if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
+                    currentActivity.doneActivity();
+                    new DrawRiskCardEvent(game).processEvent();
+                }
+            }
     }
 
     private void sendFailureResponseToUsers() {

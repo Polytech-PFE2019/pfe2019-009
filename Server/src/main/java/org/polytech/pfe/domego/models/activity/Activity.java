@@ -39,6 +39,14 @@ public abstract class Activity implements BuyingAction {
                 .allMatch(payResources -> payResources.hasPaid());
     }
 
+    public boolean allNegotiationsAreFinished(){
+        return true;
+    }
+
+    public boolean isActivityDone(){
+        return allNegotiationsAreFinished() && allNegotiationsAreFinished();
+    }
+
 
     public boolean payResources(Player player, List<Payment> payments){
         int roleID = player.getRole().getId();

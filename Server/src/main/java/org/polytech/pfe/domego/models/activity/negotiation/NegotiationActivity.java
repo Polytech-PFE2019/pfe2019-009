@@ -2,6 +2,7 @@ package org.polytech.pfe.domego.models.activity.negotiation;
 
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.PayResourceType;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.List;
@@ -38,6 +39,15 @@ public class NegotiationActivity extends Activity implements NegotiationAction {
     @Override
     public List<Negotiation> getNegotiationList() {
         return this.negotiationList;
+    }
+
+
+    @Override
+    public boolean allNegotiationsAreFinished(){
+        return negotiationList.stream()
+                .allMatch(negotiation -> negotiation.getNegotiationStatus().equals(NegotiationStatus.FAILURE)
+                        ||  negotiation.getNegotiationStatus().equals(NegotiationStatus.SUCCESS));
+
     }
 
 }

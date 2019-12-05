@@ -6,4 +6,5 @@ public interface NegotiationAction {
 
     Optional<Negotiation> getNegotiationByID(String id);
     void checkForMultiplicityForOneRole();
+    boolean allNegotiationsAreFinished();
 }

@@ -2,8 +2,11 @@ package org.polytech.pfe.domego.protocol.game.negociation;
 
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
+import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.protocol.EventProtocol;
+import org.polytech.pfe.domego.protocol.game.DrawRiskCardEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.springframework.web.socket.WebSocketSession;
@@ -41,6 +44,14 @@ public class EndNegotiationEvent extends NegotiationEvent implements EventProtoc
                 new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  negotiation.getAmountNegotiated()});
 
         sendResponseToUsers(negotiation);
+
+        Activity currentActivity = game.getCurrentActivity();
+        if (currentActivity.isActivityDone()) {
+            if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
+                currentActivity.doneActivity();
+                new DrawRiskCardEvent(game).processEvent();
+            }
+        }
 
 
     }

@@ -21,11 +21,11 @@ public class Game {
     private Project project;
 
 
-    public Game(String id, List<Player> players, List<Activity> activities) {
+    public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted, int numberOfRisksDrawnWanted) {
         this.id = id;
         this.players = players;
         this.activities = activities;
-        this.project = new Project();
+        this.project = new Project(costWanted, numberOfDaysWanted, numberOfRisksDrawnWanted);
         this.currentActivity = 0;
     }
 
@@ -63,11 +63,23 @@ public class Game {
 
     private void updateProject(){
         Activity activity = this.getCurrentActivity();
-        this.project.addDelay(activity.getNumberOfDays());
+        this.project.addDays(activity.getNumberOfDays());
         int totalAmount = activity.getPayResourcesList().stream().mapToInt(PayResources::getAmountPaid).sum();
         this.project.addCost(totalAmount);
-        int totalFailure = activity.getRiskCardList().size();
-        this.project.addFailure(totalFailure);
+        int risks = activity.getRiskCardList().size();
+        this.project.addRisks(risks);
+    }
+
+    public int getDelayDelta(){
+        return this.project.getDelayDelta();
+    }
+
+    public int getBudgetDelta(){
+        return this.project.getBudgetDelta();
+    }
+
+    public int getRisksDelta(){
+        return this.project.getRisksDelta();
     }
 
     public List<Player> getPlayers() {
@@ -97,4 +109,6 @@ public class Game {
     public Activity getCurrentActivity(){
         return activities.get(currentActivity);
     }
+
+
 }

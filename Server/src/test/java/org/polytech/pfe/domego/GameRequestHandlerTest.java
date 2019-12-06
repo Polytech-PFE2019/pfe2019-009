@@ -71,9 +71,9 @@ class GameRequestHandlerTest {
 
         when(sessionPlayerTest.isOpen()).thenReturn(true);
 
+        InitialGameGenerator initialGameGenerator = new InitialGameGenerator();
+        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(), initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted());
 
-        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(),new InitialGameGenerator().getAllActivitiesOfTheGame()
-        );
         GameInstance gameInstance = GameInstance.getInstance();
         gameInstance.addGame(game);
 
@@ -236,27 +236,32 @@ class GameRequestHandlerTest {
             player.addMoney(30000);
             player.addResources(10);
 
+            Objective objective = new Objective(ObjectiveType.DAYS,1,false);
+            List<Objective> objectiveList = new ArrayList<>();
+            objectiveList.add(objective);
+
             Role role;
             switch(i){
                 case 0 :
-                    role = new Role(RoleType.MAITRE_D_OUVRAGE.getId(), RoleType.MAITRE_D_OUVRAGE, "description",30000,"special");
+                    role = new Role(RoleType.MAITRE_D_OUVRAGE.getId(), RoleType.MAITRE_D_OUVRAGE, "description",30000,"special",objectiveList);
                     break;
                 case 1 :
-                    role = new Role(RoleType.MAITRE_D_OEUVRE.getId(), RoleType.MAITRE_D_OEUVRE, "description",30000,"special");
+                    role = new Role(RoleType.MAITRE_D_OEUVRE.getId(), RoleType.MAITRE_D_OEUVRE, "description",30000,"special", objectiveList);
                     break;
                 case 2 :
-                    role = new Role(RoleType.BUREAU_D_ETUDE.getId(), RoleType.BUREAU_D_ETUDE, "description",30000,"special");
+                    role = new Role(RoleType.BUREAU_D_ETUDE.getId(), RoleType.BUREAU_D_ETUDE, "description",30000,"special", objectiveList);
                     break;
                 case 3 :
-                    role = new Role(RoleType.BUREAU_DE_CONTROLE.getId(), RoleType.BUREAU_DE_CONTROLE, "description",30000,"special");
+                    role = new Role(RoleType.BUREAU_DE_CONTROLE.getId(), RoleType.BUREAU_DE_CONTROLE, "description",30000,"special", objectiveList);
                     break;
                 case 4 :
-                    role = new Role(RoleType.ENTREPRISE_GROS_OEUVRE.getId(), RoleType.ENTREPRISE_GROS_OEUVRE, "description",30000,"special");
+                    role = new Role(RoleType.ENTREPRISE_GROS_OEUVRE.getId(), RoleType.ENTREPRISE_GROS_OEUVRE, "description",30000,"special", objectiveList);
                     break;
                 case 5 :
-                    role = new Role(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(), RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE, "description",30000,"special");
+                    role = new Role(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(), RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE, "description",30000,"special", objectiveList);
                     break;
                 default:
+                    System.out.println("TROLL ICI");
                     role = new Role();
             }
             player.setRole(role);

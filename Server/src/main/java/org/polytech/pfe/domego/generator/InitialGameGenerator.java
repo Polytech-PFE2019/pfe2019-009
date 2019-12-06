@@ -23,6 +23,12 @@ public class InitialGameGenerator implements GameGenerator {
 
     private static final int rateResourceWhenBuyingActivity = 1;
 
+    private final int numberOfDaysWanted = 380;
+    private final int costWanted = 135;
+    private final int numberOfRisksDrawnWanted = 20;
+
+
+
     private List<Activity> activities;
 
     public InitialGameGenerator() {
@@ -600,4 +606,15 @@ public class InitialGameGenerator implements GameGenerator {
     }
 
 
+    public int getNumberOfDaysWanted() {
+        return numberOfDaysWanted;
+    }
+
+    public int getCostWanted() {
+        return costWanted;
+    }
+
+    public int getNumberOfRisksDrawnWanted() {
+        return numberOfRisksDrawnWanted;
+    }
 }

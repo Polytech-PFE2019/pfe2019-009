@@ -44,7 +44,7 @@ public abstract class Activity implements BuyingAction {
     }
 
     public boolean isActivityDone(){
-        return allNegotiationsAreFinished() && allNegotiationsAreFinished();
+        return allMandatoryResourcesHaveBeenPayed() && allNegotiationsAreFinished();
     }
 
 

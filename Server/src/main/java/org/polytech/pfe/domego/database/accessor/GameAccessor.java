@@ -35,8 +35,9 @@ public class GameAccessor {
         for (Player player : room.getPlayerList()) {
             players.add(new Player(player));
         }
-        
-        Game game = new Game(room.getID(), players, new InitialGameGenerator().getAllActivitiesOfTheGame());
+
+        InitialGameGenerator initialGameGenerator = new InitialGameGenerator();
+        Game game = new Game(room.getID(), players, initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted());
         gameInstance.addGame(game);
         return game;
     }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Objects;
 
 @Document(collection = "Roles")
@@ -22,7 +23,7 @@ public class Role {
     @JsonIgnore
     private String special;
 
-
+    private List<Objective> objectiveList;
 
     public Role() {
         this.id = RoleType.NON_DEFINI.getId();
@@ -32,12 +33,13 @@ public class Role {
         this.special = "";
     }
 
-    public Role(int id, RoleType name, String description, int budget, String special) {
+    public Role(int id, RoleType name, String description, int budget, String special, List<Objective> objectiveList) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.budget = budget;
         this.special = special;
+        this.objectiveList = objectiveList;
     }
 
     public int getId() {
@@ -92,5 +94,9 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public List<Objective> getObjectiveList() {
+        return objectiveList;
     }
 }

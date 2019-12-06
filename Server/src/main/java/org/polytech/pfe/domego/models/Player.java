@@ -3,6 +3,8 @@ package org.polytech.pfe.domego.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Player {
@@ -13,23 +15,89 @@ public class Player {
     private Role role;
     private int resourcesAmount;
     private int money;
+    private List<Objective> objectiveList;
+    private int victoryPoints;
 
-    public Player(WebSocketSession session, String name ){
+    public Player(WebSocketSession session, String name){
         this.session = session;
         this.id = UUID.randomUUID().toString();
         this.role = new Role();
         this.name = name;
         this.resourcesAmount = 0;
         this.money = 0;
+        this.victoryPoints = 0;
     }
 
     public Player(Player player) {
         this.id = player.id;
         this.role = player.role;
+        this.objectiveList = player.objectiveList;
         this.name = player.name;
         this.resourcesAmount = player.resourcesAmount;
         this.money = player.money;
         this.session = null;
+    }
+
+    public boolean isObjectiveValidated(ObjectiveType objectiveType, int delay, int risks, int budget){
+        Optional<Objective> objectiveOptional = this.objectiveList.stream().filter(obj -> obj.getObjectiveType().equals(objectiveType)).findFirst();
+        if(objectiveOptional.isEmpty()){
+            return false;
+        }
+        Objective objective = objectiveOptional.get();
+
+        switch (objectiveType){
+            case MONEY:
+                return objective.isValid(calculateBenefit());
+            case DAYS:
+                return objective.isValid(delay);
+            case RISK:
+                return objective.isValid(risks);
+            case DAYS_AND_BUDGET:
+                return objective.isValid(delay,budget);
+            default: return false;
+        }
+    }
+
+    public void calculateObjectivesVictoryPoints(int delay, int risks, int budget){
+        objectiveList.forEach(objective -> {
+            switch (objective.getObjectiveType()) {
+                case MONEY:
+                    objective.calculateVictoryPoints(calculateBenefit());
+                    break;
+                case DAYS:
+                    objective.calculateVictoryPoints(delay);
+                    break;
+                case RISK:
+                    objective.calculateVictoryPoints(risks);
+                    break;
+                case BUDGET:
+                    objective.calculateVictoryPoints(budget);
+                    break;
+                case DAYS_AND_BUDGET:
+                    objective.calculateVictoryPoints(delay,budget);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+    }
+
+    public void substractVictoryPoints(int amount){
+        victoryPoints -= amount;
+    }
+
+    public void addObjectivesVictoryPoints(){
+        objectiveList.forEach(objective -> victoryPoints += objective.getVictoryPoints());
+    }
+
+
+
+    public int calculateBenefit(){
+        int initialMoney = this.role.getBudget();
+
+        return initialMoney - this.money;
     }
 
     public String getName() {
@@ -43,6 +111,7 @@ public class Player {
     public void setRole(Role role){
         this.role = role;
         this.money = role.getBudget();
+        this.objectiveList = role.getObjectiveList();
     }
 
     public Role getRole(){
@@ -85,6 +154,6 @@ public class Player {
 
 
     public int getVictoryPoints() {
-        return 0;
+        return victoryPoints;
     }
 }

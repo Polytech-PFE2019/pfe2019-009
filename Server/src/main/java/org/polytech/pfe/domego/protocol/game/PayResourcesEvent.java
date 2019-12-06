@@ -86,11 +86,14 @@ public class PayResourcesEvent implements EventProtocol {
 
         logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
         new UpdatePaymentGameEvent(game, player).processEvent();
+
         if (currentActivity.isActivityDone()) {
+            // if the activity status is not done yet it means the risk cards hadn't been drawn
             if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
                 currentActivity.doneActivity();
                 new DrawRiskCardEvent(game).processEvent();
             }
+            // otherwise it means the payment is coming from risk cards and we have to finish the activity.
             else {
                 currentActivity.finishActivity();
                 if(currentActivity.getId() == game.getActivities().size())

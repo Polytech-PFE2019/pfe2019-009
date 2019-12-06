@@ -75,7 +75,6 @@ public class ChooseRoleEvent implements EventProtocol {
             return;
         }
 
-
         player.setRole(role);
 
 

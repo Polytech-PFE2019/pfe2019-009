@@ -43,4 +43,7 @@ h1{
 /*  10% { transform: translate(10px, 0px) rotate(0deg); }*/
 /*}*/
 
+.myContainer{
+  display: flex;
+}
 

@@ -1,18 +1,20 @@
-<div>
-  <button [disabled]=riskUnavailable
-          style="width: 160px; border: white; background-color: white"
-          (click) = "drawCard()">
-    <nz-card *ngIf="cardNb === 0"
-             style="background: black">
-      <div class="cardContainer">
-        <h2 style="color: white;margin: 5px">
-          Risques
-        </h2>
-        <div class="circle">{{step}}</div>
-        <div style="color: white">
-        </div>
+<div [@.disabled] = 'isDiabled'>
+  <nz-card
+    *ngIf="isVanished"
+    [@flipOutX] = "{ value: flipOutX, params: { timing: 1, delay: myTiming} }"
+    style="background: black">
+    <div class="cardContainer">
+      <h2 style="color: white;margin: 5px">
+        Risques
+      </h2>
+      <div class="circle">1</div>
+      <div style="color: white">
       </div>
-    </nz-card>
-    <app-risk-container *ngIf="cardNb !== 0" [risk] = "test"></app-risk-container>
-  </button>
+    </div>
+  </nz-card>
+  <nz-card *ngIf="!isVanished">
+    <div>
+      <h1>Test</h1>
+    </div>
+  </nz-card>
 </div>

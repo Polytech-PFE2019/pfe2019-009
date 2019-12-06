@@ -9,6 +9,7 @@ import org.polytech.pfe.domego.protocol.room.key.RoomRequestKey;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CreateGameEvent implements EventProtocol {
@@ -37,7 +38,9 @@ public class CreateGameEvent implements EventProtocol {
         newRoom.addPlayer(player);
         if(new RoomAccessor().addRoom(newRoom)){
             new UpdateRoomEvent(newRoom).processEvent();
-            LOGGER.info("CreateGameEvent : " +username + " has created a Room named : " + newRoom.getRoomName() + " with ID : " + newRoom.getID());
+            LOGGER.log(Level.INFO,
+                    "CreateGameEvent : {0} has created a Room named : {1} with ID : {2}",
+                    new Object[]{username, newRoom.getRoomName(), newRoom.getID()});
 
         }
         else{

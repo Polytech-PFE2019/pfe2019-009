@@ -15,6 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StartGameEvent implements EventProtocol {
@@ -76,13 +77,15 @@ public class StartGameEvent implements EventProtocol {
         Game game = gameAccessor.createNewGameFromRoom(room);
         String response = createStartGameResponse(game).toString();
 
-        room.getPlayerList().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
+        room.getPlayerList().parallelStream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
 
-        logger.info("StartGameEvent: Player name : " + player.getName() + " start the game for room with ID" + room.getID());
+        logger.log(Level.INFO,
+                "StartGameEvent: Player name : {0} start the game for room with ID {1}",
+                new Object[]{player.getName(), room.getID()});
 
         roomAccessor.removeRoom(room);
 
-        logger.info("StartGameEvent : Delete room : " + room.getID());
+        logger.log(Level.INFO,"StartGameEvent : Delete room : {0}",  room.getID());
     }
 
     private JsonObject createStartGameResponse(Game game){

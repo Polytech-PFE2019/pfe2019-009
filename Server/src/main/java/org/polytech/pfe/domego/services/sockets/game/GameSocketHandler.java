@@ -1,7 +1,8 @@
 package org.polytech.pfe.domego.services.sockets.game;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.exceptions.InvalidRequestException;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,26 +27,21 @@ public class GameSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) {
         Map value = new Gson().fromJson(message.getPayload(), Map.class);
 
         try {
             requestHandler.handleRequest(session,value);
-        }catch(Exception e){
+        }catch(InvalidRequestException e){
             loggerGlobal.warning("GameSocketHandler : Impossible to recognize an event : " + message.getPayload());
-
-            JsonObject response = new JsonObject();
-            response.addProperty("request", "OK");
-            response.addProperty("message", "bad value");
-
-            session.sendMessage(new TextMessage(response.toString()));
+            new Messenger(session).sendErrorCuzMissingArgument("REQUEST");
         }
 
 
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         logger.info("GameSocketHandler : New user on socket with ip : " + session.getRemoteAddress().toString());
     }
 

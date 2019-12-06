@@ -1,15 +1,18 @@
 package org.polytech.pfe.domego.components.business;
 
-import org.polytech.pfe.domego.models.*;
+import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.BuyResources;
-import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
-import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Game {
+
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private String id;
     private List<Player> players;
@@ -18,11 +21,11 @@ public class Game {
     private Project project;
 
 
-    public Game(String id, List<Player> players, List<Activity> activities) {
+    public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted, int numberOfRisksDrawnWanted) {
         this.id = id;
         this.players = players;
         this.activities = activities;
-        this.project = new Project();
+        this.project = new Project(costWanted, numberOfDaysWanted, numberOfRisksDrawnWanted);
         this.currentActivity = 0;
     }
 
@@ -42,25 +45,41 @@ public class Game {
         this.id = id;
     }
 
-    public boolean payForCurrentActivity(Player player, List<Payment> payments){
-        Activity activity = this.getCurrentActivity();
-        int roleID = player.getRole().getId();
-        int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
-        if(totalAmount > player.getResourcesAmount())
-            return false;
 
-        for (Payment payment: payments) {
-            if (payment.getAmount() > player.getResourcesAmount()) {
-                return false;
-            }
-            if(!activity.payResources(roleID,payment.getType(), payment.getAmount())){
-                return false;
-            }
+    public void goToTheNextActivity(){
+        this.updateProject();
+        this.changeActivity();
+    }
 
+    private void changeActivity() {
+        if (currentActivity + 1 != activities.size()) {
+            Activity oldActivity = this.getCurrentActivity();
+            oldActivity.finishActivity();
+            oldActivity.getPayResourcesList().forEach(payResources -> payResources.setHasPaid(true));
+            currentActivity++;
+            this.getCurrentActivity().startActivity();
         }
+    }
 
-        player.substractResources(totalAmount);
-        return true;
+    private void updateProject(){
+        Activity activity = this.getCurrentActivity();
+        this.project.addDays(activity.getNumberOfDays());
+        int totalAmount = activity.getPayResourcesList().stream().mapToInt(PayResources::getAmountPaid).sum();
+        this.project.addCost(totalAmount);
+        int risks = activity.getRiskCardList().size();
+        this.project.addRisks(risks);
+    }
+
+    public int getDelayDelta(){
+        return this.project.getDelayDelta();
+    }
+
+    public int getBudgetDelta(){
+        return this.project.getBudgetDelta();
+    }
+
+    public int getRisksDelta(){
+        return this.project.getRisksDelta();
     }
 
     public List<Player> getPlayers() {
@@ -79,10 +98,6 @@ public class Game {
         this.activities = activities;
     }
 
-    public void setCurrentActivity(int currentActivity) {
-        this.currentActivity = currentActivity;
-    }
-
     public List<Player> getPlayersPresent(){
         return players.stream().filter(player -> player.getSession() != null).collect(Collectors.toList());
     }
@@ -94,4 +109,6 @@ public class Game {
     public Activity getCurrentActivity(){
         return activities.get(currentActivity);
     }
+
+
 }

@@ -42,8 +42,7 @@ public class RoleAccessorTest {
 
     @Test
     void checkRoleById() {
-        Optional<Role> role = roleAccessor.getSpecificRoleById(1);
-        System.out.println(role.get().getBudget());
+        Optional<Role> role = roleAccessor.getSpecificRoleById(RoleType.MAITRE_D_OUVRAGE.getId());
         RoleType type = RoleType.MAITRE_D_OUVRAGE;
         Assertions.assertTrue(role.isPresent());
 

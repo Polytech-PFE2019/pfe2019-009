@@ -14,6 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -41,7 +42,7 @@ public class BuyResourceEvent implements EventProtocol {
         }
 
         Optional<Game> optionalGame = gameInstance.getSpecificGameByID(request.get(GameRequestKey.GAMEID.getKey()));
-        if(!optionalGame.isPresent()){
+        if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
         }
@@ -49,7 +50,7 @@ public class BuyResourceEvent implements EventProtocol {
         Game game = optionalGame.get();
         Optional<Player> optionalPlayer = game.getPlayers().stream().filter(player -> player.getID().equals(request.get(GameRequestKey.USERID.getKey()))).findAny();
 
-        if (!optionalPlayer.isPresent()){
+        if (optionalPlayer.isEmpty()){
             this.messenger.sendError("USER NOT FOUND");
             return;
         }
@@ -71,10 +72,11 @@ public class BuyResourceEvent implements EventProtocol {
             this.messenger.sendError("USER HAS NOT ENOUGH MONEY");
             return;
         }
-        activity.buyResources(roleID,numberOfResource);
-        player.addResouces(numberOfResource);
-        player.substractMoney(numberOfResource * currentPriceOfResource);
-        logger.info("BuyResourceEvent : In game " + game.getId() + " the player named : " + player.getName() + " has buy " + numberOfResource + " resources.");
+        activity.buyResources(player,numberOfResource);
+
+        logger.log(Level.INFO,
+                "BuyResourceEvent : In game  {0} the player named : {1} has buy {2} resources. He has now : {3} resources and : {4} money.",
+                new Object[]{game.getId(), player.getName(), numberOfResource, player.getResourcesAmount(), player.getMoney()});
         this.sendResponseToUser(player);
     }
 

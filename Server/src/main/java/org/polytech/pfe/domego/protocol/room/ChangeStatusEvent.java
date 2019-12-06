@@ -12,6 +12,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChangeStatusEvent implements EventProtocol {
@@ -54,7 +55,9 @@ public class ChangeStatusEvent implements EventProtocol {
         boolean state = room.changeStateOfPlayer(player);
 
 
-        logger.info("ChangeStatusEvent : In game : " + room.getID() + " the player name : " + player.getName() + " has change status, new status : " + (state ? "Ready" : "Not Ready"));
+        logger.log(Level.INFO,
+                "ChangeStatusEvent : In game : {0} the player name : {1} has change status, new status : {2}",
+                new Object[]{room.getID(),player.getName(), (state ? "Ready" : "Not Ready")});
         this.messenger.sendSpecificMessageToAUser(generateResponse(player,state).toString());
 
         new UpdateRoomEvent(room).processEvent();

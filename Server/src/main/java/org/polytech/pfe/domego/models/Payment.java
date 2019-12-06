@@ -1,5 +1,7 @@
 package org.polytech.pfe.domego.models;
 
+import org.polytech.pfe.domego.models.activity.PayResourceType;
+
 public class Payment {
 
     private int amount;

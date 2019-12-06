@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
@@ -14,7 +16,7 @@ class PlayerTest {
         WebSocketSession session = mock(WebSocketSession.class) ;
         Player player = new Player(session, "name");
 
-        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special");
+        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special", new ArrayList());
         player.setRole(role);
 
         JsonObject response = new JsonObject();
@@ -36,7 +38,7 @@ class PlayerTest {
         WebSocketSession session = mock(WebSocketSession.class) ;
         Player player = new Player(session, "name");
 
-        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special");
+        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special", new ArrayList<>());
 
         assertEquals(RoleType.NON_DEFINI, player.getRole().getName());
         player.setRole(role);

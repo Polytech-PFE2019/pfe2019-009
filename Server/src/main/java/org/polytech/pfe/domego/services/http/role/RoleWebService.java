@@ -5,9 +5,8 @@ import org.polytech.pfe.domego.exceptions.role.RoleNotFoundException;
 import org.polytech.pfe.domego.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,13 +23,13 @@ public class RoleWebService implements RoleService{
     }
 
     @Override
-    @RequestMapping(value = "/Roles", method = RequestMethod.GET)
+    @GetMapping(value = "/Roles")
     public ResponseEntity<List<Role>> getAllRoles() {
         return ResponseEntity.ok(this.accessor.getAllRoles());
     }
 
     @Override
-    @RequestMapping(value = "/Role/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/Role/{id}")
     public ResponseEntity<Role> getRoleById(@PathVariable int id) {
         Optional<Role> role = this.accessor.getSpecificRoleById(id);
         if(role.isPresent())

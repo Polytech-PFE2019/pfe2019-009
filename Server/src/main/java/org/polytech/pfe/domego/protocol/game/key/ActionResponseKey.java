@@ -11,8 +11,10 @@ public enum ActionResponseKey {
     RATE("rate"),
     RESOURCES_GIVEN("resourcesGiven"),
     MONEY_PAID("moneyPaid"),
-    ACTIONS("actions");
-
+    ACTIONS("actions"),
+    GIVERID("giverID"),
+    RECEIVERID("receiverID"),
+    NEGOTIATIONID("negotiationID");
 
     public final String key;
 

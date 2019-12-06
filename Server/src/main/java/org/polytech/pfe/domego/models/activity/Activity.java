@@ -1,80 +1,145 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.polytech.pfe.domego.models.PayResourceType;
-import org.polytech.pfe.domego.models.PayResources;
+import org.polytech.pfe.domego.components.game.RiskCard;
+import org.polytech.pfe.domego.models.Payment;
+import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.activity.buying.BuyResources;
+import org.polytech.pfe.domego.models.activity.buying.BuyingAction;
+import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
+import org.polytech.pfe.domego.models.activity.pay.PayContract;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class Activity {
+public abstract class Activity implements BuyingAction {
     private int id;
-    private int numbersOfDays;
+    private int numberOfDays;
     private String title;
     private String description;
     private List<PayResources> payResourcesList;
-    private ActivityStatus activityStatus = ActivityStatus.NOT_STARTED;
-    //Map to know easily if the mandatory has been paid by the roles
-    private Map<Integer, Boolean> roleHasPaid;
+    private ActivityStatus activityStatus;
+    private List<RiskCard> riskCardList;
 
-    protected List<BuyResources> buyResourcesList;
-
-    Activity(int id, int numbersOfDays, String title ,String description, List<PayResources> payResourcesList){
+    public Activity(int id, int numberOfDays, String title , String description, List<PayResources> payResourcesList, List<RiskCard> riskCards){
         this.id = id;
-        this.numbersOfDays = numbersOfDays;
+        this.numberOfDays = numberOfDays;
         this.title = title;
         this.description = description;
         this.payResourcesList = payResourcesList;
-        this.buyResourcesList = new ArrayList<>();
-        List<PayResources> mandatoryPayResourcesList = payResourcesList.stream().filter(payResources ->
-                payResources.getPayResourceType().equals(PayResourceType.MANDATORY)).collect(Collectors.toList());
-
-        roleHasPaid = new HashMap<>();
-        mandatoryPayResourcesList.forEach(payResources -> roleHasPaid.put(payResources.getRoleID(),false));
+        this.activityStatus = ActivityStatus.NOT_STARTED;
+        this.riskCardList = riskCards;
     }
 
-    public Optional<PayResources> getPayResourcesByRoleAndType(int roleID, PayResourceType payResourceType){
-        return payResourcesList.stream().filter(payResources -> ((payResources.getRoleID() == roleID) && payResources.getPayResourceType().equals(payResourceType))).findAny();
 
+    public boolean allMandatoryResourcesHaveBeenPayed(){
+        return payResourcesList.stream()
+                .filter(payResources ->payResources.getPayResourceType().equals(PayResourceType.MANDATORY))
+                .allMatch(PayResources::hasPaid);
     }
 
-    public boolean payResources(int roleID, PayResourceType payResourceType, int amount){
-        Optional<PayResources> payResources = getPayResourcesByRoleAndType(roleID, payResourceType);
-
-        if(payResources.isEmpty()){
-            return false;
-        }
-
-        if(!payResources.get().pay(amount)){
-            return false;
-        }
+    public boolean allNegotiationsAreFinished(){
         return true;
-
     }
 
-    public boolean hasRolePaidMandatory(int roleID){
-        return roleHasPaid.get(roleID);
+    public boolean isActivityDone(){
+        return allMandatoryResourcesHaveBeenPayed() && allNegotiationsAreFinished();
     }
 
-    public void setRolePaidMandatory(int roleID){
-        roleHasPaid.put(roleID,true);
+
+    public boolean payResources(Player player, List<Payment> payments){
+        int roleID = player.getRole().getId();
+        int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
+        if(totalAmount > player.getResourcesAmount()){
+            int resourcesNeeded = totalAmount - player.getResourcesAmount();
+            player.addResources(resourcesNeeded);
+            player.subtractMoney(resourcesNeeded * getExchangeRateForRoleID(player.getRole().getId()));
+        }
+
+        for (Payment payment: payments) {
+            if (payment.getType().equals(PayResourceType.MANDATORY)){
+                if (payment.getAmount() == payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid()).mapToInt(payResources -> Collections.max(payResources.getPriceAndBonusMap().keySet())).sum()){
+                    for (PayResources payResources : payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid()).collect(Collectors.toList())) {
+                        payResources.pay(payment.getAmount());
+                    }
+                }
+
+            }
+            else {
+                Optional<PayResources> optionalPayResources = payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(payment.getType())).findAny();
+                if(optionalPayResources.isEmpty()) {
+                    continue;
+                }
+                PayResources payResources = optionalPayResources.get();
+                payResources.pay(payment.getAmount());
+                if (payResources.getPayResourceType().equals(PayResourceType.RISKS))
+                    this.removeNRisk(payResources.getBonusGiven());
+                else if(payResources.getPayResourceType().equals(PayResourceType.DAYS))
+                    this.removeDays(payResources.getBonusGiven());
+
+            }
+
+        }
+
+        player.subtractResources(totalAmount);
+        return true;
+    }
+
+
+
+    @Override
+    public void buyResources(Player player, int amount){
+        int exchangeRate = this.getExchangeRateForRoleID(player.getRole().getId());
+        player.addResources(amount);
+        player.subtractMoney(amount * exchangeRate);
+    }
+
+    @Override
+    public int getExchangeRateForRoleID(int roleID){
+        return 2;
+    }
+
+    //BuyingAction abstract implementation
+
+    public List<Negotiation> getNegotiationList(){
+        return new ArrayList<>();
+    }
+
+    public List<PayResources> getPayResourcesList() {
+        return payResourcesList;
+    }
+
+    public void addPayResources(PayResources payResources){
+        System.out.println("PAYRESOURCES ADD WITH AMOUNT " + payResources.getPriceAndBonusMap().keySet());
+        this.payResourcesList.add(payResources);
+        System.out.println(this.payResourcesList.size());
+    }
+
+    public List<BuyResources> getBuyResourcesList() {
+        return new ArrayList<>();
+    }
+
+    public List<PayContract> getPayContractList(){
+        return new ArrayList<>();
     }
 
     public int getNumberOfDays(){
-        return numbersOfDays;
+        return numberOfDays;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public List<PayResources> getPayResourcesList() {
-        return payResourcesList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-    }
-
-    public List<BuyResources> getBuyResourcesList() { return buyResourcesList; }
-
     public void startActivity(){
         activityStatus = ActivityStatus.ONGOING;
+    }
+
+    public void doneActivity(){
+        activityStatus = ActivityStatus.DONE;
     }
 
     public void finishActivity(){
@@ -89,23 +154,35 @@ public abstract class Activity {
         return activityStatus;
     }
 
-    public int getExchangeRateForRoleID(int roleID){
-        return 2;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void addDays(int numberOfDays) {
+        this.numberOfDays += numberOfDays;
     }
 
-    public void buyResources(int roleID, int amount){
-        BuyResources newPaiement = new BuyResources(roleID,this.getExchangeRateForRoleID(roleID));
-        newPaiement.buyResources(amount);
-        this.buyResourcesList.add(newPaiement);
+    public void removeDays(int numberOfDays){
+        this.numberOfDays -= numberOfDays;
     }
 
+    public void removeNRisk(int n){
+        int listIndex = this.riskCardList.size() -1 ;
+        if(listIndex - n < 0){
+            this.riskCardList.clear();
+            return;
+        }
+        for (int i = 0; i < n; i++)
+            this.riskCardList.remove(0);
 
+
+    }
+
+    public boolean addRisk(RiskCard riskCard){
+        return this.riskCardList.add(riskCard);
+    }
+
+    public List<RiskCard> getRiskCardList() {
+        return riskCardList;
+    }
 }

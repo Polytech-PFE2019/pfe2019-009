@@ -11,6 +11,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JoinRoomEvent implements EventProtocol {
@@ -48,7 +49,9 @@ public class JoinRoomEvent implements EventProtocol {
             this.messenger.sendError("Room full");
             return;
         }
-        logger.info("JoinRoomEvent : New player named : " + player.getName() +"has join the room : " + room.getID());
+        logger.log(Level.INFO,
+                "JoinRoomEvent : New player named : {0} has join the room : {1}",
+                new Object[]{player.getName(), room.getID()});
         new UpdateRoomEvent(room).processEvent();
 
     }

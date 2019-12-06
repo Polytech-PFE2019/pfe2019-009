@@ -8,26 +8,37 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
+import org.polytech.pfe.domego.exceptions.InvalidRequestException;
 import org.polytech.pfe.domego.generator.InitialGameGenerator;
 import org.polytech.pfe.domego.models.*;
+import org.polytech.pfe.domego.models.activity.*;
 import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.BuyResources;
-import org.polytech.pfe.domego.models.activity.BuyingResourcesActivity;
-import org.polytech.pfe.domego.protocol.game.UpdateGameEvent;
-import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
+import org.polytech.pfe.domego.models.activity.buying.BuyResources;
+import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
+import org.polytech.pfe.domego.protocol.game.LaunchGameEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
+import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.polytech.pfe.domego.services.sockets.game.GameRequestHandler;
 import org.polytech.pfe.domego.services.sockets.game.GameSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketHttpHeaders;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.sockjs.client.WebSocketClientSockJsSession;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.URI;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,9 +71,9 @@ class GameRequestHandlerTest {
 
         when(sessionPlayerTest.isOpen()).thenReturn(true);
 
+        InitialGameGenerator initialGameGenerator = new InitialGameGenerator();
+        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(), initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted());
 
-        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(),new InitialGameGenerator().getAllActivitiesOfTheGame()
-        );
         GameInstance gameInstance = GameInstance.getInstance();
         gameInstance.addGame(game);
 
@@ -90,13 +101,39 @@ class GameRequestHandlerTest {
 
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key,"OK");
-        response.addProperty(GameResponseKey.USERID.key, player.getID());
-        response.addProperty(GameResponseKey.GAMEID.key,game.getId());
+        response.addProperty(GameResponseKey.USER_ID.key, player.getID());
+        response.addProperty(GameResponseKey.GAME_ID.key,game.getId());
         response.addProperty(GameResponseKey.NOPC.key, game.getPlayersPresent().size());
+
 
 
         verify(sessionPlayerTest, times(1)).sendMessage(
                 new TextMessage(response.toString()));
+    }
+
+    @Test
+    public void testLaunchGame() throws Exception {
+        for (Player player : game.getPlayers() ) {
+            JsonObject request = new JsonObject();
+            request.addProperty("request","JOIN_GAME");
+            request.addProperty("gameID", game.getId());
+            request.addProperty("userID", player.getID());
+
+            Map<String,String> value = new Gson().fromJson(request, Map.class);
+
+            handler.handleRequest(sessionPlayerTest, value);
+
+        }
+
+        assertEquals(game.getPlayers().size(),game.getPlayersPresent().size());
+        for (Player player : game.getPlayers()) {
+            assertEquals(sessionPlayerTest, player.getSession());
+            verify(sessionPlayerTest, times(1)).sendMessage(
+                    new TextMessage(new LaunchGameEvent(game).createUpdateResponse(player)));
+        }
+
+
+
     }
 
     @Test
@@ -156,6 +193,7 @@ class GameRequestHandlerTest {
         payments.add(paymentMandatory);
         request.add("payments",payments);
 
+        Activity activity = game.getCurrentActivity();
 
         Map<String,?> value = new Gson().fromJson(request, Map.class);
 
@@ -165,11 +203,11 @@ class GameRequestHandlerTest {
         handler.handleRequest(sessionPlayerTest, value);
 
         //The first activity must be of this type. //If not, set the current activity as the one you want.
-        Activity activity = game.getCurrentActivity();
+
         //One of the PayResource of the activity must be for roleID Maitre D'ouvrage.
         //and amount needed must be one for mandatory type
 
-        Optional<PayResources> payResourcesOpt = activity.getPayResourcesByRoleAndType(RoleType.MAITRE_D_OUVRAGE.getId(), PayResourceType.MANDATORY);
+        Optional<PayResources> payResourcesOpt = activity.getPayResourcesList().stream().filter(payResource -> ((payResource.getRoleID() == RoleType.MAITRE_D_OUVRAGE.getId()) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY))).findAny();
 
         assertTrue(payResourcesOpt.isPresent());
 
@@ -196,29 +234,34 @@ class GameRequestHandlerTest {
         for(int i=0; i<6; i++){
             Player player = new Player(sessionPlayerTest,"name");
             player.addMoney(30000);
-            player.addResouces(10);
+            player.addResources(10);
+
+            Objective objective = new Objective(ObjectiveType.DAYS,1,false);
+            List<Objective> objectiveList = new ArrayList<>();
+            objectiveList.add(objective);
 
             Role role;
             switch(i){
                 case 0 :
-                    role = new Role(RoleType.MAITRE_D_OUVRAGE.getId(), RoleType.MAITRE_D_OUVRAGE, "description",30000,"special");
+                    role = new Role(RoleType.MAITRE_D_OUVRAGE.getId(), RoleType.MAITRE_D_OUVRAGE, "description",30000,"special",objectiveList);
                     break;
                 case 1 :
-                    role = new Role(RoleType.MAITRE_D_OEUVRE.getId(), RoleType.MAITRE_D_OEUVRE, "description",30000,"special");
+                    role = new Role(RoleType.MAITRE_D_OEUVRE.getId(), RoleType.MAITRE_D_OEUVRE, "description",30000,"special", objectiveList);
                     break;
                 case 2 :
-                    role = new Role(RoleType.BUREAU_D_ETUDE.getId(), RoleType.BUREAU_D_ETUDE, "description",30000,"special");
+                    role = new Role(RoleType.BUREAU_D_ETUDE.getId(), RoleType.BUREAU_D_ETUDE, "description",30000,"special", objectiveList);
                     break;
                 case 3 :
-                    role = new Role(RoleType.BUREAU_DE_CONTROLE.getId(), RoleType.BUREAU_DE_CONTROLE, "description",30000,"special");
+                    role = new Role(RoleType.BUREAU_DE_CONTROLE.getId(), RoleType.BUREAU_DE_CONTROLE, "description",30000,"special", objectiveList);
                     break;
                 case 4 :
-                    role = new Role(RoleType.ENTREPRISE_GROS_OEUVRE.getId(), RoleType.ENTREPRISE_GROS_OEUVRE, "description",30000,"special");
+                    role = new Role(RoleType.ENTREPRISE_GROS_OEUVRE.getId(), RoleType.ENTREPRISE_GROS_OEUVRE, "description",30000,"special", objectiveList);
                     break;
                 case 5 :
-                    role = new Role(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(), RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE, "description",30000,"special");
+                    role = new Role(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(), RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE, "description",30000,"special", objectiveList);
                     break;
                 default:
+                    System.out.println("TROLL ICI");
                     role = new Role();
             }
             player.setRole(role);
@@ -234,6 +277,7 @@ class GameRequestHandlerTest {
         game.getPlayers().get(0).setSession(sessionPlayerTest);
         for(int i=1; i<6;i++){
             WebSocketSession session = mock(WebSocketSession.class);
+
             game.getPlayers().get(i).setSession(session);
         }
 

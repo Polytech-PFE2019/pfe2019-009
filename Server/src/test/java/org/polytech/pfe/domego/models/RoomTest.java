@@ -35,7 +35,7 @@ class RoomTest {
     void testResponse(){
         Room room = new Room("test",0);
 
-        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special");
+        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special", new ArrayList<>());
 
         WebSocketSession session = mock(WebSocketSession.class) ;
         Player player = new Player(session, "name");
@@ -66,7 +66,7 @@ class RoomTest {
     void testUpdateResponse(){
         Room room = new Room("test",0);
 
-        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special");
+        Role role = new Role(1,RoleType.MAITRE_D_OUVRAGE,"description",2030,"special", new ArrayList<>());
 
         WebSocketSession session = mock(WebSocketSession.class) ;
         Player player = new Player(session, "name");

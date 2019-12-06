@@ -12,6 +12,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LeaveRoomEvent implements EventProtocol {
@@ -59,7 +60,9 @@ public class LeaveRoomEvent implements EventProtocol {
         response.addProperty("userID", player.getID());
         messenger.sendSpecificMessageToAUser(response.toString());
         new UpdateRoomEvent(room).processEvent();
-        logger.info("LeaveRoomEvent : Player name : " + player.getName() + " has leave the room with ID" + room.getID());
+        logger.log(Level.INFO,
+                "LeaveRoomEvent : Player name : {0} has leave the room with ID : {1}",
+                new Object[]{player.getName(),room.getID()});
     }
 
     private void checkParams() throws MissArgumentToRequestException {

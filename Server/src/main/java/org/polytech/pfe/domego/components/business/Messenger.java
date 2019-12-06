@@ -20,7 +20,9 @@ public class Messenger {
 
     public void sendSpecificMessageToAUser(String message){
         try {
-            this.session.sendMessage(new TextMessage(message));
+            synchronized(session) {
+                this.session.sendMessage(new TextMessage(message));
+            }
         } catch (IOException e) {
             logger.warning("Messenger : can't sendErrorCuzMissingArgument : " + message + " at session :" + session.getRemoteAddress());
         }
@@ -31,9 +33,10 @@ public class Messenger {
         JsonObject response = new JsonObject();
         response.addProperty("response","KO");
         response.addProperty("reason","MISSING ARGUMENT : " + missingArgument);
-
         try {
-            this.session.sendMessage(new TextMessage(response.toString()));
+            synchronized(session) {
+                this.session.sendMessage(new TextMessage(response.toString()));
+            }
         } catch (IOException e) {
             logger.warning("Messenger : can't sendErrorCuzMissingArgument : " + response.toString());
         }
@@ -43,10 +46,10 @@ public class Messenger {
         JsonObject response = new JsonObject();
         response.addProperty("response","KO");
         response.addProperty("reason",error);
-
-
         try {
-            this.session.sendMessage(new TextMessage(response.toString()));
+            synchronized(session) {
+                this.session.sendMessage(new TextMessage(response.toString()));
+            }
         } catch (IOException e) {
             logger.warning("Messenger : can't sendError : " + response.toString());
         }

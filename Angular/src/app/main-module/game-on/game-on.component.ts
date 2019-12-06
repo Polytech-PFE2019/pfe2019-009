@@ -17,19 +17,9 @@ import {PlayerdataService} from 'src/app/playerdata.service';
 })
 export class GameOnComponent implements OnInit, OnDestroy {
   @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
-  steps: any = Steps;
   step = 'Étape 1';
-  getDataFromParent = 0;
-  getPriceFromParent = 0;
-  getDataFromActivity = 0;
-  getMoneyFromPerson = 0;
-  getResourceFromPerson = 0;
-  subGameId: Subscription;
   gameId: string;
-  currentResource: number;
-  currentMonney: number;
   buyingActions: any;
-  activites: any;
   currentStep: Activity[] = [];
   test: Activity;
   testClick = false;
@@ -37,8 +27,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
   subPlayersWithRoles: Subscription;
   activities: any = null;
   roles: any[] = [];
-  userName: any;
-  myInformation: any;
   currentActivity: any;
   subCurrentActivity: Subscription;
   isChat = false;
@@ -106,8 +94,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
     console.log('Game over');
     const message = {
       request: 'LEAVE_GAME',
-      roomID: '0',
-      userID: '2'
+      roomID: this.gameService.roomId.toString(),
+      userID: this.subscription.userId
     };
     this.lobbyService.messages.next(message as SocketRequest);
     this.router.navigate(['']);
@@ -130,14 +118,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subRisks.unsubscribe();
     this.subDays.unsubscribe();
     this.subGame.unsubscribe();
-  }
-
-  openChat() {
-    this.isChat = true;
-  }
-
-  closeChat($event: any) {
-    this.isChat = $event;
   }
 
   initDialog($event: any) {

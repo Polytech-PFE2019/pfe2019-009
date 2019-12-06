@@ -41,10 +41,10 @@ import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { PromptComponent } from './game-information/prompt/prompt.component';
 import { WaitComponent } from './game-information/wait/wait.component';
 import { HistoryComponent } from './game-information/history/history.component';
-import { ChatListComponent } from './chat-list/chat-list.component';
-import { ChatDialogueComponent } from './chat-dialogue/chat-dialogue.component';
-import { ChatReceiverComponent } from './chat-receiver/chat-receiver.component';
-import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { ChatListComponent } from './chat-module/chat-list/chat-list.component';
+import { ChatDialogueComponent } from './chat-module/chat-dialogue/chat-dialogue.component';
+import { ChatReceiverComponent } from './chat-module/chat-receiver/chat-receiver.component';
+import { ChatMessageComponent } from './chat-module/chat-message/chat-message.component';
 
 import { CountdownModule } from 'ngx-countdown';
 import { ResultComponent } from './result/result.component';

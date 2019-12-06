@@ -26,6 +26,7 @@ export class GameOnService {
   current: any;
   history = new Subject<any>();
   history$ = this.history.asObservable();
+  roomId: any;
 
   constructor(private wsService: WebsocketService,
               private subscription: SubscriptionService) {
@@ -41,6 +42,7 @@ export class GameOnService {
           if (JSON.stringify(data).includes('roomID')) {
             console.log('send roomID');
             if (data.roomID !== undefined) {
+              this.roomId = data.roomID;
               this.subscription.sendRoomID(data.roomID);
             }
           }

@@ -7,8 +7,8 @@ import {URLGame} from '../../model/url';
 import {map} from 'rxjs/operators';
 import {Activity} from '../../model/activity';
 import {ActionSet} from '../../model/action';
-import {BuyResourceService} from "../resources/buy-resource.service";
-import {Roles} from "../../model/roles";
+import {BuyResourceService} from '../resources/buy-resource.service';
+import {Roles} from '../../model/roles';
 
 @Injectable()
 export class GameOnService {
@@ -118,6 +118,7 @@ export class GameOnService {
             this.currentStep[currentId - 1].extraPayment = data.extraPaying;
             this.updateExtraPayment(currentId);
             console.log(this.currentActivity);
+            console.log(this.currentStep);
             this.subscription.sendCurrentActivity(this.currentActivity);
           }
 
@@ -152,6 +153,7 @@ export class GameOnService {
       bonus = bonus.concat(i.bonus);
     }
     console.log(bonus);
+    console.log(this.currentStep);
     for (const b of bonus) {
       switch (b.type) {
         case 'DAYS':

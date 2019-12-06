@@ -92,6 +92,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
           this.riskOfActivityId = data.riskOfActivityId;
         }
       }
+      if (data.response === 'FINISH') {
+
+      }
     });
 
   }

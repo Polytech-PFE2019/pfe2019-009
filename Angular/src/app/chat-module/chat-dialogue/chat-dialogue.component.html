@@ -4,9 +4,12 @@
     <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
     <h5>{{data?.otherUserName}}</h5>
   </div>
-  <div class="negociation">
-    <h4>Contract {{contractNumber}}</h4>
+  <div class="receiverBox">
+    <div class="negociation">
+      <h4>Contract</h4>
+      <h4>{{contractNumber}}k</h4>
     <button *ngIf="!isProposer" (click)="accepteContract()" [ngStyle]="accepteStyle">Accepeter</button>
+    </div>
   </div>
   <div class="context">
     <div *ngFor="let message of messages">
@@ -19,24 +22,40 @@
     </div>
   </div>
 
-
   <div class="senderBox">
     <div class="contract-container">
       <h4>Un contrat:</h4>
       <div style="display: flex; flex-direction: row">
-        <input nz-input type="number" placeholder="0" [max]="1000" [min]="0" [(ngModel)]="contract"
+        <input nz-input
+               type="number"
+               placeholder="0"
+               [max]="1000"
+               [min]="0"
+               [(ngModel)]="contract"
                style="margin-right: 10px;width: 100px">
         <b> K</b>
       </div>
-      <button nz-button nzType="default" style="width: 160px; margin-top: 15px; margin-left: 6px;margin-bottom: 10px;"
+      <button nz-button
+              nzType="default"
+              style="width: 160px;
+              margin-top: 15px;
+              margin-left: 6px;
+              margin-bottom: 10px;"
               (click)="sendContract()">
         Proposer un contrat
       </button>
     </div>
     <div class="desc-container">
-      <textarea nz-input [(ngModel)]="msg" id="msg" rows="4" placeholder="..."></textarea>
-      <button id="sendBnt" nz-button (click)="sendMessage()" nzShape="circle"
-              style="margin-bottom: 12px; margin-right: 10px;">
+      <textarea
+        nz-input
+        [(ngModel)]="msg"
+        id="msg"
+        rows="4"
+        placeholder="..."></textarea>
+      <button id="sendBnt"
+              class="sendBnt"
+              nz-button (click)="sendMessage()"
+              nzShape="circle">
         <i class="iconfont icon-send">
         </i>
       </button>

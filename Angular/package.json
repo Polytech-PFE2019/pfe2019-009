@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~8.1.0",
     "@angular/platform-browser-dynamic": "~8.1.0",
     "@angular/router": "~8.1.0",
+    "angular-animate": "^1.7.9",
     "ng-animate": "^0.3.4",
     "ng-zorro-antd": "^8.5.1",
     "ngx-countdown": "^8.0.3",

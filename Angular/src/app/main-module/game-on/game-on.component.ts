@@ -29,7 +29,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
   roles: any[] = [];
   currentActivity: any;
   subCurrentActivity: Subscription;
-  isChat = false;
   subRisks: Subscription;
   subDays: Subscription;
   listOfDialog: any[] = [];
@@ -37,6 +36,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   isRiskCard = false;
   riskCard: any [] = [];
   riskOfActivityId = 0;
+  roleId: any;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -86,9 +86,11 @@ export class GameOnComponent implements OnInit, OnDestroy {
         console.log(this.listOfDialog);
       }
       if (data.response === 'drawRisk') {
-        this.isRiskCard = true;
-        this.riskCard = data.risks;
-        this.riskOfActivityId = data.riskOfActivityId;
+        if (data.risks.length > 0) {
+          this.isRiskCard = true;
+          this.riskCard = data.risks;
+          this.riskOfActivityId = data.riskOfActivityId;
+        }
       }
     });
 
@@ -102,7 +104,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
     console.log('Game over');
     const message = {
       request: 'LEAVE_GAME',
-      roomID: this.gameService.roomId.toString(),
+      roomID: this.gameService.roomId,
       userID: this.subscription.userId
     };
     this.lobbyService.messages.next(message as SocketRequest);

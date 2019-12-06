@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {GameOnService} from "../../service/gameOnService/game-on.service";
+import {GameOnService} from '../../service/gameOnService/game-on.service';
 
 @Component({
   selector: 'app-person-information',
@@ -28,6 +28,7 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   subCost: Subscription;
   subDays: Subscription;
   subRisk: Subscription;
+  subGame: Subscription;
   cost: any;
   day: any;
   risk: any;
@@ -88,6 +89,12 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
     //   console.log(data);
     //   this.userName = data;
     // });
+    this.subGame = this.gameService.reponses$.subscribe(data => {
+      if (data.response === 'drawRisk') {
+        this.currentMonney = data.player.money;
+        this.currentResource = data.player.resources;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -99,6 +106,7 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
     this.subCost.unsubscribe();
     this.subDays.unsubscribe();
     this.subRisk.unsubscribe();
+    this.subGame.unsubscribe();
   }
 
   showPointsVistoire() {

@@ -54,12 +54,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       this.userReady = 0;
       console.log(data.gameID);
       if (data.gameID !== undefined) {
-        const params = {
-          params: new HttpParams()
-            .set('roleID', this.roleID)
-            .set('userName', this.userName)
-            .set('gameID', data.gameID)
-        };
         const req = {
           request: 'JOIN_GAME',
           gameID: data.gameID.toString(),
@@ -91,6 +85,8 @@ export class GameRoomComponent implements OnInit, OnDestroy {
               }
             }
             console.log(this.roles);
+            this.subscriptionService.myRole = this.roles.filter(next => next.username === this.userName)[0];
+            console.log(this.subscriptionService.myRole);
             break;
           case 'START_GAME':
             this.goToLoadingPage(data.gameID);

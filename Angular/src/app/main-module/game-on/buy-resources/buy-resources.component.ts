@@ -32,6 +32,8 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.currentMonney = this.subscription.myRole.money;
+
     this.subCurrentMonney = this.resourceService.currentMonney$.subscribe(data => {
       this.currentMonney = data;
     });

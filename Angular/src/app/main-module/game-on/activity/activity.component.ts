@@ -50,6 +50,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   myDataSource: any[] = [];
   hasNegotiation = false;
   negotiationIDs: string[] = [];
+  isFinishedMine = false;
 
 
   constructor(private nzMessageService: NzMessageService,
@@ -64,6 +65,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
       this.myDataSource = [];
+      this.isFinishedMine = false;
       console.log(this.currentActivity);
 
       this.negotiationIDs = [];
@@ -119,6 +121,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   handleOk(): void {
     // this.payResource();
+    this.isFinishedMine = true;
     this.resourceService.sendResourcesReduced(this.totalRes);
     this.resourceService.sendReducedRisk(this.riskReduced);
     this.resourceService.sendDaysReduced(this.daysReduced);

@@ -40,6 +40,8 @@ export class SubscriptionService {
   failures = new Subject<any>();
   failures$ = this.failures.asObservable();
 
+  myRole: any;
+
   constructor() {
   }
 

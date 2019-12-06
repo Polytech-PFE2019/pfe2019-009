@@ -21,9 +21,6 @@
               </div>
             </nz-card>
           </div>
-          <!--          <div nz-col nzSpan="10">-->
-          <!--            <app-risk-back [step]="step?.title" (sendCard)="getCard($event)"></app-risk-back>-->
-          <!--          </div>-->
         </div>
         <div nz-row style="margin-top: 10px">
           <div nz-col nzSpan="24">
@@ -42,6 +39,7 @@
                     <app-activity-displayer
                       [role]="data?.roleID"
                       [type]="'MANDATORY'"
+                      [extraPaying]="step.extraPayment"
                       [activitiesBenefits]="data?.actions[0].actions">
                     </app-activity-displayer>
                   </td>

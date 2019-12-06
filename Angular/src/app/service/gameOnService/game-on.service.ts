@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {WebsocketService} from '../webSocketService/websocket.service';
 import {SubscriptionService} from '../subscriptionSerivce/subscription.service';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {SocketRequest} from '../../../Request';
 import {URLGame} from '../../model/url';
 import {map} from 'rxjs/operators';
 import {Activity} from '../../model/activity';
 import {ActionSet} from '../../model/action';
+import {BuyResourceService} from "../resources/buy-resource.service";
+import {Roles} from "../../model/roles";
 
 @Injectable()
 export class GameOnService {
@@ -24,11 +26,15 @@ export class GameOnService {
   delayProject: any;
   failureProject: any;
   current: any;
+  roles = Roles;
   history = new Subject<any>();
   history$ = this.history.asObservable();
   roomId: any;
+  subRiskReduced: Subscription;
+  riskReduced = 0;
 
   constructor(private wsService: WebsocketService,
+              private resourceManager: BuyResourceService,
               private subscription: SubscriptionService) {
     this.messages = wsService
       .connect(URLGame)
@@ -109,13 +115,19 @@ export class GameOnService {
           if (data.response === 'CHANGE_ACTIVITY') {
             const currentId = data.activityID;
             this.currentActivity = this.currentStep[currentId - 1];
+            this.currentStep[currentId - 1].extraPayment = data.extraPaying;
+            this.updateExtraPayment(currentId);
             console.log(this.currentActivity);
             this.subscription.sendCurrentActivity(this.currentActivity);
           }
 
           if (data.response === 'UPDATE_PAYMENT') {
             const currentId = data.activityID;
-            this.currentStep[currentId - 1].history = data;
+            if (this.currentStep[currentId - 1].history === null) {
+              this.currentStep[currentId - 1].history = data.payments;
+            } else {
+              this.currentStep[currentId - 1].history = this.currentStep[currentId - 1].history.concat(data.payments);
+            }
             console.log(this.currentStep);
             console.log(this.currentStep[currentId - 1].history);
           }
@@ -151,5 +163,17 @@ export class GameOnService {
       }
     }
     console.log(this.currentStep);
+  }
+
+
+  updateExtraPayment(currentId) {
+    const currentAc = this.currentStep[currentId - 1];
+    for (const extra of currentAc.extraPayment) {
+      for (const payment of currentAc.payingActions) {
+        if (payment.roleID === extra.roleID) {
+          payment.actions[0].actions[0].amountToPay += extra.amount;
+        }
+      }
+    }
   }
 }

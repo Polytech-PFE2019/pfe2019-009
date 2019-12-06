@@ -5,7 +5,7 @@
 
 
 .left-container {
-  height: 100vh;
+  height: calc(100vh - 70px);
   overflow-y: auto;
 }
 
@@ -66,7 +66,7 @@ input{
 .dialog-container{
   height: 400px;
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   right: 10px;
   display: flex;
 }

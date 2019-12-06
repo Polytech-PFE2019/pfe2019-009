@@ -1,4 +1,4 @@
-<h2 nz-title>Domego - {{currentActivity?.title}}</h2>
+<h2 nz-title>Domego - {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
 <div nz-row class="container">
   <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
     <div class="activityContainer">
@@ -8,8 +8,6 @@
       <div class="activity">
         <app-buy-resources></app-buy-resources>
       </div>
-      <!--<app-prompt></app-prompt>-->
-      <!--</div>-->
       <div class="activity">
         <app-person-information>
         </app-person-information>
@@ -17,9 +15,14 @@
       <div class="activity">
         <app-projet-information></app-projet-information>
       </div>
+      <div class="dialog-container">
+        <div *ngFor="let i of listOfDialog">
+          <app-chat-dialogue [data]="i"></app-chat-dialogue>
+        </div>
+      </div>
     </div>
 
-    <button id="end" nz-button *ngIf="this.currentActivity.title === 12" (click)="closeGame()"><b>Terminer</b></button>
+    <button id="end" nz-button (click)="closeGame()"><b>Terminer</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
     <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
@@ -29,11 +32,6 @@
   </div>
 
   <!--  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>-->
-  <div class="dialog-container">
-    <div *ngFor="let i of listOfDialog">
-      <app-chat-dialogue [data]="i"></app-chat-dialogue>
-    </div>
-  </div>
 </div>
 
 <nz-modal [nzVisible]="isRiskCard" nzTitle="Risques" (nzOnOk)="closeRiskCard()" (nzOnCancel)="closeRiskCard()">
@@ -47,5 +45,4 @@
     </div>
   </div>
 </nz-modal>
-<!--<app-wait></app-wait>-->
 

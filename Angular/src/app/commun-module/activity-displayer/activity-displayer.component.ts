@@ -13,10 +13,12 @@ export class ActivityDisplayerComponent implements OnInit {
   @Input() isActivity = false;
   @Output() sendPaymentActivity = new EventEmitter();
   @Input() activitiesBenefits: any[] = [];
+  @Input() extraPaying: any[] = [];
   roleStyle: any;
   roles = Roles;
   value = 0;
   previous = null;
+  total = 0;
 
   constructor() {
   }

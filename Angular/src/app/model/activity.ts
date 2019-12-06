@@ -8,8 +8,9 @@ export class Activity {
   negotiationActions: any[];
   risks: number;
   rolesID: any[];
-  history: any;
+  history: any[];
   riskCards: any;
+  extraPayment: any[];
 
 
   constructor(r) {
@@ -22,8 +23,9 @@ export class Activity {
     this.negotiationActions = r.negotiationActions;
     this.risks = r.risks;
     this.rolesID = r.rolesID;
-    this.history = null;
+    this.history = [];
     this.riskCards = null;
+    this.extraPayment = [];
   }
 
   addAttributes(activity) {

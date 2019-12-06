@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.models.activity.pay;
 
+import org.polytech.pfe.domego.components.game.RiskCard;
 import org.polytech.pfe.domego.models.activity.Activity;
 
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.Optional;
 public class PayContractActivity extends Activity {
     private List<PayContract> payContractList;
 
-    public PayContractActivity(int id, int numbersOfDays, String title, String description, List<PayResources> payResourcesList, List<PayContract> payContractList) {
-        super(id, numbersOfDays, title, description, payResourcesList);
+    public PayContractActivity(int id, int numbersOfDays, String title, String description, List<PayResources> payResourcesList, List<RiskCard> riskCards,List<PayContract> payContractList) {
+        super(id, numbersOfDays, title,description, payResourcesList, riskCards);
         this.payContractList = payContractList;
     }
 

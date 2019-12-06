@@ -96,11 +96,8 @@ public class PayResourcesEvent implements EventProtocol {
             // otherwise it means the payment is coming from risk cards and we have to finish the activity.
             else {
                 currentActivity.finishActivity();
-                if(currentActivity.getId() == game.getActivities().size())
-                    new FinishGameEvent(game).processEvent();
-                else{
-                    new ChangeActivityEvent(game).processEvent();
-                }
+                new ChangeActivityEvent(game).processEvent();
+
             }
 
         }

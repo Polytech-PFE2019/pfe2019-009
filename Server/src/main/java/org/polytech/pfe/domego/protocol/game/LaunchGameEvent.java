@@ -61,7 +61,7 @@ public class LaunchGameEvent implements EventProtocol {
             JsonArray roleIDListJson = new JsonArray();
             activity.getPayResourcesList().stream().map(PayResources::getRoleID).collect(Collectors.toSet()).forEach(roleIDListJson::add);
             activityJson.add(ActivityResponseKey.ROLE_ID_LIST.key, roleIDListJson);
-            activityJson.addProperty(ActivityResponseKey.RISKS.key, 4);
+            activityJson.addProperty(ActivityResponseKey.RISKS.key, activity.getRiskCardList().size());
             activitiesJson.add(activityJson);
         }
         response.add(GameResponseKey.ACTIVITIES.key, activitiesJson);

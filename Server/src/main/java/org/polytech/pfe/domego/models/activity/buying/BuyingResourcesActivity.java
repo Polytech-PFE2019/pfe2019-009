@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.models.activity.buying;
 
+import org.polytech.pfe.domego.components.game.RiskCard;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
@@ -11,8 +12,8 @@ public class BuyingResourcesActivity  extends Activity implements BuyingAction {
 
     private List<BuyResources> buyResourcesList;
 
-    public BuyingResourcesActivity(int id, int numbersOfDays, String title , String description, List<PayResources> payResourcesList, List<BuyResources> buyResourcesList) {
-        super(id, numbersOfDays, title,description, payResourcesList);
+    public BuyingResourcesActivity(int id, int numbersOfDays, String title , String description, List<PayResources> payResourcesList, List<RiskCard> riskCards, List<BuyResources> buyResourcesList) {
+        super(id, numbersOfDays, title,description, payResourcesList, riskCards);
         this.buyResourcesList = buyResourcesList;
     }
 

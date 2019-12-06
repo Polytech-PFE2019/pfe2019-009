@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document(collection = "Risks")
 public class RiskAction {
@@ -53,5 +54,20 @@ public class RiskAction {
 
     public void setBonusList(List<Bonus> bonusList) {
         this.bonusList = bonusList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RiskAction that = (RiskAction) o;
+        return riskOfActivityId == that.riskOfActivityId &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(bonusList, that.bonusList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(riskOfActivityId, description, bonusList);
     }
 }

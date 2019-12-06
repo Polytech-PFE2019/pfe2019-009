@@ -10,7 +10,6 @@ import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InfoProjectGameCalculator {
 
@@ -54,13 +53,7 @@ public class InfoProjectGameCalculator {
         int minTime = 0;
         for (Activity activity : activities) {
             minTime += activity.getNumberOfDays();
-            if (activity.getActivityStatus().equals(ActivityStatus.FINISHED)){
-                minTime -= activity.getPayResourcesList().stream()
-                        .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.DAYS))
-                        .mapToInt(PayResources::getBonusGiven).sum();
-
-            }
-            else{
+            if (activity.getActivityStatus().equals(ActivityStatus.NOT_STARTED) || activity.getActivityStatus().equals(ActivityStatus.ONGOING)){
                 minTime -= activity.getPayResourcesList().stream()
                         .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.DAYS))
                         .mapToInt(payResource -> Collections.max(payResource.getPriceAndBonusMap().values())).sum();
@@ -71,36 +64,28 @@ public class InfoProjectGameCalculator {
 
     public int getMaxTimeOfProject(){
         List<Activity> activities = game.getActivities();
-        int maxTime = 0;
-        for (Activity activity : activities) {
-            maxTime += activity.getNumberOfDays();
-            if (activity.getActivityStatus().equals(ActivityStatus.FINISHED))
-            {
-                for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.DAYS)).collect(Collectors.toList())) {
-                    maxTime -= payResources.getBonusGiven();
-                }
-            }
-        }
+        int maxTime = activities.stream().mapToInt(Activity::getNumberOfDays).sum();
         return maxTime;
     }
 
     public int getMaxFailureOfProject(){
         List<Activity> activities = game.getActivities();
-        int maxTime = 0;
-        for (Activity activity : activities) {
-            maxTime += activity.getNumberOfDays();
-            if (activity.getActivityStatus().equals(ActivityStatus.FINISHED))
-            {
-                for (PayResources payResources: activity.getPayResourcesList().stream().filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.RISKS)).collect(Collectors.toList())) {
-                    maxTime -= payResources.getBonusGiven();
-                }
-            }
-        }
+        int maxTime = activities.stream().mapToInt(activity -> activity.getRiskCardList().size()).sum();
         return maxTime;
     }
 
     public int getMinFailureOfProject(){
-        return 1;
+        List<Activity> activities = game.getActivities();
+        int minFailure = 0;
+        for (Activity activity : activities) {
+            minFailure += activity.getRiskCardList().size();
+            if (activity.getActivityStatus().equals(ActivityStatus.NOT_STARTED) || activity.getActivityStatus().equals(ActivityStatus.ONGOING)){
+                minFailure -= activity.getPayResourcesList().stream()
+                        .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.RISKS))
+                        .mapToInt(payResource -> Collections.max(payResource.getPriceAndBonusMap().values())).sum();
+            }
+        }
+        return minFailure;
     }
 
 

@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.protocol.game.key.RiskResponseKey;
 
+import java.util.Objects;
+
 public class MoneyBonus implements Bonus {
 
     private BonusType bonusType = BonusType.MONEY;
@@ -53,5 +55,20 @@ public class MoneyBonus implements Bonus {
     @Override
     public RoleType getRoleType() {
         return roleType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoneyBonus that = (MoneyBonus) o;
+        return amount == that.amount &&
+                bonusType == that.bonusType &&
+                roleType == that.roleType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bonusType, roleType, amount);
     }
 }

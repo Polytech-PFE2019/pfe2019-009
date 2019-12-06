@@ -1,8 +1,10 @@
 package org.polytech.pfe.domego.protocol.game;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
@@ -20,13 +22,17 @@ public class ChangeActivityEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-        game.goToTheNextActivity();
-        new FinishGameEvent(game).processEvent();
-        return;
+        if (game.getCurrentActivity().getId() == game.getActivities().size()){
+            new FinishGameEvent(game).processEvent();
+            return;
+        }
+        else{
+            game.goToTheNextActivity();
+            logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
+            game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
+        }
 
-//        logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
-//        game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
-//    }
+
         }
 
     private JsonObject createJsonResponse(){
@@ -36,6 +42,19 @@ public class ChangeActivityEvent implements EventProtocol {
         response.addProperty(GameResponseKey.DELAY_PROJECT.key,game.getProject().getDays());
         response.addProperty(GameResponseKey.FAILURE_PROJECT.key,game.getProject().getRisks());
         response.addProperty(GameResponseKey.ACTIVITY_ID.key,game.getCurrentActivity().getId());
+        JsonArray extraPaymentArray = new JsonArray();
+        for (PayResources payResources : game.getCurrentActivity().getPayResourcesList()) {
+            if (payResources.isExtraPayment()){
+                JsonObject extraPayment = new JsonObject();
+                for (Integer amount : payResources.getPriceAndBonusMap().keySet()) {
+                    extraPayment.addProperty(GameResponseKey.ROLE_ID.key, payResources.getRoleID());
+                    extraPayment.addProperty(GameResponseKey.AMOUNT.key, amount);
+                }
+
+                extraPaymentArray.add(extraPayment);
+            }
+        }
+        response.add(GameResponseKey.EXTRA_PAYING.key, extraPaymentArray);
         return response;
     }
 }

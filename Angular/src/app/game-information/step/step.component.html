@@ -7,7 +7,8 @@
       <div class="step-container">
         <div nz-row>
           <div nz-col nzSpan="14">
-            <nz-card nzTitle="Action(s) spéciale(s)" *ngIf="step.buyingActions.length>0 || step.negotiationActions.length>0">
+            <nz-card nzTitle="Action(s) spéciale(s)"
+                     *ngIf="step.buyingActions.length>0 || step.negotiationActions.length>0">
               <div class="resource-buyer" *ngIf="step.buyingActions.length>0">
                 <div *ngFor="let buying of step.buyingActions">
                   <app-resource-buyer [buyer]="buying.roleID"></app-resource-buyer>
@@ -20,9 +21,9 @@
               </div>
             </nz-card>
           </div>
-          <div nz-col nzSpan="10">
-            <app-risk-back [step]="step?.title" (sendCard)="getCard($event)"></app-risk-back>
-          </div>
+          <!--          <div nz-col nzSpan="10">-->
+          <!--            <app-risk-back [step]="step?.title" (sendCard)="getCard($event)"></app-risk-back>-->
+          <!--          </div>-->
         </div>
         <div nz-row style="margin-top: 10px">
           <div nz-col nzSpan="24">
@@ -70,7 +71,11 @@
       </div>
     </div>
     <div class="history" *ngIf="isHistory">
-      <app-history [listOfData]="step.history" [getCardHistory]="testCard"></app-history>
+      <app-history
+        [listOfData]="step?.history"
+        [activityID]="step?.title"
+        [riskCards]="step.riskCards">
+      </app-history>
     </div>
   </nz-card>
 </div>

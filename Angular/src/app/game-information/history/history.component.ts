@@ -9,15 +9,11 @@ import {SubscriptionService} from '../../service/subscriptionSerivce/subscriptio
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent implements OnInit {
-  resourceBuyed = 0;
-  cardHistory = {
-    risk: null,
-    resource: null,
-    day: null,
-    money: null,
-  };
   @Input() listOfData: any;
   @Input() getCardHistory: any;
+  @Input() riskCards: any;
+  @Input() activityID = 0;
+  resourceBuyed = 0;
   data: any[] = [];
   total = 0;
   subResource: Subscription;
@@ -29,27 +25,6 @@ export class HistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.titleList = [];
-    this.riskList = this.subSerive.riskHistory;
-    for (const i of this.riskList) {
-      this.titleList.push(i.title);
-    }
-    console.log(this.titleList);
-    console.log(this.getCardHistory.title);
-    this.titleList.push(this.getCardHistory.title);
-    if (this.getCardHistory.risk !== null) {
-      this.cardHistory.risk = this.getCardHistory.risk;
-    }
-    if (this.getCardHistory.resource !== null) {
-      this.cardHistory.resource = this.getCardHistory.resource;
-    }
-    if (this.getCardHistory.day !== null) {
-      this.cardHistory.day = this.getCardHistory.day;
-    }
-    if (this.getCardHistory.money !== null) {
-      this.cardHistory.money = this.getCardHistory.money;
-    }
-
     this.resourceBuyed = this.resourceService.money;
     this.data = [];
     this.total = 0;

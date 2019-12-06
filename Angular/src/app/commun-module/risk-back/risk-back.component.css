@@ -1,9 +1,9 @@
-nz-card{
+nz-card {
   width: 150px;
-  height:200px
+  height: 200px;
 }
 
-.cardContainer{
+.cardContainer {
   height: 200px;
   display: flex;
   width: 100px;
@@ -11,7 +11,7 @@ nz-card{
   align-items: center;
 }
 
-.circle{
+.circle {
   height: 30px;
   width: 30px;
   border-radius: 15px;
@@ -23,3 +23,37 @@ nz-card{
   font-weight: bold;
   margin-top: 20px;
 }
+
+.contextContainer{
+  display: flex;
+  justify-content: center;
+}
+
+
+.moneyRisk{
+  position: absolute;
+  bottom: 0;
+}
+
+.dayRisk{
+  height:20px;
+  background-color: #123074;
+  color: #ececec;
+  position: absolute;
+  bottom: 0;
+}
+
+.resourceRisk{
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+}
+
+.risk{
+  height:20px;
+  background-color: #892f0b;
+  color: #ececec;
+  position: absolute;
+  bottom: 0;
+}
+

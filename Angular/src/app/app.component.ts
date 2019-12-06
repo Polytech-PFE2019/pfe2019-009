@@ -18,6 +18,7 @@ export class AppComponent {
   test1 = [];
   flipOutX: any;
   isVanished = false;
+  isTest = false;
 
 
   constructor() {
@@ -59,4 +60,11 @@ export class AppComponent {
     }
   }
 
+  open() {
+    this.isTest = true;
+  }
+
+  close() {
+    this.isTest = false;
+  }
 }

@@ -116,11 +116,40 @@ export class GameOnService {
           if (data.response === 'UPDATE_PAYMENT') {
             const currentId = data.activityID;
             this.currentStep[currentId - 1].history = data;
+            console.log(this.currentStep);
             console.log(this.currentStep[currentId - 1].history);
+          }
+
+          if (data.response === 'drawRisk') {
+            const currentId = data.riskOfActivityId;
+            this.currentStep[currentId - 1].riskCards = data.risks;
+            console.log(this.currentStep);
+            console.log(this.currentStep[currentId - 1].riskCards);
+            this.addInformationAfterRiskCards(currentId);
           }
           console.log(data);
           this.reponses.next(data);
           return data;
         })) as Subject<SocketRequest>;
+  }
+
+  addInformationAfterRiskCards(currentId) {
+    const currentAc = this.currentStep[currentId - 1];
+    let bonus = [];
+    for (const i of currentAc.riskCards) {
+      bonus = bonus.concat(i.bonus);
+    }
+    console.log(bonus);
+    for (const b of bonus) {
+      switch (b.type) {
+        case 'DAYS':
+          this.currentStep[b.activityIdAssociate - 1].numberOfDays += b.amount;
+          break;
+        case 'RISK':
+          this.currentStep[b.activityIdAssociate - 1].risks += b.amount;
+          break;
+      }
+    }
+    console.log(this.currentStep);
   }
 }

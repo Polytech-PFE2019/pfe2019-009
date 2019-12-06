@@ -3,6 +3,7 @@ import {Risks} from '../../model/risks';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {flipOutX} from 'ng-animate';
+import {Roles} from '../../model/roles';
 
 @Component({
   selector: 'app-risk-back',
@@ -16,10 +17,14 @@ import {flipOutX} from 'ng-animate';
 export class RiskBackComponent implements OnInit {
   @Input() step: number;
   @Input() myTiming: any;
+  @Input() title = 0;
   @Output() sendCard = new EventEmitter();
+  @Input() card: any = null;
+  @Input() isDiabled = false;
   risks: any = Risks;
   random = 0;
   riskRemainNb = 2;
+  roles = Roles;
   cardNb = 0;
   riskUnavailable = (this.riskRemainNb === 0);
   currentRiskTotal = 5; // to be input
@@ -35,7 +40,6 @@ export class RiskBackComponent implements OnInit {
   };
   flipOutX = false;
   isVanished = true;
-  isDiabled = false;
 
   constructor(private subService: SubscriptionService) {
   }
@@ -71,6 +75,10 @@ export class RiskBackComponent implements OnInit {
     this.subService.sendHistory(this.test);
     console.log(this.test);
     console.log(this.subService.riskHistory);
+  }
+
+  getStyleById(userId) {
+    return this.roles.filter(next => (next.id === userId))[0];
   }
 
   ngOnInit() {

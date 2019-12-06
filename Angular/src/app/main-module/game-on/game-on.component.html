@@ -36,3 +36,16 @@
   </div>
 </div>
 
+<nz-modal [nzVisible]="isRiskCard" nzTitle="Risques" (nzOnOk)="closeRiskCard()" (nzOnCancel)="closeRiskCard()">
+  <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
+    <div *ngFor="let card of riskCard; let i=index">
+      <app-risk-back
+        [myTiming]="i + 1"
+        [card]="card"
+        [isDiabled]="false"
+        [title]="riskOfActivityId"></app-risk-back>
+    </div>
+  </div>
+</nz-modal>
+<!--<app-wait></app-wait>-->
+

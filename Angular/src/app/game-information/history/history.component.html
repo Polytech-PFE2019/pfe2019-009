@@ -23,7 +23,11 @@
     </nz-table>
   </div>
   <h3>Cartes de risque piochées</h3>
-  <div *ngFor="let title of titleList">{{title}}</div>
+  <div class="myContainer">
+    <div *ngFor="let card of riskCards">
+      <app-risk-back [card]="card" [title]="activityID" [isDiabled]="true"></app-risk-back>
+    </div>
+  </div>
 </div>
 
 

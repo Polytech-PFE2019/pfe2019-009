@@ -34,6 +34,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
   subDays: Subscription;
   listOfDialog: any[] = [];
   subGame: Subscription;
+  isRiskCard = false;
+  riskCard: any [] = [];
+  riskOfActivityId = 0;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -82,6 +85,11 @@ export class GameOnComponent implements OnInit, OnDestroy {
         this.listOfDialog.push(data);
         console.log(this.listOfDialog);
       }
+      if (data.response === 'drawRisk') {
+        this.isRiskCard = true;
+        this.riskCard = data.risks;
+        this.riskOfActivityId = data.riskOfActivityId;
+      }
     });
 
   }
@@ -122,5 +130,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   initDialog($event: any) {
     this.listOfDialog = [];
+  }
+
+  closeRiskCard() {
+    this.isRiskCard = false;
   }
 }

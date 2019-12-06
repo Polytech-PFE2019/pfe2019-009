@@ -70,3 +70,9 @@ input{
   right: 10px;
   display: flex;
 }
+
+.myContainer{
+  display: flex;
+  flex-wrap: wrap;
+}
+

@@ -9,6 +9,7 @@ export class Activity {
   risks: number;
   rolesID: any[];
   history: any;
+  riskCards: any;
 
 
   constructor(r) {
@@ -22,6 +23,7 @@ export class Activity {
     this.risks = r.risks;
     this.rolesID = r.rolesID;
     this.history = null;
+    this.riskCards = null;
   }
 
   addAttributes(activity) {

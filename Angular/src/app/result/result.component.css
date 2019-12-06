@@ -1,0 +1,45 @@
+.resultContainer {
+  width: 99.5%;
+  height: 100%;
+  padding-top: 30px;
+  text-align: center;
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+img {
+  border-radius: 50%;
+  z-index:999;
+  position: absolute;
+  margin-top: -40px;
+  left:100px;
+}
+
+.resultColumn {
+  text-align: center;
+}
+
+.result {
+  height: 500px;
+  background-color: #FBF8A0;
+  border-radius: 15px;
+  margin: 5px;
+  padding-top: 10px;
+}
+
+p {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+nz-row{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}

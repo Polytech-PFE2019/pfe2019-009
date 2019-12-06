@@ -1,22 +1,22 @@
 .container {
   background-color: #f0f2f5;
   border-radius: 10px;
-  width: 400px;
-  height: 400px;
+  width: 450px;
+  height: 430px;
   overflow-y: auto;
   margin-right: 40px;
 }
 
 .context {
-  width: 295px;
+  width: 335px;
   height: 205px;
   background-color: whitesmoke;
   overflow-y: auto;
 }
 
 .senderBox {
-  height: 150px;
-  width: 400px;
+  height: 180px;
+  width: 450px;
   padding-top: 10px;
   background-color: #e0e0e0;
   overflow-y: auto;
@@ -30,7 +30,7 @@
 }
 
 .header {
-  width: 400px;
+  width: 450px;
   height: 35px;
   background-color: burlywood;
   border-top-left-radius: 10px;
@@ -74,12 +74,12 @@ button {
   float: left;
   border-radius: 10px;
   height: 140px;
-  width: 80px;
+  width: 90px;
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 20px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background-color: rgba(255,255,255,0.8);
   flex-direction: column;
 }
@@ -88,9 +88,9 @@ button {
   float: left;
   display: flex;
   flex-direction: column;
-  width: 180px;
+  width: 200px;
   margin: 5px;
-  padding: 5px;
+  padding: 15px;
   background-color: burlywood;
   border-radius: 5px;
 }
@@ -99,9 +99,15 @@ button {
   float: right;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  align-items: flex-end;
+  width: 210px;
   margin: 5px;
   padding-right: 5px;
+}
+
+.sendBnt{
+  margin-bottom: 12px;
+  margin-top: 12px;
 }
 
 #open{

@@ -40,7 +40,7 @@ public class FinishGameEvent implements EventProtocol {
         List<Player> rankedList = rankPlayers(this.game.getPlayers());
 
         this.game.getPlayers().parallelStream().forEach(player -> {
-            new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse(player,rankedList).toString());
+            new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse(rankedList).toString());
         }
         );
 
@@ -52,16 +52,17 @@ public class FinishGameEvent implements EventProtocol {
         return playerList;
     }
 
-    private JsonObject createJsonResponse(Player player, List<Player> rankedList) {
+    private JsonObject createJsonResponse(List<Player> rankedList) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key,GameResponseKey.FINISH.key);
         response.add(GameResponseKey.PROJECT.key, createProjectObject(game.getProject()));
-        response.add(GameResponseKey.INFORMATION.key, createInformationObject(player));
+
         JsonArray ranking = new JsonArray();
         for (Player rankPlayer : rankedList) {
             JsonObject rankingPlayer = new JsonObject();
             rankingPlayer.addProperty(GameResponseKey.NOVP.key,rankPlayer.getVictoryPoints());
             rankingPlayer.addProperty(GameResponseKey.RANK.key,rankPlayer.getRole().getId());
+            rankingPlayer.add(GameResponseKey.INFORMATION.key, createInformationObject(rankPlayer));
             JsonObject playerJSON = new JsonObject();
             playerJSON.addProperty(GameResponseKey.USERNAME.key, rankPlayer.getName());
             playerJSON.addProperty(GameResponseKey.ROLE_ID.key, rankPlayer.getRole().getName().getId());

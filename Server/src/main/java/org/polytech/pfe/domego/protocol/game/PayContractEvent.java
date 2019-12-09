@@ -65,8 +65,11 @@ public class PayContractEvent implements EventProtocol {
     private String createResponseToUser(Player player, Player giver, Player receiver, int amountPaid) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_CONTRACT");
-        response.addProperty(GameResponseKey.GIVER_ROLE_NAME.key, giver.getRole().getName().toString());
-        response.addProperty(GameResponseKey.RECEIVER_ROLE_NAME.key, receiver.getRole().getName().toString());
+        response.addProperty(GameResponseKey.GIVER_ROLE_NAME.key, giver.getRole().getName().getName());
+        response.addProperty(GameResponseKey.RECEIVER_ROLE_NAME.key, receiver.getRole().getName().getId());
+
+        response.addProperty(GameResponseKey.GIVERID.key, giver.getRole().getId());
+        response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getRole().getId());
         response.addProperty(GameResponseKey.AMOUNT.key,amountPaid);
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
 

@@ -71,4 +71,12 @@ public class MoneyBonus implements Bonus {
     public int hashCode() {
         return Objects.hash(bonusType, roleType, amount);
     }
+
+    @Override
+    public String toString() {
+        return "MoneyBonus{" +
+                "roleType=" + roleType +
+                ", amount=" + amount +
+                '}';
+    }
 }

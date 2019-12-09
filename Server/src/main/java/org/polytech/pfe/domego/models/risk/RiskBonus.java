@@ -71,4 +71,12 @@ public class RiskBonus implements Bonus {
     public int hashCode() {
         return Objects.hash(bonusType, activityID, amount);
     }
+
+    @Override
+    public String toString() {
+        return "RiskBonus{" +
+                "activityID=" + activityID +
+                ", amount=" + amount +
+                '}';
+    }
 }

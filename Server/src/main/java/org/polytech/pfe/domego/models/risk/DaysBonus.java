@@ -69,4 +69,12 @@ public class DaysBonus implements Bonus{
     public int hashCode() {
         return Objects.hash(bonusType, activityID, amount);
     }
+
+    @Override
+    public String toString() {
+        return "DaysBonus{" +
+                "activityID=" + activityID +
+                ", amount=" + amount +
+                '}';
+    }
 }

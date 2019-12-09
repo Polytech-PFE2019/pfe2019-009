@@ -31,6 +31,7 @@ public class DrawRiskCardEvent implements EventProtocol {
         Activity currentActivity = this.game.getCurrentActivity();
         List<RiskCard> risks = currentActivity.getRiskCardList();
         logger.log(Level.INFO, "DrawRiskCardEvent : In the game {0} for the activity {1} they draw {2} cards" , new Object[]{game.getId(), currentActivity.getId(), risks.size()});
+        logger.log(Level.INFO, "DrawRiskCardEvent : List of Risk : {0}" , risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()));
         for (RiskCard risk : risks) {
             if (!risk.isDraw())
                 risk.doAction(game);

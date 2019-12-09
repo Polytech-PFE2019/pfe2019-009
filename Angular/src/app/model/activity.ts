@@ -27,7 +27,7 @@ export class Activity {
     this.history = [];
     this.riskCards = null;
     this.extraPayment = [];
-    this.payContractAction = [];
+    this.payContractAction = r.payContractAction;
   }
 
   addAttributes(activity) {

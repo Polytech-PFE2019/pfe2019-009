@@ -70,7 +70,9 @@ export class StepComponent implements OnInit, OnDestroy {
 
 
   counter(num) {
-    return new Array(num);
+    if (num >= 0) {
+      return new Array(num);
+    }
   }
 
   ngOnDestroy(): void {

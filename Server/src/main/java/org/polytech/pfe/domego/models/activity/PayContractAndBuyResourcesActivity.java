@@ -32,6 +32,10 @@ public class PayContractAndBuyResourcesActivity extends Activity {
     public Optional<PayContract> getPayPlayerByID(String id){
         return this.payContractList.stream().filter(payPlayer -> payPlayer.getId().equals(id)).findAny();
     }
+    @Override
+    public List<PayContract> getPayContractList() {
+        return this.payContractList;
+    }
 
     @Override
     public int getExchangeRateForRoleID(int roleID){

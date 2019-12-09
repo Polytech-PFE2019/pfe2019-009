@@ -4,12 +4,14 @@ import org.polytech.pfe.domego.database.accessor.RiskAccessor;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
+import org.polytech.pfe.domego.models.activity.PayContractAndBuyResourcesActivity;
 import org.polytech.pfe.domego.models.activity.PayResourceType;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
 import org.polytech.pfe.domego.models.activity.negotiation.Contract;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
+import org.polytech.pfe.domego.models.activity.pay.PayContract;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.*;
@@ -24,6 +26,8 @@ public class InitialGameGenerator implements GameGenerator {
     private final int numberOfDaysWanted = 380;
     private final int costWanted = 135;
     private final int numberOfRisksDrawnWanted = 20;
+
+    private Negotiation negotiation1;
 
 
 
@@ -118,9 +122,9 @@ public class InitialGameGenerator implements GameGenerator {
         String description = "Le maître d’ouvrage négocie avec le maître d’oeuvre afin de déterminerla rémunération de ce dernier. Une fois qu’ils se sont entendus, le contrat peut alors être signé. Ce contrat précisera notamment le délai ainsi que les coûts prévus.";
 
         Contract contract = new Contract(80,115);
-        Negotiation negociation = new Negotiation(1,2,contract);
+        negotiation1 = new Negotiation(1,2,contract);
         List<Negotiation> negociationList = new ArrayList<>();
-        negociationList.add(negociation);
+        negociationList.add(negotiation1);
 
         return new NegotiationActivity(3,8,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(2, 3), negociationList);
     }
@@ -214,10 +218,14 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.BUREAU_D_ETUDE.getId(),timeMapForOfficer, PayResourceType.DAYS));
 
 
+        List<PayContract> payContractList = new ArrayList<>();
 
+        PayContract payContract = new PayContract(negotiation1,10);
+
+        payContractList.add(payContract);
         String title = "ALLOCATION DE RESSOURCES : MAITRE D’OEUVRE, Bureau d’etudes et de contrôle";
         String description = "Le maître d’oeuvre, le bureau d’étude et le bureau de contrôle prévoient les ressources dont ils estiment avoir besoin durant l’opération de construction.";
-        return new BuyingResourcesActivity(5,5,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(3, 5),buyResourcesList);
+        return new PayContractAndBuyResourcesActivity(5,5,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(3,5),payContractList,buyResourcesList);
     }
 
     private Activity generateSixthActivity(){

@@ -1,8 +1,7 @@
 <div class="container" *ngIf="!isLoding">
   <div class="information">
     <div class="listContainer">
-      <h4>Liste de joureurs</h4>
-      <nz-list [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <nz-list [nzHeader]="'Liste de joueurs'" [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
         <ng-template #item let-item>
           <nz-list-item>
             <nz-list-item-meta
@@ -16,10 +15,10 @@
         </ng-template>
       </nz-list>
     </div>
-    <h1 nz-title>Choissisez vore rôle</h1>
+    <h1 nz-title>Choissisez votre rôle</h1>
   </div>
-  <div nz-row [nzGutter]="6" style="margin-top: 100px">
-    <div nz-col [nzSpan]="4" *ngFor="let role of roles">
+  <div nz-row style="margin-top: 50px">
+    <div nz-col [nzSpan]="6" nzOffset="1" *ngFor="let role of roles">
       <app-role #Role [roomID]="roomID"
                 [role]="role"
                 [disableChoose]="role.username!=='' && role.username!= userName"
@@ -27,9 +26,11 @@
                 [readyed]="role.ready"
                 (checkNum)="getCheckedNum($event)"></app-role>
       <label nz-checkbox
-             [disabled]="role.username!=='' && role.username!= userName"
+             style="height: 40px"
+             [(ngModel)]="role.ready" (ngModelChange)="ready()"
              *ngIf="role.choosed"
-             [(ngModel)]="role.ready" (ngModelChange)="ready()">Prêt</label>
+             [disabled]="role.username!=='' && role.username!= userName">Prêt</label>
+      <div *ngIf="!role.choosed" style="height: 40px"></div>
     </div>
   </div>
 

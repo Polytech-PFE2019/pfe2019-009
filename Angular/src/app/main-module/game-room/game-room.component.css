@@ -9,6 +9,7 @@ h1 {
 
 #start {
   margin-top: 60px;
+  margin-bottom: 30px;
   width: 240px;
   height: 50px;
   font-size: 30px;
@@ -20,6 +21,7 @@ h1 {
 
 nz-list {
   width: 200px;
+  font-weight: bold;
 }
 
 h1 {
@@ -42,4 +44,8 @@ img {
   text-align: center;
   max-height: 180px;
   overflow-y: auto;
+  box-shadow: 5px 5px 5px #888888;
+  background-color: aliceblue;
+  padding-left: 3px;
+  padding-right: 3px;
 }

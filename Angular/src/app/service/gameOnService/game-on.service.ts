@@ -41,7 +41,6 @@ export class GameOnService {
       .pipe(
         map((response: MessageEvent): SocketRequest => {
           const data = JSON.parse(response.data);
-          console.log(data);
           if (JSON.stringify(data).includes('players')) {
 
           }
@@ -99,14 +98,15 @@ export class GameOnService {
             }
 
             console.log(data);
-            this.subscription.sendActivities(data.activities);
             this.currentActivityID = data.currentActivityID;
+            console.log(this.currentStep);
+            this.currentStep = [];
             console.log('after++++++++++++  ' + data.activities);
             for (const activity of data.activities) {
               this.test = new Activity(activity);
-              console.log(this.test);
               this.currentStep.push(this.test);
             }
+            this.subscription.sendActivities(this.currentStep);
             this.currentActivity = this.currentStep[0];
             console.log(this.currentStep);
             console.log(this.currentActivity);
@@ -140,7 +140,6 @@ export class GameOnService {
             console.log(this.currentStep[currentId - 1].riskCards);
             this.addInformationAfterRiskCards(currentId);
           }
-          console.log(data);
           this.reponses.next(data);
           return data;
         })) as Subject<SocketRequest>;

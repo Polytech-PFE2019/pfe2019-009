@@ -37,6 +37,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   riskCard: any [] = [];
   riskOfActivityId = 0;
   roleId: any;
+  subSteps: Subscription;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -70,7 +71,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
       this.currentActivity.numberOfDays = this.currentActivity.numberOfDays - data;
     });
 
-    this.currentStep = this.gameService.currentStep;
+    this.subSteps = this.subscription.activites$.subscribe(data => {
+      console.log(data);
+      this.currentStep = data;
+    });
+
+    // this.currentStep = this.gameService.currentStep;
     console.log(this.currentStep);
 
     this.subPayingActions = this.subscription.payingActions$.subscribe(data => {

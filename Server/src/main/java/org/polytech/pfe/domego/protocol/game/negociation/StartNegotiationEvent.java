@@ -81,7 +81,6 @@ public class StartNegotiationEvent extends NegotiationEvent implements EventProt
     }
 
     private void endTimer(){
-        System.out.println("End of timer");
         if(!negotiation.getNegotiationStatus().equals(NegotiationStatus.SUCCESS)){
             new FailureNegotiationEvent(game,negotiation,giver,receiver).processEvent();
         }

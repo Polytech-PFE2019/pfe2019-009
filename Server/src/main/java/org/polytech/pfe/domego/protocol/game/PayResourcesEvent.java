@@ -85,6 +85,7 @@ public class PayResourcesEvent implements EventProtocol {
 
 
         logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
+        logger.log(Level.INFO, "PaymentResourcesEvent : List Payment :  {0}", payments);
         new UpdatePaymentGameEvent(game, player).processEvent();
 
         if (currentActivity.isActivityDone()) {

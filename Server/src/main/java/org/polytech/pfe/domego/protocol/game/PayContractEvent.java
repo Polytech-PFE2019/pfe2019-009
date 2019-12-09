@@ -17,13 +17,9 @@ public class PayContractEvent implements EventProtocol {
 
     private Logger logger = Logger.getGlobal();
     private Game game;
-    private Player giver;
-    private Player receiver;
 
-    public PayContractEvent(Game game, Player giver, Player receiver) {
+    public PayContractEvent(Game game) {
         this.game = game;
-        this.giver = giver;
-        this.receiver = receiver;
 
     }
     @Override
@@ -31,29 +27,38 @@ public class PayContractEvent implements EventProtocol {
 
         Activity activity = game.getCurrentActivity();
 
-        //Optional<PayPlayer> payPlayerOptional = activity.getPayPlayerList().stream().filter(payPlayer -> payPlayer.getNegotiation().getGiverRoleID() == giver.getID()&& payPlayer.getNegotiation().getReceiverRoleID() == receiver.getID() ).findAny();;
-        Optional<PayContract> payPlayerOptional = Optional.empty();
-        if(!payPlayerOptional.isPresent()){
-            //todo throw some error
-           return;
+        if(activity.getPayContractList().isEmpty())
+            return;
+
+        for (PayContract payContract : activity.getPayContractList()) {
+
+            Negotiation negotiation = payContract.getNegotiation();
+            int percentage = payContract.getPercentage();
+            negotiation.pay(percentage);
+            int amountPaid = negotiation.getLastPayment();
+            Optional<Player> optionalGiver = game.getPlayerByRoleID(payContract.getNegotiation().getGiverRoleID());
+            if (optionalGiver.isEmpty())
+                return;
+
+            Player giver = optionalGiver.get();
+            Optional<Player> optionalReceiver = game.getPlayerByRoleID(payContract.getNegotiation().getReceiverRoleID());
+            if (optionalReceiver.isEmpty())
+                return;
+
+            Player receiver = optionalGiver.get();
+            giver.subtractMoney(amountPaid);
+            receiver.addMoney(amountPaid);
+            System.out.println("GIVER get MONEY : " + giver.getMoney());
+            System.out.println("RECEIVER get MONEY : " + receiver.getMoney());
+            payContract.setPaid();
+            new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver, giver, receiver,amountPaid));
+            new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, giver, receiver, amountPaid));
         }
-
-        PayContract payContract = payPlayerOptional.get();
-        Negotiation negociation = payContract.getNegotiation();
-        int percentage = payContract.getPercentage();
-        negociation.pay(percentage);
-        int amountPaid = negociation.getLastPayment();
-        giver.subtractMoney(amountPaid);
-        receiver.addMoney(amountPaid);
-        payContract.setPaid();
-
-        new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver,amountPaid));
-        new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, amountPaid));
 
 
     }
 
-    private String createResponseToUser(Player player, int amountPaid) {
+    private String createResponseToUser(Player player, Player giver, Player receiver, int amountPaid) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_PLAYER");
         response.addProperty(GameResponseKey.GIVERID.key, giver.getID());

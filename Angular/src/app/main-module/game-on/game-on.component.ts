@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Steps} from '../../model/step';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {SocketRequest} from '../../../Request';
 import {Router} from '@angular/router';
@@ -29,8 +28,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
   roles: any[] = [];
   currentActivity: any;
   subCurrentActivity: Subscription;
-  subRisks: Subscription;
-  subDays: Subscription;
   listOfDialog: any[] = [];
   subGame: Subscription;
   isRiskCard = false;
@@ -61,22 +58,11 @@ export class GameOnComponent implements OnInit, OnDestroy {
       console.log(this.currentActivity);
     });
 
-    this.subRisks = this.resourceManager.risksReduced$.subscribe(data => {
-      console.log(data);
-      this.currentActivity.risks = this.currentActivity.risks - data;
-    });
-
-    this.subDays = this.resourceManager.daysReduced$.subscribe(data => {
-      console.log(data);
-      this.currentActivity.numberOfDays = this.currentActivity.numberOfDays - data;
-    });
-
     this.subSteps = this.subscription.activites$.subscribe(data => {
       console.log(data);
       this.currentStep = data;
     });
 
-    // this.currentStep = this.gameService.currentStep;
     console.log(this.currentStep);
 
     this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
@@ -99,7 +85,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
         }
       }
       if (data.response === 'FINISH') {
-
+        this.router.navigate(['result']);
       }
     });
 
@@ -134,9 +120,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subPayingActions.unsubscribe();
     this.subPlayersWithRoles.unsubscribe();
     this.subCurrentActivity.unsubscribe();
-    this.subRisks.unsubscribe();
-    this.subDays.unsubscribe();
     this.subGame.unsubscribe();
+    this.subSteps.unsubscribe();
   }
 
   initDialog($event: any) {

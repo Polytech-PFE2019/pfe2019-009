@@ -32,6 +32,7 @@ export class GameOnService {
   roomId: any;
   subRiskReduced: Subscription;
   riskReduced = 0;
+  results: any;
 
   constructor(private wsService: WebsocketService,
               private resourceManager: BuyResourceService,
@@ -129,8 +130,9 @@ export class GameOnService {
             } else {
               this.currentStep[currentId - 1].history = this.currentStep[currentId - 1].history.concat(data.payments);
             }
-            console.log(this.currentStep);
             console.log(this.currentStep[currentId - 1].history);
+            this.updateInformationAfterPayment(currentId);
+            console.log(this.currentStep);
           }
 
           if (data.response === 'drawRisk') {
@@ -139,6 +141,9 @@ export class GameOnService {
             console.log(this.currentStep);
             console.log(this.currentStep[currentId - 1].riskCards);
             this.addInformationAfterRiskCards(currentId);
+          }
+          if (data.response === 'FINISH') {
+            this.results = data;
           }
           this.reponses.next(data);
           return data;
@@ -176,5 +181,23 @@ export class GameOnService {
         }
       }
     }
+  }
+
+  updateInformationAfterPayment(currentId) {
+    const currentAc = this.currentStep[currentId - 1];
+    console.log(this.currentStep);
+    console.log(currentAc);
+    for (const b of currentAc.history) {
+      switch (b.type) {
+        case 'DAYS':
+          this.currentStep[currentId - 1].numberOfDays -= b.bonus;
+          break;
+        case 'RISKS':
+          this.currentStep[currentId - 1].risks -= b.bonus;
+          break;
+      }
+    }
+    console.log(this.currentStep);
+    this.subscription.sendActivities(this.currentStep);
   }
 }

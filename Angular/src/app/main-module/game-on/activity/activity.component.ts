@@ -31,16 +31,13 @@ export class ActivityComponent implements OnInit, OnDestroy {
   test = [1];
   subCurrentResource: Subscription;
   currentResource: number;
-  subPayingActions: Subscription;
   daysReduced = 0;
-  subGameId: Subscription;
   gameID: any;
   request = {
     RISKS: null,
     DAYS: null,
     MANDATORY: null
   };
-  subUserId: Subscription;
   userID: any;
   currentActivity: any;
   userName: any;
@@ -189,9 +186,6 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subCurrentResource.unsubscribe();
-    this.subPayingActions.unsubscribe();
-    this.subGameId.unsubscribe();
-    this.subUserId.unsubscribe();
     this.subCurrentActivity.unsubscribe();
   }
 

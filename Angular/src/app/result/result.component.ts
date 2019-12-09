@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Roles} from "../model/roles";
-import {of} from "rxjs";
+import {GameOnService} from '../service/gameOnService/game-on.service';
+import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
+import {Roles} from '../model/roles';
 
 @Component({
   selector: 'app-result',
@@ -11,58 +12,55 @@ export class ResultComponent implements OnInit {
   @Input() pdv = [];
   @Input() detail = [];
   // @Input() projectInfo = [];
-  projectInfo ={
-    duration: 365,
-    failure: 100,
-    cost: 150,
-  };
+  duration = 0;
+  failure = 0;
+  cost = 0;
+  results = [];
+  myRole: any;
+  roles = Roles;
 
   data: any[] = [];
-  constructor() { }
+
+  constructor(private gameOnService: GameOnService,
+              private subscription: SubscriptionService) {
+  }
 
   ngOnInit() {
+    this.myRole = this.subscription.myRole;
+    this.cost = this.gameOnService.results.project.costProject;
+    this.failure = this.gameOnService.results.project.risks;
+    this.duration = this.gameOnService.results.project.days;
+    this.results = this.gameOnService.results.ranking;
     this.loadData();
   }
 
   loadData(): void {
-    this.data = [
-      {
-        title: 'Maitre d\'ouvrage',
-        src: '../../assets/Maitre d’ouvrage.jpg',
-        point: 20,
-        detail:'',
-      },
-      {
-        title: 'Maitre d\'œuvre (Architecte)',
-        src: '../../assets/Architecte.png',
-        point: 0,
-        detail:'',
-      },
-      {
-        title: 'Bureau d\'étude',
-        src: '../../assets/Bureau d\'etude.png',
-        point: 10,
-        detail:'',
-      },
-      {
-        title: 'Bureau de contrôle',
-        src: '../../assets/Bureau de contrôle.jpg',
-        point: -10,
-        detail:'',
-      },
-      {
-        title: 'Entreprise Corps Etat Secondaire',
-        src: '../../assets/Entreprise Corps Etat Secondaire.png',
-        point: 0,
-        detail:'',
-      },
-      {
-        title: 'Entreprise Gros Œuvre',
-        src: '../../assets/Entreprise Gros Œuvre.png',
-        point: 20,
-        detail:'',
-      }
-    ];
+    for (const item of this.results) {
+      console.log(item);
+      const detail = {
+        money: item.information.moneyOriginal,
+        moneyRemain: item.information.moneyRemain,
+        moneyPayed: item.information.moneyPaid,
+        resourcePayed: item.information.resourcesPaid,
+        resourceReamin: item.information.resourcesRemain,
+        riskReduced: item.information.riskReduced,
+        dayReduced: item.information.dayReduced,
+        contactNegociated: item.information.contractNegotiated
+      };
+      const tmp = {
+        title: this.getSrcById(item.player.roleID).title,
+        user: item.player.username,
+        point: item.NumberOfVictoryPoints,
+        details: detail,
+        rank: item.rank,
+        src: this.getSrcById(item.player.roleID).src
+      };
+      this.data.push(tmp);
+    }
+  }
+
+  getSrcById(id) {
+    return this.roles.filter(next => next.id === id)[0];
   }
 
 

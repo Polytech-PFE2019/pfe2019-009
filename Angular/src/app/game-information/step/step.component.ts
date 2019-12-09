@@ -28,18 +28,14 @@ export class StepComponent implements OnInit, OnDestroy {
   };
   buyingActions: any[] = [];
   payingActions: any[] = [];
-  dataResources: ActionSet[] = [];
-  subActivities: Subscription;
   test = [1];
   type: string;
   tmpAction: ActionSet = new ActionSet();
   isHistory = false;
-  subHistory: Subscription;
   roleID: any;
   userName: any;
   roles: any[] = [];
   myInformation: any;
-  subRisks: Subscription;
   numOfRisks: any;
 
   constructor(private subscription: SubscriptionService,
@@ -78,8 +74,7 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subActivities.unsubscribe();
-    this.subRisks.unsubscribe();
+
   }
 
   openHistory() {

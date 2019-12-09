@@ -19,7 +19,6 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   currentResource = 0;
   subPlayersWithRoles: Subscription;
   userName: string;
-  subUserName: Subscription;
   myInformation: any;
   isPointsVistoire = false;
   isSpecial = false;
@@ -102,7 +101,6 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
     this.subPayment.unsubscribe();
     this.subReduced.unsubscribe();
     this.subPlayersWithRoles.unsubscribe();
-    this.subUserName.unsubscribe();
     this.subCost.unsubscribe();
     this.subDays.unsubscribe();
     this.subRisk.unsubscribe();

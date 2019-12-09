@@ -1,11 +1,14 @@
 .container{
   cursor: pointer;
-  transition: all 0.6s
+  transition: all 0.6s;
+  margin-bottom: 20px;
+  margin-top: 50px;
+  box-shadow: 3px 3px 3px #AAAAAA;
 }
 
-.container:hover{
-  transform: scale(1.2);
-}
+/*.container:hover{*/
+  /*transform: scale(1.2);*/
+/*}*/
 
 .container:visited{
   border: #000c17 1px solid;
@@ -14,7 +17,7 @@
 .role-container {
   background: #ECECEC;
   padding: 12px;
-  height: 440px;
+  height: 340px;
   overflow-y: auto;
   text-align: center;
 }
@@ -25,21 +28,17 @@ img{
   z-index:999;
   position: absolute;
   margin-top: -40px;
-  left:120px
+  left:170px;
 }
 
 nz-card {
-  height: 376px;
+  height: 276px;
 
 }
 
-
-nz-card-tab{
-  height: 100%;
-}
 
 .info-container{
-  min-height: 250px;
+  min-height: 200px;
 }
 
 #profile{

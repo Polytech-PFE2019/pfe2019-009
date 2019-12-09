@@ -9,7 +9,7 @@
     <div nz-col [nzSpan]="4" class="resultColumn" *ngFor="let d of data">
       <div class="result">
         <img class="profile" [src]="d?.src" width="60" height="60">
-        <h3 style="margin-top: 30px">{{d?.title}} - {{d?.user}}</h3>
+        <h3 style="margin-top: 30px; height: 40px">{{d?.title}} - {{d?.user}}</h3>
         <img class="rank" *ngIf="d.rank===1" src="../../assets/icons/gold-medal.png" [height]="50" [width]="50">
         <img class="rank" *ngIf="d.rank===2" src="../../assets/icons/silver-medal.png" [height]="50" [width]="50">
         <img class="rank" *ngIf="d.rank===3" src="../../assets/icons/bronze-medal.png" [height]="50" [width]="50">

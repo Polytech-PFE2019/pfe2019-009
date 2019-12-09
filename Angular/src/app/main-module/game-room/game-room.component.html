@@ -1,24 +1,25 @@
+<div class="listContainer">
+  <nz-list [nzHeader]="'Liste de joueurs'" [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <ng-template #item let-item>
+      <nz-list-item>
+        <nz-list-item-meta
+          [nzTitle]="nzTitle"
+          nzAvatar="../../assets/profiles/test.jpg">
+          <ng-template #nzTitle>
+            <a>{{ item?.username}}</a>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+</div>
 <div class="container" *ngIf="!isLoding">
-  <div class="information">
-    <div class="listContainer">
-      <nz-list [nzHeader]="'Liste de joueurs'" [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-        <ng-template #item let-item>
-          <nz-list-item>
-            <nz-list-item-meta
-              [nzTitle]="nzTitle"
-              nzAvatar="../../assets/profiles/test.jpg">
-              <ng-template #nzTitle>
-                <a>{{ item?.username}}</a>
-              </ng-template>
-            </nz-list-item-meta>
-          </nz-list-item>
-        </ng-template>
-      </nz-list>
-    </div>
-    <h1 nz-title>Choissisez votre rôle</h1>
-  </div>
-  <div nz-row style="margin-top: 50px">
-    <div nz-col [nzSpan]="6" nzOffset="1" *ngFor="let role of roles">
+  <h1 nz-title>Choissisez votre rôle</h1>
+  <div nz-row style="margin-top: 50px"
+       nzType="flex" nzJustify="space-around" nzAlign="middle"
+       class="roleContainer"
+       nzGutter="48">
+    <div class="role" nz-col nzSpan="8" *ngFor="let role of roles">
       <app-role #Role [roomID]="roomID"
                 [role]="role"
                 [disableChoose]="role.username!=='' && role.username!= userName"

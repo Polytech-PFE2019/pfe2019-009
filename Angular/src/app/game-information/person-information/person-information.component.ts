@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {BuyResourceService} from '../../service/resources/buy-resource.service';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { BuyResourceService } from '../../service/resources/buy-resource.service';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-person-information',
@@ -34,9 +35,10 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   risk: any;
 
   constructor(private resourceService: BuyResourceService,
-              private lobbyService: LobbyService,
-              private gameService: GameOnService,
-              private subscription: SubscriptionService) {
+    private lobbyService: LobbyService,
+    private gameService: GameOnService,
+    private subscription: SubscriptionService,
+    private notificationService: NzNotificationService) {
   }
 
   ngOnInit() {
@@ -93,6 +95,10 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
       if (data.response === 'drawRisk') {
         this.currentMonney = data.player.money;
         this.currentResource = data.player.resources;
+      }
+      if (data.response === "PAY_CONTRACT") {
+        this.currentMonney = data.money;
+        this.notificationService.blank("Paiement", 'Une partie du contrat a été payée : ' + data.giverRoleName + 'a payé ' + data.amount + 'k au' + data.receiverRoleName)
       }
     });
   }

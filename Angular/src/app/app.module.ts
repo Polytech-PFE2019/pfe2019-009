@@ -47,7 +47,8 @@ import { ChatReceiverComponent } from './chat-module/chat-receiver/chat-receiver
 import { ChatMessageComponent } from './chat-module/chat-message/chat-message.component';
 
 import { CountdownModule } from 'ngx-countdown';
-import { ResultComponent } from './result/result.component';
+import { ResultComponent } from './game-information/result/result.component';
+import { PaymentContractComponent } from './commun-module/payment-contract/payment-contract.component';
 
 
 registerLocaleData(fr);
@@ -84,7 +85,8 @@ registerLocaleData(fr);
     ChatDialogueComponent,
     ChatReceiverComponent,
     ChatMessageComponent,
-    ResultComponent
+    ResultComponent,
+    PaymentContractComponent
   ],
   imports: [
     BrowserModule,

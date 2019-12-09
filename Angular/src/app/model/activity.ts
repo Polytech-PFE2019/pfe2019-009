@@ -11,6 +11,7 @@ export class Activity {
   history: any[];
   riskCards: any;
   extraPayment: any[];
+  payContractAction: any[];
 
 
   constructor(r) {
@@ -26,6 +27,7 @@ export class Activity {
     this.history = [];
     this.riskCards = null;
     this.extraPayment = [];
+    this.payContractAction = [];
   }
 
   addAttributes(activity) {

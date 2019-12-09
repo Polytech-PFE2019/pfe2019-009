@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameOnService} from '../service/gameOnService/game-on.service';
-import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
-import {Roles} from '../model/roles';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {Roles} from '../../model/roles';
 
 @Component({
   selector: 'app-result',

@@ -54,12 +54,5 @@ img {
 
 
 .roleContainer{
-  /*display: flex;*/
-  /*justify-content: center;*/
-  /*flex-wrap: wrap;*/
   width: 92%;
-}
-
-.role{
-  /*width: 30%;*/
 }

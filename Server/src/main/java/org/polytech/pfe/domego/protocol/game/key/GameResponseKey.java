@@ -54,6 +54,8 @@ public enum GameResponseKey {
     CHANGE_ACTIVITY("CHANGE_ACTIVITY"),
     NOVP("NumberOfVictoryPoints"),
     OTHER_USER_NAME("otherUserName"),
+    GIVER_ROLE_NAME("giverRoleName"),
+    RECEIVER_ROLE_NAME("receiverRoleName"),
     TIME("time"),
     INFORMATION("information");
 

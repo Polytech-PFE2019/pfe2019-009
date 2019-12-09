@@ -75,23 +75,7 @@ export class GameOnService {
 
           if (data.response === 'LAUNCH_GAME') {
             this.userID = data.player.userID;
-            const failure = {
-              minFailure: data.project.minFailure,
-              maxFailure: data.project.maxFailure
-            };
-            this.subscription.sendFailures(failure);
-
-            const cost = {
-              minCost: data.project.minCost,
-              maxCost: data.project.maxCost
-            };
-            this.subscription.sendCosts(cost);
-
-            const days = {
-              minTime: data.project.minTime,
-              maxTime: data.project.maxTime
-            };
-            this.subscription.sendDays(days);
+            this.updateMinAndMax(data.project);
             if (data.player.userID !== undefined) {
               console.log('send userID');
               this.userID = data.player.userID;
@@ -123,7 +107,11 @@ export class GameOnService {
             this.subscription.sendCurrentActivity(this.currentActivity);
           }
 
+
+
           if (data.response === 'UPDATE_PAYMENT') {
+
+            this.updateMinAndMax(data.project)
             const currentId = data.activityID;
             if (this.currentStep[currentId - 1].history === null) {
               this.currentStep[currentId - 1].history = data.payments;
@@ -199,5 +187,25 @@ export class GameOnService {
     }
     console.log(this.currentStep);
     this.subscription.sendActivities(this.currentStep);
+
+  }
+  updateMinAndMax(project) {
+    const failure = {
+      minFailure: project.minFailure,
+      maxFailure: project.maxFailure
+    };
+    this.subscription.sendFailures(failure);
+
+    const cost = {
+      minCost: project.minCost,
+      maxCost: project.maxCost
+    };
+    this.subscription.sendCosts(cost);
+
+    const days = {
+      minTime: project.minTime,
+      maxTime: project.maxTime
+    };
+    this.subscription.sendDays(days);
   }
 }

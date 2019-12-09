@@ -4,7 +4,7 @@ import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-person-information',
@@ -41,8 +41,10 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
               private lobbyService: LobbyService,
               private gameService: GameOnService,
               private subscription: SubscriptionService,
+              private nzConfigService: NzConfigService,
               private notificationService: NzNotificationService) {
   }
+
 
   ngOnInit() {
     this.userName = this.lobbyService.username;

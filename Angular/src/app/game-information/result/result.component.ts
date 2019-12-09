@@ -48,18 +48,19 @@ export class ResultComponent implements OnInit {
         contactNegociated: item.information.contractNegotiated
       };
       const tmp = {
-        title: this.getSrcById(item.player.roleID).title,
+        title: this.getRoleById(item.player.roleID).title,
         user: item.player.username,
+        id: item.player.roleID,
         point: item.NumberOfVictoryPoints,
         details: detail,
         rank: item.rank,
-        src: this.getSrcById(item.player.roleID).src
+        src: this.getRoleById(item.player.roleID).src
       };
       this.data.push(tmp);
     }
   }
 
-  getSrcById(id) {
+  getRoleById(id) {
     return this.roles.filter(next => next.id === id)[0];
   }
 

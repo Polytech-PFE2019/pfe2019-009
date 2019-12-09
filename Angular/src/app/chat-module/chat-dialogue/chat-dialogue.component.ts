@@ -4,7 +4,7 @@ import {DialogueMessage} from './dialogueMessage';
 import {SocketRequest} from 'src/Request';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
-import {NzNotificationService} from "ng-zorro-antd";
+import {NzConfigService, NzNotificationService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -43,6 +43,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
 
   constructor(private gameService: GameOnService,
               private notification: NzNotificationService,
+              private nzConfigService: NzConfigService,
               private subsciption: SubscriptionService) {
   }
 
@@ -90,6 +91,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
             this.notification.template(this.template);
+
           }
           break;
       }

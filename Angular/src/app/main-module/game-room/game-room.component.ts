@@ -68,7 +68,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           case 'UPDATE':
             this.users = data.players;
             this.hostID = data.hostID;
-
             for (const r of this.roles) {
               let taken = false;
               if (r.ready) {

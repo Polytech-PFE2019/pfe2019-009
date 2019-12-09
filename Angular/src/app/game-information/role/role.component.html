@@ -1,5 +1,8 @@
 <div class="container">
-  <img [src]="role?.src" width="60" height="60">
+  <div class="infor">
+    <img [src]="role?.src" width="60" height="60">
+    <h2>{{role?.username}}</h2>
+  </div>
   <div class="role-container">
     <nz-card [nzTitle]="role?.title">
       <div class="info-container">

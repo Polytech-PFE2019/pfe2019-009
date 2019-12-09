@@ -72,7 +72,7 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     console.log('price is ' + this.price);
     this.resourceService.sendResourcesBuying(this.resourceNb);
     this.resourceService.sendPayment(this.price);
-    this.multiple = 2 * this.multiple;
+    this.multiple = 2;
     console.log('multiple' + this.multiple);
     this.isVisible = false;
     this.nzMessageService.info('Achat réussi');

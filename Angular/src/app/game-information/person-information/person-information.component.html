@@ -77,3 +77,21 @@
     </div>
   </ng-template>
 </div>
+
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+          <span class="ant-notification-notice-icon">
+            <i nz-icon nzType="money-collect"
+               style="color: rgb(16, 142, 233);"
+               nzTheme="outline">
+            </i>
+          </span>
+      <div class="ant-notification-notice-message">Paiement du contract</div>
+      <div class="ant-notification-notice-description">
+        Une partie du contrat a été payée: <b>{{giverRoleName}}</b> a payé <b>{{paymentAmount}}
+        k</b> au <b>{{receiverRoleName}}</b>
+      </div>
+    </div>
+  </div>
+</ng-template>

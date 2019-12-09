@@ -1,18 +1,19 @@
-<div class="listContainer">
-  <nz-list [nzHeader]="'Liste de joueurs'" [nzDataSource]="users" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-    <ng-template #item let-item>
-      <nz-list-item>
-        <nz-list-item-meta
-          [nzTitle]="nzTitle"
-          nzAvatar="../../assets/profiles/test.jpg">
-          <ng-template #nzTitle>
-            <a>{{ item?.username}}</a>
-          </ng-template>
-        </nz-list-item-meta>
-      </nz-list-item>
-    </ng-template>
-  </nz-list>
-</div>
+<!--<div class="listContainer">-->
+<!--  <nz-list [nzHeader]="'Liste de joueurs'" [nzDataSource]="roles" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">-->
+<!--    <ng-template #item let-item>-->
+<!--      <nz-list-item>-->
+<!--        <nz-list-item-meta-->
+<!--          [nzTitle]="nzTitle"-->
+<!--          [nzAvatar]="item.src">-->
+<!--          <ng-template #nzTitle>-->
+<!--            <a>{{ item?.username}}</a>-->
+<!--            <b>{{item?.title}}</b>-->
+<!--          </ng-template>-->
+<!--        </nz-list-item-meta>-->
+<!--      </nz-list-item>-->
+<!--    </ng-template>-->
+<!--  </nz-list>-->
+<!--</div>-->
 <div class="container" *ngIf="!isLoding">
   <h1 nz-title>Choissisez votre rôle</h1>
   <div nz-row style="margin-top: 50px"

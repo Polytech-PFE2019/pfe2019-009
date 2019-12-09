@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { WebsocketService } from '../webSocketService/websocket.service';
-import { SubscriptionService } from '../subscriptionSerivce/subscription.service';
-import { Subject, Subscription } from 'rxjs';
-import { SocketRequest } from '../../../Request';
-import { URLGame } from '../../model/url';
-import { map } from 'rxjs/operators';
-import { Activity } from '../../model/activity';
-import { ActionSet } from '../../model/action';
-import { BuyResourceService } from '../resources/buy-resource.service';
-import { Roles } from '../../model/roles';
+import {Injectable} from '@angular/core';
+import {WebsocketService} from '../webSocketService/websocket.service';
+import {SubscriptionService} from '../subscriptionSerivce/subscription.service';
+import {Subject, Subscription} from 'rxjs';
+import {SocketRequest} from '../../../Request';
+import {URLGame} from '../../model/url';
+import {map} from 'rxjs/operators';
+import {Activity} from '../../model/activity';
+import {ActionSet} from '../../model/action';
+import {BuyResourceService} from '../resources/buy-resource.service';
+import {Roles} from '../../model/roles';
 
 @Injectable()
 export class GameOnService {
@@ -35,8 +35,8 @@ export class GameOnService {
   results: any;
 
   constructor(private wsService: WebsocketService,
-    private resourceManager: BuyResourceService,
-    private subscription: SubscriptionService) {
+              private resourceManager: BuyResourceService,
+              private subscription: SubscriptionService) {
     this.messages = wsService
       .connect(URLGame)
       .pipe(
@@ -108,10 +108,8 @@ export class GameOnService {
           }
 
 
-
           if (data.response === 'UPDATE_PAYMENT') {
-
-            this.updateMinAndMax(data.project)
+            this.updateMinAndMax(data.project);
             const currentId = data.activityID;
             if (this.currentStep[currentId - 1].history === null) {
               this.currentStep[currentId - 1].history = data.payments;
@@ -189,6 +187,7 @@ export class GameOnService {
     this.subscription.sendActivities(this.currentStep);
 
   }
+
   updateMinAndMax(project) {
     const failure = {
       minFailure: project.minFailure,

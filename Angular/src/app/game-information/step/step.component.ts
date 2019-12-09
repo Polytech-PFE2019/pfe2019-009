@@ -60,12 +60,8 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   sendStep() {
-    // this.currentStep.emit(this.step.title);
     this.sendTestClick.emit(true);
-    // this.subscription.sendPayingActions(test);
-    // this.sendStepTest.emit(test);
     this.sendStepTest.emit(this.step.payingActions);
-    // this.subscription.sendPayingActions(this.step);
   }
 
 

@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuyResourceService } from '../../service/resources/buy-resource.service';
-import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
-import { LobbyService } from '../../service/lobbyService/lobby.service';
-import { GameOnService } from '../../service/gameOnService/game-on.service';
-import { NzNotificationService } from 'ng-zorro-antd';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {BuyResourceService} from '../../service/resources/buy-resource.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-person-information',
@@ -12,6 +12,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
   styleUrls: ['./person-information.component.css']
 })
 export class PersonInformationComponent implements OnInit, OnDestroy {
+  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
   playersWithRoles: any[] = [];
   subResourcesBuyed: Subscription;
   subPayment: Subscription;
@@ -32,12 +33,15 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   cost: any;
   day: any;
   risk: any;
+  giverRoleName = '';
+  receiverRoleName = '';
+  paymentAmount = 0;
 
   constructor(private resourceService: BuyResourceService,
-    private lobbyService: LobbyService,
-    private gameService: GameOnService,
-    private subscription: SubscriptionService,
-    private notificationService: NzNotificationService) {
+              private lobbyService: LobbyService,
+              private gameService: GameOnService,
+              private subscription: SubscriptionService,
+              private notificationService: NzNotificationService) {
   }
 
   ngOnInit() {
@@ -85,19 +89,18 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
 
     console.log(this.lobbyService.username);
 
-    //
-    // this.subUserName = this.subscription.userName$.subscribe(data => {
-    //   console.log(data);
-    //   this.userName = data;
-    // });
     this.subGame = this.gameService.reponses$.subscribe(data => {
       if (data.response === 'drawRisk') {
         this.currentMonney = data.player.money;
         this.currentResource = data.player.resources;
       }
-      if (data.response === "PAY_CONTRACT") {
+      if (data.response === 'PAY_CONTRACT') {
         this.currentMonney = data.money;
-        this.notificationService.blank("Paiement", 'Une partie du contrat a été payée : ' + data.giverRoleName + 'a payé ' + data.amount + 'k au' + data.receiverRoleName)
+        this.notificationService.template(this.template);
+        // this.notificationService.blank('Paiement',
+        //   'Une partie du contrat a été payée : '
+        //   + data.giverRoleName + 'a payé ' + data.amount + 'k au' + data.receiverRoleName,
+        //   {nzDuration: 0});
       }
     });
   }
@@ -140,4 +143,5 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
     this.isPointsVistoire = false;
     this.isSpecial = false;
   }
+
 }

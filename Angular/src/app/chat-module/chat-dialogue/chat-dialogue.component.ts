@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
 import {DialogueMessage} from './dialogueMessage';
 import {SocketRequest} from 'src/Request';
@@ -20,6 +20,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     description: 40,
   };
   @Input() title = '';
+  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
   isOpenDialog = true;
   value = 100;
   contractNumber = 0;
@@ -88,7 +89,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
         case 'END_NEGOTIATE':
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
-            this.createBasicNotification();
+            this.notification.template(this.template);
           }
           break;
       }
@@ -159,10 +160,4 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     this.gameService.messages.next(req as SocketRequest);
   }
 
-  createBasicNotification(): void {
-    this.notification.blank(
-      'Résultat de négociation',
-      'Vous avez négocié un contrat de ' + this.contractNumber + ' K.'
-    );
-  }
 }

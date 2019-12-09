@@ -62,3 +62,20 @@
     </div>
   </div>
 </div>
+
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+          <span class="ant-notification-notice-icon">
+            <i nz-icon nzType="sound"
+               style="color: rgb(16, 142, 233);"
+               nzTheme="outline">
+            </i>
+          </span>
+      <div class="ant-notification-notice-message">Résultat de négociation</div>
+      <div class="ant-notification-notice-description">
+        Vous avez négocié un contrat de: <b>{{contractNumber}}K</b>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Roles} from '../../model/roles';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-result',
@@ -22,6 +23,7 @@ export class ResultComponent implements OnInit {
   data: any[] = [];
 
   constructor(private gameOnService: GameOnService,
+              private router: Router,
               private subscription: SubscriptionService) {
   }
 
@@ -65,4 +67,8 @@ export class ResultComponent implements OnInit {
   }
 
 
+  quit() {
+    console.log('quit');
+    this.router.navigate(['']);
+  }
 }

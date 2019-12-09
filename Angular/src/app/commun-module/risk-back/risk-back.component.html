@@ -1,10 +1,10 @@
-<div [@.disabled]='isDiabled'>
+<div [@.disabled]='isDiabled' class="allContainers">
   <nz-card
     *ngIf="isVanished"
     [@flipOutX]="{ value: flipOutX, params: { timing: 1, delay: myTiming} }"
     style="background: black">
     <div class="cardContainer">
-      <h2 style="color: white;margin: 5px">
+      <h2 style="color: white">
         Risques
       </h2>
       <div class="circle">{{title}}</div>
@@ -23,8 +23,8 @@
         <img src="../../../assets/risks/resource.png" *ngIf="item.type === 'RESOURCES'" [width]="40" [height]="40">
         <div class="moneyRisk" *ngIf="item.type === 'MONEY'"
              [ngStyle]="getStyleById(item.roleID).style">{{item?.amount}}</div>
-        <div class="dayRisk" *ngIf="item.type === 'DAYS'">{{item?.amount + ' '}} Jours</div>
-        <div class="risk" *ngIf="item.type === 'RISK'">{{item?.amount + ' '}} Risques</div>
+        <div class="dayRisk" *ngIf="item.type === 'DAYS'">{{item?.amount}} J · <b>{{item.activityIdAssociate}}</b></div>
+        <div class="risk" *ngIf="item.type === 'RISK'">{{item?.amount}} R · <b>{{item.activityIdAssociate}}</b></div>
         <div class="resourceRisk"
              [ngStyle]="getStyleById(item.roleID).style"
              *ngIf="item.type === 'RESOURCES'">{{item?.amount}}

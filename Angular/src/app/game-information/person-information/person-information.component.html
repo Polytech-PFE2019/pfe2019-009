@@ -1,5 +1,5 @@
 <div class="container">
-  <nz-card [nzActions]="[description, pointVictoire, special]">
+  <nz-card [nzActions]="[description, pointVictoire, special, plan]">
     <nz-card-meta
       [nzDescription]="extra"
       [nzTitle]="myInformation.title"
@@ -20,6 +20,13 @@
     <div *ngIf="isDescription" class="content-container">
       <h6>Description:</h6>
       <p>{{myInformation.description}}</p>
+    </div>
+
+    <div *ngIf="isPlan" class="content-container">
+      <h6>Plan</h6>
+      <p>Resources nécessaires: <b>Max: {{cost.maxCost}}</b>/<b>Min: {{cost.minCost}}</b></p>
+      <p>Durée du projet: <b>Max: {{day.maxTime}}</b>/<b>Min: {{day.minTime}}</b></p>
+      <p>Defaillance du projet: <b>Max: {{risk.maxFailure}}</b>/<b>Min: {{risk.minFailure}}</b></p>
     </div>
   </nz-card>
   <ng-template #avatarTemplate>
@@ -45,6 +52,14 @@
       <i id="description" class="iconfont icon-description"></i>
       <br>
       Description
+    </span>
+  </ng-template>
+
+  <ng-template #plan>
+    <span (click)="showPlan()">
+      <i id="planning" class="iconfont icon-touzijihuaguanli"></i>
+      <br>
+      Plan
     </span>
   </ng-template>
 

@@ -5,9 +5,13 @@ export class Activity {
   description: string;
   buyingActions: any[];
   payingActions: any[];
+  negotiationActions: any[];
   risks: number;
   rolesID: any[];
-  history: any;
+  history: any[];
+  riskCards: any;
+  extraPayment: any[];
+  payContractAction: any[];
 
 
   constructor(r) {
@@ -17,9 +21,13 @@ export class Activity {
     this.description = r.description;
     this.buyingActions = r.buyingActions;
     this.payingActions = r.payingActions;
+    this.negotiationActions = r.negotiationActions;
     this.risks = r.risks;
     this.rolesID = r.rolesID;
-    this.history = null;
+    this.history = [];
+    this.riskCards = null;
+    this.extraPayment = [];
+    this.payContractAction = [];
   }
 
   addAttributes(activity) {

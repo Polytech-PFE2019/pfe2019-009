@@ -1,20 +1,32 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent implements OnInit, OnDestroy {
-  resourceBuyed = 0;
+export class HistoryComponent implements OnInit {
   @Input() listOfData: any;
+  @Input() getCardHistory: any;
+  @Input() riskCards: any;
+  @Input() activityID = 0;
+  resourceBuyed = 0;
   data: any[] = [];
   total = 0;
   subResource: Subscription;
+  titleList: any[] = [];
+  riskList: any[] = [];
+  riskAmount = 0;
+  daysAmount = 0;
+  basicAmount = 0;
+  riskBonus = 0;
+  daysBonus = 0;
 
-  constructor(private resourceService: BuyResourceService) {
+  constructor(private resourceService: BuyResourceService,
+              private subSerive: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -22,40 +34,46 @@ export class HistoryComponent implements OnInit, OnDestroy {
     this.data = [];
     this.total = 0;
     console.log(this.listOfData);
-    for (const item of this.listOfData.payments) {
+    for (const item of this.listOfData) {
       switch (item.type) {
         case 'RISKS':
-          const risk = {
-            activity: 'Defaillances',
-            money: item.amount,
-            src: '../../../../assets/icons/faillante.png',
-            result: '-' + item.bonus + ' risques'
-          };
-          this.total = this.total + item.amount;
-          this.data.push(risk);
+          this.riskAmount += item.amount;
+          this.riskBonus += item.bonus;
           break;
         case 'MANSATORY':
-          const basic = {
-            activity: 'Resource(s) obligatoire(s)',
-            money: item.amount,
-            src: '../../../../assets/icons/person.png',
-            result: '-'
-          };
-          this.total = this.total + item.amount;
-          this.data.push(basic);
+          this.basicAmount += item.amount;
           break;
         case 'DAYS':
-          const day = {
-            activity: 'Durées',
-            money: item.amount,
-            src: '../../../../assets/icons/duration.png',
-            result: '-' + item.bonus + ' délai'
-          };
-          this.total = this.total + item.amount;
-          this.data.push(day);
+          this.daysAmount += item.amount;
+          this.daysBonus += item.bonus;
           break;
       }
     }
+
+    const basic = {
+      activity: 'Resource(s) obligatoire(s)',
+      money: this.basicAmount,
+      src: '../../../../assets/icons/person.png',
+      result: '-'
+    };
+
+    const risk = {
+      activity: 'Defaillances',
+      money: this.riskAmount,
+      src: '../../../../assets/icons/faillante.png',
+      result: '-' + this.riskBonus + ' risques'
+    };
+
+    const day = {
+      activity: 'Durées',
+      money: this.daysAmount,
+      src: '../../../../assets/icons/duration.png',
+      result: '-' + this.daysBonus + ' délai'
+    };
+    this.data.push(day);
+    this.data.push(risk);
+    this.data.push(basic);
+    this.total = this.daysAmount + this.basicAmount + this.riskAmount;
     const total = {
       activity: 'Total',
       money: this.total,
@@ -65,9 +83,4 @@ export class HistoryComponent implements OnInit, OnDestroy {
     this.data.push(total);
     console.log(this.data);
   }
-
-  ngOnDestroy(): void {
-    this.subResource.unsubscribe();
-  }
-
 }

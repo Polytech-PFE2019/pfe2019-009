@@ -1,5 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Steps} from '../../model/step';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {SocketRequest} from '../../../Request';
 import {Router} from '@angular/router';
@@ -16,20 +15,10 @@ import {PlayerdataService} from 'src/app/playerdata.service';
   styleUrls: ['./game-on.component.css']
 })
 export class GameOnComponent implements OnInit, OnDestroy {
-
-  steps: any = Steps;
+  @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
   step = 'Étape 1';
-  getDataFromParent = 0;
-  getPriceFromParent = 0;
-  getDataFromActivity = 0;
-  getMoneyFromPerson = 0;
-  getResourceFromPerson = 0;
-  subGameId: Subscription;
   gameId: string;
-  currentResource: number;
-  currentMonney: number;
   buyingActions: any;
-  activites: any;
   currentStep: Activity[] = [];
   test: Activity;
   testClick = false;
@@ -37,10 +26,15 @@ export class GameOnComponent implements OnInit, OnDestroy {
   subPlayersWithRoles: Subscription;
   activities: any = null;
   roles: any[] = [];
-  userName: any;
-  myInformation: any;
   currentActivity: any;
   subCurrentActivity: Subscription;
+  listOfDialog: any[] = [];
+  subGame: Subscription;
+  isRiskCard = false;
+  riskCard: any [] = [];
+  riskOfActivityId = 0;
+  roleId: any;
+  subSteps: Subscription;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -64,13 +58,35 @@ export class GameOnComponent implements OnInit, OnDestroy {
       console.log(this.currentActivity);
     });
 
-    this.currentStep = this.gameService.currentStep;
+    this.subSteps = this.subscription.activites$.subscribe(data => {
+      console.log(data);
+      this.currentStep = data;
+    });
+
     console.log(this.currentStep);
 
     this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
       console.log(data);
       this.activities = data;
       console.log(this.activities.actions);
+    });
+
+    this.subGame = this.gameService.reponses$.subscribe(data => {
+      console.log(data);
+      if (data.response === 'START_NEGOTIATE') {
+        this.listOfDialog.push(data);
+        console.log(this.listOfDialog);
+      }
+      if (data.response === 'drawRisk') {
+        if (data.risks.length > 0) {
+          this.isRiskCard = true;
+          this.riskCard = data.risks;
+          this.riskOfActivityId = data.riskOfActivityId;
+        }
+      }
+      if (data.response === 'FINISH') {
+        this.router.navigate(['result']);
+      }
     });
 
   }
@@ -83,8 +99,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
     console.log('Game over');
     const message = {
       request: 'LEAVE_GAME',
-      roomID: '0',
-      userID: '2'
+      roomID: this.gameService.roomId,
+      userID: this.subscription.userId
     };
     this.lobbyService.messages.next(message as SocketRequest);
     this.router.navigate(['']);
@@ -104,5 +120,15 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subPayingActions.unsubscribe();
     this.subPlayersWithRoles.unsubscribe();
     this.subCurrentActivity.unsubscribe();
+    this.subGame.unsubscribe();
+    this.subSteps.unsubscribe();
+  }
+
+  initDialog($event: any) {
+    this.listOfDialog = [];
+  }
+
+  closeRiskCard() {
+    this.isRiskCard = false;
   }
 }

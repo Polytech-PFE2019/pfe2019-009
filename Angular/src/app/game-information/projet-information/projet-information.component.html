@@ -2,13 +2,13 @@
   <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
     <ng-template #titleTemplate> <i nz-icon [nzType]="tab.icon"></i>{{ tab.name }} </ng-template>
     <div *ngIf="tab.id===1">
-      <app-projet-information-duration></app-projet-information-duration>
+      <app-projet-information-duration [currentDay]="currentTime"></app-projet-information-duration>
     </div>
     <div *ngIf="tab.id===2">
-      <app-projet-information-risk></app-projet-information-risk>
+      <app-projet-information-risk [currentRisk]="currentFailure" [risk]="risks"></app-projet-information-risk>
     </div>
     <div *ngIf="tab.id===3">
-      <app-projet-information-budget></app-projet-information-budget>
+      <app-projet-information-budget [currentCost]="currentCost" [cost]="costs"></app-projet-information-budget>
     </div>
   </nz-tab>
 </nz-tabset>

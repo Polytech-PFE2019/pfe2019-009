@@ -7,13 +7,19 @@
       <div class="step-container">
         <div nz-row>
           <div nz-col nzSpan="14">
-            <nz-card nzTitle="Action(s) spéciale(s)">
-              <app-resource-buyer [buyer]="1"></app-resource-buyer>
-              <app-negociation [fromUser]="2" [toUser]="3"></app-negociation>
+            <nz-card nzTitle="Action(s) spéciale(s)"
+                     *ngIf="step.buyingActions.length>0 || step.negotiationActions.length>0">
+              <div class="resource-buyer" *ngIf="step.buyingActions.length>0">
+                <div *ngFor="let buying of step.buyingActions">
+                  <app-resource-buyer [buyer]="buying.roleID"></app-resource-buyer>
+                </div>
+              </div>
+              <div class="negociation-class" *ngIf="step.negotiationActions.length>0">
+                <div *ngFor="let nego of step.negotiationActions">
+                  <app-negociation [fromUser]="nego.giverID" [toUser]="nego.receiverID"></app-negociation>
+                </div>
+              </div>
             </nz-card>
-          </div>
-          <div nz-col nzSpan="10">
-            <app-risk-back [step]="step?.title"></app-risk-back>
           </div>
         </div>
         <div nz-row style="margin-top: 10px">
@@ -33,6 +39,7 @@
                     <app-activity-displayer
                       [role]="data?.roleID"
                       [type]="'MANDATORY'"
+                      [extraPaying]="step.extraPayment"
                       [activitiesBenefits]="data?.actions[0].actions">
                     </app-activity-displayer>
                   </td>
@@ -62,7 +69,11 @@
       </div>
     </div>
     <div class="history" *ngIf="isHistory">
-      <app-history [listOfData]="step.history"></app-history>
+      <app-history
+        [listOfData]="step?.history"
+        [activityID]="step?.title"
+        [riskCards]="step.riskCards">
+      </app-history>
     </div>
   </nz-card>
 </div>
@@ -75,8 +86,8 @@
 <ng-template #titleTemplate>
   <div class="templateTitle">
     <h4 nz-title>Etape {{step?.title}}</h4>
-    <div class="durationContainer"><b>+{{step?.numberOfDays}}</b></div>
-    <div class="risk" *ngFor="let item of counter(step?.risks); let i=index">
+    <div class="durationContainer"><b>+{{step?.numberOfDays}}j</b></div>
+    <div class="risk" *ngFor="let item of counter(step.risks); let i=index">
       Risque{{i + 1}}
     </div>
   </div>

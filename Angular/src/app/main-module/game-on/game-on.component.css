@@ -5,7 +5,7 @@
 
 
 .left-container {
-  height: 100vh;
+  height: calc(100vh - 70px);
   overflow-y: auto;
 }
 
@@ -53,5 +53,26 @@ h2 {
   margin-top: 20px;
   font-size: 20px;
   margin-left: 42%;
+}
+
+input{
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 0;
+  right: 30px;
+}
+
+.dialog-container{
+  height: 400px;
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  display: flex;
+}
+
+.myContainer{
+  display: flex;
+  flex-wrap: wrap;
 }
 

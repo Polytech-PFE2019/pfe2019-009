@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
-  Component,
-  EventEmitter,
+  Component, EventEmitter,
   Input,
   OnDestroy,
   OnInit,
@@ -12,11 +10,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {BuyResourceService} from '../../../service/resources/buy-resource.service';
 import {Subscription} from 'rxjs';
 import {SubscriptionService} from '../../../service/subscriptionSerivce/subscription.service';
-import {ActionSet} from '../../../model/action';
 import {GameOnService} from '../../../service/gameOnService/game-on.service';
 import {SocketRequest} from '../../../../Request';
-import {LobbyService} from "../../../service/lobbyService/lobby.service";
-import {isCombinedNodeFlagSet} from "tslint";
+import {LobbyService} from '../../../service/lobbyService/lobby.service';
 
 @Component({
   selector: 'app-activity',
@@ -25,6 +21,7 @@ import {isCombinedNodeFlagSet} from "tslint";
 })
 export class ActivityComponent implements OnInit, OnDestroy {
   @Input() activities: any[] = [];
+  @Output() sendInitDialog = new EventEmitter();
   isVisible = false;
   resBasic = 1;
   riskReduced = 0;
@@ -34,16 +31,13 @@ export class ActivityComponent implements OnInit, OnDestroy {
   test = [1];
   subCurrentResource: Subscription;
   currentResource: number;
-  subPayingActions: Subscription;
   daysReduced = 0;
-  subGameId: Subscription;
   gameID: any;
   request = {
     RISKS: null,
     DAYS: null,
     MANDATORY: null
   };
-  subUserId: Subscription;
   userID: any;
   currentActivity: any;
   userName: any;
@@ -51,17 +45,45 @@ export class ActivityComponent implements OnInit, OnDestroy {
   roles: any[];
   subCurrentActivity: Subscription;
   myDataSource: any[] = [];
+  hasNegotiation = false;
+  negotiationIDs: string[] = [];
+  isFinishedMine = false;
+
 
   constructor(private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
-              private gameSerivce: GameOnService,
+              private gameService: GameOnService,
               private lobbyService: LobbyService,
               private changeDetector: ChangeDetectorRef,
               private resourceService: BuyResourceService) {
   }
 
   ngOnInit() {
-    this.subCurrentResource = this.resourceService.currentMonney$.subscribe(data => {
+    this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
+      this.currentActivity = data;
+      this.myDataSource = [];
+      this.isFinishedMine = false;
+      console.log(this.currentActivity);
+
+      this.negotiationIDs = [];
+      this.sendInitDialog.emit(true);
+      this.currentActivity.negotiationActions.forEach(nego => {
+        if (nego.giverID === this.myInformation.id) {
+          this.hasNegotiation = true;
+          this.negotiationIDs.push(nego.negotiationID);
+        }
+      });
+
+      if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
+        const tmp = (this.currentActivity.payingActions.filter(next =>
+          next.roleID === this.myInformation.id)[0]);
+        this.myDataSource.push(tmp);
+        console.log(this.myDataSource);
+      }
+
+    });
+
+    this.subCurrentResource = this.resourceService.currentResource$.subscribe(data => {
       this.currentResource = data;
     });
 
@@ -69,39 +91,20 @@ export class ActivityComponent implements OnInit, OnDestroy {
     this.roles = this.subscription.roles;
     this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
     console.log(this.myInformation);
-
-    // this.currentActivity = this.gameSerivce.currentActivity;
-    // console.log(this.currentActivity);
-    this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
-      this.currentActivity = data;
-      this.myDataSource = [];
-      console.log(this.currentActivity);
-      if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
-        const tmp = (this.currentActivity.payingActions.filter(next =>
-          next.roleID === this.myInformation.id)[0]);
-        this.myDataSource.push(tmp);
-        console.log(this.myDataSource);
-      }
-    });
-
-
-    // this.activities = this.gameSerivce.currentActivity;
-    // console.log(this.activities);
-
-    // this.subPayingActions = this.subscription.payingActions$.subscribe(data => {
-    //   console.log(data);
-    //   this.activities = data;
-    // });
-    // this.subGameId = this.subscription.gameID$.subscribe(data => {
-    //   this.gameID = data;
-    // });
     this.gameID = this.subscription.gameID;
     console.log('game id+++' + this.gameID);
-    // this.subUserId = this.subscription.userID$.subscribe(data => {
-    //   this.userID = data;
-    // });
     this.userID = this.subscription.userId;
     console.log(this.activities);
+
+    this.gameService.messages.subscribe(data => {
+      switch (data.response) {
+        case 'START_NEGOTIATE':
+          // POP UP THE Negociation component
+          // with negotiation id in it
+          // data.negotiationID
+          break;
+      }
+    });
 
   }
 
@@ -115,7 +118,10 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   handleOk(): void {
     // this.payResource();
+    this.isFinishedMine = true;
     this.resourceService.sendResourcesReduced(this.totalRes);
+    this.resourceService.sendReducedRisk(this.riskReduced);
+    this.resourceService.sendDaysReduced(this.daysReduced);
     this.isVisible = false;
     this.nzMessageService.info('Paiement réussi');
     const payment = [];
@@ -135,7 +141,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
       payments: payment
     };
     console.log(req);
-    this.gameSerivce.messages.next(req as SocketRequest);
+    this.gameService.messages.next(req as SocketRequest);
     this.request = {
       RISKS: null,
       DAYS: null,
@@ -180,10 +186,21 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subCurrentResource.unsubscribe();
-    this.subPayingActions.unsubscribe();
-    this.subGameId.unsubscribe();
-    this.subUserId.unsubscribe();
     this.subCurrentActivity.unsubscribe();
+  }
+
+  launchNegotiation() {
+    console.log(this.negotiationIDs);
+    this.negotiationIDs.forEach(negoID => {
+      const request = {
+        request: 'START_NEGOTIATE',
+        negotiationID: negoID,
+        gameID: this.gameID
+      } as SocketRequest;
+
+      this.gameService.messages.next(request);
+    });
+
   }
 
 }

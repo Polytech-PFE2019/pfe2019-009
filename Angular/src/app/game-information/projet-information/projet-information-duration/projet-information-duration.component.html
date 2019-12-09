@@ -1,31 +1,42 @@
-<div *ngIf="current <= 100">
-  <div class="container" *ngFor="let item of list">
-    <div *ngIf="item !== current" class="day"><b>{{item}}</b></div>
-    <div *ngIf="item === current" class="current"><b>{{current}}</b></div>
-  </div>
+<!--<div *ngIf="current <= 100">-->
+<!--  <div class="container" *ngFor="let item of list">-->
+<!--    <div *ngIf="item !== current" class="day"><b>{{item}}</b></div>-->
+<!--    <div *ngIf="item === current" class="current"><b>{{current}}</b></div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div *ngIf="current > 100 && current <= 200">-->
+<!--  <div class="container" *ngFor="let item of list">-->
+<!--    <div *ngIf="(item+100) !== current" class="day"><b>{{item+100}}</b></div>-->
+<!--    <div *ngIf="(item+100) === current" class="current"><b>{{current}}</b></div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div *ngIf="current > 200 && current <= 300">-->
+<!--  <div class="container" *ngFor="let item of list">-->
+<!--    <div *ngIf="(item+200) !== current" class="day"><b>{{item+200}}</b></div>-->
+<!--    <div *ngIf="(item+200) === current" class="current"><b>{{current}}</b></div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div *ngIf="current > 300 && current <= 400">-->
+<!--  <div class="container" *ngFor="let item of list">-->
+<!--    <div *ngIf="(item+300) !== current" class="day"><b>{{item+300}}</b></div>-->
+<!--    <div *ngIf="(item+300) === current" class="current"><b>{{current}}</b></div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div *ngIf="current > 400 && current <= 500">-->
+<!--  <div class="container" *ngFor="let item of list">-->
+<!--    <div *ngIf="(item+400) !== current" class="day"><b>{{item+400}}</b></div>-->
+<!--    <div *ngIf="(item+400) === current" class="current"><b>{{current}}</b></div>-->
+<!--  </div>-->
+<!--</div>-->
+<div>
+  <h4>Durée: {{currentDay}}</h4>
+<!--  <h4>Max Durée: {{maxDays}}</h4>-->
+<!--  <h4>Min Durée: {{minDays}}</h4>-->
 </div>
-<div *ngIf="current > 100 && current <= 200">
-  <div class="container" *ngFor="let item of list">
-    <div *ngIf="(item+100) !== current" class="day"><b>{{item+100}}</b></div>
-    <div *ngIf="(item+100) === current" class="current"><b>{{current}}</b></div>
-  </div>
-</div>
-<div *ngIf="current > 200 && current <= 300">
-  <div class="container" *ngFor="let item of list">
-    <div *ngIf="(item+200) !== current" class="day"><b>{{item+200}}</b></div>
-    <div *ngIf="(item+200) === current" class="current"><b>{{current}}</b></div>
-  </div>
-</div>
-<div *ngIf="current > 300 && current <= 400">
-  <div class="container" *ngFor="let item of list">
-    <div *ngIf="(item+300) !== current" class="day"><b>{{item+300}}</b></div>
-    <div *ngIf="(item+300) === current" class="current"><b>{{current}}</b></div>
-  </div>
-</div>
-<div *ngIf="current > 400 && current <= 500">
-  <div class="container" *ngFor="let item of list">
-    <div *ngIf="(item+400) !== current" class="day"><b>{{item+400}}</b></div>
-    <div *ngIf="(item+400) === current" class="current"><b>{{current}}</b></div>
-  </div>
-</div>
+<!--<div class="allContainer">-->
+<!--  <div class="container" *ngFor="let item of list">-->
+<!--    <div class="isCurrent" *ngIf="item === currentDay">{{item}}</div>-->
+<!--    <div class="isNotCurrent" *ngIf="item !== currentDay">{{item}}</div>-->
+<!--  </div>-->
+<!--</div>-->
 

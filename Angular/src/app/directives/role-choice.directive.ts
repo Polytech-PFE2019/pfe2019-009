@@ -1,40 +1,37 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
+import {AfterContentInit, Directive, ElementRef, HostListener, Input} from '@angular/core';
 
 @Directive({
-  selector: '[appRoleChoice]'
+  selector: '[appSignal]'
 })
 export class RoleChoiceDirective {
-
+  @Input() current: any;
+  @Input() max: any;
   isChoosed = false;
   innerText = '';
   previous: ElementRef = null;
   numOfPlayers = 0;
 
   constructor(private el: ElementRef) {
-  }
-
-  @HostListener('click')
-  onClick() {
-    console.log(this.el.nativeElement);
-    if (this.previous === null) {
-      this.el.nativeElement.style.border = '1px red solid';
-      this.isChoosed = true;
-      this.previous = this.el;
-      this.numOfPlayers += 1;
-    } else if (this.previous === this.el && this.isChoosed === true) {
-      this.el.nativeElement.style.border = 'none';
-      this.isChoosed = false;
-      this.numOfPlayers -= 1;
-      this.previous = null;
-    } else if (this.previous !== this.el) {
-      this.previous.nativeElement.style.border = 'none';
-      this.el.nativeElement.style.border = '1px red solid';
-      this.numOfPlayers += 1;
-      this.isChoosed = true;
-      this.previous = this.el;
+    console.log(this.el);
+    if (this.max - this.current <= 5) {
+      this.el.nativeElement.style.backgroundColor = '#C50E05';
+    } else if (this.max - this.current > 15) {
+      this.el.nativeElement.style.backgroundColor = '#008000';
+    } else {
+      this.el.nativeElement.style.backgroundColor = '#F68C12';
     }
-
-    console.log(this.numOfPlayers);
   }
+
+  @HostListener('mouseover') onMouseEnter() {
+    // if (this.max - this.current <= 5) {
+    //   this.el.nativeElement.style.backgroundColor = '#C50E05';
+    // } else if (this.max - this.current > 15) {
+    //   this.el.nativeElement.style.backgroundColor = '#008000';
+    // } else {
+    //   this.el.nativeElement.style.backgroundColor = '#F68C12';
+    // }
+    console.log('testtst');
+  }
+
 
 }

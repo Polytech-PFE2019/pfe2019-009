@@ -1,0 +1,119 @@
+.container {
+  background-color: #f0f2f5;
+  border-radius: 10px;
+  width: 450px;
+  height: 450px;
+  overflow-y: auto;
+  margin-right: 40px;
+}
+
+.context {
+  width: 335px;
+  height: 205px;
+  background-color: whitesmoke;
+  overflow-y: auto;
+}
+
+.senderBox {
+  height: 180px;
+  width: 450px;
+  padding-top: 10px;
+  background-color: #e0e0e0;
+  overflow-y: auto;
+  border-top: 2px solid #efefef;
+  display: inline-block;
+}
+
+.receiverBox {
+  background-color: #fcf6eb;
+  border-right: 2px solid #efefef;
+}
+
+.header {
+  width: 450px;
+  height: 35px;
+  background-color: burlywood;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  top:0px;
+}
+
+nz-avatar {
+  float: left;
+}
+
+h5 {
+  float: left;
+  margin-top: 6px;
+}
+
+
+button {
+  float: right;
+}
+
+
+.sender {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.receiver {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2px;
+}
+
+.negociation {
+  display: flex;
+  float: left;
+  border-radius: 10px;
+  height: 140px;
+  width: 90px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba(255,255,255,0.8);
+  flex-direction: column;
+}
+
+.contract-container{
+  float: left;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: 5px;
+  padding: 15px;
+  background-color: burlywood;
+  border-radius: 5px;
+}
+
+.desc-container{
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 210px;
+  margin: 5px;
+  padding-right: 5px;
+}
+
+.sendBnt{
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+
+#open{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

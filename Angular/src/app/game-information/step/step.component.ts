@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {ActionSet} from '../../model/action';
-import {GameOnService} from "../../service/gameOnService/game-on.service";
-import {LobbyService} from "../../service/lobbyService/lobby.service";
-import {NzMessageService} from "ng-zorro-antd";
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {NzMessageService} from 'ng-zorro-antd';
+import {BuyResourceService} from '../../service/resources/buy-resource.service';
 
 @Component({
   selector: 'app-step',
@@ -16,23 +17,31 @@ export class StepComponent implements OnInit, OnDestroy {
   @Output() currentStep = new EventEmitter();
   @Output() sendTestClick = new EventEmitter();
   @Output() sendStepTest = new EventEmitter();
+  testCard = {
+    id: 0,
+    step: 0,
+    title: '',
+    risk: null,
+    resource: null,
+    day: null,
+    money: null,
+  };
   buyingActions: any[] = [];
   payingActions: any[] = [];
-  dataResources: ActionSet[] = [];
-  subActivities: Subscription;
   test = [1];
   type: string;
   tmpAction: ActionSet = new ActionSet();
   isHistory = false;
-  subHistory: Subscription;
   roleID: any;
   userName: any;
   roles: any[] = [];
   myInformation: any;
+  numOfRisks: any;
 
   constructor(private subscription: SubscriptionService,
               private nzMessage: NzMessageService,
               private lobbyService: LobbyService,
+              private buyResourceService: BuyResourceService,
               private gameService: GameOnService) {
   }
 
@@ -42,8 +51,13 @@ export class StepComponent implements OnInit, OnDestroy {
     this.roles = this.subscription.roles;
     this.myInformation = this.roles.filter(next => next.username === this.userName)[0];
     console.log(this.myInformation);
+    this.numOfRisks = this.step.risks;
+
   }
 
+  getCard(event) {
+    this.testCard = event;
+  }
 
   sendStep() {
     // this.currentStep.emit(this.step.title);
@@ -60,7 +74,7 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subActivities.unsubscribe();
+
   }
 
   openHistory() {

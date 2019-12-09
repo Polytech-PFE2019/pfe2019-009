@@ -11,5 +11,6 @@
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <p>Êtes-vous sûr d'acheter {{resourceNb}} ressources?</p>
   </nz-modal>
-
+  <h3>Max resources: {{cost?.maxCost}}</h3>
+  <h3>Min resources: {{cost?.minCost}}</h3>
 </div>

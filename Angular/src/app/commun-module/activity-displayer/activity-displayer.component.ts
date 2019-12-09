@@ -13,10 +13,12 @@ export class ActivityDisplayerComponent implements OnInit {
   @Input() isActivity = false;
   @Output() sendPaymentActivity = new EventEmitter();
   @Input() activitiesBenefits: any[] = [];
+  @Input() extraPaying: any[] = [];
   roleStyle: any;
   roles = Roles;
   value = 0;
   previous = null;
+  total = 0;
 
   constructor() {
   }
@@ -77,6 +79,7 @@ export class ActivityDisplayerComponent implements OnInit {
       console.log(this.previous, this.value);
     } else {
       this.value = null;
+      this.previous = null;
       console.log('11111111', this.previous, this.value);
     }
   }

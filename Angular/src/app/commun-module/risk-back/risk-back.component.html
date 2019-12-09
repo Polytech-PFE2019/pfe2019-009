@@ -1,18 +1,35 @@
-<div>
-  <button [disabled]=riskUnavailable
-          style="width: 160px; border: white; background-color: white"
-          (click) = "drawCard()">
-    <nz-card *ngIf="cardNb === 0"
-             style="background: black">
-      <div class="cardContainer">
-        <h2 style="color: white;margin: 5px">
-          Risques
-        </h2>
-        <div class="circle">{{step}}</div>
-        <div style="color: white">
+<div [@.disabled]='isDiabled'>
+  <nz-card
+    *ngIf="isVanished"
+    [@flipOutX]="{ value: flipOutX, params: { timing: 1, delay: myTiming} }"
+    style="background: black">
+    <div class="cardContainer">
+      <h2 style="color: white;margin: 5px">
+        Risques
+      </h2>
+      <div class="circle">{{title}}</div>
+      <div style="color: white">
+      </div>
+    </div>
+  </nz-card>
+  <nz-card *ngIf="!isVanished">
+    <h6>{{card?.description}}</h6>
+    <img src="../../../assets/risks/nothing.png" *ngIf="card.bonus.length===0" [width]="40" [height]="40">
+    <div class="contextContainer" *ngIf="card.bonus.length>0">
+      <div *ngFor="let item of card?.bonus">
+        <img src="../../../assets/risks/risk.png" *ngIf="item.type === 'RISK'" [width]="40" [height]="40">
+        <img src="../../../assets/risks/cost.png" *ngIf="item.type === 'MONEY'" [width]="40" [height]="40">
+        <img src="../../../assets/risks/day.png" *ngIf="item.type === 'DAYS'" [width]="40" [height]="40">
+        <img src="../../../assets/risks/resource.png" *ngIf="item.type === 'RESOURCES'" [width]="40" [height]="40">
+        <div class="moneyRisk" *ngIf="item.type === 'MONEY'"
+             [ngStyle]="getStyleById(item.roleID).style">{{item?.amount}}</div>
+        <div class="dayRisk" *ngIf="item.type === 'DAYS'">{{item?.amount + ' '}} Jours</div>
+        <div class="risk" *ngIf="item.type === 'RISK'">{{item?.amount + ' '}} Risques</div>
+        <div class="resourceRisk"
+             [ngStyle]="getStyleById(item.roleID).style"
+             *ngIf="item.type === 'RESOURCES'">{{item?.amount}}
         </div>
       </div>
-    </nz-card>
-    <app-risk-container *ngIf="cardNb !== 0" [risk] = "test"></app-risk-container>
-  </button>
+    </div>
+  </nz-card>
 </div>

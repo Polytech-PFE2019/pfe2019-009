@@ -26,7 +26,7 @@ public class ChangeActivityEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-        if (game.getCurrentActivity().getId() == game.getActivities().size()){
+        if (game.getCurrentActivity().getId() == 6){
             new FinishGameEvent(game).processEvent();
             return;
         }

@@ -5,9 +5,8 @@ import java.util.UUID;
 public class Negotiation {
     private int giverRoleID;
     private int receiverRoleID;
-    private int amountNegociated;
-    private int lastPayment;
-    private int amountLeftToPay;
+    private double amountNegociated;
+    private double amountLeftToPay;
     private String id;
     private int time;     // in seconds
     private Contract contract;
@@ -22,15 +21,16 @@ public class Negotiation {
         this.negotiationStatus = NegotiationStatus.NOT_STARTED;
     }
 
-    public void negotiate(int amount){
+    public void negotiate(double amount){
         this.amountNegociated = amount;
         this.amountLeftToPay = amountNegociated;
         this.negotiationStatus = NegotiationStatus.SUCCESS;
     }
 
-    public void pay(int percentage){
-        this.lastPayment = (amountNegociated*percentage) / 100;
+    public double pay(int percentage){
+        double lastPayment = (amountNegociated*percentage) / 100;
         this.amountLeftToPay -= lastPayment;
+        return lastPayment;
     }
 
     public void multiplicateTime(int number){
@@ -59,16 +59,13 @@ public class Negotiation {
         return receiverRoleID;
     }
 
-    public int getAmountNegotiated() {
+    public double getAmountNegotiated() {
         return amountNegociated;
     }
 
 
-    public int getLastPayment() {
-        return lastPayment;
-    }
 
-    public int getAmountLeftToPay() {
+    public double getAmountLeftToPay() {
         return amountLeftToPay;
     }
 

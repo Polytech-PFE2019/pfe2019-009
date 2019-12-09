@@ -149,7 +149,7 @@ class GameRequestHandlerTest {
 
         Map<String,String> value = new Gson().fromJson(request, Map.class);
 
-        int moneyPlayer = player.getMoney();
+        double moneyPlayer = player.getMoney();
         int resourcesPlayer = player.getResourcesAmount();
 
         handler.handleRequest(sessionPlayerTest, value);
@@ -198,7 +198,7 @@ class GameRequestHandlerTest {
 
         Map<String,?> value = new Gson().fromJson(request, Map.class);
 
-        int moneyPlayer = player.getMoney();
+        double moneyPlayer = player.getMoney();
         int resourcesPlayer = player.getResourcesAmount();
 
         handler.handleRequest(sessionPlayerTest, value);

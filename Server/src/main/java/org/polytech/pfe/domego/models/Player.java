@@ -14,7 +14,7 @@ public class Player {
     private String name;
     private Role role;
     private int resourcesAmount;
-    private int money;
+    private double money;
     private List<Objective> objectiveList;
     private int victoryPoints;
 
@@ -94,10 +94,10 @@ public class Player {
 
 
 
-    public int calculateBenefit(){
-        int initialMoney = this.role.getBudget();
+    public double calculateBenefit(){
+        double initialMoney = this.role.getBudget();
 
-        return initialMoney - this.money;
+        return - initialMoney + this.money;
     }
 
     public String getName() {
@@ -139,16 +139,16 @@ public class Player {
         resourcesAmount -= amount;
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
 
 
-    public void addMoney(int amount){
+    public void addMoney(double amount){
         money += amount;
     }
 
-    public void subtractMoney(int amount){
+    public void subtractMoney(double amount){
         money -= amount;
     }
 

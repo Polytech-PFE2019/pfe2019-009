@@ -35,8 +35,8 @@ public class PayContractEvent implements EventProtocol {
 
             Negotiation negotiation = payContract.getNegotiation();
             int percentage = payContract.getPercentage();
-            negotiation.pay(percentage);
-            int amountPaid = negotiation.getLastPayment();
+
+            double amountPaid =  negotiation.pay(percentage);
             Optional<Player> optionalGiver = game.getPlayerByRoleID(payContract.getNegotiation().getGiverRoleID());
             if (optionalGiver.isEmpty())
                 return;
@@ -62,7 +62,7 @@ public class PayContractEvent implements EventProtocol {
 
     }
 
-    private String createResponseToUser(Player player, Player giver, Player receiver, int amountPaid) {
+    private String createResponseToUser(Player player, Player giver, Player receiver, double amountPaid) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_CONTRACT");
         response.addProperty(GameResponseKey.GIVER_ROLE_NAME.key, giver.getRole().getName().getName());

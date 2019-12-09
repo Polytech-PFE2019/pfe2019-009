@@ -8,6 +8,7 @@ import {SubscriptionService} from '../../service/subscriptionSerivce/subscriptio
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {Activity} from '../../model/activity';
 import {PlayerdataService} from 'src/app/playerdata.service';
+import {NzNotificationService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-game-on',
@@ -41,6 +42,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
               private subscription: SubscriptionService,
               private resourceManager: BuyResourceService,
               private router: Router,
+              private notification: NzNotificationService,
               private playerDataService: PlayerdataService) {
   }
 
@@ -48,10 +50,11 @@ export class GameOnComponent implements OnInit, OnDestroy {
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;
 
-    this.subPlayersWithRoles = this.subscription.playersWithRoles$.subscribe(data => {
-      console.log(data);
-      this.roles = data;
-    });
+    // this.subPlayersWithRoles = this.subscription.playersWithRoles$.subscribe(data => {
+    //   console.log(data);
+    //   this.roles = data;
+    // });
+    this.roles = this.subscription.roles;
 
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
@@ -86,6 +89,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
       }
       if (data.response === 'FINISH') {
         this.router.navigate(['result']);
+      }
+
+      if (data.response === 'BUY_RESOURCES') {
+        console.log(data);
+        this.notification.blank('Activité effectuée',
+          this.getRoleById(data.roleID).title + ' a acheté ' + data.resources + ' resources',
+          {nzDuration: 0});
       }
     });
 
@@ -130,5 +140,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   closeRiskCard() {
     this.isRiskCard = false;
+  }
+
+  getRoleById(id) {
+    return this.roles.filter(next => next.id === id)[0];
   }
 }

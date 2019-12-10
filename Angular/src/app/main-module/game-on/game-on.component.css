@@ -3,10 +3,17 @@
   width: 100vw;
 }
 
+#listOfPlayers{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+}
 
 .left-container {
   height: calc(100vh - 70px);
   overflow-y: auto;
+  overflow-x: auto;
 }
 
 .right-container {
@@ -77,3 +84,14 @@ input{
   max-width: 600px;
 }
 
+.players{
+  z-index: 999;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  max-height: 600px;
+  overflow-y: auto;
+  background-color: #e0e0e0;
+  padding: 10px;
+  border: solid 1px #123074;
+}

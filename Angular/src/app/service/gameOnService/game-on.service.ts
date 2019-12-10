@@ -127,6 +127,7 @@ export class GameOnService {
             console.log(this.currentStep);
             console.log(this.currentStep[currentId - 1].riskCards);
             this.addInformationAfterRiskCards(currentId);
+            this.updateMinAndMax(data.project);
           }
           if (data.response === 'FINISH') {
             this.results = data;

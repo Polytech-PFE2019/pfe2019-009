@@ -21,7 +21,6 @@ h2{
 }
 
 .role-container {
-  background: #ECECEC;
   padding: 12px;
   height: 340px;
   overflow-y: auto;
@@ -39,7 +38,7 @@ h2{
 
 img{
   border-radius: 50%;
-  border: solid 1px #3f3f3f;
+  border: solid 6px;
 }
 
 nz-card {
@@ -50,8 +49,22 @@ nz-card {
 
 .info-container{
   min-height: 200px;
+  text-align: center;
 }
 
 #profile{
   border: 10px solid #008000;
+}
+
+.money-class{
+  font-size: 20px;
+  position: absolute;
+  bottom: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }

@@ -111,10 +111,10 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   testAddReceiver() {
   }
 
-  sendContract() {
+  sendContract(contract) {
     const request = {
       request: 'PRICE_NEGOTIATE',
-      amount: this.contract.toString(),
+      amount: contract.toString(),
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
@@ -123,15 +123,14 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     console.log(request);
     this.contractNumber = this.contract;
     this.gameService.messages.next(request);
-    this.contract = 0;
 
   }
 
-  sendMessage() {
+  sendMessage(message) {
     this.isChated = true;
     const request = {
       request: 'MSG_NEGOTIATE',
-      message: this.msg,
+      message: message,
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
@@ -139,7 +138,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     console.log(request);
 
     this.gameService.messages.next(request);
-    this.msg = '';
+    (<HTMLInputElement>document.getElementById("msg")).value = '';
   }
 
   ngOnDestroy(): void {

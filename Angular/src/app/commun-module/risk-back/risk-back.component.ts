@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Risks} from '../../model/risks';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {flipOutX} from 'ng-animate';
 import {Roles} from '../../model/roles';
+import {NzNotificationService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-risk-back',
@@ -21,14 +22,13 @@ export class RiskBackComponent implements OnInit {
   @Output() sendCard = new EventEmitter();
   @Input() card: any = null;
   @Input() isDiabled = false;
+  @ViewChild('money', {static: true}) money: TemplateRef<{}>;
+  @ViewChild('day', {static: true}) day: TemplateRef<{}>;
+  @ViewChild('risk', {static: true}) risk: TemplateRef<{}>;
+  @ViewChild('resource', {static: true}) resource: TemplateRef<{}>;
   risks: any = Risks;
-  random = 0;
   riskRemainNb = 2;
   roles = Roles;
-  cardNb = 0;
-  riskUnavailable = (this.riskRemainNb === 0);
-  currentRiskTotal = 5; // to be input
-  testid = 0;
   test = {
     id: 0,
     step: 0,
@@ -40,48 +40,61 @@ export class RiskBackComponent implements OnInit {
   };
   flipOutX = false;
   isVanished = true;
+  rolesWithPalyers: any[] = [];
+  myInformation: any = null;
+  extraPlayer: any = null;
+  extraPayment = 0;
+  activityID = 0;
 
-  constructor(private subService: SubscriptionService) {
+  constructor(private subService: SubscriptionService,
+              private notification: NzNotificationService) {
   }
 
-  getRandomFromSon(event) {
-    this.random = event;
-    this.drawCard();
-  }
-
-  drawCard(): void {
-    if (this.riskRemainNb !== 0) {
-      this.riskRemainNb--;
-      this.cardNb++;
-    }
-    this.riskUnavailable = (this.riskRemainNb === 0);
-    this.random = Math.ceil(Math.random() * this.currentRiskTotal);
-    console.log(this.random);
-    console.log(this.risks);
-    this.getId(this.random);
-  }
-
-  getId($event) {
-    console.log($event);
-    this.testid = $event;
-    const tmp = this.risks.filter(next => next.id === this.testid)[0];
-    console.log(this.risks.filter(next => next.id === this.testid)[0]);
-    this.test.id = this.risks.filter(next => next.id === this.testid)[0].id;
-    this.test.title = this.risks.filter(next => next.id === this.testid)[0].title;
-    this.test.risk = this.risks.filter(next => next.id === this.testid)[0].risk;
-    this.test.day = this.risks.filter(next => next.id === this.testid)[0].day;
-    this.test.money = this.risks.filter(next => next.id === this.testid)[0].money;
-    this.test.resource = this.risks.filter(next => next.id === this.testid)[0].resource;
-    this.subService.sendHistory(this.test);
-    console.log(this.test);
-    console.log(this.subService.riskHistory);
-  }
 
   getStyleById(userId) {
     return this.roles.filter(next => (next.id === userId))[0];
   }
 
   ngOnInit() {
+    this.myInformation = this.subService.myRole;
+    this.rolesWithPalyers = this.subService.roles;
+    console.log(this.card);
+    setTimeout(() => {
+      for (const b of this.card.bonus) {
+        switch (b.type) {
+          case 'MONEY':
+            const tmp1 = this.getStyleById(b.roleID);
+            if (tmp1.id === this.myInformation.id) {
+              this.extraPlayer = this.myInformation;
+            } else {
+              this.extraPlayer = tmp1;
+            }
+            this.extraPayment = b.amount;
+            this.notification.template(this.money);
+            break;
+          case 'DAYS':
+            this.activityID = b.activityIdAssociate;
+            this.extraPayment = b.amount;
+            this.notification.template(this.day);
+            break;
+          case 'RISK':
+            this.activityID = b.activityIdAssociate;
+            this.extraPayment = b.amount;
+            this.notification.template(this.risk);
+            break;
+          case 'RESOURCES':
+            const tmp4 = this.getStyleById(b.roleID);
+            if (tmp4.id === this.myInformation.id) {
+              this.extraPlayer = this.myInformation;
+            } else {
+              this.extraPlayer = tmp4;
+            }
+            this.extraPayment = b.amount;
+            this.notification.template(this.resource);
+            break;
+        }
+      }
+    }, 2000);
     console.log(this.myTiming);
     setTimeout(() => {
       this.isVanished = false;
@@ -89,5 +102,10 @@ export class RiskBackComponent implements OnInit {
       console.log(this.isVanished);
     }, this.myTiming * 1000 + 1000);
   }
+
+  getRoleById(id) {
+    return this.roles.filter(next => next.id === id)[0];
+  }
+
 
 }

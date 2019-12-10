@@ -1,4 +1,16 @@
-<h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
+<div class="headers">
+  <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
+  <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
+</div>
+<nz-drawer
+  [nzWidth]="460"
+  [nzClosable]="true"
+  [nzVisible]="isPlayers"
+  nzPlacement="right"
+  nzTitle="Liste de joueurs"
+  (nzOnClose)="closePlayers()">
+  <app-list-players></app-list-players>
+</nz-drawer>
 <div nz-row class="container">
   <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
     <div class="activityContainer">
@@ -22,7 +34,7 @@
       </div>
     </div>
 
-    <button id="end" nz-button *ngIf="this.currentActivity.title === 12" (click)="closeGame()"><b>Terminer</b></button>
+    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une faillte</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
     <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
@@ -30,11 +42,11 @@
                 (sendStepTest)="getStepTest($event)"></app-step>
     </div>
   </div>
-
-  <!--  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>-->
 </div>
 
-<nz-modal [nzVisible]="isRiskCard" nzTitle="Risques" (nzOnOk)="closeRiskCard()" (nzOnCancel)="closeRiskCard()">
+<nz-modal [nzVisible]="isRiskCard"
+          [nzFooter]="modalFooter"
+          nzTitle="Risques">
   <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
     <div *ngFor="let card of riskCard; let i=index">
       <app-risk-back
@@ -44,5 +56,26 @@
         [title]="riskOfActivityId"></app-risk-back>
     </div>
   </div>
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
+  </ng-template>
 </nz-modal>
+
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+          <span class="ant-notification-notice-icon">
+            <i nz-icon nzType="sound"
+               style="color: rgb(16, 142, 233);"
+               nzTheme="outline">
+            </i>
+          </span>
+      <div class="ant-notification-notice-message">Paiement effectué</div>
+      <div class="ant-notification-notice-description">
+        <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
+        <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
+      </div>
+    </div>
+  </div>
+</ng-template>
 

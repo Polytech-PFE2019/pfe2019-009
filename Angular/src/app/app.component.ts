@@ -1,10 +1,19 @@
 import {WebsocketService} from './service/webSocketService/websocket.service';
 import {LobbyService} from './service/lobbyService/lobby.service';
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SocketRequest} from '../Request';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {bounce, flipOutX} from 'ng-animate';
+import {Roles} from "./model/roles";
+
+interface ItemData {
+  href: string;
+  title: string;
+  avatar: string;
+  description: string;
+  content: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -12,7 +21,7 @@ import {bounce, flipOutX} from 'ng-animate';
   styleUrls: ['./app.component.css'],
   providers: [WebsocketService, LobbyService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   test: SocketRequest = new SocketRequest();
   test1 = [];
@@ -20,11 +29,8 @@ export class AppComponent {
   isVanished = false;
   isTest = false;
   data: any[] = [];
-  content = '11111';
+  roles = Roles;
 
-  ngOnInit(){
-
-  }
   constructor() {
     this.data = [
       {
@@ -77,5 +83,23 @@ export class AppComponent {
 
   close() {
     this.isTest = false;
+  }
+
+  ngOnInit(): void {
+    this.loadData(1);
+  }
+
+  loadData(pi: number): void {
+    this.data = new Array(5).fill({}).map((_, index) => {
+      return {
+        href: 'http://ant.design',
+        title: `ant design part ${index} (page: ${pi})`,
+        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+        description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+        content:
+          'We supply a series of design principles, practical patterns and high quality design resources ' +
+          '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
+      };
+    });
   }
 }

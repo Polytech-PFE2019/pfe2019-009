@@ -41,6 +41,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   daysReduced = 0;
   totalAmount = 0;
   currentPlayer: any = null;
+  isGroupChat = false;
 
 
   constructor(private lobbyService: LobbyService,
@@ -97,6 +98,15 @@ export class GameOnComponent implements OnInit, OnDestroy {
         this.router.navigate(['result']);
       }
 
+      if (data.response === 'CHANGE_ACTIVITY') {
+        this.notification.create(
+          'info',
+          'Tour fini',
+          'On entre étape ' + data.activityID,
+          { nzDuration: 3000 }
+        );
+      }
+
       if (data.response === 'UPDATE_PAYMENT') {
         console.log(data);
         if (data.payments.length > 0) {
@@ -118,6 +128,10 @@ export class GameOnComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+  openGroupChat() {
+    this.isGroupChat = !this.isGroupChat;
   }
 
   getCurrentStep($event: any) {

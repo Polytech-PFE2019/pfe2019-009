@@ -33,7 +33,11 @@
         </div>
       </div>
     </div>
-
+    <div class="groupChat">
+      <button nz-button [nzSize]="'large'" nzShape="circle" (click)="openGroupChat()">
+        <i nz-icon nzType="message" nzTheme="outline" style="color: #e0620d"></i>
+      </button>
+    </div>
     <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une faillte</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">

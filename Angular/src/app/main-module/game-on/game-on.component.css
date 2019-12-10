@@ -95,3 +95,11 @@ input{
   padding: 10px;
   border: solid 1px #123074;
 }
+
+.groupChat {
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+  overflow-y: auto;
+  margin: 10px;
+}

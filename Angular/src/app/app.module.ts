@@ -47,6 +47,7 @@ import {CountdownModule} from 'ngx-countdown';
 import {ResultComponent} from './game-information/result/result.component';
 import {PaymentContractComponent} from './commun-module/payment-contract/payment-contract.component';
 import { ListPlayersComponent } from './list-players/list-players.component';
+import { ChatGroupComponent } from './chat-module/chat-group/chat-group.component';
 
 const ngZorroConfig: NzConfig = {
   notification: {nzDuration: 35000}
@@ -87,7 +88,8 @@ registerLocaleData(fr);
     ChatMessageComponent,
     ResultComponent,
     PaymentContractComponent,
-    ListPlayersComponent
+    ListPlayersComponent,
+    ChatGroupComponent
   ],
   imports: [
     BrowserModule,

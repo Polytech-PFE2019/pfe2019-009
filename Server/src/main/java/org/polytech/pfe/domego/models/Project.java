@@ -17,18 +17,6 @@ public class Project {
         this.numberOfRisksDrawnWanted = numberOfRisksDrawnWanted;
     }
 
-    public int getDelayDelta(){
-        return numberOfDaysWanted - days;
-    }
-
-    public int getBudgetDelta(){
-        return costWanted - cost;
-    }
-
-    public int getRisksDelta(){
-        return getNumberOfRisksDrawnWanted() - risks;
-    }
-
     public int getDays() {
         return days;
     }

@@ -2,6 +2,7 @@ package org.polytech.pfe.domego.components.calculator;
 
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.RoleType;
 
 public class VictoryPointCalculator {
 
@@ -12,25 +13,25 @@ public class VictoryPointCalculator {
     }
 
     public void calculateObjectivesVictoryPoints(Player player){
-        System.out.println("DELTA DELAY : " + game.getDelayDelta());
-        System.out.println("DELTA RISK : " + game.getRisksDelta());
-        System.out.println("DELTA BUDGET : " + game.getBudgetDelta());
+        int deltaDelay = this.calculateDelayDelta();
+        int deltaRisks = this.calculateRiskDelta();
+        int deltaCosts = this.calculateCostDelta();
         player.getObjectiveList().forEach(objective -> {
             switch (objective.getObjectiveType()) {
                 case MONEY:
                     objective.calculateVictoryPoints(calculateBenefit(player));
                     break;
                 case DAYS:
-                    objective.calculateVictoryPoints(game.getDelayDelta());
+                    objective.calculateVictoryPoints(deltaDelay);
                     break;
                 case RISK:
-                    objective.calculateVictoryPoints(game.getRisksDelta());
+                    objective.calculateVictoryPoints(deltaRisks);
                     break;
                 case BUDGET:
-                    objective.calculateVictoryPoints(game.getBudgetDelta());
+                    objective.calculateVictoryPoints(deltaCosts);
                     break;
                 case DAYS_AND_BUDGET:
-                    objective.calculateVictoryPoints(game.getDelayDelta(),game.getBudgetDelta());
+                    objective.calculateVictoryPoints(deltaDelay,deltaCosts);
                     break;
                 default:
                     break;
@@ -41,8 +42,24 @@ public class VictoryPointCalculator {
     }
 
     private double calculateBenefit(Player player){
-        double initialMoney = player.getRole().getBudget();
+        double initialMoney;
+        if (player.getRole().getName().equals(RoleType.MAITRE_D_OUVRAGE))
+            initialMoney = player.getRole().getBudget() - game.getProject().getCostWanted();
+        else
+            initialMoney = player.getRole().getBudget();
 
         return - initialMoney + player.getMoney();
+    }
+
+    private int calculateDelayDelta(){
+        return this.game.getProject().getNumberOfDaysWanted() - this.game.getProject().getDays();
+    }
+
+    private int calculateCostDelta(){
+        return this.game.getProject().getCostWanted() - this.game.getProject().getCost();
+    }
+
+    private int calculateRiskDelta(){
+        return this.game.getProject().getNumberOfRisksDrawnWanted() - this.game.getProject().getRisks();
     }
 }

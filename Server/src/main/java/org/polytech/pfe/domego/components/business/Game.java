@@ -69,18 +69,6 @@ public class Game {
         this.project.addRisks(risks);
     }
 
-    public int getDelayDelta(){
-        return this.project.getDelayDelta();
-    }
-
-    public int getBudgetDelta(){
-        return this.project.getBudgetDelta();
-    }
-
-    public int getRisksDelta(){
-        return this.project.getRisksDelta();
-    }
-
     public List<Player> getPlayers() {
         return players;
     }

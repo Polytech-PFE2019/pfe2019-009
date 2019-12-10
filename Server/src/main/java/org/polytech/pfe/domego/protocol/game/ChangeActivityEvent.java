@@ -26,9 +26,8 @@ public class ChangeActivityEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-        if (game.getCurrentActivity().getId() == 6){
+        if (game.getCurrentActivity().getId() == game.getActivities().size()){
             new FinishGameEvent(game).processEvent();
-            return;
         }
         else{
             game.goToTheNextActivity();
@@ -59,9 +58,5 @@ public class ChangeActivityEvent implements EventProtocol {
         }
         response.add(GameResponseKey.EXTRA_PAYING.key, extraPaymentArray);
         return response;
-    }
-
-    private void sendErrorToAllPlayers(String errorMessage){
-        game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendError(errorMessage));
     }
 }

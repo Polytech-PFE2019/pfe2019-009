@@ -1,14 +1,14 @@
-import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {SocketRequest} from '../../../Request';
-import {Router} from '@angular/router';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {Subscription} from 'rxjs';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {BuyResourceService} from '../../service/resources/buy-resource.service';
-import {Activity} from '../../model/activity';
-import {PlayerdataService} from 'src/app/playerdata.service';
-import {NzNotificationService} from 'ng-zorro-antd';
+import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { SocketRequest } from '../../../Request';
+import { Router } from '@angular/router';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { Subscription } from 'rxjs';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { BuyResourceService } from '../../service/resources/buy-resource.service';
+import { Activity } from '../../model/activity';
+import { PlayerdataService } from 'src/app/playerdata.service';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-game-on',
@@ -16,8 +16,8 @@ import {NzNotificationService} from 'ng-zorro-antd';
   styleUrls: ['./game-on.component.css']
 })
 export class GameOnComponent implements OnInit, OnDestroy {
-  @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
-  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
+  @ViewChild('stepContainers', { static: true }) stepContainer: ElementRef;
+  @ViewChild('template', { static: true }) template: TemplateRef<{}>;
   step = 'Étape 1';
   gameId: string;
   buyingActions: any;
@@ -32,7 +32,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   listOfDialog: any[] = [];
   subGame: Subscription;
   isRiskCard = false;
-  riskCard: any [] = [];
+  riskCard: any[] = [];
   riskOfActivityId = 0;
   roleId: any;
   subSteps: Subscription;
@@ -42,19 +42,21 @@ export class GameOnComponent implements OnInit, OnDestroy {
   totalAmount = 0;
   currentPlayer: any = null;
 
+  totalScrollHeight = 0;
 
   constructor(private lobbyService: LobbyService,
-              private gameService: GameOnService,
-              private subscription: SubscriptionService,
-              private resourceManager: BuyResourceService,
-              private router: Router,
-              private notification: NzNotificationService,
-              private playerDataService: PlayerdataService) {
+    private gameService: GameOnService,
+    private subscription: SubscriptionService,
+    private resourceManager: BuyResourceService,
+    private router: Router,
+    private notification: NzNotificationService,
+    private playerDataService: PlayerdataService) {
   }
 
   ngOnInit() {
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;
+
 
     // this.subPlayersWithRoles = this.subscription.playersWithRoles$.subscribe(data => {
     //   console.log(data);
@@ -64,12 +66,20 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
+      const previousActivityID = parseInt(this.currentActivity.title) - 1;
+      let previousActivityElement = document.getElementById(previousActivityID.toString());
+      if (previousActivityElement != null) {
+        this.totalScrollHeight += previousActivityElement.offsetHeight;
+        document.getElementById("stepsContainer").scrollTop = this.totalScrollHeight;
+
+      }
       console.log(this.currentActivity);
     });
 
     this.subSteps = this.subscription.activites$.subscribe(data => {
-      console.log(data);
       this.currentStep = data;
+
+      console.log(data);
     });
 
     console.log(this.currentStep);

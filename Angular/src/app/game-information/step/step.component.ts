@@ -37,15 +37,16 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
   roles: any[] = [];
   myInformation: any;
   numOfRisks: any;
+  subCurrentActivityID: Subscription;
 
-  CURRENT_COLOR = "grey";
-  PREVIOUS_COLOR = "lightgrey"
+  CURRENT_COLOR = 'grey';
+  PREVIOUS_COLOR = 'lightgrey';
 
   constructor(private subscription: SubscriptionService,
-    private nzMessage: NzMessageService,
-    private lobbyService: LobbyService,
-    private buyResourceService: BuyResourceService,
-    private gameService: GameOnService) {
+              private nzMessage: NzMessageService,
+              private lobbyService: LobbyService,
+              private buyResourceService: BuyResourceService,
+              private gameService: GameOnService) {
   }
 
   ngOnInit() {
@@ -56,21 +57,21 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(this.myInformation);
     this.numOfRisks = this.step.risks;
 
-    this.subscription.currentActivityID$.subscribe(data => {
-      if (data === this.step.title) {
-        document.getElementById("stepCard" + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
-      }
-      else if (data > this.step.title) {
-        document.getElementById("stepCard" + this.step.title).style.backgroundColor = this.PREVIOUS_COLOR;
-      }
-    })
+    this.subCurrentActivityID = this.subscription.currentActivityID$.subscribe(data => {
+      console.log(data);
+      // if (data === this.step.title) {
+      //   document.getElementById('stepCard' + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
+      // } else if (data > this.step.title) {
+      //   document.getElementById('stepCard' + this.step.title).style.backgroundColor = this.PREVIOUS_COLOR;
+      // }
+    });
 
   }
 
   ngAfterViewInit() {
-    if (this.step.title === 1) {
-      document.getElementById("stepCard" + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
-    }
+    // if (this.step.title === 1) {
+    //   document.getElementById('stepCard' + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
+    // }
   }
 
   getCard(event) {
@@ -90,7 +91,7 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-
+    this.subCurrentActivityID.unsubscribe();
   }
 
   openHistory() {

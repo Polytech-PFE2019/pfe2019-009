@@ -9,7 +9,7 @@ import {SubscriptionService} from '../../service/subscriptionSerivce/subscriptio
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent implements OnInit {
-  @Input() listOfData: any;
+  @Input() listOfData = [];
   @Input() getCardHistory: any;
   @Input() riskCards: any;
   @Input() activityID = 0;
@@ -24,6 +24,7 @@ export class HistoryComponent implements OnInit {
   riskDetail: any[] = [];
   dayDetail: any[] = [];
   basicDetail: any[] = [];
+  totalDetail: any[] = [];
   roles: any[] = [];
 
   constructor(private resourceService: BuyResourceService,
@@ -35,8 +36,9 @@ export class HistoryComponent implements OnInit {
     this.resourceBuyed = this.resourceService.money;
     this.data = [];
     this.total = 0;
+    this.totalDetail = [];
     console.log(this.listOfData);
-    for (const item of this.listOfData.payments) {
+    for (const item of this.listOfData) {
       switch (item.type) {
         case 'RISKS':
           this.riskDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources et réduit ' + item.bonus + ' risques\n');
@@ -89,20 +91,25 @@ export class HistoryComponent implements OnInit {
     this.data.push(total);
     console.log(this.data);
   }
+
   getRoleById(id) {
     return this.roles.filter(next => next.id === id)[0];
   }
 
-  getDetailByType(type){
+  getDetailByType(type) {
     switch (type) {
       case 'Defaillances':
         return this.riskDetail;
       case 'Durées':
+        if (this.dayDetail.length === 0) {
+          this.dayDetail.push('Personne ne paye.');
+        }
         return this.dayDetail;
       case 'Resource(s) obligatoire(s)':
         return this.basicDetail;
       default:
-        return null;
+        this.totalDetail.push('Paiement total: ' + this.total);
+        return this.totalDetail;
     }
   }
 

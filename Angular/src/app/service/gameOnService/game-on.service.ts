@@ -112,9 +112,9 @@ export class GameOnService {
             this.updateMinAndMax(data.project);
             const currentId = data.activityID;
             if (this.currentStep[currentId - 1].history === null) {
-              this.currentStep[currentId - 1].history = data;
+              this.currentStep[currentId - 1].history = data.payments;
             } else {
-              this.currentStep[currentId - 1].history = this.currentStep[currentId - 1].history.concat(data);
+              this.currentStep[currentId - 1].history = this.currentStep[currentId - 1].history.concat(data.payments);
             }
             console.log(this.currentStep[currentId - 1].history);
             this.updateInformationAfterPayment(currentId);
@@ -174,7 +174,7 @@ export class GameOnService {
     const currentAc = this.currentStep[currentId - 1];
     console.log(this.currentStep);
     console.log(currentAc);
-    for (const b of currentAc.history.payments) {
+    for (const b of currentAc.history) {
       switch (b.type) {
         case 'DAYS':
           this.currentStep[currentId - 1].numberOfDays -= b.bonus;

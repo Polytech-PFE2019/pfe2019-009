@@ -44,7 +44,9 @@
   </div>
 </div>
 
-<nz-modal [nzVisible]="isRiskCard" nzTitle="Risques" (nzOnOk)="closeRiskCard()">
+<nz-modal [nzVisible]="isRiskCard"
+          [nzFooter]="modalFooter"
+          nzTitle="Risques">
   <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
     <div *ngFor="let card of riskCard; let i=index">
       <app-risk-back
@@ -54,6 +56,9 @@
         [title]="riskOfActivityId"></app-risk-back>
     </div>
   </div>
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
+  </ng-template>
 </nz-modal>
 
 <ng-template #template>

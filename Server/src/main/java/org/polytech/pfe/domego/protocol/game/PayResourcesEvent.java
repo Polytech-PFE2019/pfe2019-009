@@ -112,6 +112,9 @@ public class PayResourcesEvent implements EventProtocol {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
+
+        response.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
+
         messenger.sendSpecificMessageToAUser(response.toString());
     }
 

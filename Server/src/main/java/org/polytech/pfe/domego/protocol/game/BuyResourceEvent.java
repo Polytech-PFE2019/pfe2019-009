@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -22,13 +23,13 @@ public class BuyResourceEvent implements EventProtocol {
 
     private Logger logger = Logger.getGlobal();
     private Map<String,String> request;
-    private GameInstance gameInstance;
+    private GameAccessor gameAccessor;
     private Messenger messenger;
 
     public BuyResourceEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
-        gameInstance = GameInstance.getInstance();
+        this.gameAccessor = new GameAccessor();
 
     }
 
@@ -41,7 +42,7 @@ public class BuyResourceEvent implements EventProtocol {
             return;
         }
 
-        Optional<Game> optionalGame = gameInstance.getSpecificGameByID(request.get(GameRequestKey.GAMEID.getKey()));
+        Optional<Game> optionalGame = this.gameAccessor.getGameById(request.get(GameRequestKey.GAMEID.getKey()));
         if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
@@ -85,6 +86,7 @@ public class BuyResourceEvent implements EventProtocol {
         response.addProperty(GameResponseKey.RESPONSE.key, "BUY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+        response.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
         messenger.sendSpecificMessageToAUser(response.toString());
 
     }

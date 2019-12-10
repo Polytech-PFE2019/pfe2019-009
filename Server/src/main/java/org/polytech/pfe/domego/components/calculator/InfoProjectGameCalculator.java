@@ -21,27 +21,26 @@ public class InfoProjectGameCalculator {
 
     public int getMinResourcesToPay(RoleType roleType){
         List<PayResources> listPayResources = new ArrayList<>();
-        this.game.getActivities().stream().forEach(activity -> activity.getPayResourcesList().stream().filter( payResources -> payResources.getRoleID() == roleType.getId()).forEach(listPayResources::add));
+        this.game.getActivities().stream().
+                filter(activity -> activity.getActivityStatus().equals(ActivityStatus.NOT_STARTED) || activity.getActivityStatus().equals(ActivityStatus.ONGOING)).
+                forEach(activity -> activity.getPayResourcesList().stream().filter( payResources -> payResources.getRoleID() == roleType.getId())
+                        .forEach(listPayResources::add));
+
         int minResourcesToPay = 0;
-        minResourcesToPay += listPayResources.stream()
-                .filter(payResources ->
-                        payResources.hasPaid() && !payResources.getPayResourceType().equals(PayResourceType.MANDATORY))
-                .mapToInt(PayResources::getAmountPaid).sum();
         minResourcesToPay += listPayResources.stream().
                 filter(payResources ->
-                        payResources.getPayResourceType().equals(PayResourceType.MANDATORY))
+                        payResources.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResources.hasPaid())
                 .mapToInt(payResource -> Collections.min(payResource.getPriceAndBonusMap().keySet())).sum();
         return minResourcesToPay;
     }
 
     public int getMaxResourcesToPay(RoleType roleType){
         List<PayResources> listPayResources = new ArrayList<>();
-        this.game.getActivities().stream().forEach(activity -> activity.getPayResourcesList().stream().filter( payResources -> payResources.getRoleID() == roleType.getId()).forEach(listPayResources::add));
+        this.game.getActivities().stream().
+                filter(activity -> activity.getActivityStatus().equals(ActivityStatus.NOT_STARTED) || activity.getActivityStatus().equals(ActivityStatus.ONGOING)).
+                forEach(activity -> activity.getPayResourcesList().stream().filter( payResources -> payResources.getRoleID() == roleType.getId())
+                        .forEach(listPayResources::add));
         int maxResourcesToPay = 0;
-        maxResourcesToPay += listPayResources.stream()
-                .filter(payResources ->
-                        payResources.hasPaid())
-                .mapToInt(PayResources::getAmountPaid).sum();
         maxResourcesToPay += listPayResources.stream()
                 .filter(payResources -> !payResources.hasPaid())
                 .mapToInt(payResource -> Collections.max(payResource.getPriceAndBonusMap().keySet())).sum();
@@ -55,7 +54,7 @@ public class InfoProjectGameCalculator {
             minTime += activity.getNumberOfDays();
             if (activity.getActivityStatus().equals(ActivityStatus.NOT_STARTED) || activity.getActivityStatus().equals(ActivityStatus.ONGOING)){
                 minTime -= activity.getPayResourcesList().stream()
-                        .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.DAYS))
+                        .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.DAYS) && !payResources.hasPaid())
                         .mapToInt(payResource -> Collections.max(payResource.getPriceAndBonusMap().values())).sum();
             }
         }
@@ -81,7 +80,7 @@ public class InfoProjectGameCalculator {
             minFailure += activity.getRiskCardList().size();
             if (activity.getActivityStatus().equals(ActivityStatus.NOT_STARTED) || activity.getActivityStatus().equals(ActivityStatus.ONGOING)){
                 minFailure -= activity.getPayResourcesList().stream()
-                        .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.RISKS))
+                        .filter(payResources -> payResources.getPayResourceType().equals(PayResourceType.RISKS) && !payResources.hasPaid())
                         .mapToInt(payResource -> Collections.max(payResource.getPriceAndBonusMap().values())).sum();
             }
         }

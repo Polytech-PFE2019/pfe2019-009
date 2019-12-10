@@ -51,6 +51,7 @@ public class UpdatePaymentGameEvent implements EventProtocol {
             paymentJSon.addProperty(GameResponseKey.AMOUNT.key, payment.getAmountPaid());
             paymentJSon.addProperty(GameResponseKey.TYPE.key, payment.getPayResourceType().getName());
             paymentJSon.addProperty(GameResponseKey.BONUS.key, payment.getBonusGiven());
+            paymentJSon.addProperty(GameResponseKey.EXTRA_PAYING.key, payment.isExtraPayment());
             paymentsJSON.add(paymentJSon);
         }
         updatePayment.add(GameResponseKey.PAYMENTS.key, paymentsJSON);

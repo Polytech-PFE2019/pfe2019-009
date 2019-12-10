@@ -95,6 +95,7 @@ public abstract class Activity implements BuyingAction {
 
         }
 
+        payResourcesList.stream().filter(payResources -> payResources.getRoleID() == player.getRole().getId()).forEach(payResources -> payResources.setHasPaid(true));//When A player have paid, he can't pay for this activity again
         player.subtractResources(totalAmount);
         return true;
     }

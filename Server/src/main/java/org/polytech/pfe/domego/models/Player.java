@@ -92,6 +92,10 @@ public class Player {
         objectiveList.forEach(objective -> victoryPoints += objective.getVictoryPoints());
     }
 
+    public void addVictoryPoint(int victoryPoints){
+        this.victoryPoints += victoryPoints;
+    }
+
 
 
     public double calculateBenefit(){
@@ -155,5 +159,13 @@ public class Player {
 
     public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    public List<Objective> getObjectiveList() {
+        return objectiveList;
+    }
+
+    public void setObjectiveList(List<Objective> objectiveList) {
+        this.objectiveList = objectiveList;
     }
 }

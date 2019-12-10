@@ -55,7 +55,6 @@ public class Game {
         if (currentActivity + 1 != activities.size()) {
             Activity oldActivity = this.getCurrentActivity();
             oldActivity.finishActivity();
-            oldActivity.getPayResourcesList().forEach(payResources -> payResources.setHasPaid(true));
             currentActivity++;
             this.getCurrentActivity().startActivity();
         }

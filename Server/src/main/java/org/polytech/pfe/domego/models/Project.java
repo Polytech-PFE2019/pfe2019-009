@@ -26,7 +26,7 @@ public class Project {
     }
 
     public int getRisksDelta(){
-        return risks - getNumberOfRisksDrawnWanted();
+        return getNumberOfRisksDrawnWanted() - risks;
     }
 
     public int getDays() {

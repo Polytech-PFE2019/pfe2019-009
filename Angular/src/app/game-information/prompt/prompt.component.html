@@ -1,4 +1,9 @@
-<div class = "promptContainer">
+<div class="promptContainer">
   Ce n'est pas ton tour :)
-  <img src="../../../assets/rotation.gif" width="240" height="180" alt="loading">
+  <p *ngFor="let id of currentActivity?.rolesID">
+    {{getRoleById(id).title}}
+  </p>
+  <span *ngIf="currentActivity?.rolesID.length>1">sont entrain de jouer</span>
+  <span *ngIf="currentActivity?.rolesID.length===1">est entrain de jouer</span>
+  <img src="../../../assets/rotation.gif" [width]="240" [height]="180" alt="loading">
 </div>

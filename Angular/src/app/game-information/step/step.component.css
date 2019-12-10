@@ -47,3 +47,7 @@ img{
   align-items: center;
   flex-direction: column;
 }
+
+span{
+  padding: 5px;
+}

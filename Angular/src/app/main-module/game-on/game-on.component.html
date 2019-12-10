@@ -12,10 +12,13 @@
   <app-list-players></app-list-players>
 </nz-drawer>
 <div nz-row class="container">
-  <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
+  <div class="left-container" nz-col
+       [nzSpan]="16"
+       [nzPush]="8">
+    <div style="height: 30px"></div>
     <div class="activityContainer">
       <div class="activity">
-        <app-activity [activities]="activities" (sendInitDialog)="initDialog($event)"></app-activity>
+        <app-activity [activities]="activities"></app-activity>
       </div>
       <div class="activity">
         <app-buy-resources></app-buy-resources>
@@ -33,8 +36,17 @@
         </div>
       </div>
     </div>
-
-    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une faillte</b></button>
+    <div style="height: 30px"></div>
+    <img src="../../../assets/icons/duihua.png"
+         id="negociation"
+         [@.disabled]='isDiabled'
+         *ngIf="negotiationIDs.length > 0 && isShow"
+         [@swing]="swing"
+         (click)="launchNegotiation()"
+         [height]="60"
+         [width]="60">
+    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une
+      faillte</b></button>
   </div>
   <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
     <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">

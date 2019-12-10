@@ -97,7 +97,7 @@
     <h4 nz-title>Etape {{step?.title}}</h4>
     <div class="durationContainer"><b>+{{step?.numberOfDays}}j</b></div>
     <div class="risk" *ngFor="let item of counter(step.risks); let i=index">
-      Risque{{i + 1}}
+      <span><b>R{{i + 1}}</b></span>
     </div>
   </div>
 </ng-template>

@@ -99,7 +99,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       if (data.response === 'UPDATE_PAYMENT') {
         console.log(data);
-        this.currentPlayer = this.getRoleById(data.roleID);
+        if (data.payments.length > 0) {
+          this.currentPlayer = this.getRoleById(data.payments[0].roleID);
+        }
         for (const p of data.payments) {
           switch (p.type) {
             case 'DAYS':

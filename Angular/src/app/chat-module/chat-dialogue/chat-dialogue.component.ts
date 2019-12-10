@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { GameOnService } from '../../service/gameOnService/game-on.service';
-import { DialogueMessage } from './dialogueMessage';
-import { SocketRequest } from 'src/Request';
-import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
-import { Subscription } from 'rxjs';
-import { NzConfigService, NzNotificationService } from "ng-zorro-antd";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {DialogueMessage} from './dialogueMessage';
+import {SocketRequest} from 'src/Request';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {Subscription} from 'rxjs';
+import {NzConfigService, NzNotificationService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -20,7 +20,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     description: 40,
   };
   @Input() title = '';
-  @ViewChild('template', { static: true }) template: TemplateRef<{}>;
+  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
   isOpenDialog = true;
   value = 100;
   contractNumber = 0;
@@ -42,9 +42,9 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   };
 
   constructor(private gameService: GameOnService,
-    private notification: NzNotificationService,
-    private nzConfigService: NzConfigService,
-    private subsciption: SubscriptionService) {
+              private notification: NzNotificationService,
+              private nzConfigService: NzConfigService,
+              private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {

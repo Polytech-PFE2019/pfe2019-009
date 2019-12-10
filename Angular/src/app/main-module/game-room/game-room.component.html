@@ -31,7 +31,7 @@
              style="height: 40px"
              [(ngModel)]="role.ready" (ngModelChange)="ready()"
              *ngIf="role.choosed"
-             [disabled]="role.username!=='' && role.username!= userName">Prêt</label>
+             [disabled]="role.username!=='' && role.username!= userName"><b>Prêt</b></label>
       <div *ngIf="!role.choosed" style="height: 40px"></div>
     </div>
   </div>

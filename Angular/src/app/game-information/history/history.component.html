@@ -11,7 +11,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let data of basicTable.data">
+      <tr nz-popover [nzPopoverContent]="popoverTemplate" *ngFor="let data of basicTable.data">
+        <ng-template #popoverTemplate>
+          <span style="width: 200px">{{getDetailByType(data.activity)}}</span>
+        </ng-template>
         <td>
           <img [src]="data.src" [height]="20" [width]="20">
           {{data.activity}}

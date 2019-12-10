@@ -12,6 +12,7 @@ import {NzNotificationService} from 'ng-zorro-antd';
 import {swing} from 'ng-animate';
 import {transition, trigger, useAnimation} from '@angular/animations';
 
+
 @Component({
   selector: 'app-game-on',
   templateUrl: './game-on.component.html',
@@ -38,7 +39,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   listOfDialog: any[] = [];
   subGame: Subscription;
   isRiskCard = false;
-  riskCard: any [] = [];
+  riskCard: any[] = [];
   riskOfActivityId = 0;
   roleId: any;
   subSteps: Subscription;
@@ -54,6 +55,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   isDiabled = false;
   isShow = true;
 
+  totalScrollHeight = 0;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -77,6 +79,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
+      const previousActivityID = parseInt(this.currentActivity.title, 10) - 1;
+      const previousActivityElement = document.getElementById(previousActivityID.toString());
+      if (previousActivityElement != null) {
+        this.totalScrollHeight += previousActivityElement.offsetHeight;
+        document.getElementById('stepsContainer').scrollTop = this.totalScrollHeight;
+
+      }
       console.log(this.currentActivity);
       this.negotiationIDs = [];
       this.initDialog();
@@ -93,8 +102,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
     });
 
     this.subSteps = this.subscription.activites$.subscribe(data => {
-      console.log(data);
       this.currentStep = data;
+
+      console.log(data);
     });
 
     console.log(this.currentStep);

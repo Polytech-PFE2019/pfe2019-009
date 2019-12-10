@@ -8,7 +8,7 @@ export class Activity {
   negotiationActions: any[];
   risks: number;
   rolesID: any[];
-  history: any[];
+  history: any;
   riskCards: any;
   extraPayment: any[];
   payContractAction: any[];
@@ -24,7 +24,7 @@ export class Activity {
     this.negotiationActions = r.negotiationActions;
     this.risks = r.risks;
     this.rolesID = r.rolesID;
-    this.history = [];
+    this.history = null;
     this.riskCards = null;
     this.extraPayment = [];
     this.payContractAction = r.payContractAction;

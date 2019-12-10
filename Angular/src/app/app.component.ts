@@ -28,10 +28,18 @@ export class AppComponent implements OnInit {
   flipOutX: any;
   isVanished = false;
   isTest = false;
-  data: ItemData[] = [];
+  data: any[] = [];
   roles = Roles;
 
   constructor() {
+    this.data = [
+      {
+        src: '',
+        activity: "jour",
+        money: 3,
+        result: -2,
+      }
+    ];
     const i = {
       negociationID: '179f781a-1be1-40df-882d-e7dd74bacb48',
       response: 'START_NEGOTIATE'
@@ -60,7 +68,6 @@ export class AppComponent implements OnInit {
     this.test1.push(jj);
     this.test1.push(jjj);
   }
-
 
   testFlip() {
     if (this.flipOutX === null) {

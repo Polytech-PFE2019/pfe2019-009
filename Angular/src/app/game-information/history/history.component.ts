@@ -16,34 +16,39 @@ export class HistoryComponent implements OnInit {
   resourceBuyed = 0;
   data: any[] = [];
   total = 0;
-  subResource: Subscription;
-  titleList: any[] = [];
-  riskList: any[] = [];
   riskAmount = 0;
   daysAmount = 0;
   basicAmount = 0;
   riskBonus = 0;
   daysBonus = 0;
+  riskDetail: any[] = [];
+  dayDetail: any[] = [];
+  basicDetail: any[] = [];
+  roles: any[] = [];
 
   constructor(private resourceService: BuyResourceService,
-              private subSerive: SubscriptionService) {
+              private subscription: SubscriptionService) {
   }
 
   ngOnInit() {
+    this.roles = this.subscription.roles;
     this.resourceBuyed = this.resourceService.money;
     this.data = [];
     this.total = 0;
     console.log(this.listOfData);
-    for (const item of this.listOfData) {
+    for (const item of this.listOfData.payments) {
       switch (item.type) {
         case 'RISKS':
+          this.riskDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources et réduit ' + item.bonus + ' risques\n');
           this.riskAmount += item.amount;
           this.riskBonus += item.bonus;
           break;
-        case 'MANSATORY':
+        case 'MANDATORY':
+          this.basicDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources obligatoires')
           this.basicAmount += item.amount;
           break;
         case 'DAYS':
+          this.dayDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources et réduit ' + item.bonus + ' jours');
           this.daysAmount += item.amount;
           this.daysBonus += item.bonus;
           break;
@@ -73,6 +78,7 @@ export class HistoryComponent implements OnInit {
     this.data.push(day);
     this.data.push(risk);
     this.data.push(basic);
+    console.log(this.data);
     this.total = this.daysAmount + this.basicAmount + this.riskAmount;
     const total = {
       activity: 'Total',
@@ -83,4 +89,22 @@ export class HistoryComponent implements OnInit {
     this.data.push(total);
     console.log(this.data);
   }
+  getRoleById(id) {
+    return this.roles.filter(next => next.id === id)[0];
+  }
+
+  getDetailByType(type){
+    switch (type) {
+      case 'Defaillances':
+        return this.riskDetail;
+      case 'Durées':
+        return this.dayDetail;
+      case 'Resource(s) obligatoire(s)':
+        return this.basicDetail;
+      default:
+        return null;
+    }
+  }
+
+
 }

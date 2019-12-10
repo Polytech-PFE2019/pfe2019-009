@@ -38,6 +38,9 @@ public class GameRequestHandler implements RequestHandler {
             case START_NEGOTIATE:
                 event = new StartNegotiationEvent(session,request);
                 break;
+            case ESTABLISH_NEGOTIATE:
+                event = new EstablishNegotiationEvent(session,request);
+                break;
             case END_NEGOTIATE:
                 event = new EndNegotiationEvent(session,request);
                 break;

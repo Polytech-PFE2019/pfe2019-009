@@ -16,12 +16,12 @@ import java.util.logging.Logger;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class StartNegotiationEvent extends NegotiationEvent implements EventProtocol {
+public class EstablishNegotiationEvent extends NegotiationEvent implements EventProtocol {
 
 
     private Logger logger = Logger.getGlobal();
 
-    public StartNegotiationEvent(WebSocketSession session, Map<String,String> request) {
+    public EstablishNegotiationEvent(WebSocketSession session, Map<String,String> request) {
         super(session,request);
     }
 
@@ -46,18 +46,7 @@ public class StartNegotiationEvent extends NegotiationEvent implements EventProt
 
     private void sendResponseToUsers() {
         JsonObject response = new JsonObject();
-        response.addProperty(GameResponseKey.RESPONSE.key, "START_NEGOTIATE");
-        response.addProperty(GameResponseKey.TIME.key, negotiation.getTime());
-        Player otherPlayer;
-        if(giver.getSession() == session){
-            otherPlayer = receiver;
-        }
-        else {
-            otherPlayer = giver;
-        }
-        response.addProperty(GameResponseKey.GIVERID.key, giver.getRole().getId());
-        response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getRole().getId());
-        response.addProperty(GameResponseKey.OTHER_USER_NAME.key, otherPlayer.getRole().getName().toString());
+        response.addProperty(GameResponseKey.RESPONSE.key, "ESTABLISH_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiation.getId());
 
         super.sendResponses(response.toString());

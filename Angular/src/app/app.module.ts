@@ -32,7 +32,6 @@ import {ActivityDisplayerComponent} from './commun-module/activity-displayer/act
 import {LobbyService} from './service/lobbyService/lobby.service';
 import {WebsocketService} from './service/webSocketService/websocket.service';
 import {GameOnService} from './service/gameOnService/game-on.service';
-import {RiskContainerComponent} from './commun-module/risk-back/risk-container/risk-container.component';
 import {RiskBackComponent} from './commun-module/risk-back/risk-back.component';
 import {LoadingComponent} from './loading/loading.component';
 import {LoadingPageComponent} from './loading-page/loading-page.component';
@@ -47,9 +46,10 @@ import {ChatMessageComponent} from './chat-module/chat-message/chat-message.comp
 import {CountdownModule} from 'ngx-countdown';
 import {ResultComponent} from './game-information/result/result.component';
 import {PaymentContractComponent} from './commun-module/payment-contract/payment-contract.component';
+import { ListPlayersComponent } from './list-players/list-players.component';
 
 const ngZorroConfig: NzConfig = {
-  notification: {nzDuration: 0}
+  notification: {nzDuration: 35000}
 };
 
 registerLocaleData(fr);
@@ -75,7 +75,6 @@ registerLocaleData(fr);
     NegociationComponent,
     ResourceBuyerComponent,
     ActivityDisplayerComponent,
-    RiskContainerComponent,
     RiskBackComponent,
     LoadingComponent,
     LoadingPageComponent,
@@ -87,7 +86,8 @@ registerLocaleData(fr);
     ChatReceiverComponent,
     ChatMessageComponent,
     ResultComponent,
-    PaymentContractComponent
+    PaymentContractComponent,
+    ListPlayersComponent
   ],
   imports: [
     BrowserModule,

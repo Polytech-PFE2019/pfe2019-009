@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {SocketRequest} from '../../../Request';
 import {Router} from '@angular/router';
@@ -8,7 +8,7 @@ import {SubscriptionService} from '../../service/subscriptionSerivce/subscriptio
 import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {Activity} from '../../model/activity';
 import {PlayerdataService} from 'src/app/playerdata.service';
-import {NzNotificationService} from "ng-zorro-antd";
+import {NzNotificationService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-game-on',
@@ -17,6 +17,7 @@ import {NzNotificationService} from "ng-zorro-antd";
 })
 export class GameOnComponent implements OnInit, OnDestroy {
   @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
+  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
   step = 'Étape 1';
   gameId: string;
   buyingActions: any;
@@ -24,7 +25,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
   test: Activity;
   testClick = false;
   subPayingActions: Subscription;
-  subPlayersWithRoles: Subscription;
   activities: any = null;
   roles: any[] = [];
   currentActivity: any;
@@ -36,6 +36,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
   riskOfActivityId = 0;
   roleId: any;
   subSteps: Subscription;
+  isPlayers = false;
+  riskReduced = 0;
+  daysReduced = 0;
+  totalAmount = 0;
+  currentPlayer: any = null;
+
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -91,11 +97,22 @@ export class GameOnComponent implements OnInit, OnDestroy {
         this.router.navigate(['result']);
       }
 
-      if (data.response === 'BUY_RESOURCES') {
+      if (data.response === 'UPDATE_PAYMENT') {
         console.log(data);
-        this.notification.blank('Activité effectuée',
-          this.getRoleById(data.roleID).title + ' a acheté ' + data.resources + ' resources',
-          {nzDuration: 0});
+        this.currentPlayer = this.getRoleById(data.roleID);
+        for (const p of data.payments) {
+          switch (p.type) {
+            case 'DAYS':
+              this.totalAmount += p.amount;
+              this.daysReduced += p.bonus;
+              break;
+            case 'RISKS':
+              this.totalAmount += p.amount;
+              this.riskReduced += p.bonus;
+              break;
+          }
+        }
+        this.notification.template(this.template);
       }
     });
 
@@ -128,7 +145,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subPayingActions.unsubscribe();
-    this.subPlayersWithRoles.unsubscribe();
     this.subCurrentActivity.unsubscribe();
     this.subGame.unsubscribe();
     this.subSteps.unsubscribe();
@@ -144,5 +160,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   getRoleById(id) {
     return this.roles.filter(next => next.id === id)[0];
+  }
+
+  showPlayers() {
+    this.isPlayers = true;
+  }
+
+  closePlayers() {
+    this.isPlayers = false;
   }
 }

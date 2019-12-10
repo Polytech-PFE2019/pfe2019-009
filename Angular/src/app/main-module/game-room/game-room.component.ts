@@ -184,8 +184,8 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     console.log(event);
     const req = {
       request: 'CHANGE_STATUS',
-      roomID: this.roomID.toString(),
-      userID: this.userID.toString()
+      roomID: this.roomID,
+      userID: this.userID
     };
     console.log(req);
     this.lobbyService.messages.next(req as SocketRequest);

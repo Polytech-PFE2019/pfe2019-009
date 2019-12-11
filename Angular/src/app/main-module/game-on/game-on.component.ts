@@ -144,6 +144,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       if (data.response === 'UPDATE_PAYMENT') {
         console.log(data);
+        this.totalAmount = 0;
+        this.daysReduced = 0;
+        this.riskReduced = 0;
         if (data.payments.length > 0) {
           this.currentPlayer = this.getRoleById(data.payments[0].roleID);
         }

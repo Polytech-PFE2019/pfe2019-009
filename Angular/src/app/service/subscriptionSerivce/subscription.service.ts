@@ -93,7 +93,7 @@ export class SubscriptionService {
   sendCurrentActivity(msg) {
     console.log('sendCurrentActivity' + msg);
     this.currentActivity.next(msg);
-    this.currentActivityID.next(msg.title)
+    this.currentActivityID.next(msg.title);
   }
 
   sendCosts(msg) {

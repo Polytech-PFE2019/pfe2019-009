@@ -73,6 +73,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
     },
   ];
 
+  establish = {
+    visible: false,
+    name: '',
+    negoID: ''
+  };
+
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
               private subscription: SubscriptionService,
@@ -137,8 +143,20 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
       if (data.response === 'START_NEGOTIATE') {
+        data.started = false;
+        this.establish.name = data.otherUserName;
+        this.establish.negoID = data.negociationID;
         this.listOfDialog.push(data);
         console.log(this.listOfDialog);
+
+        if (data.receiverID === this.myRole.id) {
+          this.establish.visible = true;
+        }
+      }
+
+
+      if (data.response === 'ESTABLISH_NEGOTIATE') {
+        this.listOfDialog.find(dialog => data.negociationID === dialog.negociationID).started = true;
       }
       if (data.response === 'drawRisk') {
         if (data.risks.length > 0) {
@@ -187,7 +205,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   openGroupChat() {
-    this.isGroupChat = !this.isGroupChat;
+    this.showGroupChat = !this.showGroupChat;
   }
 
   getCurrentStep($event: any) {
@@ -260,6 +278,20 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       this.gameService.messages.next(request);
     });
+    // this.showGroupChat = true;
+    // this.groupChat.openGroupChat();
+
+  }
+
+  establishNegotiation(negoID) {
+    this.establish.visible = false;
+    const request = {
+      request: 'ESTABLISH_NEGOTIATE',
+      negotiationID: negoID,
+      gameID: this.gameId
+    } as SocketRequest;
+
+    this.gameService.messages.next(request);
     // this.showGroupChat = true;
     // this.groupChat.openGroupChat();
 

@@ -1,18 +1,18 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Roles} from '../../model/roles';
-import {RoleComponent} from '../../game-information/role/role.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {SocketRequest} from '../../../Request';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
-import {HttpParams} from '@angular/common/http';
-import {Role} from '../../model/role';
-import {Globals} from '../../globals';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {Player} from 'src/app/Player';
-import {PlayerdataService} from 'src/app/playerdata.service';
-import {THIS_EXPR} from '@angular/compiler/src/output/output_ast';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Roles } from '../../model/roles';
+import { RoleComponent } from '../../game-information/role/role.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SocketRequest } from '../../../Request';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+import { Role } from '../../model/role';
+import { Globals } from '../../globals';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { Player } from 'src/app/Player';
+import { PlayerdataService } from 'src/app/playerdata.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-game-room',
@@ -21,7 +21,7 @@ import {THIS_EXPR} from '@angular/compiler/src/output/output_ast';
 })
 export class GameRoomComponent implements OnInit, OnDestroy {
 
-  @ViewChild(RoleComponent, {static: true})
+  @ViewChild(RoleComponent, { static: true })
   Role;
   roles: any[] = [];
   checkedID = null;
@@ -37,11 +37,11 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   isLoding = false;
 
   constructor(private router: Router,
-              private globals: Globals,
-              private gameService: GameOnService,
-              private activatedRoute: ActivatedRoute,
-              private subscriptionService: SubscriptionService,
-              private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
+    private globals: Globals,
+    private gameService: GameOnService,
+    private activatedRoute: ActivatedRoute,
+    private subscriptionService: SubscriptionService,
+    private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
     for (let r of Roles) {
       r = new Role(r);
       this.roles = this.roles.concat(r);
@@ -190,5 +190,4 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     console.log(req);
     this.lobbyService.messages.next(req as SocketRequest);
   }
-
 }

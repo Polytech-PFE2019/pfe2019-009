@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {WebsocketService} from '../webSocketService/websocket.service';
-import {SubscriptionService} from '../subscriptionSerivce/subscription.service';
-import {Subject, Subscription} from 'rxjs';
-import {SocketRequest} from '../../../Request';
-import {URLGame} from '../../model/url';
-import {map} from 'rxjs/operators';
-import {Activity} from '../../model/activity';
-import {ActionSet} from '../../model/action';
-import {BuyResourceService} from '../resources/buy-resource.service';
-import {Roles} from '../../model/roles';
+import { Injectable } from '@angular/core';
+import { WebsocketService } from '../webSocketService/websocket.service';
+import { SubscriptionService } from '../subscriptionSerivce/subscription.service';
+import { Subject, Subscription } from 'rxjs';
+import { SocketRequest } from '../../../Request';
+import { URLGame } from '../../model/url';
+import { map } from 'rxjs/operators';
+import { Activity } from '../../model/activity';
+import { ActionSet } from '../../model/action';
+import { BuyResourceService } from '../resources/buy-resource.service';
+import { Roles } from '../../model/roles';
 
 @Injectable()
 export class GameOnService {
@@ -33,10 +33,11 @@ export class GameOnService {
   subRiskReduced: Subscription;
   riskReduced = 0;
   results: any;
+  groupChatMessages = []
 
   constructor(private wsService: WebsocketService,
-              private resourceManager: BuyResourceService,
-              private subscription: SubscriptionService) {
+    private resourceManager: BuyResourceService,
+    private subscription: SubscriptionService) {
     this.messages = wsService
       .connect(URLGame)
       .pipe(
@@ -128,6 +129,10 @@ export class GameOnService {
           }
           if (data.response === 'FINISH') {
             this.results = data;
+          }
+
+          if (data.response === "MSG_GROUP_CHAT") {
+            this.groupChatMessages.push(data);
           }
           this.reponses.next(data);
           return data;

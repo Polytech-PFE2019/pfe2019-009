@@ -24,3 +24,7 @@
   margin: 5px;
   padding: 5px;
 }
+
+.roleName{
+  font-weight: bold;
+}

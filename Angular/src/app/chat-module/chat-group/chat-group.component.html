@@ -14,7 +14,7 @@
         <app-chat-message [message]="message.message" [roleID]="message.roleID"></app-chat-message>
       </div>
       <div class="receiver" *ngIf="!message.isSender">
-        <app-chat-message [message]="message.message"></app-chat-message>
+        <app-chat-message [message]="message.message" [roleID]="message.roleID"></app-chat-message>
       </div>
     </div>
   </div>

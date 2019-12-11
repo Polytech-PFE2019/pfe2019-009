@@ -97,6 +97,13 @@ input {
   display: flex;
 }
 
+.groupchat-container {
+  height: 400px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
 .myContainer {
   display: flex;
   flex-wrap: wrap;

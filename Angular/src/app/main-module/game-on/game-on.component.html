@@ -1,4 +1,4 @@
-<div [hidden]="isLoading">
+<div [hidden]="!isLoading">
   <div class="headers">
     <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
     <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
@@ -26,15 +26,11 @@
         <div class="activity">
           <app-projet-information></app-projet-information>
         </div>
-        <div class="dialog-container">
-          <div *ngFor="let i of listOfDialog">
-            <app-chat-dialogue [data]="i"></app-chat-dialogue>
-          </div>
-        </div>
       </div>
-      <div style="height: 30px"></div>
-      <div class="dialog-container" *ngIf="showGroupChat">
-        <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
+      <div class="dialog-container">
+        <div *ngFor="let i of listOfDialog">
+          <app-chat-dialogue [data]="i"></app-chat-dialogue>
+        </div>
       </div>
       <img src="../../../assets/icons/duihua.png"
            id="negociation"
@@ -45,6 +41,10 @@
            [height]="80"
            [width]="70">
     </div>
+    <div class="groupchat-container" *ngIf="showGroupChat">
+      <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
+    </div>
+
     <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
          style="background-color: #ececec">
       <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
@@ -53,34 +53,34 @@
       </div>
     </div>
   </div>
+</div>
+<div [hidden]="isLoading">
+  <app-loading></app-loading>
+</div>
 
-  <nz-modal [nzVisible]="isRiskCard" [nzFooter]="modalFooter" nzTitle="Risques">
-    <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
-      <div *ngFor="let card of riskCard; let i=index">
-        <app-risk-back [myTiming]="i + 1" [card]="card" [isDiabled]="false" [title]="riskOfActivityId"></app-risk-back>
-      </div>
+<nz-modal [nzVisible]="isRiskCard" [nzFooter]="modalFooter" nzTitle="Risques">
+  <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
+    <div *ngFor="let card of riskCard; let i=index">
+      <app-risk-back [myTiming]="i + 1" [card]="card" [isDiabled]="false" [title]="riskOfActivityId"></app-risk-back>
     </div>
-    <ng-template #modalFooter>
-      <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
-    </ng-template>
-  </nz-modal>
+  </div>
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
+  </ng-template>
+</nz-modal>
 
-  <ng-template #template>
-    <div class="ant-notification-notice-content">
-      <div class="ant-notification-notice-with-icon">
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
       <span class="ant-notification-notice-icon">
         <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
         </i>
       </span>
-        <div class="ant-notification-notice-message">Paiement effectué</div>
-        <div class="ant-notification-notice-description" *ngIf="totalAmount>0">
-          <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
-          <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
-        </div>
+      <div class="ant-notification-notice-message">Paiement effectué</div>
+      <div class="ant-notification-notice-description">
+        <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
+        <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
       </div>
     </div>
-  </ng-template>
-</div>
-<div [hidden]="!isLoading">
-  <app-loading></app-loading>
-</div>
+  </div>
+</ng-template>

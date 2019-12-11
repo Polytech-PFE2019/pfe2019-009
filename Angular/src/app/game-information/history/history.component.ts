@@ -39,22 +39,40 @@ export class HistoryComponent implements OnInit {
     this.totalDetail = [];
     console.log(this.listOfData);
     for (const item of this.listOfData) {
-      switch (item.type) {
-        case 'RISKS':
-          this.riskDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources et réduit ' + item.bonus + ' risques\n');
-          this.riskAmount += item.amount;
-          this.riskBonus += item.bonus;
-          break;
-        case 'MANDATORY':
-          this.basicDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources obligatoires');
-          this.basicAmount += item.amount;
-          break;
-        case 'DAYS':
-          this.dayDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources et réduit ' + item.bonus + ' jours');
-          this.daysAmount += item.amount;
-          this.daysBonus += item.bonus;
-          break;
+      if (item.amount !== 0) {
+        switch (item.type) {
+          case 'RISKS':
+            this.riskDetail.push({
+              type: 'bonus',
+              player: this.getRoleById(item.roleID).title,
+              amount: item.amount,
+              bonus: item.bonus,
+            });
+            this.riskAmount += item.amount;
+            this.riskBonus += item.bonus;
+            break;
+          case 'MANDATORY':
+            this.basicDetail.push({
+              type: 'basic',
+              player: this.getRoleById(item.roleID).title,
+              amount: item.amount,
+              bonus: '',
+            });
+            this.basicAmount += item.amount;
+            break;
+          case 'DAYS':
+            this.dayDetail.push({
+              type: 'bonus',
+              player: this.getRoleById(item.roleID).title,
+              amount: item.amount,
+              bonus: item.bonus,
+            });
+            this.daysAmount += item.amount;
+            this.daysBonus += item.bonus;
+            break;
+        }
       }
+
     }
 
     const basic = {
@@ -101,15 +119,15 @@ export class HistoryComponent implements OnInit {
       case 'Defaillances':
         return this.riskDetail;
       case 'Durées':
-        if (this.dayDetail.length === 0) {
-          this.dayDetail.push('Personne ne paye.');
-        }
         return this.dayDetail;
       case 'Resource(s) obligatoire(s)':
         return this.basicDetail;
       default:
         if (this.totalDetail.length === 0) {
-          this.totalDetail.push('Paiement total: ' + this.total);
+          this.totalDetail.push({
+            type: 'total',
+            hint: 'Paiement total: ' + this.total,
+          });
         }
         return this.totalDetail;
     }

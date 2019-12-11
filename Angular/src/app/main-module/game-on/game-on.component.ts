@@ -57,7 +57,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   hasNegotiation = false;
   isDiabled = false;
   isShow = false;
-  isLoading = true;
+  isLoading = false;
   showGroupChat = false;
   totalScrollHeight = 0;
 
@@ -72,7 +72,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     setTimeout(() => {
-      this.isLoading = false;
+      this.isLoading = true;
     }, 4000);
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;

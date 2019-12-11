@@ -3,7 +3,7 @@
   <div style="height: 20px"></div>
   <input nz-input type="number"
          placeholder="Nombre de ressource"
-         [max]="currentMonney/multiple"
+         [max]="100"
          [min]="0"
          [(ngModel)]="resourceNb">
   <p style="padding: 10px">Ça coûte <b>{{ resourceNb * multiple}} k</b></p>

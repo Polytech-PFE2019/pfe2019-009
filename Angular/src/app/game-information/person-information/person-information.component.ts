@@ -106,8 +106,9 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
         this.currentMonney = data.money;
         this.notificationService.template(this.template);
       }
-      if (data.response === 'BANKRUPTENCY') {
+      if (data.response === 'BANKRUPTCY') {
         this.resourceService.sendCurrentMonney(data.money);
+        this.currentMonney = data.money;
       }
     });
   }
@@ -157,10 +158,11 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
 
   confirm(): void {
     const req = {
-      request: 'BANKRUPTENCY',
+      request: 'BANKRUPTCY',
       gameID: this.gameID,
       userID: this.userID
     };
+    console.log(req);
     this.gameService.messages.next(req as SocketRequest);
     this.nzMessageService.info('Déclaration de la faillte');
   }

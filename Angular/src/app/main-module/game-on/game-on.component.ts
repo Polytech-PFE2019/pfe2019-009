@@ -144,7 +144,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
           'info',
           'Tour fini',
           'On entre étape ' + data.activityID,
-          {nzDuration: 3000}
+          {nzDuration: 8000}
         );
       }
 

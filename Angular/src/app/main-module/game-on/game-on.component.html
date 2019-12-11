@@ -38,15 +38,12 @@
       </div>
       <img src="../../../assets/icons/duihua.png"
            id="negociation"
-           [@.disabled]='isDiabled'
            *ngIf="isShow"
+           [@.disabled]='isDiabled'
            [@swing]="swing"
            (click)="launchNegotiation()"
-           [height]="60"
-           [width]="60">
-      <!--    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une-->
-      <!--      faillte</b></button>-->
-
+           [height]="80"
+           [width]="70">
     </div>
     <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
          style="background-color: #ececec">

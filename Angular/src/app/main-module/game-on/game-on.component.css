@@ -136,3 +136,10 @@ input {
   z-index: 999;
   right: 5px;
 }
+
+.nego-container{
+  position: relative;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+}

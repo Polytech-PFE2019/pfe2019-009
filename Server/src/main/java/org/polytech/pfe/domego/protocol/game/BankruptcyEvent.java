@@ -15,9 +15,12 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BankruptcyEvent implements EventProtocol {
 
+    private final static Logger logger = Logger.getGlobal();
     private Messenger messenger;
     private Map<String, ?> request;
     private GameAccessor gameAccessor;
@@ -56,6 +59,8 @@ public class BankruptcyEvent implements EventProtocol {
 
         player.addMoney(20);
         player.substractVictoryPoints(10);
+
+        logger.log(Level.INFO, "In game {0}, the player named {1} went bankrupt. He has now {2} money and {3} victory points", new Object[]{game.getId(), player.getID(), player.getMoney(),player.getVictoryPoints()});
 
 
         String response = createResponseJson(player).toString();

@@ -52,6 +52,7 @@ public class GameRequestHandler implements RequestHandler {
                 break;
             case BANKRUPTCY:
                 event = new BankruptcyEvent(session, request);
+                break;
             default:
                 event = new InvalidEvent(session);
                 break;

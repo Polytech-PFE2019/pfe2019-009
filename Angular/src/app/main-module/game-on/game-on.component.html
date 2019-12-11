@@ -31,16 +31,14 @@
         </div>
       </div>
     </div>
-    <div class="groupChat">
-      <button nz-button [nzSize]="'large'" nzShape="circle" (click)="openGroupChat()">
-        <i nz-icon nzType="message" nzTheme="outline" style="color: #e0620d"></i>
-      </button>
-    </div>
     <div style="height: 30px"></div>
+    <div class="dialog-container" *ngIf="showGroupChat">
+      <app-chat-group #groupChat (closeDialogue)="closeGroupChat()" ></app-chat-group>
+    </div>
     <img src="../../../assets/icons/duihua.png"
          id="negociation"
          [@.disabled]='isDiabled'
-         *ngIf="negotiationIDs.length > 0 && isShow"
+         *ngIf="isShow"
          [@swing]="swing"
          (click)="launchNegotiation()"
          [height]="60"

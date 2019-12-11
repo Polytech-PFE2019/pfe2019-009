@@ -13,6 +13,7 @@ import {NzNotificationService} from 'ng-zorro-antd';
   styleUrls: ['./buy-resources.component.css']
 })
 export class BuyResourcesComponent implements OnInit, OnDestroy {
+  @Output() sendBuy = new EventEmitter();
   resourceNb = 0;
   isVisible = false;
   multiple = 1;
@@ -46,6 +47,8 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
       this.cost = data;
     });
 
+    this.cost = this.subscription.costInital;
+
     // this.gameService.messages.subscribe(data => {
     //   console.log(data);
     // });
@@ -54,11 +57,13 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     //   this.gameID = id;
     // });
 
-    this.gameID = this.subscription.gameID;
 
-    this.subUserId = this.subscription.userID$.subscribe(data => {
-      this.userID = data;
-    });
+    this.gameID = this.subscription.gameID;
+    this.userID = this.subscription.userId;
+
+    // this.subUserId = this.subscription.userID$.subscribe(data => {
+    //   this.userID = data;
+    // });
   }
 
   popConfirm(): void {
@@ -71,6 +76,7 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   }
 
   handleOk(): void {
+    this.sendBuy.emit(true);
     this.price = this.resourceNb * this.multiple;
     this.notification.blank('Activité effectuée',
       'Vous avez acheté ' + this.resourceNb + ' resources',

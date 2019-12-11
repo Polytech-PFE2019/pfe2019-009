@@ -12,20 +12,17 @@
          [nzSpan]="16"
          [nzPush]="8">
       <div style="height: 30px"></div>
-      <div class="activityContainer">
+      <div class="activityContainer" nz-col [nzSpan]="11">
         <div class="activity">
-          <app-activity [activities]="activities"></app-activity>
-        </div>
-        <div class="activity">
-          <app-buy-resources></app-buy-resources>
-        </div>
-        <div class="activity">
-          <app-person-information>
-          </app-person-information>
+          <app-activity [activities]="activities" (sendBuy)="getBuy($event)" [tabs]="tabs"></app-activity>
         </div>
         <div class="activity">
           <app-projet-information></app-projet-information>
         </div>
+      </div>
+      <div class="personActivity" nz-col [nzSpan]="12">
+        <app-person-information>
+        </app-person-information>
       </div>
       <div class="dialog-container">
         <div *ngFor="let i of listOfDialog">

@@ -198,6 +198,7 @@ export class GameOnService {
       maxCost: project.maxCost
     };
     this.subscription.sendCosts(cost);
+    this.subscription.costInital = cost;
 
     const days = {
       minTime: project.minTime,

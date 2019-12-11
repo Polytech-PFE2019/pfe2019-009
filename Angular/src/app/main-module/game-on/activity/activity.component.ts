@@ -21,7 +21,9 @@ import {LobbyService} from '../../../service/lobbyService/lobby.service';
 })
 export class ActivityComponent implements OnInit, OnDestroy {
   @Input() activities: any[] = [];
+  @Input() tabs: any[] = [];
   @Output() sendInitDialog = new EventEmitter();
+  @Output() sendBuy = new EventEmitter();
   isVisible = false;
   resBasic = 1;
   riskReduced = 0;
@@ -48,6 +50,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
   hasNegotiation = false;
   negotiationIDs: string[] = [];
   isFinishedMine = false;
+  selectedIndex = 0;
+  isBuyed = false;
 
 
   constructor(private nzMessageService: NzMessageService,
@@ -117,6 +121,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   handleOk(): void {
+    this.sendBuy.emit(true);
     // this.payResource();
     this.isFinishedMine = true;
     this.resourceService.sendResourcesReduced(this.totalRes);
@@ -203,5 +208,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   }
 
+  getBuy($event) {
+    this.isBuyed = $event;
+  }
 }
 

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,8 @@ export class SubscriptionService {
 
   currentActivityID = new Subject<any>();
   currentActivityID$ = this.currentActivityID.asObservable();
+
+  costInital: any = null;
 
 
   constructor() {

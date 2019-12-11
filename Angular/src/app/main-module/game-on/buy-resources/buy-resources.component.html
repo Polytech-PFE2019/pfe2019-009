@@ -1,6 +1,4 @@
 <div class="activity1Container">
-  <h2>Acheter des ressources</h2>
-  <div style="height: 20px"></div>
   <input nz-input type="number"
          placeholder="Nombre de ressource"
          [max]="100"
@@ -11,6 +9,7 @@
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <p>Êtes-vous sûr d'acheter {{resourceNb}} ressources?</p>
   </nz-modal>
-  <h3>Max resources: {{cost?.maxCost}}</h3>
-  <h3>Min resources: {{cost?.minCost}}</h3>
+  <p>Max resources: {{cost?.maxCost}}</p>
+  <p>Min resources: {{cost?.minCost}}</p>
+  <p *ngIf="multiple ===2" style="color: #c87110">Vous pouvez dépenser les resoureces maintenaut!</p>
 </div>

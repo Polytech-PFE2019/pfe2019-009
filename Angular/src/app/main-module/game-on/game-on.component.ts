@@ -60,6 +60,18 @@ export class GameOnComponent implements OnInit, OnDestroy {
   isLoading = false;
   showGroupChat = false;
   totalScrollHeight = 0;
+  tabs = [
+    {
+      id: 0,
+      name: 'Acheter des resources',
+      icon: 'shopping-cart',
+    },
+    {
+      id: 1,
+      name: 'Payer des resources',
+      icon: 'pay-circle'
+    },
+  ];
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -248,8 +260,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       this.gameService.messages.next(request);
     });
-   // this.showGroupChat = true;
-   // this.groupChat.openGroupChat();
+    // this.showGroupChat = true;
+    // this.groupChat.openGroupChat();
 
   }
 
@@ -257,5 +269,20 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.showGroupChat = false;
     this.isDiabled = false;
     this.isShow = true;
+  }
+
+  getBuy($event: any) {
+    this.tabs = [
+      {
+        id: 0,
+        name: 'Payer des resources',
+        icon: 'pay-circle'
+      },
+      {
+        id: 1,
+        name: 'Acheter des resources',
+        icon: 'shopping-cart',
+      },
+    ];
   }
 }

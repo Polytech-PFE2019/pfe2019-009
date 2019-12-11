@@ -5,6 +5,7 @@
   height: 450px;
   overflow-y: auto;
   margin-right: 40px;
+  margin-bottom: 10px;
 }
 
 .context {
@@ -93,6 +94,7 @@ button {
   padding: 15px;
   background-color: burlywood;
   border-radius: 5px;
+  align-items: center;
 }
 
 .desc-container{
@@ -116,4 +118,10 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+}
+
+#msgBnt{
+  position: relative;
+  bottom: 10px;
+  right: 4px;
 }

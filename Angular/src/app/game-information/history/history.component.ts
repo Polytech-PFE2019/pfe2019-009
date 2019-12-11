@@ -41,7 +41,6 @@ export class HistoryComponent implements OnInit {
     for (const item of this.listOfData) {
       if (item.amount !== 0) {
         switch (item.type) {
-
           case 'RISKS':
             this.riskDetail.push({
               type: 'bonus',
@@ -124,7 +123,7 @@ export class HistoryComponent implements OnInit {
       case 'Resource(s) obligatoire(s)':
         return this.basicDetail;
       default:
-        if (this.totalDetail.length === 0){
+        if (this.totalDetail.length === 0) {
           this.totalDetail.push({
             type: 'total',
             hint: 'Paiement total: ' + this.total,

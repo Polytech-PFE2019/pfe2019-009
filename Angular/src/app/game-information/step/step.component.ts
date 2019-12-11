@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
-import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
-import { Subscription } from 'rxjs';
-import { ActionSet } from '../../model/action';
-import { GameOnService } from '../../service/gameOnService/game-on.service';
-import { LobbyService } from '../../service/lobbyService/lobby.service';
-import { NzMessageService } from 'ng-zorro-antd';
-import { BuyResourceService } from '../../service/resources/buy-resource.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit} from '@angular/core';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {Subscription} from 'rxjs';
+import {ActionSet} from '../../model/action';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {NzMessageService} from 'ng-zorro-antd';
+import {BuyResourceService} from '../../service/resources/buy-resource.service';
 
 @Component({
   selector: 'app-step',
@@ -41,6 +41,7 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
 
   CURRENT_COLOR = 'grey';
   PREVIOUS_COLOR = 'lightgrey';
+  numOfStep = 1;
 
   constructor(private subscription: SubscriptionService,
               private nzMessage: NzMessageService,
@@ -58,20 +59,26 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
     this.numOfRisks = this.step.risks;
 
     this.subCurrentActivityID = this.subscription.currentActivityID$.subscribe(data => {
-      console.log(data);
-      // if (data === this.step.title) {
-      //   document.getElementById('stepCard' + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
-      // } else if (data > this.step.title) {
-      //   document.getElementById('stepCard' + this.step.title).style.backgroundColor = this.PREVIOUS_COLOR;
-      // }
+      console.log(data, this.step.title);
+      this.numOfStep += 1;
+      if (data === this.step.title) {
+        // setInterval(() => {
+        document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #82ce2c';
+        //  setTimeout(() => {
+        //   document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #ececec';
+        //  }, 500);
+        // }, 1000);
+      } else if (data > this.step.title) {
+        document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #123074';
+      }
     });
 
   }
 
   ngAfterViewInit() {
-    // if (this.step.title === 1) {
-    //   document.getElementById('stepCard' + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
-    // }
+    if (this.step.title === 1) {
+      document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #82ce2c';
+    }
   }
 
   getCard(event) {

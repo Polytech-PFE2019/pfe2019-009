@@ -50,7 +50,7 @@ import { ListPlayersComponent } from './list-players/list-players.component';
 import { ChatGroupComponent } from './chat-module/chat-group/chat-group.component';
 
 const ngZorroConfig: NzConfig = {
-  notification: {nzDuration: 35000}
+  notification: {nzDuration: 20000}
 };
 
 registerLocaleData(fr);

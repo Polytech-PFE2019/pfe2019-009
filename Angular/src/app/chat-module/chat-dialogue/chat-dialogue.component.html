@@ -8,7 +8,7 @@
     <div class="negociation">
       <h4>Contract</h4>
       <h4>{{contractNumber}}k</h4>
-      <button *ngIf="!isProposer" (click)="accepteContract()" [ngStyle]="accepteStyle">Accepeter</button>
+      <button *ngIf="!isProposer" (click)="accepteContract()" [ngStyle]="accepteStyle">Accepter</button>
     </div>
   </div>
   <div class="context">
@@ -25,31 +25,25 @@
   <div class="senderBox">
     <div class="contract-container">
       <h4>Un contrat:</h4>
-
-      <form>
-        <div style="display: flex; flex-direction: row">
-
-          <input #contract nz-input type="number" placeholder="0" [max]="1000" [min]="0"
-            style="margin-right: 10px;width: 100px">
-          <b> K</b>
-        </div>
-        <button nz-button nzType="default" style="width: 160px;
+      <div style="display: flex; flex-direction: row">
+        <input #contract (keyup.enter)="sendContract()" nz-input [(ngModel)]="contractProposed" type="number"
+          placeholder="0" [max]="1000" [min]="0" style="margin-right: 10px;width: 100px">
+        <b>K</b>
+      </div>
+      <button nz-button nzType="default" style="width: 160px;
               margin-top: 15px;
               margin-left: 6px;
-              margin-bottom: 10px;" (click)="sendContract(contract.value)">
-          Proposer un contrat
-        </button>
-      </form>
+              margin-bottom: 10px;" (click)="sendContract()">
+        Proposer un contrat
+      </button>
     </div>
     <div class="desc-container">
-      <form>
-        <input #msg nz-input id="msg" placeholder="...">
-        <button type="submit" value="Submit" nz-button (click)="sendMessage(msg.value)" nzShape="circle">
-          <i class="iconfont icon-send">
-          </i>
-        </button>
-      </form>
-
+      <textarea #msg rows="6" (keyup.enter)="sendMessage()" nz-input id="msg" [(ngModel)]="myMessage">
+      </textarea>
+      <button nzType="default" id="msgBnt" nz-button (click)="sendMessage()" nzShape="circle">
+        <i class="iconfont icon-send">
+        </i>
+      </button>
     </div>
   </div>
 </div>

@@ -11,7 +11,7 @@ import {PlayerdataService} from 'src/app/playerdata.service';
 import {NzNotificationService} from 'ng-zorro-antd';
 import {swing} from 'ng-animate';
 import {transition, trigger, useAnimation} from '@angular/animations';
-import {ChatGroupComponent} from "../../chat-module/chat-group/chat-group.component";
+import {ChatGroupComponent} from '../../chat-module/chat-group/chat-group.component';
 
 
 @Component({
@@ -56,9 +56,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
   negotiationIDs: any[] = [];
   hasNegotiation = false;
   isDiabled = false;
-  isShow = true;
+  isShow = false;
+  isLoading = true;
   showGroupChat = false;
-
   totalScrollHeight = 0;
 
   constructor(private lobbyService: LobbyService,
@@ -71,6 +71,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 4000);
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;
 
@@ -88,7 +91,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
       if (previousActivityElement != null) {
         this.totalScrollHeight += previousActivityElement.offsetHeight;
         document.getElementById('stepsContainer').scrollTop = this.totalScrollHeight;
-
       }
       console.log(this.currentActivity);
       this.negotiationIDs = [];
@@ -99,6 +101,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
         }
       });
       if (this.negotiationIDs.length > 0) {
+        this.isShow = true;
         setInterval(() => {
           this.swingAnimation();
         }, 1000);
@@ -141,7 +144,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
           'info',
           'Tour fini',
           'On entre étape ' + data.activityID,
-          { nzDuration: 3000 }
+          {nzDuration: 3000}
         );
       }
 
@@ -209,7 +212,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   initDialog() {
     this.listOfDialog = [];
-    this.isShow = true;
+    this.isShow = false;
   }
 
   closeRiskCard() {
@@ -245,12 +248,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       this.gameService.messages.next(request);
     });
-    this.showGroupChat = true;
-    this.groupChat.openGroupChat();
+   // this.showGroupChat = true;
+   // this.groupChat.openGroupChat();
 
   }
 
-  closeGroupChat() :void {
+  closeGroupChat(): void {
     this.showGroupChat = false;
     this.isDiabled = false;
     this.isShow = true;

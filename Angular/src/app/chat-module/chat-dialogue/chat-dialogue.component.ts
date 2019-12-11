@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {DialogueMessage} from './dialogueMessage';
-import {SocketRequest} from 'src/Request';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
-import {NzConfigService, NzNotificationService} from "ng-zorro-antd";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { DialogueMessage } from './dialogueMessage';
+import { SocketRequest } from 'src/Request';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
+import { NzConfigService, NzNotificationService } from "ng-zorro-antd";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -20,7 +20,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     description: 40,
   };
   @Input() title = '';
-  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
+  @ViewChild('template', { static: true }) template: TemplateRef<{}>;
   isOpenDialog = true;
   value = 100;
   contractNumber = 0;
@@ -40,11 +40,13 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   accepteStyle = {
     backgroundColor: '#c54e3c'
   };
+  contractProposed = 0;
+  myMessage = '';
 
   constructor(private gameService: GameOnService,
-              private notification: NzNotificationService,
-              private nzConfigService: NzConfigService,
-              private subsciption: SubscriptionService) {
+    private notification: NzNotificationService,
+    private nzConfigService: NzConfigService,
+    private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -84,7 +86,9 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
         case 'FAIL_NEGOTIATE':
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
-            alert('La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort');
+            this.notification.blank('La négociation a échoué',
+              'La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort',
+              { nzDuration: 10 });
           }
           break;
         case 'END_NEGOTIATE':
@@ -111,26 +115,26 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   testAddReceiver() {
   }
 
-  sendContract(contract) {
+  sendContract() {
     const request = {
       request: 'PRICE_NEGOTIATE',
-      amount: contract.toString(),
+      amount: this.contractProposed.toString(),
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
     } as SocketRequest;
-
     console.log(request);
-    this.contractNumber = this.contract;
+    this.contractNumber = this.contractProposed;
+    //this.contractProposed = 0;
     this.gameService.messages.next(request);
 
   }
 
-  sendMessage(message) {
+  sendMessage() {
     this.isChated = true;
     const request = {
       request: 'MSG_NEGOTIATE',
-      message: message,
+      message: this.myMessage,
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
@@ -138,7 +142,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     console.log(request);
 
     this.gameService.messages.next(request);
-    (<HTMLInputElement>document.getElementById("msg")).value = '';
+    this.myMessage = '';
   }
 
   ngOnDestroy(): void {

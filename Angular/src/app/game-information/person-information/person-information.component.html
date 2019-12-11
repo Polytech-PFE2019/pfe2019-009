@@ -1,10 +1,6 @@
 <div class="container">
-  <nz-card [nzActions]="[description, pointVictoire, special, plan]">
-    <nz-card-meta
-      [nzDescription]="extra"
-      [nzTitle]="myInformation.title"
-      [nzAvatar]="avatarTemplate">
-    </nz-card-meta>
+  <nz-card [nzTitle]="extra"
+           [nzActions]="[description, pointVictoire, special, plan]" [nzExtra]="extraBnt">
     <div *ngIf="isPointsVistoire" class="content-container">
       <h6>Points de victoire:</h6>
       <p *ngFor="let item of myInformation?.mission.pointsDeVistore">
@@ -39,6 +35,21 @@
       Points de victoire
     </span>
   </ng-template>
+  <ng-template #extraBnt>
+    <button nz-button
+            nz-popconfirm
+            nzPopconfirmTitle="Voulez-vous déclarer une faillte?"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="confirm()"
+            (nzOnCancel)="cancel()"
+            [nzIcon]="iconTpl"
+            nzType="primary"><i nz-icon nzType="warning"></i>
+      Faillte
+    </button>
+  </ng-template>
+  <ng-template #iconTpl>
+    <i nz-icon nzType="exclamation" style="color: red;"></i>
+  </ng-template>
   <ng-template #special>
     <span (click)="showSpecial()">
       <i class="iconfont icon-hetong">
@@ -64,7 +75,9 @@
   </ng-template>
 
   <ng-template #extra>
+    <h4>{{myInformation?.title}}</h4>
     <div class="resource">
+      <nz-avatar [nzSrc]="myInformation.src"></nz-avatar>
       <div class="inner">
         <img src="../../../assets/moneybag.png" [width]="30" [height]="30">
         <h3>{{currentMonney}}K</h3>

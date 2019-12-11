@@ -3,10 +3,7 @@ package org.polytech.pfe.domego.services.sockets.game;
 import org.polytech.pfe.domego.exceptions.InvalidRequestException;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.InvalidEvent;
-import org.polytech.pfe.domego.protocol.game.BankruptcyEvent;
-import org.polytech.pfe.domego.protocol.game.BuyResourceEvent;
-import org.polytech.pfe.domego.protocol.game.JoinGameEvent;
-import org.polytech.pfe.domego.protocol.game.PayResourcesEvent;
+import org.polytech.pfe.domego.protocol.game.*;
 import org.polytech.pfe.domego.protocol.game.negociation.*;
 import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.springframework.stereotype.Service;
@@ -55,6 +52,9 @@ public class GameRequestHandler implements RequestHandler {
                 break;
             case BANKRUPTCY:
                 event = new BankruptcyEvent(session, request);
+                break;
+            case MSG_GROUP_CHAT:
+                event = new GroupChatMessageEvent(session, request);
                 break;
             default:
                 event = new InvalidEvent(session);

@@ -1,87 +1,88 @@
 <div [hidden]="isLoading">
-<div class="headers">
-  <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
-  <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
-</div>
-<nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Liste de joueurs"
-  (nzOnClose)="closePlayers()">
-  <app-list-players></app-list-players>
-</nz-drawer>
-<div nz-row class="container">
-  <div class="left-container" nz-col
-       [nzSpan]="16"
-       [nzPush]="8">
-    <div style="height: 30px"></div>
-    <div class="activityContainer">
-      <div class="activity">
-        <app-activity [activities]="activities"></app-activity>
-      </div>
-      <div class="activity">
-        <app-buy-resources></app-buy-resources>
-      </div>
-      <div class="activity">
-        <app-person-information>
-        </app-person-information>
-      </div>
-      <div class="activity">
-        <app-projet-information></app-projet-information>
-      </div>
-      <div class="dialog-container">
-        <div *ngFor="let i of listOfDialog">
-          <app-chat-dialogue [data]="i"></app-chat-dialogue>
+  <div class="headers">
+    <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
+    <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
+  </div>
+  <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Liste de joueurs"
+             (nzOnClose)="closePlayers()">
+    <app-list-players></app-list-players>
+  </nz-drawer>
+  <div nz-row class="container">
+    <div class="left-container" nz-col
+         [nzSpan]="16"
+         [nzPush]="8">
+      <div style="height: 30px"></div>
+      <div class="activityContainer">
+        <div class="activity">
+          <app-activity [activities]="activities"></app-activity>
+        </div>
+        <div class="activity">
+          <app-buy-resources></app-buy-resources>
+        </div>
+        <div class="activity">
+          <app-person-information>
+          </app-person-information>
+        </div>
+        <div class="activity">
+          <app-projet-information></app-projet-information>
+        </div>
+        <div class="dialog-container">
+          <div *ngFor="let i of listOfDialog">
+            <app-chat-dialogue [data]="i"></app-chat-dialogue>
+          </div>
         </div>
       </div>
-    </div>
-    <div style="height: 30px"></div>
-    <div class="dialog-container" *ngIf="showGroupChat">
-      <app-chat-group #groupChat (closeDialogue)="closeGroupChat()" ></app-chat-group>
-    </div>
-    <img src="../../../assets/icons/duihua.png"
-         id="negociation"
-         [@.disabled]='isDiabled'
-         *ngIf="isShow"
-         [@swing]="swing"
-         (click)="launchNegotiation()"
-         [height]="60"
-         [width]="60">
-<!--    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une-->
-<!--      faillte</b></button>-->
+      <div style="height: 30px"></div>
+      <div class="dialog-container" *ngIf="showGroupChat">
+        <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
+      </div>
+      <img src="../../../assets/icons/duihua.png"
+           id="negociation"
+           [@.disabled]='isDiabled'
+           *ngIf="isShow"
+           [@swing]="swing"
+           (click)="launchNegotiation()"
+           [height]="60"
+           [width]="60">
+      <!--    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une-->
+      <!--      faillte</b></button>-->
 
-  </div>
-  <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
-    <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
-      <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
-        (sendStepTest)="getStepTest($event)"></app-step>
     </div>
-  </div>
-</div>
-
-<nz-modal [nzVisible]="isRiskCard" [nzFooter]="modalFooter" nzTitle="Risques">
-  <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
-    <div *ngFor="let card of riskCard; let i=index">
-      <app-risk-back [myTiming]="i + 1" [card]="card" [isDiabled]="false" [title]="riskOfActivityId"></app-risk-back>
+    <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
+         style="background-color: #ececec">
+      <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
+        <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
+                  (sendStepTest)="getStepTest($event)"></app-step>
+      </div>
     </div>
   </div>
-  <ng-template #modalFooter>
-    <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
-  </ng-template>
-</nz-modal>
 
-<ng-template #template>
-  <div class="ant-notification-notice-content">
-    <div class="ant-notification-notice-with-icon">
+  <nz-modal [nzVisible]="isRiskCard" [nzFooter]="modalFooter" nzTitle="Risques">
+    <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
+      <div *ngFor="let card of riskCard; let i=index">
+        <app-risk-back [myTiming]="i + 1" [card]="card" [isDiabled]="false" [title]="riskOfActivityId"></app-risk-back>
+      </div>
+    </div>
+    <ng-template #modalFooter>
+      <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
+    </ng-template>
+  </nz-modal>
+
+  <ng-template #template>
+    <div class="ant-notification-notice-content">
+      <div class="ant-notification-notice-with-icon">
       <span class="ant-notification-notice-icon">
         <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
         </i>
       </span>
-      <div class="ant-notification-notice-message">Paiement effectué</div>
-      <div class="ant-notification-notice-description">
-        <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
-        <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
+        <div class="ant-notification-notice-message">Paiement effectué</div>
+        <div class="ant-notification-notice-description" *ngIf="totalAmount>0">
+          <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
+          <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
+        </div>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
 </div>
 <div [hidden]="!isLoading">
   <app-loading></app-loading>

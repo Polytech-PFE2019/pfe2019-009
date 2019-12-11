@@ -63,11 +63,11 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
       this.numOfStep += 1;
       if (data === this.step.title) {
         // setInterval(() => {
-          document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #82ce2c';
-          setTimeout(() => {
-            document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #ececec';
-          }, 500);
-          // }, 1000);
+        document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #82ce2c';
+        //  setTimeout(() => {
+        //   document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #ececec';
+        //  }, 500);
+        // }, 1000);
       } else if (data > this.step.title) {
         document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #123074';
       }

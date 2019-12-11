@@ -46,7 +46,7 @@ export class HistoryComponent implements OnInit {
           this.riskBonus += item.bonus;
           break;
         case 'MANDATORY':
-          this.basicDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources obligatoires')
+          this.basicDetail.push(this.getRoleById(item.roleID).title + ' a payé ' + item.amount + ' ressources obligatoires');
           this.basicAmount += item.amount;
           break;
         case 'DAYS':
@@ -108,7 +108,9 @@ export class HistoryComponent implements OnInit {
       case 'Resource(s) obligatoire(s)':
         return this.basicDetail;
       default:
-        this.totalDetail.push('Paiement total: ' + this.total);
+        if (this.totalDetail.length === 0) {
+          this.totalDetail.push('Paiement total: ' + this.total);
+        }
         return this.totalDetail;
     }
   }

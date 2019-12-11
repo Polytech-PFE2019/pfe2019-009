@@ -56,7 +56,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   negotiationIDs: any[] = [];
   hasNegotiation = false;
   isDiabled = false;
-  isShow = true;
+  isShow = false;
   isLoading = true;
   showGroupChat = false;
   totalScrollHeight = 0;
@@ -91,7 +91,6 @@ export class GameOnComponent implements OnInit, OnDestroy {
       if (previousActivityElement != null) {
         this.totalScrollHeight += previousActivityElement.offsetHeight;
         document.getElementById('stepsContainer').scrollTop = this.totalScrollHeight;
-
       }
       console.log(this.currentActivity);
       this.negotiationIDs = [];
@@ -102,6 +101,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
         }
       });
       if (this.negotiationIDs.length > 0) {
+        this.isShow = true;
         setInterval(() => {
           this.swingAnimation();
         }, 1000);
@@ -212,7 +212,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   initDialog() {
     this.listOfDialog = [];
-    this.isShow = true;
+    this.isShow = false;
   }
 
   closeRiskCard() {
@@ -248,8 +248,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       this.gameService.messages.next(request);
     });
-    this.showGroupChat = true;
-    this.groupChat.openGroupChat();
+   // this.showGroupChat = true;
+   // this.groupChat.openGroupChat();
 
   }
 

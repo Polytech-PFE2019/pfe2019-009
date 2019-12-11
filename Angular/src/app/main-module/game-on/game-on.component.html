@@ -4,13 +4,11 @@
     <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
   </div>
   <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Liste de joueurs"
-             (nzOnClose)="closePlayers()">
+    (nzOnClose)="closePlayers()">
     <app-list-players></app-list-players>
   </nz-drawer>
   <div nz-row class="container">
-    <div class="left-container" nz-col
-         [nzSpan]="16"
-         [nzPush]="8">
+    <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8">
       <div style="height: 30px"></div>
       <div class="activityContainer">
         <div class="activity">
@@ -26,30 +24,26 @@
         <div class="activity">
           <app-projet-information></app-projet-information>
         </div>
-      </div>
-      <div class="dialog-container">
-        <div *ngFor="let i of listOfDialog">
-          <app-chat-dialogue [data]="i"></app-chat-dialogue>
+        <div class="dialog-container">
+          <div *ngFor="let i of listOfDialog">
+            <div *ngIf="i.started">
+              <app-chat-dialogue [data]="i"></app-chat-dialogue>
+            </div>
+          </div>
         </div>
       </div>
-      <img src="../../../assets/icons/duihua.png"
-           id="negociation"
-           *ngIf="isShow"
-           [@.disabled]='isDiabled'
-           [@swing]="swing"
-           (click)="launchNegotiation()"
-           [height]="80"
-           [width]="70">
+      <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow" [@.disabled]='isDiabled'
+        [@swing]="swing" (click)="launchNegotiation()" [height]="80" [width]="70">
     </div>
     <div class="groupchat-container" *ngIf="showGroupChat">
       <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
     </div>
 
     <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
-         style="background-color: #ececec">
+      style="background-color: #ececec">
       <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
         <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
-                  (sendStepTest)="getStepTest($event)"></app-step>
+          (sendStepTest)="getStepTest($event)"></app-step>
       </div>
     </div>
   </div>
@@ -69,6 +63,14 @@
   </ng-template>
 </nz-modal>
 
+<nz-modal [nzVisible]="establish.visible" [nzFooter]="modalEstablishFooter" nzTitle="Negotiation" nzClosable="false">
+  <p>Une négotiation avec {{establish.name}} va être lancée. Si vous ne vous mettez pas d'accord avant la fin du temps
+    imparti, un contrat sera tiré au sort.</p>
+  <ng-template #modalEstablishFooter>
+    <button nz-button nzType="primary" (click)="establishNegotiation(establish.negoID)">OK</button>
+  </ng-template>
+</nz-modal>
+
 <ng-template #template>
   <div class="ant-notification-notice-content">
     <div class="ant-notification-notice-with-icon">
@@ -77,7 +79,7 @@
         </i>
       </span>
       <div class="ant-notification-notice-message">Paiement effectué</div>
-      <div class="ant-notification-notice-description">
+      <div class="ant-notification-notice-description" *ngIf="totalAmount>0">
         <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
         <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
       </div>

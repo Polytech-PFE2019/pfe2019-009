@@ -1,17 +1,17 @@
-import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {SocketRequest} from '../../../Request';
-import {Router} from '@angular/router';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {Subscription} from 'rxjs';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {BuyResourceService} from '../../service/resources/buy-resource.service';
-import {Activity} from '../../model/activity';
-import {PlayerdataService} from 'src/app/playerdata.service';
-import {NzNotificationService} from 'ng-zorro-antd';
-import {swing} from 'ng-animate';
-import {transition, trigger, useAnimation} from '@angular/animations';
-import {ChatGroupComponent} from '../../chat-module/chat-group/chat-group.component';
+import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { SocketRequest } from '../../../Request';
+import { Router } from '@angular/router';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { Subscription } from 'rxjs';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { BuyResourceService } from '../../service/resources/buy-resource.service';
+import { Activity } from '../../model/activity';
+import { PlayerdataService } from 'src/app/playerdata.service';
+import { NzNotificationService } from 'ng-zorro-antd';
+import { swing } from 'ng-animate';
+import { transition, trigger, useAnimation } from '@angular/animations';
+import { ChatGroupComponent } from '../../chat-module/chat-group/chat-group.component';
 
 
 @Component({
@@ -24,9 +24,9 @@ import {ChatGroupComponent} from '../../chat-module/chat-group/chat-group.compon
 })
 
 export class GameOnComponent implements OnInit, OnDestroy {
-  @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
-  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
-  @ViewChild('groupChat', {static: true}) groupChat: ChatGroupComponent;
+  @ViewChild('stepContainers', { static: true }) stepContainer: ElementRef;
+  @ViewChild('template', { static: true }) template: TemplateRef<{}>;
+  @ViewChild('groupChat', { static: true }) groupChat: ChatGroupComponent;
   step = 'Étape 1';
   gameId: string;
   buyingActions: any;
@@ -61,13 +61,19 @@ export class GameOnComponent implements OnInit, OnDestroy {
   showGroupChat = false;
   totalScrollHeight = 0;
 
+  establish = {
+    visible: false,
+    name: '',
+    negoID: ''
+  }
+
   constructor(private lobbyService: LobbyService,
-              private gameService: GameOnService,
-              private subscription: SubscriptionService,
-              private resourceManager: BuyResourceService,
-              private router: Router,
-              private notification: NzNotificationService,
-              private playerDataService: PlayerdataService) {
+    private gameService: GameOnService,
+    private subscription: SubscriptionService,
+    private resourceManager: BuyResourceService,
+    private router: Router,
+    private notification: NzNotificationService,
+    private playerDataService: PlayerdataService) {
   }
 
   ngOnInit() {
@@ -125,8 +131,20 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
       if (data.response === 'START_NEGOTIATE') {
+        data.started = false;
+        this.establish.name = data.otherUserName
+        this.establish.negoID = data.negociationID
         this.listOfDialog.push(data);
         console.log(this.listOfDialog);
+
+        if (data.receiverID === this.myRole.id) {
+          this.establish.visible = true;
+        }
+      }
+
+
+      if (data.response === "ESTABLISH_NEGOTIATE") {
+        this.listOfDialog.find(dialog => data.negociationID === dialog.negociationID).started = true;
       }
       if (data.response === 'drawRisk') {
         if (data.risks.length > 0) {
@@ -144,7 +162,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
           'info',
           'Tour fini',
           'On entre étape ' + data.activityID,
-          {nzDuration: 8000}
+          { nzDuration: 8000 }
         );
       }
 
@@ -248,8 +266,22 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       this.gameService.messages.next(request);
     });
-   // this.showGroupChat = true;
-   // this.groupChat.openGroupChat();
+    // this.showGroupChat = true;
+    // this.groupChat.openGroupChat();
+
+  }
+
+  establishNegotiation(negoID) {
+    this.establish.visible = false;
+    const request = {
+      request: 'ESTABLISH_NEGOTIATE',
+      negotiationID: negoID,
+      gameID: this.gameId
+    } as SocketRequest;
+
+    this.gameService.messages.next(request);
+    // this.showGroupChat = true;
+    // this.groupChat.openGroupChat();
 
   }
 

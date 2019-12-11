@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {DialogueMessage} from './dialogueMessage';
-import {SocketRequest} from 'src/Request';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
-import {NzConfigService, NzNotificationService} from "ng-zorro-antd";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { DialogueMessage } from './dialogueMessage';
+import { SocketRequest } from 'src/Request';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
+import { NzConfigService, NzNotificationService } from "ng-zorro-antd";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -20,7 +20,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     description: 40,
   };
   @Input() title = '';
-  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
+  @ViewChild('template', { static: true }) template: TemplateRef<{}>;
   isOpenDialog = true;
   value = 100;
   contractNumber = 0;
@@ -44,9 +44,9 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   myMessage = '';
 
   constructor(private gameService: GameOnService,
-              private notification: NzNotificationService,
-              private nzConfigService: NzConfigService,
-              private subsciption: SubscriptionService) {
+    private notification: NzNotificationService,
+    private nzConfigService: NzConfigService,
+    private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -88,7 +88,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
             this.isOpenDialog = false;
             this.notification.blank('La négociation a échoué',
               'La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort',
-              {nzDuration: 10});
+              { nzDuration: 10 });
           }
           break;
         case 'END_NEGOTIATE':
@@ -125,7 +125,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     } as SocketRequest;
     console.log(request);
     this.contractNumber = this.contractProposed;
-    this.contractProposed = 0;
+    //this.contractProposed = 0;
     this.gameService.messages.next(request);
 
   }

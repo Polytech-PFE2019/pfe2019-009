@@ -90,7 +90,7 @@ input {
 }
 
 .dialog-container {
-  height: 400px;
+  height: 450px;
   position: absolute;
   bottom: 20px;
   right: 10px;
@@ -115,6 +115,13 @@ input {
   border: solid 1px #123074;
 }
 
+.groupChat {
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+  overflow-y: auto;
+  margin: 10px;
+}
 .playerContianer {
   height: 60px;
   width: 100%;

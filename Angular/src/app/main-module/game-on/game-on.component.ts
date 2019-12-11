@@ -11,6 +11,7 @@ import {PlayerdataService} from 'src/app/playerdata.service';
 import {NzNotificationService} from 'ng-zorro-antd';
 import {swing} from 'ng-animate';
 import {transition, trigger, useAnimation} from '@angular/animations';
+import {ChatGroupComponent} from '../../chat-module/chat-group/chat-group.component';
 
 
 @Component({
@@ -25,6 +26,7 @@ import {transition, trigger, useAnimation} from '@angular/animations';
 export class GameOnComponent implements OnInit, OnDestroy {
   @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
   @ViewChild('template', {static: true}) template: TemplateRef<{}>;
+  @ViewChild('groupChat', {static: true}) groupChat: ChatGroupComponent;
   step = 'Étape 1';
   gameId: string;
   buyingActions: any;
@@ -48,6 +50,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   daysReduced = 0;
   totalAmount = 0;
   currentPlayer: any = null;
+  isGroupChat = false;
   myRole: any = null;
   swing = false;
   negotiationIDs: any[] = [];
@@ -55,6 +58,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   isDiabled = false;
   isShow = true;
   isLoading = true;
+  showGroupChat = false;
   totalScrollHeight = 0;
 
   constructor(private lobbyService: LobbyService,
@@ -135,6 +139,15 @@ export class GameOnComponent implements OnInit, OnDestroy {
         this.router.navigate(['result']);
       }
 
+      if (data.response === 'CHANGE_ACTIVITY') {
+        this.notification.create(
+          'info',
+          'Tour fini',
+          'On entre étape ' + data.activityID,
+          {nzDuration: 3000}
+        );
+      }
+
       if (data.response === 'UPDATE_PAYMENT') {
         console.log(data);
         this.totalAmount = 0;
@@ -159,6 +172,10 @@ export class GameOnComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+  openGroupChat() {
+    this.isGroupChat = !this.isGroupChat;
   }
 
   getCurrentStep($event: any) {
@@ -231,6 +248,14 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
       this.gameService.messages.next(request);
     });
+    this.showGroupChat = true;
+    this.groupChat.openGroupChat();
 
+  }
+
+  closeGroupChat(): void {
+    this.showGroupChat = false;
+    this.isDiabled = false;
+    this.isShow = true;
   }
 }

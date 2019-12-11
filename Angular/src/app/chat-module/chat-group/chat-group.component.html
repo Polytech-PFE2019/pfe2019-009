@@ -1,0 +1,35 @@
+<div class="container" *ngIf="isOpenGroupChat">
+  <div class="header">
+    <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
+    <h5>Group Chat</h5>
+    <button nz-button
+            nzType="danger"
+            [nzSize]="'small'"
+            nzShape="circle"
+            (click)="closeGroupChat()"
+            style="margin-right: 5px;">
+      <i nz-icon nzType="close" nzTheme="outline"></i>
+    </button>
+  </div>
+
+  <div class="context">
+    <div *ngFor="let message of messages">
+      <div class="sender" *ngIf="message.isSender">
+        <app-chat-message [message]="message.message"></app-chat-message>
+      </div>
+      <div class="receiver" *ngIf="!message.isSender">
+        <app-chat-message [message]="message.message"></app-chat-message>
+      </div>
+    </div>
+  </div>
+
+  <div class="senderBox">
+    <div class="desc-container">
+        <input #msg nz-input id="msg" placeholder="...">
+        <button type="submit" value="Submit" nz-button (click)="sendMessage(msg.value)" nzShape="circle">
+          <i class="iconfont icon-send"></i>
+        </button>
+    </div>
+  </div>
+</div>
+

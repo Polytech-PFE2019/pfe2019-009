@@ -33,10 +33,13 @@
       </div>
     </div>
     <div style="height: 30px"></div>
+    <div class="dialog-container" *ngIf="showGroupChat">
+      <app-chat-group #groupChat (closeDialogue)="closeGroupChat()" ></app-chat-group>
+    </div>
     <img src="../../../assets/icons/duihua.png"
          id="negociation"
          [@.disabled]='isDiabled'
-         *ngIf="negotiationIDs.length > 0 && isShow"
+         *ngIf="isShow"
          [@swing]="swing"
          (click)="launchNegotiation()"
          [height]="60"

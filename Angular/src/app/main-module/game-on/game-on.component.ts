@@ -54,7 +54,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   hasNegotiation = false;
   isDiabled = false;
   isShow = true;
-
+  isLoading = true;
   totalScrollHeight = 0;
 
   constructor(private lobbyService: LobbyService,
@@ -67,6 +67,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 4000);
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;
 

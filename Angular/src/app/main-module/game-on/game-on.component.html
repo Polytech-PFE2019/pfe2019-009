@@ -1,3 +1,4 @@
+<div [hidden]="isLoading">
 <div class="headers">
   <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
   <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
@@ -40,8 +41,8 @@
          (click)="launchNegotiation()"
          [height]="60"
          [width]="60">
-    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une
-      faillte</b></button>
+<!--    <button id="end" nz-button *ngIf="this.currentActivity?.title === 12" (click)="closeGame()"><b>Déclarer une-->
+<!--      faillte</b></button>-->
 
   </div>
   <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
@@ -78,3 +79,7 @@
     </div>
   </div>
 </ng-template>
+</div>
+<div [hidden]="!isLoading">
+  <app-loading></app-loading>
+</div>

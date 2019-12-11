@@ -4,7 +4,8 @@ import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {LobbyService} from '../../service/lobbyService/lobby.service';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
+import {NzConfigService, NzMessageService, NzNotificationService} from 'ng-zorro-antd';
+import {SocketRequest} from '../../../Request';
 
 @Component({
   selector: 'app-person-information',
@@ -36,10 +37,13 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   giverRoleName = '';
   receiverRoleName = '';
   paymentAmount = 0;
+  gameID: any;
+  userID: any;
 
   constructor(private resourceService: BuyResourceService,
               private lobbyService: LobbyService,
               private gameService: GameOnService,
+              private nzMessageService: NzMessageService,
               private subscription: SubscriptionService,
               private nzConfigService: NzConfigService,
               private notificationService: NzNotificationService) {
@@ -49,6 +53,8 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userName = this.lobbyService.username;
     this.playersWithRoles = this.subscription.roles;
+    this.gameID = this.subscription.gameID;
+    this.userID = this.subscription.userId;
 
     console.log(this.userName);
     console.log(this.playersWithRoles);
@@ -99,10 +105,9 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
       if (data.response === 'PAY_CONTRACT') {
         this.currentMonney = data.money;
         this.notificationService.template(this.template);
-        // this.notificationService.blank('Paiement',
-        //   'Une partie du contrat a été payée : '
-        //   + data.giverRoleName + 'a payé ' + data.amount + 'k au' + data.receiverRoleName,
-        //   {nzDuration: 0});
+      }
+      if (data.response === 'BANKRUPTENCY') {
+        this.resourceService.sendCurrentMonney(data.money);
       }
     });
   }
@@ -144,6 +149,20 @@ export class PersonInformationComponent implements OnInit, OnDestroy {
     this.isDescription = false;
     this.isPointsVistoire = false;
     this.isSpecial = false;
+  }
+
+  cancel(): void {
+    this.nzMessageService.info('Annuler!');
+  }
+
+  confirm(): void {
+    const req = {
+      request: 'BANKRUPTENCY',
+      gameID: this.gameID,
+      userID: this.userID
+    };
+    this.gameService.messages.next(req as SocketRequest);
+    this.nzMessageService.info('Déclaration de la faillte');
   }
 
 }

@@ -13,7 +13,41 @@
       <tbody>
       <tr nz-popover [nzPopoverContent]="popoverTemplate" *ngFor="let data of basicTable.data">
         <ng-template #popoverTemplate>
-          <span style="width: 200px">{{getDetailByType(data.activity)}}</span>
+          <span *ngIf="getDetailByType(data.activity).length===0">Personne ne paye</span>
+          <span *ngIf="getDetailByType(data.activity).length!==0 && getDetailByType(data.activity)[0].type==='total'">{{getDetailByType(data.activity)[0].hint}}</span>
+          <nz-table class="basicTable" *ngIf="getDetailByType(data.activity).length!==0 && getDetailByType(data.activity)[0].type==='basic'"
+                    #obligatoireTable [nzData]="basicDetail" [nzShowPagination]="false">
+            <thead>
+            <tr>
+              <th>Joueur</th>
+              <th>Resource(s) obligatoire(s)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let b of obligatoireTable.data">
+              <td>{{b.player}}</td>
+              <td>{{b.amount}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <nz-table
+            class="basicTable" *ngIf="getDetailByType(data.activity).length!==0 && getDetailByType(data.activity)[0].type==='bonus'"
+                    #playerTable [nzData]="getDetailByType(data.activity)" [nzShowPagination]="false">
+            <thead>
+            <tr>
+              <th>Joueur</th>
+              <th>Depensé</th>
+              <th>{{data.activity}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let h of playerTable.data" >
+              <td>{{h.player}}</td>
+              <td>{{h.amount}}</td>
+              <td>-{{h.bonus}}</td>
+            </tr>
+            </tbody>
+          </nz-table>
         </ng-template>
         <td>
           <img [src]="data.src" [height]="20" [width]="20">

@@ -111,11 +111,8 @@ export class GameOnService {
           if (data.response === 'UPDATE_PAYMENT') {
             this.updateMinAndMax(data.project);
             const currentId = data.activityID;
-            if (this.currentStep[currentId - 1].history === null) {
-              this.currentStep[currentId - 1].history = data.payments;
-            } else {
-              this.currentStep[currentId - 1].history = this.currentStep[currentId - 1].history.concat(data.payments);
-            }
+            this.currentStep[currentId - 1].history = data.payments;
+
             console.log(this.currentStep[currentId - 1].history);
             this.updateInformationAfterPayment(currentId);
             console.log(this.currentStep);

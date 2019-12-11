@@ -54,7 +54,7 @@
 </div>
 
 <div *ngIf="negotiationIDs.length > 0">
-  <button (click)="launchNegotiation()">Lancer la négociation</button>
+  <button nz-button nzType="default" (click)="launchNegotiation()"><i class="iconfont icon-duihua"></i>Négociation</button>
 </div>
 
 <div *ngIf="isFinishedMine && currentActivity?.rolesID.includes(myInformation.id)">

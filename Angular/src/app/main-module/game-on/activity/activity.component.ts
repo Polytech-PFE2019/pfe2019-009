@@ -67,12 +67,12 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
       this.negotiationIDs = [];
       this.sendInitDialog.emit(true);
-      this.currentActivity.negotiationActions.forEach(nego => {
-        if (nego.giverID === this.myInformation.id) {
-          this.hasNegotiation = true;
-          this.negotiationIDs.push(nego.negotiationID);
-        }
-      });
+      // this.currentActivity.negotiationActions.forEach(nego => {
+      //   if (nego.giverID === this.myInformation.id) {
+      //     this.hasNegotiation = true;
+      //     this.negotiationIDs.push(nego.negotiationID);
+      //   }
+      // });
 
       if (this.currentActivity.rolesID.includes(this.myInformation.id)) {
         const tmp = (this.currentActivity.payingActions.filter(next =>

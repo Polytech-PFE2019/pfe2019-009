@@ -9,12 +9,19 @@ import {BuyResourceService} from '../../service/resources/buy-resource.service';
 import {Activity} from '../../model/activity';
 import {PlayerdataService} from 'src/app/playerdata.service';
 import {NzNotificationService} from 'ng-zorro-antd';
+import {swing} from 'ng-animate';
+import {transition, trigger, useAnimation} from '@angular/animations';
+
 
 @Component({
   selector: 'app-game-on',
   templateUrl: './game-on.component.html',
-  styleUrls: ['./game-on.component.css']
+  styleUrls: ['./game-on.component.css'],
+  animations: [
+    trigger('swing', [transition('* => *', useAnimation(swing))])
+  ]
 })
+
 export class GameOnComponent implements OnInit, OnDestroy {
   @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
   @ViewChild('template', {static: true}) template: TemplateRef<{}>;
@@ -32,7 +39,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   listOfDialog: any[] = [];
   subGame: Subscription;
   isRiskCard = false;
-  riskCard: any [] = [];
+  riskCard: any[] = [];
   riskOfActivityId = 0;
   roleId: any;
   subSteps: Subscription;
@@ -42,7 +49,14 @@ export class GameOnComponent implements OnInit, OnDestroy {
   totalAmount = 0;
   currentPlayer: any = null;
   isGroupChat = false;
+  myRole: any = null;
+  swing = false;
+  negotiationIDs: any[] = [];
+  hasNegotiation = false;
+  isDiabled = false;
+  isShow = true;
 
+  totalScrollHeight = 0;
 
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
@@ -57,6 +71,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;
 
+    this.myRole = this.subscription.myRole;
     // this.subPlayersWithRoles = this.subscription.playersWithRoles$.subscribe(data => {
     //   console.log(data);
     //   this.roles = data;
@@ -65,12 +80,32 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
       this.currentActivity = data;
+      const previousActivityID = parseInt(this.currentActivity.title, 10) - 1;
+      const previousActivityElement = document.getElementById(previousActivityID.toString());
+      if (previousActivityElement != null) {
+        this.totalScrollHeight += previousActivityElement.offsetHeight;
+        document.getElementById('stepsContainer').scrollTop = this.totalScrollHeight;
+
+      }
       console.log(this.currentActivity);
+      this.negotiationIDs = [];
+      this.initDialog();
+      this.currentActivity.negotiationActions.forEach(nego => {
+        if (nego.giverID === this.myRole.id) {
+          this.negotiationIDs.push(nego.negotiationID);
+        }
+      });
+      if (this.negotiationIDs.length > 0) {
+        setInterval(() => {
+          this.swingAnimation();
+        }, 1000);
+      }
     });
 
     this.subSteps = this.subscription.activites$.subscribe(data => {
-      console.log(data);
       this.currentStep = data;
+
+      console.log(data);
     });
 
     console.log(this.currentStep);
@@ -166,8 +201,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
     this.subSteps.unsubscribe();
   }
 
-  initDialog($event: any) {
+  initDialog() {
     this.listOfDialog = [];
+    this.isShow = true;
   }
 
   closeRiskCard() {
@@ -184,5 +220,25 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   closePlayers() {
     this.isPlayers = false;
+  }
+
+  swingAnimation() {
+    this.swing = !this.swing;
+  }
+
+  launchNegotiation() {
+    this.isDiabled = true;
+    this.isShow = false;
+    console.log(this.negotiationIDs);
+    this.negotiationIDs.forEach(negoID => {
+      const request = {
+        request: 'START_NEGOTIATE',
+        negotiationID: negoID,
+        gameID: this.gameId
+      } as SocketRequest;
+
+      this.gameService.messages.next(request);
+    });
+
   }
 }

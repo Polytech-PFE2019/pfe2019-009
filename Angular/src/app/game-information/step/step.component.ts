@@ -1,18 +1,18 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
-import {ActionSet} from '../../model/action';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {NzMessageService} from 'ng-zorro-antd';
-import {BuyResourceService} from '../../service/resources/buy-resource.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
+import { ActionSet } from '../../model/action';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { NzMessageService } from 'ng-zorro-antd';
+import { BuyResourceService } from '../../service/resources/buy-resource.service';
 
 @Component({
   selector: 'app-step',
   templateUrl: './step.component.html',
   styleUrls: ['./step.component.css']
 })
-export class StepComponent implements OnInit, OnDestroy {
+export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() step: any = null;
   @Output() currentStep = new EventEmitter();
   @Output() sendTestClick = new EventEmitter();
@@ -38,11 +38,14 @@ export class StepComponent implements OnInit, OnDestroy {
   myInformation: any;
   numOfRisks: any;
 
+  CURRENT_COLOR = "grey";
+  PREVIOUS_COLOR = "lightgrey"
+
   constructor(private subscription: SubscriptionService,
-              private nzMessage: NzMessageService,
-              private lobbyService: LobbyService,
-              private buyResourceService: BuyResourceService,
-              private gameService: GameOnService) {
+    private nzMessage: NzMessageService,
+    private lobbyService: LobbyService,
+    private buyResourceService: BuyResourceService,
+    private gameService: GameOnService) {
   }
 
   ngOnInit() {
@@ -53,6 +56,21 @@ export class StepComponent implements OnInit, OnDestroy {
     console.log(this.myInformation);
     this.numOfRisks = this.step.risks;
 
+    this.subscription.currentActivityID$.subscribe(data => {
+      if (data === this.step.title) {
+        document.getElementById("stepCard" + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
+      }
+      else if (data > this.step.title) {
+        document.getElementById("stepCard" + this.step.title).style.backgroundColor = this.PREVIOUS_COLOR;
+      }
+    })
+
+  }
+
+  ngAfterViewInit() {
+    if (this.step.title === 1) {
+      document.getElementById("stepCard" + this.step.title).style.backgroundColor = this.CURRENT_COLOR;
+    }
   }
 
   getCard(event) {

@@ -16,30 +16,18 @@
 <!--</div>-->
 <div class="container" *ngIf="!isLoding">
   <h1 nz-title>Choissisez votre rôle</h1>
-  <div nz-row style="margin-top: 50px"
-       nzType="flex" nzJustify="space-around" nzAlign="middle"
-       class="roleContainer"
-       nzGutter="48">
+  <div nz-row style="margin-top: 50px" nzType="flex" nzJustify="space-around" nzAlign="middle" class="roleContainer"
+    nzGutter="48">
     <div class="role" nz-col nzSpan="8" *ngFor="let role of roles">
-      <app-role #Role [roomID]="roomID"
-                [role]="role"
-                [disableChoose]="role.username!=='' && role.username!= userName"
-                [choosed]="role.choosed"
-                [readyed]="role.ready"
-                (checkNum)="getCheckedNum($event)"></app-role>
-      <label nz-checkbox
-             style="height: 40px"
-             [(ngModel)]="role.ready" (ngModelChange)="ready()"
-             *ngIf="role.choosed"
-             [disabled]="role.username!=='' && role.username!= userName"><b>Prêt</b></label>
+      <app-role #Role [roomID]="roomID" [role]="role" [disableChoose]="role.username!=='' && role.username!= userName"
+        [choosed]="role.choosed" [readyed]="role.ready" (checkNum)="getCheckedNum($event)"></app-role>
+      <label nz-checkbox style="height: 40px" [(ngModel)]="role.ready" (ngModelChange)="ready()" *ngIf="role.choosed"
+        [disabled]="role.username!=='' && role.username!= userName"><b>Prêt</b></label>
       <div *ngIf="!role.choosed" style="height: 40px"></div>
     </div>
   </div>
 
-  <button id="start"
-          *ngIf="userID === hostID"
-          nz-button nzType="default"
-          (click)="gameStart()">Démarrer
+  <button id="start" *ngIf="userID === hostID" nz-button nzType="default" (click)="gameStart()">Démarrer
   </button>
 </div>
 <app-loading *ngIf="isLoding"></app-loading>

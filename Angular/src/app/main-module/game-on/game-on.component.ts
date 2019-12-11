@@ -193,7 +193,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   openGroupChat() {
-    this.isGroupChat = !this.isGroupChat;
+    this.showGroupChat = !this.showGroupChat;
   }
 
   getCurrentStep($event: any) {

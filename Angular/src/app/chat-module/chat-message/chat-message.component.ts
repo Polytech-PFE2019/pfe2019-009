@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ChatMessageComponent implements OnInit {
 
   @Input() message: any = '';
+  @Input() roleID;
 
   constructor() {
   }

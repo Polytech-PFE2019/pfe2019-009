@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { DialogueMessage } from '../chat-dialogue/dialogueMessage';
-import { GameOnService } from 'src/app/service/gameOnService/game-on.service';
-import { SocketRequest } from 'src/Request';
-import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscription.service';
+import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
+import {DialogueMessage} from '../chat-dialogue/dialogueMessage';
+import {GameOnService} from 'src/app/service/gameOnService/game-on.service';
+import {SocketRequest} from 'src/Request';
+import {SubscriptionService} from 'src/app/service/subscriptionSerivce/subscription.service';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscri
 })
 export class ChatGroupComponent implements OnInit, OnDestroy {
   @Input() data: any;
-  @Output() closeDialogue = new EventEmitter;
+  @Output() closeDialogue = new EventEmitter();
   isOpenGroupChat = true;
   messages: DialogueMessage[] = [];
   myMessage = '';
@@ -25,10 +25,9 @@ export class ChatGroupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userID = this.subscription.userId;
     this.gameService.groupChatMessages.forEach(data => {
-      this.manageDataResponse(data)
-    }
-
-    )
+        this.manageDataResponse(data);
+      }
+    );
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
       switch (data.response) {
@@ -53,7 +52,7 @@ export class ChatGroupComponent implements OnInit, OnDestroy {
 
   openGroupChat(): void {
     this.isOpenGroupChat = true;
-    console.log('open groupChat')
+    console.log('open groupChat');
   }
 
   closeGroupChat(): void {
@@ -66,14 +65,14 @@ export class ChatGroupComponent implements OnInit, OnDestroy {
   }
 
   manageDataResponse(data) {
-    let isSender = false;
+    let isSenders = false;
     if (data.userID === this.userID) {
-      isSender = true;
+      isSenders = true;
     }
     const message = {
       message: data.message,
       userID: data.userID,
-      isSender: isSender,
+      isSender: isSenders,
       roleID: data.roleID
     } as DialogueMessage;
     this.messages.push(message);

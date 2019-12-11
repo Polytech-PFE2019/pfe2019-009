@@ -1,4 +1,4 @@
-package org.polytech.pfe.domego.generator;
+package org.polytech.pfe.domego.generator.initial;
 
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.risk.*;
@@ -25,10 +25,6 @@ public class InitialRiskGenerator {
         riskActions.addAll(listOfRiskForActivity10());
         riskActions.addAll(listOfRiskForActivity11());
         riskActions.addAll(listOfRiskForActivity12());
-
-
-
-
         return riskActions;
     }
 

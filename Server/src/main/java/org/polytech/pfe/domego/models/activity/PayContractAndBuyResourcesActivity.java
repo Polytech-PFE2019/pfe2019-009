@@ -59,5 +59,8 @@ public class PayContractAndBuyResourcesActivity extends Activity {
         return buyResourcesList.stream().map(BuyResources::getRoleID).collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<BuyResources> getBuyResourcesList() {
+        return this.buyResourcesList;
+    }
 }

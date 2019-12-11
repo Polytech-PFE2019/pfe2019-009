@@ -5,14 +5,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.components.calculator.VictoryPointCalculator;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;

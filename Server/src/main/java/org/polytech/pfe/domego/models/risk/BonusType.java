@@ -6,6 +6,7 @@ public enum BonusType {
     RESOURCES("RESOURCES"),
     DAYS("DAYS"),
     RISK("RISK"),
+    QUALITY("QUALITY"),
     NOTHING("NOTHING");
 
     public String key;

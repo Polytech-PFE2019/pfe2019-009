@@ -48,6 +48,7 @@ public class UpdatePaymentGameEvent implements EventProtocol {
         JsonArray paymentsJSON = new JsonArray();
         for (PayResources payment: game.getCurrentActivity().getPayResourcesList()) {
             JsonObject paymentJSon = new JsonObject();
+            paymentJSon.addProperty(GameResponseKey.ROLE_ID.key, payment.getRoleID());
             paymentJSon.addProperty(GameResponseKey.AMOUNT.key, payment.getAmountPaid());
             paymentJSon.addProperty(GameResponseKey.TYPE.key, payment.getPayResourceType().getName());
             paymentJSon.addProperty(GameResponseKey.BONUS.key, payment.getBonusGiven());

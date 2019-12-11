@@ -1,7 +1,7 @@
 package org.polytech.pfe.domego.database.accessor;
 
 import org.polytech.pfe.domego.components.game.RiskCard;
-import org.polytech.pfe.domego.generator.InitialRiskGenerator;
+import org.polytech.pfe.domego.generator.initial.InitialRiskGenerator;
 import org.polytech.pfe.domego.models.risk.RiskAction;
 import org.springframework.stereotype.Service;
 

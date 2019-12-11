@@ -1,7 +1,7 @@
-package org.polytech.pfe.domego.generator;
+package org.polytech.pfe.domego.generator.initial;
 
 import org.polytech.pfe.domego.database.accessor.RiskAccessor;
-import org.polytech.pfe.domego.models.Role;
+import org.polytech.pfe.domego.generator.GameGenerator;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
@@ -30,8 +30,6 @@ public class InitialGameGenerator implements GameGenerator {
     private final int numberOfRisksDrawnWanted = 20;
 
     private List<Negotiation> negotiationForGame;
-
-
 
     private List<Activity> activities;
 
@@ -694,7 +692,7 @@ public class InitialGameGenerator implements GameGenerator {
 
         List<PayContract> payContractList = new ArrayList<>();
 
-        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
         PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,20);
         Negotiation negotiationBetweenBlueAndBlack = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_DE_CONTROLE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.BUREAU_DE_CONTROLE.getId(),new Contract(10,20)));
         PayContract payContractBetweenBlueAndBlack = new PayContract(negotiationBetweenBlueAndBlack,30);
@@ -719,14 +717,17 @@ public class InitialGameGenerator implements GameGenerator {
     }
 
 
+    @Override
     public int getNumberOfDaysWanted() {
         return numberOfDaysWanted;
     }
 
+    @Override
     public int getCostWanted() {
         return costWanted;
     }
 
+    @Override
     public int getNumberOfRisksDrawnWanted() {
         return numberOfRisksDrawnWanted;
     }

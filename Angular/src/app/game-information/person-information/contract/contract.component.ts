@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Roles} from '../../../model/roles';
+import { Component, Input, OnInit } from '@angular/core';
+import { Roles } from '../../../model/roles';
+import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-contract',
@@ -7,56 +8,54 @@ import {Roles} from '../../../model/roles';
   styleUrls: ['./contract.component.css']
 })
 export class ContractComponent implements OnInit {
-  @Input() withRole = 1;
-  @Input() isPay = false;
-  @Input() data = [
-    {
-      withRole: 1,
-      isPay: false,
-      amount: 80
-    },
-    {
-      withRole: 4,
-      isPay: true,
-      amount: 30
-    }, {
-      withRole: 5,
-      isPay: true,
-      amount: 25
-    },
-  ];
-  @Input() payments = [
-    {
-      withRole: 3,
-      amount: 10,
-    },
-    {
-      withRole: 4,
-      amount: 15,
-    },
-    {
-      withRole: 5,
-      amount: 10,
-    }
-    ]
-  ;
-  total = 100;
-  payment = 50;
-
-  myRoleId = 2;
+  contracts = [];
+  contractsGiver = [];
+  contractsReceiver = [];
+  myRoleId;
   isSigne = true;
   isPayment = false;
   isReceive = false;
   roles = Roles;
   amount = 100;
-  tabs = ['Contrat à payer', 'Contrat payé'];
-  tab = ['Contrat à receivoir', 'Contrat reçu'];
+  tabs = ['Total à payer', 'État du paiement'];
+  tab = ['Total à recevoir', 'État du paiement'];
 
-  constructor() {
+  constructor(private subscription: SubscriptionService) {
+
   }
 
   ngOnInit() {
+    this.myRoleId = this.subscription.myRole.id;
+    this.subscription.currentActivity$.subscribe(data => {
+      this.contracts = [];
+      this.contractsGiver = [];
+      this.contractsReceiver = [];
+      console.log(data);
+      data.contractsGiver.forEach(contract => {
 
+        let contractObject = {
+          withRole: contract.receiverID,
+          isPay: true,
+          amount: contract.amount,
+          amountPaid: contract.amountPaid
+        }
+        this.contracts.push(contractObject)
+        this.contractsGiver.push(contractObject)
+      });
+
+      data.contractsReceiver.forEach(contract => {
+
+        let contractObject = {
+          withRole: contract.giverID,
+          isPay: false,
+          amount: contract.amount,
+          amountPaid: contract.amountPaid
+
+        }
+        this.contracts.push(contractObject)
+        this.contractsReceiver.push(contractObject)
+      });
+    })
   }
 
   showPayment() {

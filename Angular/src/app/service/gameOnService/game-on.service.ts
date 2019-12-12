@@ -103,6 +103,8 @@ export class GameOnService {
             const currentId = data.activityID;
             this.currentActivity = this.currentStep[currentId - 1];
             this.currentStep[currentId - 1].extraPayment = data.extraPaying;
+            this.currentStep[currentId - 1].contractsGiver = data.contractsGiver;
+            this.currentStep[currentId - 1].contractsReceiver = data.contractsReceiver;
             this.updateExtraPayment(currentId);
             console.log(this.currentActivity);
             console.log(this.currentStep);

@@ -56,10 +56,7 @@ public class PayContractEvent implements EventProtocol {
             logger.log(Level.INFO,
                     "EndNegotiationEvent : In game {0}, {1} paid {2} the amount {3}.",
                     new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  amountPaid});
-
         }
-
-
     }
 
     private String createResponseToUser(Player player, Player giver, Player receiver, double amountPaid) {
@@ -67,7 +64,6 @@ public class PayContractEvent implements EventProtocol {
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_CONTRACT");
         response.addProperty(GameResponseKey.GIVER_ROLE_NAME.key, giver.getRole().getName().getName());
         response.addProperty(GameResponseKey.RECEIVER_ROLE_NAME.key, receiver.getRole().getName().getId());
-
         response.addProperty(GameResponseKey.GIVERID.key, giver.getRole().getId());
         response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getRole().getId());
         response.addProperty(GameResponseKey.AMOUNT.key,amountPaid);

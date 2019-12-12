@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
+import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.generator.initial.InitialGameGenerator;
 import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.*;
@@ -61,7 +62,7 @@ class GameRequestHandlerTest {
         when(sessionPlayerTest.isOpen()).thenReturn(true);
 
         InitialGameGenerator initialGameGenerator = new InitialGameGenerator();
-        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(), initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted());
+        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(), initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted(), GameType.INITIAL);
 
         GameInstance gameInstance = GameInstance.getInstance();
         gameInstance.addGame(game);

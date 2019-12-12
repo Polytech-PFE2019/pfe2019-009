@@ -4,8 +4,10 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.polytech.pfe.domego.database.accessor.QualityAccessor;
 import org.polytech.pfe.domego.database.accessor.RiskAccessor;
 import org.polytech.pfe.domego.generator.GameGenerator;
+import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
@@ -28,6 +30,11 @@ import java.util.stream.Collectors;
 public class IntermediateGameGenerator implements GameGenerator {
 
     private RiskAccessor riskAccessor;
+    private QualityAccessor qualityAccessor;
+
+
+    private static final GameType GAME_TYPE = GameType.INTERMEDIATE;
+
 
     private static final int RateResourceWhenBuyingActivity = 1;
     private static final int SheetNumber = 0;
@@ -44,6 +51,7 @@ public class IntermediateGameGenerator implements GameGenerator {
         negotiationForGame = new ArrayList<>();
         activities = new ArrayList<>();
         riskAccessor = new RiskAccessor();
+        qualityAccessor = new QualityAccessor();
         this.generateIntermediateGame();
 
 
@@ -78,7 +86,8 @@ public class IntermediateGameGenerator implements GameGenerator {
             String title = datatypeSheet.getRow(FirstRowOfGameInformation + i).getCell(0).getStringCellValue();
             String description = datatypeSheet.getRow(FirstRowOfGameInformation + i).getCell(1).getStringCellValue();
             int time = ((int) datatypeSheet.getRow(FirstRowOfGameInformation + i).getCell(3).getNumericCellValue());
-            double numberOfRisks = datatypeSheet.getRow(FirstRowOfNumberOfBet + i ).getCell(2).getNumericCellValue();
+            int numberOfRisks = (int)datatypeSheet.getRow(FirstRowOfNumberOfBet + i ).getCell(2).getNumericCellValue();
+            int numberOfQualities = (int)datatypeSheet.getRow(FirstRowOfNumberOfBet + i ).getCell(3).getNumericCellValue();
             List<PayResources> payResourcesListByActivity = new ArrayList<>();
             for (RoleType roleType : RoleType.values()) {
                 if (roleType.equals(RoleType.NON_DEFINI))
@@ -107,7 +116,12 @@ public class IntermediateGameGenerator implements GameGenerator {
                 Map<Integer,Integer> timeMapByRole = new HashMap<>();
                 double numberOfDelayBonus = datatypeSheet.getRow(FirstRowOfNumberOfBet + i ).getCell(positionExcel + 2) == null ? 0 : datatypeSheet.getRow(FirstRowOfNumberOfBet + i ).getCell(positionExcel + 2).getNumericCellValue();
                 for (int j = 0; j < numberOfDelayBonus; j++) {
-                    int bonus = (int)datatypeSheet.getRow(96 + ((roleType.getId() - 1) * 19) + i).getCell(19 + j).getNumericCellValue();
+                    int bonus = 0;
+                    try{
+                        bonus = (int)datatypeSheet.getRow(96 + ((roleType.getId() - 1) * 19) + i).getCell(19 + j).getNumericCellValue();
+                    }catch (IllegalStateException e){
+                        continue;
+                    }
                     if (bonus == 0)
                         continue;
                     int cost = timeMapByRole.keySet().stream().mapToInt(value -> value).max().orElse(0) + (int) datatypeSheet.getRow(FirstRowOfInfoResourcesToPut + i ).getCell(5 + (9 * (roleType.getId() -1))).getNumericCellValue();
@@ -138,7 +152,7 @@ public class IntermediateGameGenerator implements GameGenerator {
             switch (activityId){
                 case 1 :
                     BuyResources buyResources = new BuyResources(RoleType.MAITRE_D_OUVRAGE.getId(),RateResourceWhenBuyingActivity);
-                    activities.add(new BuyingResourcesActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), Arrays.asList(buyResources)));
+                    activities.add(new BuyingResourcesActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId),Arrays.asList(buyResources)));
                     break;
                 case 5:
                     List<Negotiation> negotiationsOfActivity5 = new ArrayList<>();
@@ -153,7 +167,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     negotiationsOfActivity5.add(negotiationBetweenBlueAndViolet);
                     negotiationsOfActivity5.add(negotiationBetweenGreenAndYellow);
                     negotiationForGame.addAll(negotiationsOfActivity5);
-                    activities.add(new NegotiationActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), negotiationsOfActivity5));
+                    activities.add(new NegotiationActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId) , negotiationsOfActivity5));
                     break;
                 case 6 :
                     List<BuyResources> buyResourcesList = new ArrayList<>();
@@ -162,7 +176,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     buyResourcesList.add(new BuyResources(RoleType.BUREAU_DE_CONTROLE.getId(),RateResourceWhenBuyingActivity));
                     buyResourcesList.add(new BuyResources(RoleType.ENTREPRISE_GROS_OEUVRE.getId(),RateResourceWhenBuyingActivity));
                     buyResourcesList.add(new BuyResources(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(),RateResourceWhenBuyingActivity));
-                    activities.add(new BuyingResourcesActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), buyResourcesList));
+                    activities.add(new BuyingResourcesActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), buyResourcesList));
                     break;
                 case 7:
                     List<PayContract> payContractListActivity7 = new ArrayList<>();
@@ -172,7 +186,7 @@ public class IntermediateGameGenerator implements GameGenerator {
 
                     payContractListActivity7.add(payContractBetweenBlueAndGreenActivity7);
                     payContractListActivity7.add(payContractBetweenGreenAndYellowActivity7);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity7));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity7));
                     break;
                 case 9:
                     List<PayContract> payContractListActivity9 = new ArrayList<>();
@@ -184,7 +198,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     payContractListActivity9.add(payContractBetweenBlueAndGreenActivity9);
                     payContractListActivity9.add(payContractBetweenGreenAndYellowActivity9);
                     payContractListActivity9.add(payContractBetweenBlueAndBlackActivity9);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity9));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity9));
                     break;
                 case 10:
                 case 11:
@@ -201,7 +215,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     payContractListActivity10And11.add(payContractBetweenBlueAndBlackActivity10);
                     payContractListActivity10And11.add(payContractBetweenBlueAndRedActivity10);
                     payContractListActivity10And11.add(payContractBetweenBlueAndVioletActivity10);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity10And11));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity10And11));
                     break;
                 case 12:
                     List<PayContract> payContractListActivity12 = new ArrayList<>();
@@ -213,7 +227,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     payContractListActivity12.add(payContractBetweenBlueAndBlackActivity12);
                     payContractListActivity12.add(payContractBetweenBlueAndRedActivity12);
                     payContractListActivity12.add(payContractBetweenBlueAndVioletActivity12);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity12));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity12));
                     break;
                 case 13:
                     List<PayContract> payContractListActivity13 = new ArrayList<>();
@@ -225,7 +239,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     payContractListActivity13.add(payContractBetweenBlueAndBlackActivity13);
                     payContractListActivity13.add(payContractBetweenBlueAndGreenActivity13);
                     payContractListActivity13.add(payContractBetweenBlueAndRedActivity13);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity13));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity13));
                     break;
                 case 14:
                     List<PayContract> payContractListActivity14 = new ArrayList<>();
@@ -237,7 +251,7 @@ public class IntermediateGameGenerator implements GameGenerator {
                     payContractListActivity14.add(payContractBetweenBlueAndBlackActivity14);
                     payContractListActivity14.add(payContractBetweenBlueAndGreenActivity14);
                     payContractListActivity14.add(payContractBetweenBlueAndRedActivity14);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity14));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity14));
                     break;
                 case 15:
                     List<PayContract> payContractListActivity15 = new ArrayList<>();
@@ -253,20 +267,15 @@ public class IntermediateGameGenerator implements GameGenerator {
                     payContractListActivity15.add(payContractBetweenBlueAndBlackActivity15);
                     payContractListActivity15.add(payContractBetweenBlueAndRedActivity15);
                     payContractListActivity15.add(payContractBetweenBlueAndVioletActivity15);
-                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>(), payContractListActivity15));
+                    activities.add(new PayContractActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId), payContractListActivity15));
                     break;
 
                 default:
-                    activities.add(new ClassicActivity(activityId, time, title, description, payResourcesListByActivity, new ArrayList<>()));
+                    activities.add(new ClassicActivity(activityId, time, title, description, payResourcesListByActivity, riskAccessor.getNRisksCardByActivityID(GAME_TYPE,numberOfRisks, activityId), qualityAccessor.getNQualityCardsByActivityID(GAME_TYPE, numberOfQualities,activityId)));
                     break;
             }
 
-
-
-
         }
-
-
     }
 
     @Override
@@ -284,7 +293,4 @@ public class IntermediateGameGenerator implements GameGenerator {
         return 20;
     }
 
-    public static void main(String[] args) throws IOException, InvalidFormatException {
-        new IntermediateGameGenerator().generateIntermediateGame();
-    }
 }

@@ -13,6 +13,7 @@ import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.components.statefull.RoomInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
+import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.services.sockets.room.RoomRequestHandler;
@@ -198,11 +199,13 @@ class RoomRequestHandlerTest {
         int lastRoomCreatedID = roomInstance.getRoomList().size()-1;
 
         String playerID =roomInstance.getRoomById(String.valueOf(lastRoomCreatedID)).get().getPlayerList().get(0).getID();
+        GameType gameType = GameType.INITIAL;
 
         JsonObject request2 = new JsonObject();
         request2.addProperty("request","START_GAME");
         request2.addProperty("userID", ""+playerID );
         request2.addProperty("roomID", ""+lastRoomCreatedID);
+        request2.addProperty("gameType", ""+gameType.key);
         Map value2 = new Gson().fromJson(request2, Map.class);
 
 

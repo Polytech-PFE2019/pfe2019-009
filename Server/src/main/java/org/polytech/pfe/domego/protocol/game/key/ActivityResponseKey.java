@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.protocol.game.key;
 public enum ActivityResponseKey {
 
     ACTIVITY_ID("activityID"),
+    GAME_TYPE("gameType"),
     NUMBER_OF_DAYS("numberOfDays"),
     TITLE("title"),
     STATUS("status"),

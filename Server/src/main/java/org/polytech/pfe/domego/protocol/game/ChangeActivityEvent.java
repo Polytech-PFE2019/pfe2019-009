@@ -40,6 +40,10 @@ public class ChangeActivityEvent implements EventProtocol {
         response.addProperty(GameResponseKey.DELAY_PROJECT.key,game.getProject().getDays());
         response.addProperty(GameResponseKey.FAILURE_PROJECT.key,game.getProject().getRisks());
         response.addProperty(GameResponseKey.ACTIVITY_ID.key,game.getCurrentActivity().getId());
+        response.addProperty(GameResponseKey.INITIAL_DAYS.key, game.getCurrentActivity().getInitialNumberOfDays());
+        response.addProperty(GameResponseKey.INITIAL_RISKS.key, game.getCurrentActivity().getInitialNumberOfRisks());
+        response.addProperty(GameResponseKey.ACTUAL_DAYS.key, game.getCurrentActivity().getNumberOfDays());
+        response.addProperty(GameResponseKey.ACTUAL_RISKS.key, game.getCurrentActivity().getRiskCardList().size());
         JsonArray extraPaymentArray = new JsonArray();
         for (PayResources payResources : game.getCurrentActivity().getPayResourcesList()) {
             if (payResources.isExtraPayment()){

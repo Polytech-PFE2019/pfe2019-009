@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.polytech.pfe.domego.components.game.RiskCard;
+import org.polytech.pfe.domego.components.game.card.QualityCard;
+import org.polytech.pfe.domego.components.game.card.RiskCard;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.pay.PayContract;
@@ -19,6 +20,15 @@ public class PayContractAndBuyResourcesActivity extends Activity {
                                               List<PayResources> payResourcesList, List<RiskCard> riskCards, List<PayContract> payContractList,
                                               List<BuyResources> buyResourcesList) {
         super(id, numbersOfDays, title,description, payResourcesList, riskCards);
+        this.payContractList = payContractList;
+        this.buyResourcesList = buyResourcesList;
+    }
+
+    public PayContractAndBuyResourcesActivity(int id, int numbersOfDays, String title, String description,
+                                              List<PayResources> payResourcesList, List<RiskCard> riskCards, List<QualityCard> qualityCards,
+                                              List<PayContract> payContractList,
+                                              List<BuyResources> buyResourcesList) {
+        super(id, numbersOfDays, title,description, payResourcesList, riskCards, qualityCards);
         this.payContractList = payContractList;
         this.buyResourcesList = buyResourcesList;
     }

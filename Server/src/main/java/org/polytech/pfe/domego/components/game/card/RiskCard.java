@@ -1,4 +1,4 @@
-package org.polytech.pfe.domego.components.game;
+package org.polytech.pfe.domego.components.game.card;
 
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.database.accessor.RiskAccessor;
@@ -15,15 +15,13 @@ import org.polytech.pfe.domego.protocol.game.UpdatePaymentGameEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RiskCard {
+public class RiskCard extends Card {
 
     private RiskAction riskAction;
 
-    private boolean isDraw;
-
     public RiskCard(RiskAction riskAction) {
+        super();
         this.riskAction = riskAction;
-        this.isDraw = false;
     }
 
     public void doAction(Game game){
@@ -41,8 +39,8 @@ public class RiskCard {
 
     }
 
-    public void doRiskBonusAction(Bonus bonus,Game game){
-        List<RiskCard> riskCards = new RiskAccessor().getRiskByActivityID(bonus.getActivityID()).stream().map(riskAction1 -> new RiskCard(riskAction1)).collect(Collectors.toList());
+    private void doRiskBonusAction(Bonus bonus,Game game){
+        List<RiskCard> riskCards = new RiskAccessor().getRiskByActivityID(game.getGameType(), bonus.getActivityID()).stream().map(RiskCard::new).collect(Collectors.toList());
         Collections.shuffle(riskCards);
         game.getActivities().stream().filter(activity -> activity.getId() == bonus.getActivityID()).findAny().
                 ifPresent(activity -> {
@@ -54,15 +52,15 @@ public class RiskCard {
                 });
     }
 
-    public void doDaysBonusAction(Bonus bonus,Game game){
+    private void doDaysBonusAction(Bonus bonus,Game game){
         game.getActivities().stream().filter(activity -> activity.getId() == bonus.getActivityID()).findAny().ifPresent(activity -> activity.addDays(bonus.getAmount()));
     }
 
-    public void doMoneyBonusAction(Bonus bonus,Game game){
+    private void doMoneyBonusAction(Bonus bonus,Game game){
         game.getPlayers().stream().filter(player -> player.getRole().getName().equals(bonus.getRoleType())).findAny().ifPresent(player -> player.addMoney(bonus.getAmount()));
     }
 
-    public void doResourcesBonusAction(Bonus bonus,Game game){
+    private void doResourcesBonusAction(Bonus bonus,Game game){
         Map<Integer, Integer> newMandatoryPayment = new HashMap<>();
         newMandatoryPayment.put(bonus.getAmount(),0);
         game.getActivities().stream().filter(activity -> activity.getId() == bonus.getActivityID()).findAny().ifPresent(activity -> activity.addPayResources(new PayResources(bonus.getRoleType().getId(), newMandatoryPayment, PayResourceType.MANDATORY, true)));
@@ -74,9 +72,6 @@ public class RiskCard {
         }
     }
 
-    public boolean isDraw() {
-        return isDraw;
-    }
 
     public RiskAction getRiskAction() {
         return riskAction;

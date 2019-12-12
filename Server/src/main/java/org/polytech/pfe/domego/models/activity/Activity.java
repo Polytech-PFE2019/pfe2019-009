@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego.models.activity;
 
-import org.polytech.pfe.domego.components.game.RiskCard;
+import org.polytech.pfe.domego.components.game.card.QualityCard;
+import org.polytech.pfe.domego.components.game.card.RiskCard;
 import org.polytech.pfe.domego.models.Payment;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
@@ -21,20 +22,39 @@ public abstract class Activity implements BuyingAction {
     private Logger logger = Logger.getGlobal();
     private int id;
     private int numberOfDays;
+    private int initialNumberOfDays;
+    private int initialNumberOfRisks;
     private String title;
     private String description;
     private List<PayResources> payResourcesList;
     private ActivityStatus activityStatus;
     private List<RiskCard> riskCardList;
+    private List<QualityCard> qualityCards;
 
     public Activity(int id, int numberOfDays, String title , String description, List<PayResources> payResourcesList, List<RiskCard> riskCards){
         this.id = id;
         this.numberOfDays = numberOfDays;
+        this.initialNumberOfDays = numberOfDays;
         this.title = title;
         this.description = description;
         this.payResourcesList = payResourcesList;
         this.activityStatus = ActivityStatus.NOT_STARTED;
+        this.qualityCards = new ArrayList<>();
         this.riskCardList = riskCards;
+        this.initialNumberOfRisks = riskCards.size();
+    }
+
+    public Activity(int id, int numberOfDays, String title , String description, List<PayResources> payResourcesList, List<RiskCard> riskCards, List<QualityCard> qualityCards){
+        this.id = id;
+        this.numberOfDays = numberOfDays;
+        this.initialNumberOfDays = numberOfDays;
+        this.title = title;
+        this.description = description;
+        this.payResourcesList = payResourcesList;
+        this.activityStatus = ActivityStatus.NOT_STARTED;
+        this.qualityCards = qualityCards;
+        this.riskCardList = riskCards;
+        this.initialNumberOfRisks = riskCards.size();
     }
 
 
@@ -194,5 +214,17 @@ public abstract class Activity implements BuyingAction {
 
     public List<RiskCard> getRiskCardList() {
         return riskCardList;
+    }
+
+    public int getInitialNumberOfDays() {
+        return initialNumberOfDays;
+    }
+
+    public List<QualityCard> getQualityCards() {
+        return qualityCards;
+    }
+
+    public int getInitialNumberOfRisks() {
+        return initialNumberOfRisks;
     }
 }

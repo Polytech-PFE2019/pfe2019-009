@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Roles } from '../../../model/roles';
 import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscription.service';
+import { GameOnService } from 'src/app/service/gameOnService/game-on.service';
 
 @Component({
   selector: 'app-contract',
@@ -20,7 +21,7 @@ export class ContractComponent implements OnInit {
   tabs = ['Total à payer', 'État du paiement'];
   tab = ['Total à recevoir', 'État du paiement'];
 
-  constructor(private subscription: SubscriptionService) {
+  constructor(private subscription: SubscriptionService, private gameService: GameOnService) {
 
   }
 
@@ -55,6 +56,37 @@ export class ContractComponent implements OnInit {
         this.contracts.push(contractObject)
         this.contractsReceiver.push(contractObject)
       });
+    })
+
+    this.gameService.reponses$.subscribe(data => {
+      if (data.response != "END_NEGOTIATE" && data.response != "FAIL_NEGOTIATE") {
+        return;
+      }
+      let contractObject;
+      if (data.giverID == this.myRoleId) {
+        contractObject = {
+          withRole: data.receiverID,
+          isPay: true,
+          amount: data.amount,
+          amountPaid: 0
+        }
+        this.contractsGiver.push(contractObject)
+
+      }
+      else {
+        contractObject = {
+          withRole: data.giverID,
+          isPay: false,
+          amount: data.amount,
+          amountPaid: 0
+        }
+        this.contractsReceiver.push(contractObject)
+
+      }
+      this.contracts.push(contractObject)
+
+
+
     })
   }
 

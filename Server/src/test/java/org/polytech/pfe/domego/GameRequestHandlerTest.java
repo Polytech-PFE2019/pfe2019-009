@@ -62,7 +62,7 @@ class GameRequestHandlerTest {
         when(sessionPlayerTest.isOpen()).thenReturn(true);
 
         InitialGameGenerator initialGameGenerator = new InitialGameGenerator();
-        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(), initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted(), GameType.INITIAL);
+        game = new Game(UUID.randomUUID().toString(),new ArrayList<>(), initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted(), initialGameGenerator.getNegotiationList(), GameType.INITIAL);
 
         GameInstance gameInstance = GameInstance.getInstance();
         gameInstance.addGame(game);

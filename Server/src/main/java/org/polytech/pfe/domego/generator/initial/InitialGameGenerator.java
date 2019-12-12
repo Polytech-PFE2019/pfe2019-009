@@ -53,7 +53,6 @@ public class InitialGameGenerator implements GameGenerator {
         activities.add(generateTenthActivity());
         activities.add(generateEleventhActivity());
         activities.add(generateTwelfthActivity());
-
     }
 
     @Override
@@ -733,5 +732,10 @@ public class InitialGameGenerator implements GameGenerator {
     @Override
     public int getNumberOfRisksDrawnWanted() {
         return numberOfRisksDrawnWanted;
+    }
+
+    @Override
+    public List<Negotiation> getNegotiationList() {
+        return negotiationForGame;
     }
 }

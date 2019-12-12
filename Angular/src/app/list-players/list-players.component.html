@@ -5,11 +5,11 @@
         style="width: 100%"
         [nzDataSource]="roles"
         [nzItemLayout]="'vertical'"
-        [nzRenderItem]="item"
-      >
+        [nzRenderItem]="item">
         <ng-template #item let-item>
           <nz-list-item [nzContent]="item.description" [nzActions]="[starAction]" [nzExtra]="extra">
-            <ng-template #starAction><i class="iconfont icon-money" style="margin-right: 8px;" [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
+            <ng-template #starAction><i class="iconfont icon-money" style="margin-right: 8px;"
+                                        [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
             <nz-list-item-meta [nzTitle]="nzTitle">
               <ng-template #nzTitle>{{ item.title }} - {{item.username}}</ng-template>
             </nz-list-item-meta>
@@ -20,41 +20,63 @@
         </ng-template>
       </nz-list>
     </nz-tab>
-    <nz-tab [nzTitle]="'Mon histoire'" #target>
-      <nz-affix [nzTarget]="target" id="affix-container-target">
+    <nz-tab [nzTitle]="'Mes histoiriques'" #target>
+      <nz-affix id="affix-container-target">
         <div style="margin: 5px;">
-          <h4>Total d'argent dépensé:</h4>
-          <h4>Total des ressources dépensées: {{totalResourcePayment}}</h4>
+          <h4>L'argent dépensé total:</h4>
+          <h4>Les ressources dépensées totales: {{totalResourcePayment}}</h4>
         </div>
       </nz-affix>
-      <nz-list [nzDataSource]="histories"
-               [nzItemLayout]="'vertical'"
-               [nzRenderItem]="step"
-      >
-        <ng-template #step let-item>
-          <nz-list-item style="display: flex; flex-direction: column">
-            <h3>Etape {{item.activityID}}</h3>
-            <nz-table class="basicTable" #playerTable
-                      [nzData]="item.payments"
-                      [nzShowPagination]="false">
-              <thead>
-              <tr>
-                <th>Type</th>
-                <th>Depensé</th>
-                <th>Résultat</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let h of playerTable.data" >
-                <td>{{h.activity}}</td>
-                <td>{{h.amount}}</td>
-                <td>{{h.result}}</td>
-              </tr>
-              </tbody>
-            </nz-table>
-          </nz-list-item>
-        </ng-template>
-      </nz-list>
+      <!--      <nz-list [nzDataSource]="histories"-->
+      <!--               [nzItemLayout]="'vertical'"-->
+      <!--               [nzRenderItem]="step">-->
+
+      <!--        <ng-template #step let-item let-i>-->
+      <div *ngFor="let h of histories; let i=index">
+        <h3>Etape {{i+1}}</h3>
+        <nz-table class="basicTable" #playerTable
+                  [nzData]="h.payments"
+                  [nzShowPagination]="false">
+          <thead>
+          <tr>
+            <th>Type</th>
+            <th>Depensé</th>
+            <th>Résultat</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let h of playerTable.data">
+            <td>{{getType(h.type)}}</td>
+            <td>{{h.amount}}</td>
+            <td>{{getBonus(h.type, h.bonus)}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <!--          <nz-list-item style="display: flex; flex-direction: column">-->
+      <!--            <h3>Etape {{i+1}}</h3>-->
+      <!--            <nz-table class="basicTable" #playerTable-->
+      <!--                      [nzData]="item.payments"-->
+      <!--                      [nzShowPagination]="false">-->
+      <!--              <thead>-->
+      <!--              <tr>-->
+      <!--                <th>Type</th>-->
+      <!--                <th>Depensé</th>-->
+      <!--                <th>Résultat</th>-->
+      <!--              </tr>-->
+      <!--              </thead>-->
+      <!--              <tbody>-->
+      <!--              <tr *ngFor="let h of playerTable.data" >-->
+      <!--                <td>{{getType(h.type)}}</td>-->
+      <!--                <td>{{h.amount}}</td>-->
+      <!--                <td>{{getBonus(h.type, h.bonus)}}</td>-->
+      <!--              </tr>-->
+      <!--              </tbody>-->
+      <!--            </nz-table>-->
+      <!--          </nz-list-item>-->
+      <!--        </ng-template>-->
+      <!--      </nz-list>-->
+
     </nz-tab>
   </nz-tabset>
 </div>

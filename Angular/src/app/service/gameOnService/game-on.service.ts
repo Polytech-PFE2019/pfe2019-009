@@ -9,6 +9,7 @@ import {Activity} from '../../model/activity';
 import {ActionSet} from '../../model/action';
 import {BuyResourceService} from '../resources/buy-resource.service';
 import {Roles} from '../../model/roles';
+import {History} from '../../model/history';
 
 @Injectable()
 export class GameOnService {
@@ -34,6 +35,7 @@ export class GameOnService {
   riskReduced = 0;
   results: any;
   groupChatMessages = [];
+  mesHistories: History[] = [];
 
   constructor(private wsService: WebsocketService,
               private resourceManager: BuyResourceService,
@@ -117,6 +119,7 @@ export class GameOnService {
 
             console.log(this.currentStep[currentId - 1].history);
             this.updateInformationAfterPayment(currentId);
+            this.getMyHistory(data);
             console.log(this.currentStep);
           }
 
@@ -211,5 +214,23 @@ export class GameOnService {
       maxTime: project.maxTime
     };
     this.subscription.sendDays(days);
+  }
+
+  getMyHistory(data) {
+    const currentId = data.activityID;
+    const currentAc = this.currentStep[currentId - 1];
+    const historyTmp = new History(currentId, this.subscription.myRole.id);
+    console.log(this.currentStep);
+    console.log(currentAc);
+    const role = this.subscription.myRole.id;
+    for (const b of currentAc.history) {
+      console.log(b, role);
+      if (role === b.roleID) {
+        historyTmp.payments.push(b);
+      }
+    }
+    this.mesHistories.push(historyTmp);
+    console.log(this.mesHistories);
+    this.subscription.sendHistories(this.mesHistories);
   }
 }

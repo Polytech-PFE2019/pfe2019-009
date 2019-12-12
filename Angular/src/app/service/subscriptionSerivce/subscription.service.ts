@@ -42,6 +42,9 @@ export class SubscriptionService {
   failures = new Subject<any>();
   failures$ = this.failures.asObservable();
 
+  myHistories = new Subject<any>();
+  myHistories$ = this.myHistories.asObservable();
+
   myRole: any;
 
   currentActivityID = new Subject<any>();
@@ -113,5 +116,10 @@ export class SubscriptionService {
   sendFailures(msg) {
     console.log('sendFailures' + msg);
     this.failures.next(msg);
+  }
+
+  sendHistories(msg) {
+    console.log('send' + msg);
+    this.myHistories.next(msg);
   }
 }

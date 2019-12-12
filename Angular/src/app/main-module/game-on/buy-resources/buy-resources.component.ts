@@ -22,7 +22,6 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   currentMonney = 30;
   gameID: string;
   userID: string;
-  subUserId: Subscription;
   subCost: Subscription;
   cost: any = null;
   roles: any[] = [];
@@ -106,7 +105,6 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subCurrentMonney.unsubscribe();
-    this.subUserId.unsubscribe();
     this.subCost.unsubscribe();
   }
 

@@ -1,15 +1,13 @@
 <div class="container">
-  <nz-card
-    [nzTitle]="contract"
-    [nzActions]="[contractSigne, receive, give]">
+  <nz-card [nzTitle]="contract" [nzActions]="[contractSigne, receive, give]">
     <div class="content-container">
       <div *ngIf="isPayment">
         <nz-tabset>
           <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab">
-            <div *ngIf="tab === 'Contrat à payer'">
-              <h6>Contrat à payer: {{payment}}K - Etape 6</h6>
+            <div *ngIf="tab === 'Total à payer'">
+              <div *ngIf="contractsGiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
               <div class="contract-container">
-                <div class="contractWithRole" *ngFor="let item of payments">
+                <div class="contractWithRole" *ngFor="let item of contractsGiver">
                   <div [ngStyle]="getRoleById(myRoleId).style"></div>
                   <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
                   <div class="amount"><b>{{item?.amount}}K</b></div>
@@ -20,13 +18,13 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="tab === 'Contrat payé'">
-              <h6>Contrat payé: {{payment}}K</h6>
+            <div *ngIf="tab === 'État du paiement'">
+              <div *ngIf="contractsGiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
               <div class="contract-container">
-                <div class="contractWithRole" *ngFor="let item of payments">
+                <div class="contractWithRole" *ngFor="let item of contractsGiver">
                   <div [ngStyle]="getRoleById(myRoleId).style"></div>
                   <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
-                  <div class="amount"><b>{{item?.amount}}K</b></div>
+                  <div class="amount"><b>{{item?.amountPaid}}K</b></div>
                   <img src="../../../../assets/icons/youjiantou.png" [width]="40" [height]="20">
                   <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
                   </div>
@@ -38,17 +36,17 @@
         </nz-tabset>
       </div>
       <div *ngIf="isSigne">
-        <h6>Contrat signé: {{total}}K</h6>
         <div class="contract-container">
-          <div class="contractWithRole" *ngFor="let item of data">
+          <div *ngIf="contracts.length == 0">Vous n'avez pas encore signé de contrats.</div>
+          <div class="contractWithRole" *ngFor="let item of contracts">
             <div [ngStyle]="getRoleById(myRoleId).style">
             </div>
-            <div *ngIf="item.isPay"
-                 style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
+            <div *ngIf="item.isPay" style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px">
+            </div>
             <img *ngIf="!item.isPay" src="../../../../assets/icons/zuojiantou.png" [width]="40" [height]="20">
             <div class="amount"><b>{{item?.amount}}K</b></div>
-            <div *ngIf="!item.isPay"
-                 style="width: 40px; height: 10px; background-color: #8b8b8b;margin-left: 10px"></div>
+            <div *ngIf="!item.isPay" style="width: 40px; height: 10px; background-color: #8b8b8b;margin-left: 10px">
+            </div>
             <img *ngIf="item.isPay" src="../../../../assets/icons/youjiantou.png" [width]="40" [height]="20">
             <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
             </div>
@@ -59,10 +57,10 @@
       <div *ngIf="isReceive">
         <nz-tabset>
           <nz-tab *ngFor="let tab of tab" [nzTitle]="tab">
-            <div *ngIf="tab === 'Contrat à receivoir'">
-              <h6>Contrat à recevoir: {{payment}}K - Etape 2</h6>
+            <div *ngIf="tab === 'Total à recevoir'">
+              <div *ngIf="contractsReceiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
               <div class="contract-container">
-                <div class="contractWithRole" *ngFor="let item of payments">
+                <div class="contractWithRole" *ngFor="let item of contractsReceiver">
                   <div [ngStyle]="getRoleById(myRoleId).style"></div>
                   <img src="../../../../assets/icons/zuojiantou.png" [width]="40" [height]="20">
                   <div class="amount"><b>{{item?.amount}}K</b></div>
@@ -73,14 +71,14 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="tab === 'Contrat reçu'">
-              <h6>Contrat reçu: {{payment}}K</h6>
+            <div *ngIf="tab === 'État du paiement'">
+              <div *ngIf="contractsReceiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
               <div class="contract-container">
-                <div class="contractWithRole" *ngFor="let item of payments">
+                <div class="contractWithRole" *ngFor="let item of contractsReceiver">
                   <div [ngStyle]="getRoleById(myRoleId).style"></div>
+                  <img src="../../../../assets/icons/zuojiantou.png" [width]="40" [height]="20">
+                  <div class="amount"><b>{{item?.amountPaid}}K</b></div>
                   <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
-                  <div class="amount"><b>{{item?.amount}}K</b></div>
-                  <img src="../../../../assets/icons/youjiantou.png" [width]="40" [height]="20">
                   <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
                   </div>
                   <span style="margin-left: 10px">{{getRoleById(item.withRole).title}}</span>
@@ -96,7 +94,7 @@
 <ng-template #contract>
   <div class="contract">
     <nz-avatar nzSrc="../../../../assets/icons/hetong.png"></nz-avatar>
-    <h4 nz-title>Contrat</h4>
+    <h4 nz-title>Contrats</h4>
   </div>
 </ng-template>
 
@@ -104,7 +102,7 @@
   <div (click)="showReceive()">
     <i class="iconfont icon-shoukuan">
     </i><br>
-    Contrat reçu
+    À recevoir
   </div>
 </ng-template>
 
@@ -113,23 +111,23 @@
     <i class="iconfont icon-fukuan">
     </i>
     <br>
-    Paiement du contrat
+    À payer
   </div>
 </ng-template>
 <ng-template #contractSigne>
   <div (click)="showSign()">
     <i id="description" class="iconfont icon-qianzishenhe"></i>
     <br>
-    Contrat signé
+    Signés
   </div>
 </ng-template>
 
 <ng-template #plan>
-    <span>
-      <i id="planning" class="iconfont icon-touzijihuaguanli"></i>
-      <br>
-      Plan
-    </span>
+  <span>
+    <i id="planning" class="iconfont icon-touzijihuaguanli"></i>
+    <br>
+    Plan
+  </span>
 </ng-template>
 
 <ng-template>

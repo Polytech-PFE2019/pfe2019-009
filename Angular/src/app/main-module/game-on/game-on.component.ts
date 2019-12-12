@@ -1,17 +1,17 @@
-import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {LobbyService} from '../../service/lobbyService/lobby.service';
-import {SocketRequest} from '../../../Request';
-import {Router} from '@angular/router';
-import {GameOnService} from '../../service/gameOnService/game-on.service';
-import {Subscription} from 'rxjs';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
-import {BuyResourceService} from '../../service/resources/buy-resource.service';
-import {Activity} from '../../model/activity';
-import {PlayerdataService} from 'src/app/playerdata.service';
-import {NzNotificationService} from 'ng-zorro-antd';
-import {swing} from 'ng-animate';
-import {transition, trigger, useAnimation} from '@angular/animations';
-import {ChatGroupComponent} from '../../chat-module/chat-group/chat-group.component';
+import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { LobbyService } from '../../service/lobbyService/lobby.service';
+import { SocketRequest } from '../../../Request';
+import { Router } from '@angular/router';
+import { GameOnService } from '../../service/gameOnService/game-on.service';
+import { Subscription } from 'rxjs';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
+import { BuyResourceService } from '../../service/resources/buy-resource.service';
+import { Activity } from '../../model/activity';
+import { PlayerdataService } from 'src/app/playerdata.service';
+import { NzNotificationService } from 'ng-zorro-antd';
+import { swing } from 'ng-animate';
+import { transition, trigger, useAnimation } from '@angular/animations';
+import { ChatGroupComponent } from '../../chat-module/chat-group/chat-group.component';
 
 
 @Component({
@@ -24,9 +24,9 @@ import {ChatGroupComponent} from '../../chat-module/chat-group/chat-group.compon
 })
 
 export class GameOnComponent implements OnInit, OnDestroy {
-  @ViewChild('stepContainers', {static: true}) stepContainer: ElementRef;
-  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
-  @ViewChild('groupChat', {static: true}) groupChat: ChatGroupComponent;
+  @ViewChild('stepContainers', { static: true }) stepContainer: ElementRef;
+  @ViewChild('template', { static: true }) template: TemplateRef<{}>;
+  @ViewChild('groupChat', { static: true }) groupChat: ChatGroupComponent;
   step = 'Étape 1';
   gameId: string;
   buyingActions: any;
@@ -80,12 +80,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
   };
 
   constructor(private lobbyService: LobbyService,
-              private gameService: GameOnService,
-              private subscription: SubscriptionService,
-              private resourceManager: BuyResourceService,
-              private router: Router,
-              private notification: NzNotificationService,
-              private playerDataService: PlayerdataService) {
+    private gameService: GameOnService,
+    private subscription: SubscriptionService,
+    private resourceManager: BuyResourceService,
+    private router: Router,
+    private notification: NzNotificationService,
+    private playerDataService: PlayerdataService) {
   }
 
   ngOnInit() {
@@ -172,9 +172,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
       if (data.response === 'CHANGE_ACTIVITY') {
         this.notification.create(
           'info',
-          'Tour fini',
-          'On entre étape ' + data.activityID,
-          {nzDuration: 8000}
+          "Fin de l'étape " + (data.activityID - 1),
+          "L'étape " + data.activityID + " commence",
+          { nzDuration: 8000 }
         );
       }
 

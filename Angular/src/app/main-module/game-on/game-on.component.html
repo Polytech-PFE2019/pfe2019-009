@@ -3,7 +3,7 @@
     <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
     <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/list.png" [width]="60" [height]="60">
   </div>
-  <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Liste de joueurs"
+  <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Menu"
              (nzOnClose)="closePlayers()">
     <app-list-players></app-list-players>
   </nz-drawer>

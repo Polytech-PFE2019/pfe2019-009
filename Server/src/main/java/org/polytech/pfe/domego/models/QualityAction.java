@@ -4,6 +4,8 @@ import org.polytech.pfe.domego.models.risk.Bonus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document(collection = "Qualities")
 public class QualityAction {
 
@@ -52,5 +54,20 @@ public class QualityAction {
 
     public void setBonus(Bonus bonus) {
         this.bonus = bonus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QualityAction that = (QualityAction) o;
+        return qualityOfActivityId == that.qualityOfActivityId &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(bonus, that.bonus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(qualityOfActivityId, description, bonus);
     }
 }

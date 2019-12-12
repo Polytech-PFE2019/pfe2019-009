@@ -42,6 +42,7 @@ public class LaunchGameEvent implements EventProtocol {
     public String createUpdateResponse(Player player) {
         JsonObject response = new JsonObject();
 
+        response.addProperty(ActivityResponseKey.GAME_TYPE.key, game.getGameType().key);
         this.addInfosToCurrentGame(response);
 
         this.addPlayerObject(response, player);

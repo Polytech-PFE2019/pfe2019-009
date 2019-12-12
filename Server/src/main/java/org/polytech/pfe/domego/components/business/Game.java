@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.components.business;
 
+import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -19,14 +20,16 @@ public class Game {
     private List<Activity> activities;
     private int currentActivity;
     private Project project;
+    private GameType gameType;
 
 
-    public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted, int numberOfRisksDrawnWanted) {
+    public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted, int numberOfRisksDrawnWanted, GameType gameType) {
         this.id = id;
         this.players = players;
         this.activities = activities;
         this.project = new Project(costWanted, numberOfDaysWanted, numberOfRisksDrawnWanted);
         this.currentActivity = 0;
+        this.gameType = gameType;
     }
 
     public Optional<Player> getPlayerById(String playerID){
@@ -97,5 +100,7 @@ public class Game {
         return activities.get(currentActivity);
     }
 
-
+    public GameType getGameType() {
+        return gameType;
+    }
 }

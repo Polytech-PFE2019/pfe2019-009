@@ -6,6 +6,9 @@ public enum RoomRequestKey implements RequestArgumentKey {
     REQUEST("REQUEST"),
     ROOMID("roomID"),
     USERID("userID"),
+    GAME_TYPE("gameType"),
+    DAYS("days"),
+    COST("cost"),
     ROLEID("roleID"),
     USERNAME("username");
 

@@ -4,6 +4,7 @@ public class Project {
     private int cost;
     private int days;
     private int risks;
+    private int quality;
     private int costWanted;
     private int numberOfDaysWanted;
     private int numberOfRisksDrawnWanted;
@@ -12,6 +13,7 @@ public class Project {
         this.cost = 0;
         this.days = 0;
         this.risks = 0;
+        this.quality = 0;
         this.costWanted = costWanted;
         this.numberOfDaysWanted = numberOfDaysWanted;
         this.numberOfRisksDrawnWanted = numberOfRisksDrawnWanted;
@@ -27,6 +29,8 @@ public class Project {
 
     public int getRisks() {return risks; }
 
+    public int getQuality(){return quality;}
+
     public void addCost(int cost){
         this.cost += cost;
     }
@@ -38,6 +42,8 @@ public class Project {
     public void addRisks(int risks){
         this.risks += risks;
     }
+
+    public void addQuality(int quality){ this.quality += quality;}
 
     public int getCostWanted() {
         return costWanted;

@@ -1,33 +1,26 @@
-<!--<div class="listContainer">-->
-<!--  <nz-list [nzHeader]="'Liste de joueurs'" [nzDataSource]="roles" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">-->
-<!--    <ng-template #item let-item>-->
-<!--      <nz-list-item>-->
-<!--        <nz-list-item-meta-->
-<!--          [nzTitle]="nzTitle"-->
-<!--          [nzAvatar]="item.src">-->
-<!--          <ng-template #nzTitle>-->
-<!--            <a>{{ item?.username}}</a>-->
-<!--            <b>{{item?.title}}</b>-->
-<!--          </ng-template>-->
-<!--        </nz-list-item-meta>-->
-<!--      </nz-list-item>-->
-<!--    </ng-template>-->
-<!--  </nz-list>-->
-<!--</div>-->
 <div class="container" *ngIf="!isLoding">
   <h1 nz-title>Choissisez votre rôle</h1>
   <div nz-row style="margin-top: 50px" nzType="flex" nzJustify="space-around" nzAlign="middle" class="roleContainer"
-    nzGutter="48">
+       nzGutter="48">
     <div class="role" nz-col nzSpan="8" *ngFor="let role of roles">
       <app-role #Role [roomID]="roomID" [role]="role" [disableChoose]="role.username!=='' && role.username!= userName"
-        [choosed]="role.choosed" [readyed]="role.ready" (checkNum)="getCheckedNum($event)"></app-role>
+                [choosed]="role.choosed" [readyed]="role.ready" (checkNum)="getCheckedNum($event)"></app-role>
       <label nz-checkbox style="height: 40px" [(ngModel)]="role.ready" (ngModelChange)="ready()" *ngIf="role.choosed"
-        [disabled]="role.username!=='' && role.username!= userName"><b>Prêt</b></label>
+             [disabled]="role.username!=='' && role.username!= userName"><b>Prêt</b></label>
       <div *ngIf="!role.choosed" style="height: 40px"></div>
     </div>
   </div>
 
-  <button id="start" *ngIf="userID === hostID" nz-button nzType="default" (click)="gameStart()">Démarrer
+  <button id="start" *ngIf="userID === hostID" nz-button nzType="default" (click)="configureGame()">Démarrer
   </button>
 </div>
+
+<nz-modal [nzVisible]="isConfig" nzTitle="Configurez votre jeu!" (nzOnOk)="gameStart()" (nzOnCancel)="close()">
+  <nz-radio-group [(ngModel)]="radioValue">
+    <label nz-radio nzValue="1">Version initiale</label>
+    <label nz-radio nzValue="2">Version intermédiaire</label>
+  </nz-radio-group>
+  <input *ngIf="radioValue==='2'" nz-input placeholder="Durée" [(ngModel)]="days"/>
+  <input *ngIf="radioValue==='2'" nz-input placeholder="Coût" [(ngModel)]="costs"/>
+</nz-modal>
 <app-loading *ngIf="isLoding"></app-loading>

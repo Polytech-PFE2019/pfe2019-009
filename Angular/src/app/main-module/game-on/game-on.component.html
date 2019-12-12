@@ -11,17 +11,17 @@
     <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8">
       <div style="height: 30px"></div>
       <div class="activityContainer">
-        <div class="activity" nz-col [nzSpan]="10">
+        <div class="activity" nz-col [nzSpan]="11">
           <app-activity [activities]="activities" (sendBuy)="getBuy($event)" [tabs]="tabs"></app-activity>
         </div>
-        <div class="activity" nz-col [nzSpan]="10">
+        <div class="activity" nz-col [nzSpan]="11">
           <app-person-information>
           </app-person-information>
         </div>
-        <div class="activity" nz-col [nzSpan]="10">
+        <div class="activity" nz-col [nzSpan]="11">
           <app-projet-information></app-projet-information>
         </div>
-        <div class="activity" nz-col [nzSpan]="10">
+        <div class="activity" nz-col [nzSpan]="11">
           <app-contract></app-contract>
         </div>
       </div>
@@ -82,7 +82,7 @@
       </span>
       <div class="ant-notification-notice-message">Paiement effectué</div>
       <div class="ant-notification-notice-description" *ngIf="totalAmount>0">
-        <b>{{currentPlayer.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
+        <b>{{currentPlayer?.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
         <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
       </div>
     </div>

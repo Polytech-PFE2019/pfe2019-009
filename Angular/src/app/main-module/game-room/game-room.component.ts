@@ -1,18 +1,18 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Roles } from '../../model/roles';
-import { RoleComponent } from '../../game-information/role/role.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SocketRequest } from '../../../Request';
-import { LobbyService } from '../../service/lobbyService/lobby.service';
-import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
-import { Subscription } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
-import { Role } from '../../model/role';
-import { Globals } from '../../globals';
-import { GameOnService } from '../../service/gameOnService/game-on.service';
-import { Player } from 'src/app/Player';
-import { PlayerdataService } from 'src/app/playerdata.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Roles} from '../../model/roles';
+import {RoleComponent} from '../../game-information/role/role.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SocketRequest} from '../../../Request';
+import {LobbyService} from '../../service/lobbyService/lobby.service';
+import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import {Subscription} from 'rxjs';
+import {HttpParams} from '@angular/common/http';
+import {Role} from '../../model/role';
+import {Globals} from '../../globals';
+import {GameOnService} from '../../service/gameOnService/game-on.service';
+import {Player} from 'src/app/Player';
+import {PlayerdataService} from 'src/app/playerdata.service';
+import {THIS_EXPR} from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-game-room',
@@ -21,7 +21,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 })
 export class GameRoomComponent implements OnInit, OnDestroy {
 
-  @ViewChild(RoleComponent, { static: true })
+  @ViewChild(RoleComponent, {static: true})
   Role;
   roles: any[] = [];
   checkedID = null;
@@ -35,13 +35,17 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   userReady = 0;
   hostID: string;
   isLoding = false;
+  radioValue = '1';
+  costs = null;
+  days = null;
+  isConfig = false;
 
   constructor(private router: Router,
-    private globals: Globals,
-    private gameService: GameOnService,
-    private activatedRoute: ActivatedRoute,
-    private subscriptionService: SubscriptionService,
-    private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
+              private globals: Globals,
+              private gameService: GameOnService,
+              private activatedRoute: ActivatedRoute,
+              private subscriptionService: SubscriptionService,
+              private lobbyService: LobbyService, private playerDataService: PlayerdataService) {
     for (let r of Roles) {
       r = new Role(r);
       this.roles = this.roles.concat(r);
@@ -157,16 +161,35 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   }
 
   gameStart() {
+    this.isConfig = false;
     console.log('Game start');
-    const message = {
-      request: 'START_GAME',
-      roomID: this.roomID.toString(),
-      userID: this.userID.toString()
-    };
-    console.log(message);
-
-
-    this.lobbyService.messages.next(message as SocketRequest);
+    let gameTypes = 'INITIAL';
+    if (this.radioValue === '2') {
+      gameTypes = 'INTERMEDIATE';
+    }
+    if (this.radioValue === '1') {
+      this.subscriptionService.isVersionInitial = true;
+      const reqInitial = {
+        request: 'START_GAME',
+        gameType: gameTypes,
+        roomID: this.roomID.toString(),
+        userID: this.userID.toString()
+      };
+      console.log(reqInitial);
+      this.lobbyService.messages.next(reqInitial as SocketRequest);
+    } else {
+      this.subscriptionService.isVersionInitial = false;
+      const reqInter = {
+        request: 'START_GAME',
+        gameType: gameTypes,
+        roomID: this.roomID.toString(),
+        userID: this.userID.toString(),
+        days: this.days,
+        cost: this.costs
+      };
+      console.log(reqInter);
+      this.lobbyService.messages.next(reqInter as SocketRequest);
+    }
   }
 
   goToLoadingPage(gameID) {
@@ -189,5 +212,13 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     };
     console.log(req);
     this.lobbyService.messages.next(req as SocketRequest);
+  }
+
+  configureGame() {
+    this.isConfig = true;
+  }
+
+  close() {
+    this.isConfig = false;
   }
 }

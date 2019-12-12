@@ -46,9 +46,9 @@ h2 {
 }
 
 .activity {
-  height: 374px;
+  height: 395px;
   background-color: white;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .wait {
@@ -60,10 +60,9 @@ h2 {
 
 .activityContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   flex-direction: row;
-  margin-left: 40px;
   width: 100%;
 }
 

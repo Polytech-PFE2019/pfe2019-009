@@ -14,6 +14,7 @@
               <th><img src="../../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
               <th><img src="../../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
               <th><img src="../../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
+              <th *ngIf="!subscription.isVersionInitial"><img src="../../../../assets/icons/quality.png" [width]="20" [height]="20" alt="duration"></th>
             </tr>
             </thead>
             <tbody>
@@ -40,13 +41,17 @@
                                         (sendPaymentActivity)="getPaymentActivity($event)" [type]="'DAYS'">
                 </app-activity-displayer>
               </td>
+              <td *ngIf="!subscription.isVersionInitial">
+                <app-activity-displayer *ngIf="item?.actions.length > 3" [role]="item?.roleID"
+                                        [activitiesBenefits]="item?.actions[3].actions" [isActivity]="true"
+                                        [type]="'QUALITY'">
+                </app-activity-displayer>
+              </td>
             </tr>
             </tbody>
           </nz-table>
           <div class="column">
             <h5>Ressources à payer: {{totalRes}}</h5>
-<!--            <h5>Risques à réduire: {{riskReduced}}</h5>-->
-<!--            <h5>Durée à réduire: {{daysReduced}}</h5>-->
           </div>
         </div>
         <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>

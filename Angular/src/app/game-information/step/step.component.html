@@ -34,9 +34,10 @@
               <nz-table nzBordered [nzData]="test" #table [nzFrontPagination]="false">
                 <thead>
                 <tr>
-                  <th><img src="../../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
-                  <th><img src="../../../assets/icons/faillante.png" width="20" height="20" alt="faillante"></th>
-                  <th><img src="../../../assets/icons/duration.png" width="20" height="20" alt="duration"></th>
+                  <th><img src="../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
+                  <th><img src="../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
+                  <th><img src="../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
+                  <th *ngIf="!subscription.isVersionInitial"><img src="../../../assets/icons/quality.png" [width]="20" [height]="20" alt="duration"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,6 +58,12 @@
                     <app-activity-displayer *ngIf="data?.actions.length > 2" [role]="data?.roleID"
                                             [activitiesBenefits]="data?.actions[2].actions" [isActivity]="false"
                                             [type]="'DAYS'">
+                    </app-activity-displayer>
+                  </td>
+                  <td *ngIf="!subscription.isVersionInitial">
+                    <app-activity-displayer *ngIf="data?.actions.length > 3" [role]="data?.roleID"
+                                            [activitiesBenefits]="data?.actions[3].actions" [isActivity]="false"
+                                            [type]="'QUALITY'">
                     </app-activity-displayer>
                   </td>
                 </tr>

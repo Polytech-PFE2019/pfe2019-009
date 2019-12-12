@@ -5,6 +5,8 @@ import {Observable, Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class SubscriptionService {
+  isInitial: any = null;
+  isVersionInitial: any = null;
   roomID = new Subject<any>();
   roomID$ = this.roomID.asObservable();
 

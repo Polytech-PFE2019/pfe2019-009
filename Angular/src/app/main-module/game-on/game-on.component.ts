@@ -198,7 +198,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
               break;
           }
         }
-        this.notification.template(this.template);
+     //   this.notification.template(this.template);
       }
     });
 

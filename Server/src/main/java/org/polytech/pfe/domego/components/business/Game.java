@@ -4,6 +4,7 @@ import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.models.activity.Activity;
+import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.List;
@@ -20,15 +21,18 @@ public class Game {
     private List<Activity> activities;
     private int currentActivity;
     private Project project;
+    private List<Negotiation> contracts;
     private GameType gameType;
 
 
-    public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted, int numberOfRisksDrawnWanted, GameType gameType) {
+    public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted,
+                int numberOfRisksDrawnWanted, List<Negotiation> negotiationList, GameType gameType) {
         this.id = id;
         this.players = players;
         this.activities = activities;
         this.project = new Project(costWanted, numberOfDaysWanted, numberOfRisksDrawnWanted);
         this.currentActivity = 0;
+        this.contracts = negotiationList;
         this.gameType = gameType;
     }
 
@@ -48,6 +52,9 @@ public class Game {
         this.id = id;
     }
 
+    public List<Negotiation> getContracts(){
+        return contracts;
+    }
 
     public void goToTheNextActivity(){
         this.updateProject();

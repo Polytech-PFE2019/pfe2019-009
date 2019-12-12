@@ -23,6 +23,7 @@ public enum GameResponseKey {
     PROJECT("project"),
     USER_ID("userID"),
     AMOUNT("amount"),
+    AMOUNT_PAID("amountPaid"),
     ROLE_ID("roleID"),
     USERNAME("username"),
     MIN_COST("minCost"),
@@ -61,7 +62,10 @@ public enum GameResponseKey {
     GIVER_ROLE_NAME("giverRoleName"),
     RECEIVER_ROLE_NAME("receiverRoleName"),
     TIME("time"),
-    INFORMATION("information");
+    INFORMATION("information"),
+
+    CONTRACTS_GIVER("contractsGiver"),
+    CONTRACTS_RECEIVER("contractsReceiver");
 
     public final String key;
 

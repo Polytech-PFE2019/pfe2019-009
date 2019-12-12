@@ -55,7 +55,6 @@ public class Game {
         if (currentActivity + 1 != activities.size()) {
             Activity oldActivity = this.getCurrentActivity();
             oldActivity.finishActivity();
-            oldActivity.getPayResourcesList().forEach(payResources -> payResources.setHasPaid(true));
             currentActivity++;
             this.getCurrentActivity().startActivity();
         }
@@ -68,18 +67,6 @@ public class Game {
         this.project.addCost(totalAmount);
         int risks = activity.getRiskCardList().size();
         this.project.addRisks(risks);
-    }
-
-    public int getDelayDelta(){
-        return this.project.getDelayDelta();
-    }
-
-    public int getBudgetDelta(){
-        return this.project.getBudgetDelta();
-    }
-
-    public int getRisksDelta(){
-        return this.project.getRisksDelta();
     }
 
     public List<Player> getPlayers() {

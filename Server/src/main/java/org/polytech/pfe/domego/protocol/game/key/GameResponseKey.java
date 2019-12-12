@@ -46,12 +46,18 @@ public enum GameResponseKey {
     CURRENT_ACTIVITY_ID("currentActivityID"),
     DELAY_PROJECT("delayProject"),
     COST_PROJECT("costProject"),
+    COST("cost"),
+    DAYS("days"),
+
     FAILURE_PROJECT("failureProject"),
     PAYMENTS("payments"),
     CHANGE_ACTIVITY("CHANGE_ACTIVITY"),
     NOVP("NumberOfVictoryPoints"),
     OTHER_USER_NAME("otherUserName"),
-    TIME("time");
+    GIVER_ROLE_NAME("giverRoleName"),
+    RECEIVER_ROLE_NAME("receiverRoleName"),
+    TIME("time"),
+    INFORMATION("information");
 
     public final String key;
 

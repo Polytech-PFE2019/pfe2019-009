@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.components.game.RiskCard;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -24,6 +25,7 @@ public class DrawRiskCardEvent implements EventProtocol {
 
     public DrawRiskCardEvent(Game game) {
         this.game = game;
+
     }
 
     @Override
@@ -31,10 +33,12 @@ public class DrawRiskCardEvent implements EventProtocol {
         Activity currentActivity = this.game.getCurrentActivity();
         List<RiskCard> risks = currentActivity.getRiskCardList();
         logger.log(Level.INFO, "DrawRiskCardEvent : In the game {0} for the activity {1} they draw {2} cards" , new Object[]{game.getId(), currentActivity.getId(), risks.size()});
+        logger.log(Level.INFO, "DrawRiskCardEvent : List of Risk : {0}" , risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()));
         for (RiskCard risk : risks) {
             if (!risk.isDraw())
                 risk.doAction(game);
         }
+
 
 
         JsonObject response = createJsonResponse(currentActivity,risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()));
@@ -74,6 +78,16 @@ public class DrawRiskCardEvent implements EventProtocol {
         playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
 
         response.add(GameResponseKey.PLAYER.key, playerJson);
+        InfoProjectGameCalculator infoProjectGameCalculator = new InfoProjectGameCalculator(this.game);
+        JsonObject projectJson = new JsonObject();
+        projectJson.addProperty(GameResponseKey.MIN_COST.key, infoProjectGameCalculator.getMinResourcesToPay(player.getRole().getName()));
+        projectJson.addProperty(GameResponseKey.MAX_COST.key, infoProjectGameCalculator.getMaxResourcesToPay(player.getRole().getName()));
+        projectJson.addProperty(GameResponseKey.MIN_TIME.key, infoProjectGameCalculator.getMinTimeOfProject());
+        projectJson.addProperty(GameResponseKey.MAX_TIME.key, infoProjectGameCalculator.getMaxTimeOfProject());
+        projectJson.addProperty(GameResponseKey.MIN_FAILURE.key, infoProjectGameCalculator.getMinFailureOfProject());
+        projectJson.addProperty(GameResponseKey.MAX_FAILURE.key, infoProjectGameCalculator.getMaxFailureOfProject());
+
+        response.add(GameResponseKey.PROJECT.key, projectJson);
         return response;
 
     }

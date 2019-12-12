@@ -32,6 +32,10 @@ public class PayContractAndBuyResourcesActivity extends Activity {
     public Optional<PayContract> getPayPlayerByID(String id){
         return this.payContractList.stream().filter(payPlayer -> payPlayer.getId().equals(id)).findAny();
     }
+    @Override
+    public List<PayContract> getPayContractList() {
+        return this.payContractList;
+    }
 
     @Override
     public int getExchangeRateForRoleID(int roleID){
@@ -48,12 +52,15 @@ public class PayContractAndBuyResourcesActivity extends Activity {
     }
 
     private BuyResources getBuyResourcesByRoleID(int roleID){
-        return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID).findAny().orElse(new BuyResources(roleID,2));
+        return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID && buyResources.hasPaid()).findAny().orElse(new BuyResources(roleID,2));
     }
 
     public List<Integer> getBuyingRoleIDList(){
         return buyResourcesList.stream().map(BuyResources::getRoleID).collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<BuyResources> getBuyResourcesList() {
+        return this.buyResourcesList;
+    }
 }

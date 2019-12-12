@@ -8,4 +8,10 @@ public interface GameGenerator {
 
     List<Activity> getAllActivitiesOfTheGame();
 
+    int getNumberOfDaysWanted();
+
+    int getCostWanted();
+
+    int getNumberOfRisksDrawnWanted();
+
 }

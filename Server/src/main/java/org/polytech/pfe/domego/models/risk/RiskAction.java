@@ -70,4 +70,13 @@ public class RiskAction {
     public int hashCode() {
         return Objects.hash(riskOfActivityId, description, bonusList);
     }
+
+    @Override
+    public String toString() {
+        return "RiskAction{" +
+                "riskOfActivityId=" + riskOfActivityId +
+                ", description='" + description + '\'' +
+                ", bonusList=" + bonusList +
+                '}';
+    }
 }

@@ -8,13 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.database.accessor.RoleAccessor;
-import org.polytech.pfe.domego.exceptions.InvalidRequestException;
-import org.polytech.pfe.domego.generator.InitialGameGenerator;
+import org.polytech.pfe.domego.generator.initial.InitialGameGenerator;
 import org.polytech.pfe.domego.models.*;
 import org.polytech.pfe.domego.models.activity.*;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -23,22 +21,13 @@ import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.game.LaunchGameEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
-import org.polytech.pfe.domego.services.sockets.RequestHandler;
 import org.polytech.pfe.domego.services.sockets.game.GameRequestHandler;
-import org.polytech.pfe.domego.services.sockets.game.GameSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHttpHeaders;
-import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.sockjs.client.WebSocketClientSockJsSession;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.URI;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -148,7 +137,7 @@ class GameRequestHandlerTest {
 
         Map<String,String> value = new Gson().fromJson(request, Map.class);
 
-        int moneyPlayer = player.getMoney();
+        double moneyPlayer = player.getMoney();
         int resourcesPlayer = player.getResourcesAmount();
 
         handler.handleRequest(sessionPlayerTest, value);
@@ -169,6 +158,7 @@ class GameRequestHandlerTest {
         response.addProperty(GameResponseKey.RESPONSE.key, "BUY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+        response.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
 
         //test response
         verify(sessionPlayerTest, times(1)).sendMessage(
@@ -176,7 +166,7 @@ class GameRequestHandlerTest {
 
     }
 
-    @Test
+    //TODO Prendre en compte les cartes risks
     public void testPayResources() throws Exception {
 
         setSessionToPlayers();
@@ -197,7 +187,7 @@ class GameRequestHandlerTest {
 
         Map<String,?> value = new Gson().fromJson(request, Map.class);
 
-        int moneyPlayer = player.getMoney();
+        double moneyPlayer = player.getMoney();
         int resourcesPlayer = player.getResourcesAmount();
 
         handler.handleRequest(sessionPlayerTest, value);

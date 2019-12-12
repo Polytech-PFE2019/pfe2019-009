@@ -48,7 +48,7 @@ public class RoleAccessor {
 
         List<Objective> objectiveList = new ArrayList<>();
         Objective daysObjective = new Objective(ObjectiveType.DAYS,1,true);
-        Objective moneyObjective = new Objective(ObjectiveType.BUDGET, 1, true);
+        Objective moneyObjective = new Objective(ObjectiveType.MONEY, 1, true);
         Objective risksObjective = new Objective(ObjectiveType.RISK, 1, true);
 
         objectiveList.add(daysObjective);

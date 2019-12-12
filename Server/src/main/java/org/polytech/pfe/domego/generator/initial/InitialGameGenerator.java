@@ -1,15 +1,19 @@
-package org.polytech.pfe.domego.generator;
+package org.polytech.pfe.domego.generator.initial;
 
 import org.polytech.pfe.domego.database.accessor.RiskAccessor;
+import org.polytech.pfe.domego.generator.GameGenerator;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
+import org.polytech.pfe.domego.models.activity.PayContractAndBuyResourcesActivity;
 import org.polytech.pfe.domego.models.activity.PayResourceType;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.buying.BuyingResourcesActivity;
 import org.polytech.pfe.domego.models.activity.negotiation.Contract;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.negotiation.NegotiationActivity;
+import org.polytech.pfe.domego.models.activity.pay.PayContract;
+import org.polytech.pfe.domego.models.activity.pay.PayContractActivity;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.*;
@@ -25,11 +29,12 @@ public class InitialGameGenerator implements GameGenerator {
     private final int costWanted = 135;
     private final int numberOfRisksDrawnWanted = 20;
 
-
+    private List<Negotiation> negotiationForGame;
 
     private List<Activity> activities;
 
     public InitialGameGenerator() {
+        negotiationForGame = new ArrayList<>();
         activities = new ArrayList<>();
         riskAccessor = new RiskAccessor();
 
@@ -118,11 +123,13 @@ public class InitialGameGenerator implements GameGenerator {
         String description = "Le maître d’ouvrage négocie avec le maître d’oeuvre afin de déterminerla rémunération de ce dernier. Une fois qu’ils se sont entendus, le contrat peut alors être signé. Ce contrat précisera notamment le délai ainsi que les coûts prévus.";
 
         Contract contract = new Contract(80,115);
-        Negotiation negociation = new Negotiation(1,2,contract);
-        List<Negotiation> negociationList = new ArrayList<>();
-        negociationList.add(negociation);
+        Negotiation negotiation = new Negotiation(1,2,contract);
+        List<Negotiation> negotiations = new ArrayList<>();
+        negotiations.add(negotiation);
 
-        return new NegotiationActivity(3,8,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(2, 3), negociationList);
+        negotiationForGame.add(negotiation);
+
+        return new NegotiationActivity(3,8,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(2, 3), negotiations);
     }
 
     private Activity generateFourthActivity(){
@@ -147,22 +154,27 @@ public class InitialGameGenerator implements GameGenerator {
         String description = "Le maître d’oeuvre et les entreprises négocient afin de tomber d’accord sur un montant qui satisfera les différents intervenants. Le maître d’ouvrage négocie avec le bureau de contrôle afin de déterminer la rémunération de ce dernier. Une fois que les acteurs se sont entendus, les contrats peuvent alors être signés.";
 
         Contract contract1 = new Contract(10,25);
-        Negotiation negociation1 = new Negotiation(1,4,contract1);
+        Negotiation negotiation1 = new Negotiation(1,4,contract1);
         Contract contract2 = new Contract(25,50);
-        Negotiation negociation2 = new Negotiation(2,5,contract2);
+        Negotiation negotiation2 = new Negotiation(2,5,contract2);
         Contract contract3 = new Contract(20,40);
-        Negotiation negociation3 = new Negotiation(2,6,contract3);
+        Negotiation negotiation3 = new Negotiation(2,6,contract3);
         Contract contract4 = new Contract(10,20);
-        Negotiation negociation4 = new Negotiation(2,3,contract4);
+        Negotiation negotiation4 = new Negotiation(2,3,contract4);
 
-        List<Negotiation> negociationList = new ArrayList<>();
-        negociationList.add(negociation1);
-        negociationList.add(negociation2);
-        negociationList.add(negociation3);
-        negociationList.add(negociation4);
+        negotiationForGame.add(negotiation1);
+        negotiationForGame.add(negotiation2);
+        negotiationForGame.add(negotiation3);
+        negotiationForGame.add(negotiation4);
+
+        List<Negotiation> negotiationList = new ArrayList<>();
+        negotiationList.add(negotiation1);
+        negotiationList.add(negotiation2);
+        negotiationList.add(negotiation3);
+        negotiationList.add(negotiation4);
 
 
-        return new NegotiationActivity(4,15,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(2, 4),negociationList);
+        return new NegotiationActivity(4,15,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(2, 4),negotiationList);
     }
 
     private Activity generateFifthActivity(){
@@ -214,10 +226,21 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.BUREAU_D_ETUDE.getId(),timeMapForOfficer, PayResourceType.DAYS));
 
 
+        List<PayContract> payContractList = new ArrayList<>();
 
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,10);
+        Negotiation negotiationBetweenBlueAndBlack = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_DE_CONTROLE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.BUREAU_DE_CONTROLE.getId(),new Contract(10,20)));
+        PayContract payContractBetweenBlueAndBlack = new PayContract(negotiationBetweenBlueAndBlack,10);
+        Negotiation negotiationBetweenGreenAndYellow = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_D_ETUDE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.BUREAU_D_ETUDE.getId(),new Contract(10,15)));
+        PayContract payContractBetweenGreenAndYellow = new PayContract(negotiationBetweenGreenAndYellow,30);
+
+        payContractList.add(payContractBetweenBlueAndGreen);
+        payContractList.add(payContractBetweenBlueAndBlack);
+        payContractList.add(payContractBetweenGreenAndYellow);
         String title = "ALLOCATION DE RESSOURCES : MAITRE D’OEUVRE, Bureau d’etudes et de contrôle";
         String description = "Le maître d’oeuvre, le bureau d’étude et le bureau de contrôle prévoient les ressources dont ils estiment avoir besoin durant l’opération de construction.";
-        return new BuyingResourcesActivity(5,5,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(3, 5),buyResourcesList);
+        return new PayContractAndBuyResourcesActivity(5,5,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(3,5),payContractList,buyResourcesList);
     }
 
     private Activity generateSixthActivity(){
@@ -252,9 +275,16 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.MAITRE_D_OEUVRE.getId(),mandatoryMapForArchitect, PayResourceType.MANDATORY));
         payResourcesList.add(new PayResources(RoleType.MAITRE_D_OEUVRE.getId(),riskMapForArchitect, PayResourceType.RISKS));
         payResourcesList.add(new PayResources(RoleType.MAITRE_D_OEUVRE.getId(),timeMapForArchitect, PayResourceType.DAYS));
+
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,20);
+        payContractList.add(payContractBetweenBlueAndGreen);
+
         String title = "CONCEPTION PRELIMINAIRE";
         String description = "La conception préliminaire permet au client de faire des choix stratégiques entre les concepts fonctionnels et les options envisagées. Durant celle-ci, une conception du bien immobilier est élaborée pour proposer un aperçu général couvrant les aspects liés à l’implantation, l’organisation fonctionnelle, la structure spatiale et l’aspect général.";
-        return new ClassicActivity(6,20,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(3, 6));
+        return new PayContractActivity(6,20,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(3, 6), payContractList);
     }
 
     private Activity generateSeventhActivity(){
@@ -315,10 +345,22 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.BUREAU_D_ETUDE.getId(),timeMapForOfficer, PayResourceType.DAYS));
 
 
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,20);
+        Negotiation negotiationBetweenBlueAndBlack = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_DE_CONTROLE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.BUREAU_DE_CONTROLE.getId(),new Contract(10,20)));
+        PayContract payContractBetweenBlueAndBlack = new PayContract(negotiationBetweenBlueAndBlack,30);
+        Negotiation negotiationBetweenGreenAndYellow = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_D_ETUDE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.BUREAU_D_ETUDE.getId(),new Contract(10,15)));
+        PayContract payContractBetweenGreenAndYellow = new PayContract(negotiationBetweenGreenAndYellow,60);
+
+        payContractList.add(payContractBetweenBlueAndGreen);
+        payContractList.add(payContractBetweenBlueAndBlack);
+        payContractList.add(payContractBetweenGreenAndYellow);
 
         String title = "CONCEPTION DEFINITIVE";
         String description = "Une fois la conception préliminaire validée par le maître d’ouvrage, il est alors possible de faire une mise au point définitive des plans du projet. On créé alors les dossiers de consultation pour les autorisations administratives, les plans d’exécution sont établis et les commandes de matériaux peuvent être effectuées. Une date de démarrage des travaux est prévue.";
-        return new ClassicActivity(7,30,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(4, 7));
+        return new PayContractActivity(7,30,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(4, 7), payContractList);
     }
 
     private Activity generateEighthActivity(){
@@ -360,9 +402,19 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(),riskMapForSecondary, PayResourceType.RISKS));
         payResourcesList.add(new PayResources(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(),timeMapForSecondary, PayResourceType.DAYS));
 
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenGreenAndRed = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_GROS_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_GROS_OEUVRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndRed = new PayContract(negotiationBetweenGreenAndRed,20);
+        Negotiation negotiationBetweenGreenAndViolet = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndViolet = new PayContract(negotiationBetweenGreenAndViolet,20);
+
+        payContractList.add(payContractBetweenGreenAndRed);
+        payContractList.add(payContractBetweenGreenAndViolet);
+
         String title = "Preparation de chantier";
         String description = "Les entreprises doivent préparer le chantier en anticipant tout ce qui sera nécessaire à sa réalisation. Il s’agit de prévoir et d’organiser les différentes interventions, d’établir le planning prévisionnel d’exécution des taches, les installations de chantier et de prévoir les ressources nécessaires à son déroulement.";
-        return new BuyingResourcesActivity(8,20,title, description,payResourcesList,riskAccessor.getNRisksCardByActivityID(4, 8),buyResourcesList);
+        return new PayContractAndBuyResourcesActivity(8,20,title, description,payResourcesList,riskAccessor.getNRisksCardByActivityID(4, 8),payContractList,buyResourcesList);
     }
 
     private Activity generateNinthActivity(){
@@ -400,6 +452,16 @@ public class InitialGameGenerator implements GameGenerator {
         payResourcesList.add(new PayResources(RoleType.ENTREPRISE_GROS_OEUVRE.getId(),mandatoryMapForGrosOeuvre, PayResourceType.MANDATORY));
         payResourcesList.add(new PayResources(RoleType.ENTREPRISE_GROS_OEUVRE.getId(),riskMapForGrosOeuvre, PayResourceType.RISKS));
         payResourcesList.add(new PayResources(RoleType.ENTREPRISE_GROS_OEUVRE.getId(),timeMapForGrosOeuvre, PayResourceType.DAYS));
+
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,10);
+        Negotiation negotiationBetweenGreenAndRed = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_GROS_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_GROS_OEUVRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndRed = new PayContract(negotiationBetweenGreenAndRed,30);
+        payContractList.add(payContractBetweenBlueAndGreen);
+        payContractList.add(payContractBetweenGreenAndRed);
+
         String title = "Terrassement et fondations";
         String description = "TERRASSEMENT :\n" +
                 "Ils permettent de préparer l'assise de la construction et de ses abords.\n" +
@@ -411,7 +473,7 @@ public class InitialGameGenerator implements GameGenerator {
                 "FONDATIONS :\n" +
                 "- Elles servent à transmettre directement au sol les charges du bâtiment en tenant compte de sa propre masse.\n" +
                 "- Elles répartissent les pressions sur le sol souvent par des « semelles continues » sous les murs. La semelle placée sous un poteau est dite « semelle isolée ».";
-        return new ClassicActivity(9,50,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(4, 9));
+        return new PayContractActivity(9,50,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(4, 9), payContractList);
     }
 
     private Activity generateTenthActivity(){
@@ -457,11 +519,26 @@ public class InitialGameGenerator implements GameGenerator {
 
         payResourcesList.add(new PayResources(RoleType.BUREAU_DE_CONTROLE.getId(),mandatoryMapForController, PayResourceType.MANDATORY));
         payResourcesList.add(new PayResources(RoleType.BUREAU_DE_CONTROLE.getId(),riskMapForController, PayResourceType.RISKS));
+
+
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,10);
+        Negotiation negotiationBetweenGreenAndRed = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_GROS_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_GROS_OEUVRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndRed = new PayContract(negotiationBetweenGreenAndRed,30);
+        Negotiation negotiationBetweenBlueAndBlack = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_DE_CONTROLE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.BUREAU_DE_CONTROLE.getId(),new Contract(10,20)));
+        PayContract payContractBetweenBlueAndBlack = new PayContract(negotiationBetweenBlueAndBlack,15);
+        payContractList.add(payContractBetweenBlueAndGreen);
+        payContractList.add(payContractBetweenGreenAndRed);
+        payContractList.add(payContractBetweenBlueAndBlack);
+
+
         String title = "Gros oeuvre";
         String description = "Le gros oeuvre désigne les parties d'une construction qui constituent l'ossature de celle-ci et qui comprennent à la fois : \n" +
                 "* les éléments porteurs qui concourent à la stabilité ou à la solidité du bâtiment (murs, charpente, poutres, poteaux) et tous autres éléments qui leur sont intégrés ou forment corps avec eux (plancher, dallages).\n" +
                 "* les éléments qui assurent le clos, le couvert et l'étanchéité à l'exclusion de leurs parties mobiles(couverture).";
-        return new ClassicActivity(10,80,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(4, 10));
+        return new PayContractActivity(10,80,title,description,payResourcesList,riskAccessor.getNRisksCardByActivityID(4, 10), payContractList);
     }
 
     private Activity generateEleventhActivity(){
@@ -508,9 +585,23 @@ public class InitialGameGenerator implements GameGenerator {
 
         payResourcesList.add(new PayResources(RoleType.BUREAU_DE_CONTROLE.getId(),mandatoryMapForController, PayResourceType.MANDATORY));
         payResourcesList.add(new PayResources(RoleType.BUREAU_DE_CONTROLE.getId(),riskMapForController, PayResourceType.RISKS));
+
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,10);
+        Negotiation negotiationBetweenGreenAndViolet = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndViolet = new PayContract(negotiationBetweenGreenAndViolet,60);
+        Negotiation negotiationBetweenBlueAndBlack = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_DE_CONTROLE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.BUREAU_DE_CONTROLE.getId(),new Contract(10,20)));
+        PayContract payContractBetweenBlueAndBlack = new PayContract(negotiationBetweenBlueAndBlack,15);
+        payContractList.add(payContractBetweenBlueAndGreen);
+        payContractList.add(payContractBetweenGreenAndViolet);
+        payContractList.add(payContractBetweenBlueAndBlack);
+
+
         String title = "Gros d\'etat secondaire";
         String description = "Les corps d'état secondaires recouvrent l'ensemble des travaux réalisés à l'intérieur d'un bâtiment comme les enduits et revêtements intérieurs ainsi que les cloisons. Mais aussi des travaux spécifiques tels que la plomberie ou l’électricité. ";
-        return new ClassicActivity(11,100,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(5, 11));
+        return new PayContractActivity(11,100,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(5, 11), payContractList);
     }
 
     private Activity generateTwelfthActivity(){
@@ -598,21 +689,45 @@ public class InitialGameGenerator implements GameGenerator {
 
         payResourcesList.add(new PayResources(RoleType.BUREAU_D_ETUDE.getId(),mandatoryMapForOfficer, PayResourceType.MANDATORY));
         payResourcesList.add(new PayResources(RoleType.BUREAU_D_ETUDE.getId(),timeMapForOfficer, PayResourceType.DAYS));
+
+        List<PayContract> payContractList = new ArrayList<>();
+
+        Negotiation negotiationBetweenBlueAndGreen = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.MAITRE_D_OEUVRE.getId(),new Contract(90,130)));
+        PayContract payContractBetweenBlueAndGreen = new PayContract(negotiationBetweenBlueAndGreen,20);
+        Negotiation negotiationBetweenBlueAndBlack = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OUVRAGE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_DE_CONTROLE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OUVRAGE.getId(),RoleType.BUREAU_DE_CONTROLE.getId(),new Contract(10,20)));
+        PayContract payContractBetweenBlueAndBlack = new PayContract(negotiationBetweenBlueAndBlack,30);
+        Negotiation negotiationBetweenGreenAndYellow = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.BUREAU_D_ETUDE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.BUREAU_D_ETUDE.getId(),new Contract(10,15)));
+        PayContract payContractBetweenGreenAndYellow = new PayContract(negotiationBetweenGreenAndYellow,10);
+        Negotiation negotiationBetweenGreenAndRed = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_GROS_OEUVRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_GROS_OEUVRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndRed = new PayContract(negotiationBetweenGreenAndRed,20);
+        Negotiation negotiationBetweenGreenAndViolet = negotiationForGame.stream().filter(negotiation -> negotiation.getGiverRoleID() == RoleType.MAITRE_D_OEUVRE.getId() && negotiation.getReceiverRoleID() == RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId()).findFirst().orElse(new Negotiation(RoleType.MAITRE_D_OEUVRE.getId(),RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(),new Contract(0,0)));
+        PayContract payContractBetweenGreenAndViolet = new PayContract(negotiationBetweenGreenAndViolet,20);
+
+        payContractList.add(payContractBetweenBlueAndGreen);
+        payContractList.add(payContractBetweenGreenAndYellow);
+        payContractList.add(payContractBetweenGreenAndRed);
+        payContractList.add(payContractBetweenGreenAndViolet);
+        payContractList.add(payContractBetweenBlueAndBlack);
+
+
         String title = "Livraison et reception";
         String description = "La livraison correspond à la fin des travaux. Le maître d’ouvrage émet alors ou non des réserves sur la construction.\n" +
                 "La réception traduit l'intention du maître d'ouvrage d'accepter les travaux réalisés.";
-        return new ClassicActivity(12,30,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(5, 12));
+        return new PayContractActivity(12,30,title,description,payResourcesList, riskAccessor.getNRisksCardByActivityID(5, 12), payContractList);
     }
 
 
+    @Override
     public int getNumberOfDaysWanted() {
         return numberOfDaysWanted;
     }
 
+    @Override
     public int getCostWanted() {
         return costWanted;
     }
 
+    @Override
     public int getNumberOfRisksDrawnWanted() {
         return numberOfRisksDrawnWanted;
     }

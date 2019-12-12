@@ -11,19 +11,16 @@ import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PayContractEvent implements EventProtocol {
 
     private Logger logger = Logger.getGlobal();
     private Game game;
-    private Player giver;
-    private Player receiver;
 
-    public PayContractEvent(Game game, Player giver, Player receiver) {
+    public PayContractEvent(Game game) {
         this.game = game;
-        this.giver = giver;
-        this.receiver = receiver;
 
     }
     @Override
@@ -31,33 +28,44 @@ public class PayContractEvent implements EventProtocol {
 
         Activity activity = game.getCurrentActivity();
 
-        //Optional<PayPlayer> payPlayerOptional = activity.getPayPlayerList().stream().filter(payPlayer -> payPlayer.getNegotiation().getGiverRoleID() == giver.getID()&& payPlayer.getNegotiation().getReceiverRoleID() == receiver.getID() ).findAny();;
-        Optional<PayContract> payPlayerOptional = Optional.empty();
-        if(!payPlayerOptional.isPresent()){
-            //todo throw some error
-           return;
+        if(activity.getPayContractList().isEmpty())
+            return;
+
+        for (PayContract payContract : activity.getPayContractList()) {
+
+            Negotiation negotiation = payContract.getNegotiation();
+            int percentage = payContract.getPercentage();
+
+            double amountPaid =  negotiation.pay(percentage);
+            Optional<Player> optionalGiver = game.getPlayerByRoleID(payContract.getNegotiation().getGiverRoleID());
+            if (optionalGiver.isEmpty())
+                return;
+
+            Player giver = optionalGiver.get();
+            Optional<Player> optionalReceiver = game.getPlayerByRoleID(payContract.getNegotiation().getReceiverRoleID());
+            if (optionalReceiver.isEmpty())
+                return;
+
+            Player receiver = optionalReceiver.get();
+            giver.subtractMoney(amountPaid);
+            receiver.addMoney(amountPaid);
+            payContract.setPaid();
+            new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver, giver, receiver,amountPaid));
+            new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, giver, receiver, amountPaid));
+
+            logger.log(Level.INFO,
+                    "EndNegotiationEvent : In game {0}, {1} paid {2} the amount {3}.",
+                    new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  amountPaid});
         }
-
-        PayContract payContract = payPlayerOptional.get();
-        Negotiation negociation = payContract.getNegotiation();
-        int percentage = payContract.getPercentage();
-        negociation.pay(percentage);
-        int amountPaid = negociation.getLastPayment();
-        giver.subtractMoney(amountPaid);
-        receiver.addMoney(amountPaid);
-        payContract.setPaid();
-
-        new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver,amountPaid));
-        new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, amountPaid));
-
-
     }
 
-    private String createResponseToUser(Player player, int amountPaid) {
+    private String createResponseToUser(Player player, Player giver, Player receiver, double amountPaid) {
         JsonObject response = new JsonObject();
-        response.addProperty(GameResponseKey.RESPONSE.key, "PAY_PLAYER");
-        response.addProperty(GameResponseKey.GIVERID.key, giver.getID());
-        response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getID());
+        response.addProperty(GameResponseKey.RESPONSE.key, "PAY_CONTRACT");
+        response.addProperty(GameResponseKey.GIVER_ROLE_NAME.key, giver.getRole().getName().getName());
+        response.addProperty(GameResponseKey.RECEIVER_ROLE_NAME.key, receiver.getRole().getName().getId());
+        response.addProperty(GameResponseKey.GIVERID.key, giver.getRole().getId());
+        response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getRole().getId());
         response.addProperty(GameResponseKey.AMOUNT.key,amountPaid);
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
 

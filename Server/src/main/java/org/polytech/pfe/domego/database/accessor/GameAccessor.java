@@ -3,7 +3,8 @@ package org.polytech.pfe.domego.database.accessor;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
-import org.polytech.pfe.domego.generator.InitialGameGenerator;
+import org.polytech.pfe.domego.generator.GameGenerator;
+import org.polytech.pfe.domego.generator.initial.InitialGameGenerator;
 import org.polytech.pfe.domego.models.Player;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class GameAccessor {
             players.add(new Player(player));
         }
 
-        InitialGameGenerator initialGameGenerator = new InitialGameGenerator();
+        GameGenerator initialGameGenerator = new InitialGameGenerator();
         Game game = new Game(room.getID(), players, initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted());
         gameInstance.addGame(game);
         return game;

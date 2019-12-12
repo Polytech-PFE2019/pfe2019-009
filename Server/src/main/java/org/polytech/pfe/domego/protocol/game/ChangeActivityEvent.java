@@ -24,16 +24,14 @@ public class ChangeActivityEvent implements EventProtocol {
     public void processEvent() {
         if (game.getCurrentActivity().getId() == game.getActivities().size()){
             new FinishGameEvent(game).processEvent();
-            return;
         }
         else{
             game.goToTheNextActivity();
+            new PayContractEvent(game).processEvent();
             logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
             game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
         }
-
-
-        }
+    }
 
     private JsonObject createJsonResponse(){
         JsonObject response = new JsonObject();

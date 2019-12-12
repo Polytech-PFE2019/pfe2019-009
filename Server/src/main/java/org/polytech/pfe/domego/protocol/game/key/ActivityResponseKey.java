@@ -10,6 +10,7 @@ public enum ActivityResponseKey {
     BUYING_ACTIONS("buyingActions"),
     PAYING_ACTIONS("payingActions"),
     NEGOTIATION_ACTIONS("negotiationActions"),
+    PAY_CONTRACT_ACTION("payContractAction"),
     PLAYER_ID_LIST("playersID"),
     ROLE_ID_LIST("rolesID"),
     RISKS("risks");

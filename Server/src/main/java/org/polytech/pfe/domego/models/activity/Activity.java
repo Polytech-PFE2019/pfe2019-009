@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class Activity implements BuyingAction {
+    private Logger logger = Logger.getGlobal();
     private int id;
     private int numberOfDays;
     private String title;
@@ -61,20 +64,28 @@ public abstract class Activity implements BuyingAction {
 
         for (Payment payment: payments) {
             if (payment.getType().equals(PayResourceType.MANDATORY)){
-                if (payment.getAmount() == payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid()).mapToInt(payResources -> Collections.max(payResources.getPriceAndBonusMap().keySet())).sum()){
+                if (payment.getAmount() >= payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid()).mapToInt(payResources -> Collections.max(payResources.getPriceAndBonusMap().keySet())).sum()){
                     for (PayResources payResources : payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid()).collect(Collectors.toList())) {
                         payResources.pay(payment.getAmount());
                     }
+                    logger.log(Level.INFO, "The mandatory payment is done");
+                }else if(payResourcesList.stream().anyMatch(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid() && payResource.getPriceAndBonusMap().containsKey(payment.getAmount()))){
+                    payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(PayResourceType.MANDATORY) && !payResource.hasPaid() && payResource.getPriceAndBonusMap().containsKey(payment.getAmount())).findAny().get().pay(payment.getAmount());
+                    logger.log(Level.INFO, "The mandatory payment is done");
                 }
+
+
 
             }
             else {
                 Optional<PayResources> optionalPayResources = payResourcesList.stream().filter(payResource -> (payResource.getRoleID() == roleID) && payResource.getPayResourceType().equals(payment.getType())).findAny();
                 if(optionalPayResources.isEmpty()) {
+                    logger.log(Level.WARNING, "Payment Not found");
                     continue;
                 }
                 PayResources payResources = optionalPayResources.get();
                 payResources.pay(payment.getAmount());
+                logger.log(Level.INFO, "The {0} payment is done", payResources.getPayResourceType().getName());
                 if (payResources.getPayResourceType().equals(PayResourceType.RISKS))
                     this.removeNRisk(payResources.getBonusGiven());
                 else if(payResources.getPayResourceType().equals(PayResourceType.DAYS))
@@ -84,6 +95,7 @@ public abstract class Activity implements BuyingAction {
 
         }
 
+        payResourcesList.stream().filter(payResources -> payResources.getRoleID() == player.getRole().getId()).forEach(payResources -> payResources.setHasPaid(true));//When A player have paid, he can't pay for this activity again
         player.subtractResources(totalAmount);
         return true;
     }
@@ -113,9 +125,7 @@ public abstract class Activity implements BuyingAction {
     }
 
     public void addPayResources(PayResources payResources){
-        System.out.println("PAYRESOURCES ADD WITH AMOUNT " + payResources.getPriceAndBonusMap().keySet());
         this.payResourcesList.add(payResources);
-        System.out.println(this.payResourcesList.size());
     }
 
     public List<BuyResources> getBuyResourcesList() {

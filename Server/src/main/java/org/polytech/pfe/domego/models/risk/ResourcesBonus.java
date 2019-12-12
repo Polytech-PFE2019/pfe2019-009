@@ -80,4 +80,13 @@ public class ResourcesBonus implements Bonus{
     public int hashCode() {
         return Objects.hash(bonusType, roleType, activityID, amount);
     }
+
+    @Override
+    public String toString() {
+        return "ResourcesBonus{" +
+                "roleType=" + roleType +
+                ", activityID=" + activityID +
+                ", amount=" + amount +
+                '}';
+    }
 }

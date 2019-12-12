@@ -10,6 +10,7 @@ import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
+import org.polytech.pfe.domego.models.activity.pay.PayContract;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.ActionResponseKey;
@@ -58,6 +59,7 @@ public class LaunchGameEvent implements EventProtocol {
             activityJson.add(ActivityResponseKey.PAYING_ACTIONS.key,this.createPayingActionsResponse(activity));
             activityJson.add(ActivityResponseKey.BUYING_ACTIONS.key,this.createBuyingActions(activity));
             activityJson.add(ActivityResponseKey.NEGOTIATION_ACTIONS.key, this.createNegotiationActionsResponse(activity));
+            activityJson.add(ActivityResponseKey.PAY_CONTRACT_ACTION.key, this.createPayContractActionsResponse(activity));
             JsonArray roleIDListJson = new JsonArray();
             activity.getPayResourcesList().stream().map(PayResources::getRoleID).collect(Collectors.toSet()).forEach(roleIDListJson::add);
             activityJson.add(ActivityResponseKey.ROLE_ID_LIST.key, roleIDListJson);
@@ -159,5 +161,17 @@ public class LaunchGameEvent implements EventProtocol {
             negotiationActions.add(negotiationAction);
         }
         return negotiationActions;
+    }
+
+    private JsonArray createPayContractActionsResponse(Activity activity){
+        JsonArray payContractActions = new JsonArray();
+        for(PayContract payContract : activity.getPayContractList()){
+            JsonObject payContractAction = new JsonObject();
+            payContractAction.addProperty(GameResponseKey.AMOUNT.key, payContract.getPercentage());
+            payContractAction.addProperty(ActionResponseKey.GIVERID.key, payContract.getNegotiation().getGiverRoleID());
+            payContractAction.addProperty(ActionResponseKey.RECEIVERID.key, payContract.getNegotiation().getReceiverRoleID());
+            payContractActions.add(payContractAction);
+        }
+        return payContractActions;
     }
 }

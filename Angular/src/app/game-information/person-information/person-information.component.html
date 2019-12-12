@@ -29,11 +29,11 @@
     <nz-avatar [nzSrc]="myInformation.src"></nz-avatar>
   </ng-template>
   <ng-template #pointVictoire style="position: absolute; bottom: 0">
-    <span (click)="showPointsVistoire()">
+    <div (click)="showPointsVistoire()">
       <i class="iconfont icon-mubiao">
       </i><br>
       Points de victoire
-    </span>
+    </div>
   </ng-template>
   <ng-template #extraBnt>
     <button nz-button
@@ -51,27 +51,27 @@
     <i nz-icon nzType="exclamation" style="color: red;"></i>
   </ng-template>
   <ng-template #special>
-    <span (click)="showSpecial()">
+    <div (click)="showSpecial()">
       <i class="iconfont icon-hetong">
       </i>
       <br>
     Spécial
-    </span>
+    </div>
   </ng-template>
   <ng-template #description>
-    <span (click)="showDescription()">
+    <div (click)="showDescription()">
       <i id="description" class="iconfont icon-description"></i>
       <br>
       Description
-    </span>
+    </div>
   </ng-template>
 
   <ng-template #plan>
-    <span (click)="showPlan()">
+    <div (click)="showPlan()">
       <i id="planning" class="iconfont icon-touzijihuaguanli"></i>
       <br>
       Plan
-    </span>
+    </div>
   </ng-template>
 
   <ng-template #extra>

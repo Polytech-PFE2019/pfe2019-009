@@ -48,7 +48,7 @@ h2 {
 .activity {
   height: 374px;
   background-color: white;
-  padding: 20px;
+  margin-top: 10px;
 }
 
 .wait {
@@ -62,8 +62,9 @@ h2 {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  flex-direction: column;
+  flex-direction: row;
   margin-left: 40px;
+  width: 100%;
 }
 
 #nego {
@@ -157,5 +158,6 @@ input {
 }
 
 .personActivity{
-  padding: 20px;
+  height: 374px;
+  background-color: white;
 }

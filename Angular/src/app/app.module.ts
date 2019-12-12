@@ -48,6 +48,7 @@ import {ResultComponent} from './game-information/result/result.component';
 import {PaymentContractComponent} from './commun-module/payment-contract/payment-contract.component';
 import { ListPlayersComponent } from './list-players/list-players.component';
 import { ChatGroupComponent } from './chat-module/chat-group/chat-group.component';
+import { ContractComponent } from './game-information/person-information/contract/contract.component';
 
 const ngZorroConfig: NzConfig = {
   notification: {nzDuration: 20000}
@@ -89,7 +90,8 @@ registerLocaleData(fr);
     ResultComponent,
     PaymentContractComponent,
     ListPlayersComponent,
-    ChatGroupComponent
+    ChatGroupComponent,
+    ContractComponent
   ],
   imports: [
     BrowserModule,

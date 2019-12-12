@@ -1,18 +1,60 @@
-<nz-list
-  style="width: 400px"
-  [nzDataSource]="roles"
-  [nzItemLayout]="'vertical'"
-  [nzRenderItem]="item"
->
-  <ng-template #item let-item>
-    <nz-list-item [nzContent]="item.description" [nzActions]="[starAction]" [nzExtra]="extra">
-      <ng-template #starAction><i class="iconfont icon-money" style="margin-right: 8px;" [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
-      <nz-list-item-meta [nzTitle]="nzTitle">
-        <ng-template #nzTitle>{{ item.title }} - {{item.username}}</ng-template>
-      </nz-list-item-meta>
-    </nz-list-item>
-    <ng-template #extra>
-      <img alt="logo" [src]="item.src" [width]="80" [height]="80"/>
-    </ng-template>
-  </ng-template>
-</nz-list>
+<div class="card-container">
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab [nzTitle]="'Liste de joueurs'">
+      <nz-list
+        style="width: 100%"
+        [nzDataSource]="roles"
+        [nzItemLayout]="'vertical'"
+        [nzRenderItem]="item"
+      >
+        <ng-template #item let-item>
+          <nz-list-item [nzContent]="item.description" [nzActions]="[starAction]" [nzExtra]="extra">
+            <ng-template #starAction><i class="iconfont icon-money" style="margin-right: 8px;" [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
+            <nz-list-item-meta [nzTitle]="nzTitle">
+              <ng-template #nzTitle>{{ item.title }} - {{item.username}}</ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
+          <ng-template #extra>
+            <img alt="logo" [src]="item.src" [width]="80" [height]="80"/>
+          </ng-template>
+        </ng-template>
+      </nz-list>
+    </nz-tab>
+    <nz-tab [nzTitle]="'Mon histoire'" #target>
+      <nz-affix [nzTarget]="target" id="affix-container-target">
+        <div style="margin: 5px;">
+          <h4>Total d'argent dépensé:</h4>
+          <h4>Total des ressources dépensées: {{totalResourcePayment}}</h4>
+        </div>
+      </nz-affix>
+      <nz-list [nzDataSource]="histories"
+               [nzItemLayout]="'vertical'"
+               [nzRenderItem]="step"
+      >
+        <ng-template #step let-item>
+          <nz-list-item style="display: flex; flex-direction: column">
+            <h3>Etape {{item.activityID}}</h3>
+            <nz-table class="basicTable" #playerTable
+                      [nzData]="item.payments"
+                      [nzShowPagination]="false">
+              <thead>
+              <tr>
+                <th>Type</th>
+                <th>Depensé</th>
+                <th>Résultat</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let h of playerTable.data" >
+                <td>{{h.activity}}</td>
+                <td>{{h.amount}}</td>
+                <td>{{h.result}}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </nz-tab>
+  </nz-tabset>
+</div>

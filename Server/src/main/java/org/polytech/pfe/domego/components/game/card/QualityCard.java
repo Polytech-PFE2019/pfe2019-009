@@ -2,7 +2,6 @@ package org.polytech.pfe.domego.components.game.card;
 
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.models.QualityAction;
-import org.polytech.pfe.domego.models.risk.RiskAction;
 
 import java.util.Objects;
 

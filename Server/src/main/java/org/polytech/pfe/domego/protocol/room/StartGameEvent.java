@@ -81,8 +81,17 @@ public class StartGameEvent implements EventProtocol {
             this.messenger.sendError("This type of game doesn't exist");
             return;
         }
+        int timeOfProject = 0;
+        if(request.containsKey(RoomRequestKey.DAYS.getKey())){
+            timeOfProject = Integer.valueOf(request.get(RoomRequestKey.DAYS.getKey()));
+        }
 
-        Game game = gameAccessor.createNewGameFromRoom(room, gameType);
+        int costOfProject = 0;
+        if(request.containsKey(RoomRequestKey.COST.getKey())){
+            costOfProject = Integer.valueOf(request.get(RoomRequestKey.COST.getKey()));
+        }
+
+        Game game = gameAccessor.createNewGameFromRoom(room, gameType,timeOfProject,costOfProject);
         String response = createStartGameResponse(game).toString();
 
         room.getPlayerList().parallelStream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));

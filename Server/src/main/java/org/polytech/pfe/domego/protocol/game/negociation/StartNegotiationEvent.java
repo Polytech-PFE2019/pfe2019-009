@@ -3,19 +3,13 @@ package org.polytech.pfe.domego.protocol.game.negociation;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
-import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.negotiation.NegotiationStatus;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class StartNegotiationEvent extends NegotiationEvent implements EventProtocol {
 

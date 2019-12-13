@@ -20,6 +20,7 @@ public enum GameResponseKey {
     GAME_ID("gameID"),
     NOPC("numberOfPlayersConnected"),
     PLAYER("player"),
+    PLAYERS("players"),
     PROJECT("project"),
     USER_ID("userID"),
     AMOUNT("amount"),

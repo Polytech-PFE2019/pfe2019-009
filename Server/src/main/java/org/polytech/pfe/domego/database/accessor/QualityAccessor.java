@@ -1,13 +1,9 @@
 package org.polytech.pfe.domego.database.accessor;
 
 import org.polytech.pfe.domego.components.game.card.QualityCard;
-import org.polytech.pfe.domego.components.game.card.RiskCard;
 import org.polytech.pfe.domego.generator.GameType;
-import org.polytech.pfe.domego.generator.initial.InitialRiskGenerator;
 import org.polytech.pfe.domego.generator.intermediate.IntermediateQualityGenerator;
-import org.polytech.pfe.domego.generator.intermediate.IntermediateRiskGenerator;
 import org.polytech.pfe.domego.models.QualityAction;
-import org.polytech.pfe.domego.models.risk.RiskAction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

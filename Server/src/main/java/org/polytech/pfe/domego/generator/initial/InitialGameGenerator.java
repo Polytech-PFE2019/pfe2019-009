@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.generator.initial;
 import org.polytech.pfe.domego.database.accessor.RiskAccessor;
 import org.polytech.pfe.domego.generator.GameGenerator;
 import org.polytech.pfe.domego.generator.GameType;
+import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
@@ -19,6 +20,7 @@ import org.polytech.pfe.domego.models.activity.pay.PayResources;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class InitialGameGenerator implements GameGenerator {
 
@@ -733,5 +735,11 @@ public class InitialGameGenerator implements GameGenerator {
     @Override
     public int getNumberOfRisksDrawnWanted() {
         return numberOfRisksDrawnWanted;
+    }
+
+    @Override
+    public int getBudgetByRole(Role role) {
+        return role.getBudget();
+
     }
 }

@@ -18,6 +18,4 @@ public interface GameGenerator {
 
     int getBudgetByRole(Role role);
 
-    List<Negotiation> getNegotiationList();
-
 }

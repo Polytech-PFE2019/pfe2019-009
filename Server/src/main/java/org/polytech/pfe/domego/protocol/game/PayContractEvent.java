@@ -50,8 +50,8 @@ public class PayContractEvent implements EventProtocol {
             giver.subtractMoney(amountPaid);
             receiver.addMoney(amountPaid);
             payContract.setPaid();
-            new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver, giver, receiver,amountPaid));
-            new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, giver, receiver, amountPaid));
+            new Messenger(giver.getSession()).sendSpecificMessageToAUser(createResponseToUser(giver, giver, receiver,amountPaid, negotiation.getId()));
+            new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, giver, receiver, amountPaid, negotiation.getId()));
 
             logger.log(Level.INFO,
                     "EndNegotiationEvent : In game {0}, {1} paid {2} the amount {3}.",
@@ -59,7 +59,7 @@ public class PayContractEvent implements EventProtocol {
         }
     }
 
-    private String createResponseToUser(Player player, Player giver, Player receiver, double amountPaid) {
+    private String createResponseToUser(Player player, Player giver, Player receiver, double amountPaid, String negotiationID) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_CONTRACT");
         response.addProperty(GameResponseKey.GIVER_ROLE_NAME.key, giver.getRole().getName().getName());
@@ -68,6 +68,7 @@ public class PayContractEvent implements EventProtocol {
         response.addProperty(GameResponseKey.RECEIVERID.key, receiver.getRole().getId());
         response.addProperty(GameResponseKey.AMOUNT.key,amountPaid);
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+        response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiationID);
 
         return response.toString();
     }

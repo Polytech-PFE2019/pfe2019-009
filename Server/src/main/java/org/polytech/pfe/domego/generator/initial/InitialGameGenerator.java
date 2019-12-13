@@ -742,8 +742,4 @@ public class InitialGameGenerator implements GameGenerator {
 
     }
 
-    @Override
-    public List<Negotiation> getNegotiationList() {
-        return negotiationForGame;
-    }
 }

@@ -293,11 +293,6 @@ public class IntermediateGameGenerator implements GameGenerator {
         return 20;
     }
 
-    @Override
-    public List<Negotiation> getNegotiationList() {
-        return negotiationForGame;
-    }
-
     public static void main(String[] args) throws IOException, InvalidFormatException {
         new IntermediateGameGenerator().generateIntermediateGame();
     }

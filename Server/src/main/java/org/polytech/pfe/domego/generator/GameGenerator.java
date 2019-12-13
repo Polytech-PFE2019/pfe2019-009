@@ -14,7 +14,4 @@ public interface GameGenerator {
     int getCostWanted();
 
     int getNumberOfRisksDrawnWanted();
-
-    List<Negotiation> getNegotiationList();
-
 }

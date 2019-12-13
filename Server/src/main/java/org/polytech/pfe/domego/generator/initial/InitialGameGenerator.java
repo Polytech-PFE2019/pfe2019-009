@@ -733,9 +733,4 @@ public class InitialGameGenerator implements GameGenerator {
     public int getNumberOfRisksDrawnWanted() {
         return numberOfRisksDrawnWanted;
     }
-
-    @Override
-    public List<Negotiation> getNegotiationList() {
-        return negotiationForGame;
-    }
 }

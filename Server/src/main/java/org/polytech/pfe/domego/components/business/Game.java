@@ -21,18 +21,16 @@ public class Game {
     private List<Activity> activities;
     private int currentActivity;
     private Project project;
-    private List<Negotiation> contracts;
     private GameType gameType;
 
 
     public Game(String id, List<Player> players, List<Activity> activities, int costWanted, int numberOfDaysWanted,
-                int numberOfRisksDrawnWanted, List<Negotiation> negotiationList, GameType gameType) {
+                int numberOfRisksDrawnWanted, GameType gameType) {
         this.id = id;
         this.players = players;
         this.activities = activities;
         this.project = new Project(costWanted, numberOfDaysWanted, numberOfRisksDrawnWanted);
         this.currentActivity = 0;
-        this.contracts = negotiationList;
         this.gameType = gameType;
     }
 
@@ -50,10 +48,6 @@ public class Game {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<Negotiation> getContracts(){
-        return contracts;
     }
 
     public void goToTheNextActivity(){

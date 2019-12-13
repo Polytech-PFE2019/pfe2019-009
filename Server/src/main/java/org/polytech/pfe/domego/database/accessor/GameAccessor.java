@@ -44,7 +44,7 @@ public class GameAccessor {
         else
             gameGenerator = new IntermediateGameGenerator();
         GameGenerator initialGameGenerator = new InitialGameGenerator();
-        Game game = new Game(room.getID(), players, initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted(), initialGameGenerator.getNegotiationList(), gameType);
+        Game game = new Game(room.getID(), players, initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted(), gameType);
         gameInstance.addGame(game);
         return game;
     }

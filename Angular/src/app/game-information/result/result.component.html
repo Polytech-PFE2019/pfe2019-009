@@ -6,13 +6,13 @@
     <p>Coût du projet: <b>{{ cost }}</b></p>
   </div>
   <div nz-row [nzGutter]="8">
-    <div nz-col [nzSpan]="4" class="resultColumn" *ngFor="let d of data">
+    <div nz-col [nzSpan]="4" class="resultColumn" *ngFor="let d of data; let i=index">
       <div class="result">
         <img class="profile" [src]="d?.src" width="60" height="60">
         <h3 style="margin-top: 30px; height: 40px">{{d?.title}} - {{d?.user}}</h3>
-        <img class="rank" *ngIf="d.rank===1" src="../../../assets/icons/gold-medal.png" [height]="50" [width]="50">
-        <img class="rank" *ngIf="d.rank===2" src="../../../assets/icons/silver-medal.png" [height]="50" [width]="50">
-        <img class="rank" *ngIf="d.rank===3" src="../../../assets/icons/bronze-medal.png" [height]="50" [width]="50">
+        <img class="rank" *ngIf="i===5" src="../../../assets/icons/gold-medal.png" [height]="50" [width]="50">
+        <img class="rank" *ngIf="i===4" src="../../../assets/icons/silver-medal.png" [height]="50" [width]="50">
+        <img class="rank" *ngIf="i===3" src="../../../assets/icons/bronze-medal.png" [height]="50" [width]="50">
         <h6>Point de Victoire: </h6>
         <h1 style="color: #e0620d">{{d?.point}}</h1>
         <nz-tabset>

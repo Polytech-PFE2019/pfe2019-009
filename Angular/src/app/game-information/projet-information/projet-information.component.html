@@ -12,43 +12,44 @@
 <!--    </div>-->
 <!--  </nz-tab>-->
 <!--</nz-tabset>-->
-<div style="text-align: center">
-  <h3>Le projet</h3>
+<div>
+  <div style="background: #ECECEC; width: 100%; padding: 15px">
+    <div style="text-align: center">
+      <h3>Le projet</h3>
+    </div>
+    <nz-row [nzGutter]="16">
+      <nz-col [nzSpan]="12" style="margin-top: 10px">
+        <nz-card>
+          <nz-statistic
+            [nzValue]="currentFailure"
+            [nzTitle]="'La defaillance'"
+            [nzValueStyle]="{ color: '#892f0b' }">
+          </nz-statistic>
+          <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>
+        </nz-card>
+      </nz-col>
+      <nz-col [nzSpan]="12" style="margin-top: 10px">
+        <nz-card>
+          <nz-statistic
+            [nzValue]="currentTime"
+            [nzTitle]="'La durée'"
+            [nzValueStyle]="{ color: '#123074' }"
+          >
+          </nz-statistic>
+          <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
+        </nz-card>
+      </nz-col>
+      <nz-col [nzSpan]="12" style="margin-top: 10px">
+        <nz-card>
+          <nz-statistic
+            [nzValue]="currentCost"
+            [nzTitle]="'Le coût'"
+            [nzValueStyle]="{ color: '#f68c12' }"
+          >
+          </nz-statistic>
+          <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
+        </nz-card>
+      </nz-col>
+    </nz-row>
+  </div>
 </div>
-<div style="background: #ECECEC; padding: 20px;">
-  <nz-row [nzGutter]="16">
-    <nz-col [nzSpan]="12" style="margin-top: 10px">
-      <nz-card>
-        <nz-statistic
-          [nzValue]="currentFailure"
-          [nzTitle]="'La defaillance'"
-          [nzValueStyle]="{ color: '#892f0b' }">
-        </nz-statistic>
-        <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>
-      </nz-card>
-    </nz-col>
-    <nz-col [nzSpan]="12" style="margin-top: 10px">
-      <nz-card>
-        <nz-statistic
-          [nzValue]="currentTime"
-          [nzTitle]="'La durée'"
-          [nzValueStyle]="{ color: '#123074' }"
-        >
-        </nz-statistic>
-        <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
-      </nz-card>
-    </nz-col>
-    <nz-col [nzSpan]="12" style="margin-top: 10px">
-      <nz-card>
-        <nz-statistic
-          [nzValue]="currentCost"
-          [nzTitle]="'Le coût'"
-          [nzValueStyle]="{ color: '#f68c12' }"
-        >
-        </nz-statistic>
-        <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
-      </nz-card>
-    </nz-col>
-  </nz-row>
-</div>
-

@@ -32,7 +32,7 @@
       <!--               [nzRenderItem]="step">-->
 
       <!--        <ng-template #step let-item let-i>-->
-      <div *ngFor="let h of histories; let i=index">
+      <div *ngFor="let h of histories; let i=index" style="margin-top: 10px">
         <h3>Etape {{i+1}}</h3>
         <nz-table class="basicTable" #playerTable
                   [nzData]="h.payments"

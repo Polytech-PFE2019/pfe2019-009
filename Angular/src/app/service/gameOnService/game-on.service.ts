@@ -197,23 +197,23 @@ export class GameOnService {
 
   }
 
-  updateMinAndMax(project) {
+  updateMinAndMax(data) {
     const failure = {
-      minFailure: project.minFailure,
-      maxFailure: project.maxFailure
+      minFailure: data.project.minFailure,
+      maxFailure: data.project.maxFailure
     };
     this.subscription.sendFailures(failure);
 
     const cost = {
-      minCost: project.minCost,
-      maxCost: project.maxCost
+      minCost: data.project.minCost,
+      maxCost: data.project.maxCost
     };
     this.subscription.sendCosts(cost);
     this.subscription.costInital = cost;
 
     const days = {
-      minTime: project.minTime,
-      maxTime: project.maxTime
+      minTime: data.project.minTime,
+      maxTime: data.project.maxTime
     };
     this.subscription.sendDays(days);
   }

@@ -177,6 +177,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       };
       console.log(reqInitial);
       this.lobbyService.messages.next(reqInitial as SocketRequest);
+      this.router.navigate(['loading']);
     } else {
       this.subscriptionService.isVersionInitial = false;
       const reqInter = {
@@ -189,6 +190,7 @@ export class GameRoomComponent implements OnInit, OnDestroy {
       };
       console.log(reqInter);
       this.lobbyService.messages.next(reqInter as SocketRequest);
+      this.router.navigate(['loading']);
     }
   }
 

@@ -21,6 +21,13 @@
   margin-bottom: -10px;
 }
 
+#groupChat{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  margin-bottom: -10px;
+}
+
 .left-container {
   height: calc(100vh - 60px);
   overflow-y: auto;

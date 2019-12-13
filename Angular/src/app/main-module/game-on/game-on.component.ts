@@ -80,12 +80,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
   };
 
   constructor(private lobbyService: LobbyService,
-    private gameService: GameOnService,
-    private subscription: SubscriptionService,
-    private resourceManager: BuyResourceService,
-    private router: Router,
-    private notification: NzNotificationService,
-    private playerDataService: PlayerdataService) {
+              private gameService: GameOnService,
+              private subscription: SubscriptionService,
+              private resourceManager: BuyResourceService,
+              private router: Router,
+              private notification: NzNotificationService,
+              private playerDataService: PlayerdataService) {
   }
 
   ngOnInit() {
@@ -172,8 +172,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
       if (data.response === 'CHANGE_ACTIVITY') {
         this.notification.create(
           'info',
-          "Fin de l'étape " + (data.activityID - 1),
-          "L'étape " + data.activityID + " commence",
+          'Fin de l\'étape ' + (data.activityID - 1),
+          'L\'étape ' + data.activityID + ' commence',
           { nzDuration: 8000 }
         );
       }
@@ -299,8 +299,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   closeGroupChat(): void {
     this.showGroupChat = false;
-    this.isDiabled = false;
-    this.isShow = true;
+    // this.isDiabled = false;
+    // this.isShow = true;
   }
 
   getBuy($event: any) {

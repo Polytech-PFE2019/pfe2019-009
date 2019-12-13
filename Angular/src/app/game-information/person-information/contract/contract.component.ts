@@ -33,29 +33,29 @@ export class ContractComponent implements OnInit {
       console.log(data);
       data.contractsGiver.forEach(contract => {
 
-        let contractObject = {
+        const contractObject = {
           withRole: contract.receiverID,
           isPay: true,
           amount: contract.amount,
           amountPaid: contract.amountPaid
-        }
-        this.contracts.push(contractObject)
-        this.contractsGiver.push(contractObject)
+        };
+        this.contracts.push(contractObject);
+        this.contractsGiver.push(contractObject);
       });
 
       data.contractsReceiver.forEach(contract => {
 
-        let contractObject = {
+        const contractObject = {
           withRole: contract.giverID,
           isPay: false,
           amount: contract.amount,
           amountPaid: contract.amountPaid
 
-        }
-        this.contracts.push(contractObject)
-        this.contractsReceiver.push(contractObject)
+        };
+        this.contracts.push(contractObject);
+        this.contractsReceiver.push(contractObject);
       });
-    })
+    });
   }
 
   showPayment() {

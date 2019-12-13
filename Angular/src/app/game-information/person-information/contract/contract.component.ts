@@ -27,65 +27,49 @@ export class ContractComponent implements OnInit {
 
   ngOnInit() {
     this.myRoleId = this.subscription.myRole.id;
-    this.subscription.currentActivity$.subscribe(data => {
-      this.contracts = [];
-      this.contractsGiver = [];
-      this.contractsReceiver = [];
-      console.log(data);
-      data.contractsGiver.forEach(contract => {
-
-        let contractObject = {
-          withRole: contract.receiverID,
-          isPay: true,
-          amount: contract.amount,
-          amountPaid: contract.amountPaid
-        }
-        this.contracts.push(contractObject)
-        this.contractsGiver.push(contractObject)
-      });
-
-      data.contractsReceiver.forEach(contract => {
-
-        let contractObject = {
-          withRole: contract.giverID,
-          isPay: false,
-          amount: contract.amount,
-          amountPaid: contract.amountPaid
-
-        }
-        this.contracts.push(contractObject)
-        this.contractsReceiver.push(contractObject)
-      });
-    })
 
     this.gameService.reponses$.subscribe(data => {
-      if (data.response != "END_NEGOTIATE" && data.response != "FAIL_NEGOTIATE") {
-        return;
-      }
-      let contractObject;
-      if (data.giverID == this.myRoleId) {
-        contractObject = {
-          withRole: data.receiverID,
-          isPay: true,
-          amount: data.amount,
-          amountPaid: 0
+      if (data.response === "END_NEGOTIATE" || data.response === "FAIL_NEGOTIATE") {
+        let contractObject;
+        if (data.giverID == this.myRoleId) {
+          contractObject = {
+            withRole: data.receiverID,
+            isPay: true,
+            amount: data.amount,
+            amountPaid: 0,
+            negoID: data.negociationID
+          }
+          this.contractsGiver.push(contractObject)
+
         }
-        this.contractsGiver.push(contractObject)
+        else {
+          contractObject = {
+            withRole: data.giverID,
+            isPay: false,
+            amount: data.amount,
+            amountPaid: 0,
+            negoID: data.negociationID
+          }
+          this.contractsReceiver.push(contractObject)
 
-      }
-      else {
-        contractObject = {
-          withRole: data.giverID,
-          isPay: false,
-          amount: data.amount,
-          amountPaid: 0
         }
-        this.contractsReceiver.push(contractObject)
+        this.contracts.push(contractObject)
 
       }
-      this.contracts.push(contractObject)
+      else if (data.response === "PAY_CONTRACT") {
+        console.log(data);
+        console.log(this.contractsGiver)
+        console.log(this.contractsReceiver);
+        console.log(this.myRoleId);
 
+        let contract = this.contractsGiver.find(contract => contract.negoID === data.negociationID && data.giverID === this.myRoleId)
 
+        if (contract === undefined) {
+          contract = this.contractsReceiver.find(contract => contract.negoID === data.negociationID && data.receiverID === this.myRoleId)
+        }
+
+        contract.amountPaid += data.amount
+      }
 
     })
   }

@@ -167,3 +167,8 @@ input {
   height: 374px;
   background-color: white;
 }
+.mat-icon {
+  border: none;
+  font-size: 50px;
+  width: 50px;
+}

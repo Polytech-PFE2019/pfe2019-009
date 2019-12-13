@@ -49,6 +49,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   riskReduced = 0;
   daysReduced = 0;
   totalAmount = 0;
+  hasBadge = false;
   currentPlayer: any = null;
   isGroupChat = false;
   myRole: any = null;
@@ -80,12 +81,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
   };
 
   constructor(private lobbyService: LobbyService,
-              private gameService: GameOnService,
-              private subscription: SubscriptionService,
-              private resourceManager: BuyResourceService,
-              private router: Router,
-              private notification: NzNotificationService,
-              private playerDataService: PlayerdataService) {
+    private gameService: GameOnService,
+    private subscription: SubscriptionService,
+    private resourceManager: BuyResourceService,
+    private router: Router,
+    private notification: NzNotificationService,
+    private playerDataService: PlayerdataService) {
   }
 
   ngOnInit() {
@@ -152,6 +153,13 @@ export class GameOnComponent implements OnInit, OnDestroy {
         if (data.receiverID === this.myRole.id) {
           this.establish.visible = true;
         }
+
+      }
+      else if (data.response === 'MSG_GROUP_CHAT') {
+        if (!this.showGroupChat) {
+          this.hasBadge = true
+        }
+
       }
 
 
@@ -206,6 +214,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   openGroupChat() {
     this.showGroupChat = !this.showGroupChat;
+    this.hasBadge = false;
+
   }
 
   getCurrentStep($event: any) {

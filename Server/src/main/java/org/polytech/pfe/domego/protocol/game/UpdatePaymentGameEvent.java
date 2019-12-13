@@ -33,7 +33,6 @@ public class UpdatePaymentGameEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-        System.out.println("new UPDATE PAYMENT");
         this.game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJSONResponse(player).toString()));
 
     }

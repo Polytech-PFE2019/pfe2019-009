@@ -57,7 +57,6 @@ public class FinishGameEvent implements EventProtocol {
         for (Player rankPlayer : rankedList) {
             JsonObject rankingPlayer = new JsonObject();
             rankingPlayer.addProperty(GameResponseKey.NOVP.key,rankPlayer.getVictoryPoints());
-            rankingPlayer.addProperty(GameResponseKey.RANK.key,rankPlayer.getRole().getId());
             rankingPlayer.add(GameResponseKey.INFORMATION.key, createInformationObject(rankPlayer));
             JsonObject playerJSON = new JsonObject();
             playerJSON.addProperty(GameResponseKey.USERNAME.key, rankPlayer.getName());

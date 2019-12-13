@@ -210,6 +210,11 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   getBuy($event) {
     this.isBuyed = $event;
+    this.selectedIndex = 1;
+  }
+
+  printIndex() {
+    console.log(this.selectedIndex);
   }
 }
 

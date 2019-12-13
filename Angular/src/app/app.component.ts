@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   isTest = false;
   data: any[] = [];
   roles = Roles;
+  count = 6;
 
   constructor() {
     this.data = [
@@ -101,5 +102,9 @@ export class AppComponent implements OnInit {
           '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
       };
     });
+  }
+
+  clearBadge() {
+    this.count = 0;
   }
 }

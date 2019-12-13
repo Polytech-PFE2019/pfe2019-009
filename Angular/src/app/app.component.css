@@ -42,5 +42,16 @@ h1{
 /*@keyframes shake {*/
 /*  10% { transform: translate(10px, 0px) rotate(0deg); }*/
 /*}*/
+nz-badge {
+  margin-right: 20px;
+}
 
+.head-example {
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  background: #eee;
+  display: inline-block;
+  vertical-align: middle;
+}
 

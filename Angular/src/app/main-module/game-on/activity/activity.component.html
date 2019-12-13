@@ -1,6 +1,6 @@
 <div class="activity2Container" *ngIf="currentActivity?.rolesID.includes(myInformation.id) && !isFinishedMine">
   <h3>Etape {{currentActivity.title}}</h3>
-  <nz-tabset>
+  <nz-tabset [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="printIndex()">
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
       <ng-template #titleTemplate><i nz-icon [nzType]="tab.icon"></i>{{ tab.name }} </ng-template>
       <div class="paymentResource" *ngIf="tab.name==='Acheter des resources'">

@@ -55,7 +55,6 @@ public class InitialGameGenerator implements GameGenerator {
         activities.add(generateTenthActivity());
         activities.add(generateEleventhActivity());
         activities.add(generateTwelfthActivity());
-
     }
 
     @Override
@@ -741,5 +740,10 @@ public class InitialGameGenerator implements GameGenerator {
     public int getBudgetByRole(Role role) {
         return role.getBudget();
 
+    }
+
+    @Override
+    public List<Negotiation> getNegotiationList() {
+        return negotiationForGame;
     }
 }

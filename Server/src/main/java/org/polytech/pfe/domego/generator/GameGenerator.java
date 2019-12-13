@@ -1,5 +1,6 @@
 package org.polytech.pfe.domego.generator;
 
+import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 
@@ -15,6 +16,6 @@ public interface GameGenerator {
 
     int getNumberOfRisksDrawnWanted();
 
-    List<Negotiation> getNegotiationList();
+    int getBudgetByRole(Role role);
 
 }

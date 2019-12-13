@@ -36,8 +36,6 @@ public class Objective {
     }
 
     public void calculateVictoryPoints(int amount) {
-
-        System.out.println("VICTORY POINTS CALCUL**** "+amount+" multi: "+ hasMultiplicity);
         if(!isValid(amount)) {
             victoryPoints = 0;
             return;
@@ -51,7 +49,6 @@ public class Objective {
     }
 
     public void calculateVictoryPoints(double amount) {
-        System.out.println("VICTORY POINTS CALCUL**** "+amount+" multi: "+ hasMultiplicity);
         if(!isValid(amount)) {
             victoryPoints = 0;
             return;

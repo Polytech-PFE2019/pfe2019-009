@@ -2,10 +2,8 @@ package org.polytech.pfe.domego.protocol.game;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.poi.ss.formula.functions.Even;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.components.statefull.GameInstance;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Player;

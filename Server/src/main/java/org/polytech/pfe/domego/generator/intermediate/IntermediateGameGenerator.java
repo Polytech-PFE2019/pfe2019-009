@@ -1,6 +1,5 @@
 package org.polytech.pfe.domego.generator.intermediate;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -8,6 +7,7 @@ import org.polytech.pfe.domego.database.accessor.QualityAccessor;
 import org.polytech.pfe.domego.database.accessor.RiskAccessor;
 import org.polytech.pfe.domego.generator.GameGenerator;
 import org.polytech.pfe.domego.generator.GameType;
+import org.polytech.pfe.domego.models.Role;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ClassicActivity;
@@ -44,12 +44,17 @@ public class IntermediateGameGenerator implements GameGenerator {
     private static final int NumberOfActivities = 15;
 
     private List<Negotiation> negotiationForGame;
-
     private List<Activity> activities;
+    private int timeOfProject;
+    private int costOfProject;
+    private Map<RoleType, Integer> budgetByRole;
 
-    public IntermediateGameGenerator() {
-        negotiationForGame = new ArrayList<>();
-        activities = new ArrayList<>();
+    public IntermediateGameGenerator(int timeOfProject, int costOfProject) {
+        this.negotiationForGame = new ArrayList<>();
+        this.activities = new ArrayList<>();
+        this.budgetByRole = new HashMap<>();
+        this.timeOfProject = timeOfProject;
+        this.costOfProject = costOfProject;
         riskAccessor = new RiskAccessor();
         qualityAccessor = new QualityAccessor();
         this.generateIntermediateGame();
@@ -79,7 +84,13 @@ public class IntermediateGameGenerator implements GameGenerator {
         }
 
         Sheet datatypeSheet = workbook.getSheetAt(SheetNumber);
-        new DefineSpecificationProject(workbook,datatypeSheet, 230,200).generateSheetForThisGame();
+        new DefineSpecificationProject(workbook,datatypeSheet, this.timeOfProject,this.costOfProject).generateSheetForThisGame();
+
+        for (RoleType role : RoleType.values()) {
+            if (role.equals(RoleType.NON_DEFINI))
+                continue;
+            budgetByRole.put(role,(int)datatypeSheet.getRow(13 + role.getId() ).getCell(12).getNumericCellValue());
+        }
 
         for (int i = 0; i < NumberOfActivities; i++) {
             int activityId = i + 1;
@@ -279,6 +290,12 @@ public class IntermediateGameGenerator implements GameGenerator {
     }
 
     @Override
+    public int getBudgetByRole(Role role){
+        return budgetByRole.get(role.getName());
+
+    }
+
+    @Override
     public int getNumberOfDaysWanted() {
         return 230;
     }
@@ -293,12 +310,5 @@ public class IntermediateGameGenerator implements GameGenerator {
         return 20;
     }
 
-    @Override
-    public List<Negotiation> getNegotiationList() {
-        return negotiationForGame;
-    }
 
-    public static void main(String[] args) throws IOException, InvalidFormatException {
-        new IntermediateGameGenerator().generateIntermediateGame();
-    }
 }

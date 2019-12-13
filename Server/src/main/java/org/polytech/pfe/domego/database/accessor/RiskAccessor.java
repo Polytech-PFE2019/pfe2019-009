@@ -5,7 +5,6 @@ import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.generator.initial.InitialRiskGenerator;
 import org.polytech.pfe.domego.generator.intermediate.IntermediateRiskGenerator;
 import org.polytech.pfe.domego.models.risk.RiskAction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -18,6 +18,7 @@ import org.polytech.pfe.domego.protocol.game.key.ActivityResponseKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,8 @@ public class LaunchGameEvent implements EventProtocol {
         this.addInfosToCurrentGame(response);
 
         this.addPlayerObject(response, player);
+
+        this.addPlayersMoneyObject(response, game.getPlayers());
 
         this.addProjectObject(response, player);
 
@@ -89,6 +92,17 @@ public class LaunchGameEvent implements EventProtocol {
         playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
 
         response.add(GameResponseKey.PLAYER.key, playerJson);
+    }
+
+    private void addPlayersMoneyObject(JsonObject response, List<Player> players){
+        JsonArray playersJson = new JsonArray();
+        for (Player player : players ) {
+            JsonObject playerJson = new JsonObject();
+            playerJson.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+            playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
+            playersJson.add(playerJson);
+        }
+        response.add(GameResponseKey.PLAYERS.key, playersJson);
     }
 
     private void addProjectObject(JsonObject response, Player player) {

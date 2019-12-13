@@ -33,7 +33,7 @@ public class GameAccessor {
         return gameInstance.countGame();
     }
 
-    public Game createNewGameFromRoom(Room room, GameType gameType){
+    public Game createNewGameFromRoom(Room room, GameType gameType, int time, int cost){
         List<Player> players = new ArrayList<>();
         for (Player player : room.getPlayerList()) {
             players.add(new Player(player));
@@ -42,9 +42,14 @@ public class GameAccessor {
         if (gameType.equals(GameType.INITIAL))
             gameGenerator = new InitialGameGenerator();
         else
-            gameGenerator = new IntermediateGameGenerator();
-        GameGenerator initialGameGenerator = new InitialGameGenerator();
-        Game game = new Game(room.getID(), players, initialGameGenerator.getAllActivitiesOfTheGame(), initialGameGenerator.getCostWanted(), initialGameGenerator.getNumberOfDaysWanted(), initialGameGenerator.getNumberOfRisksDrawnWanted(), initialGameGenerator.getNegotiationList(), gameType);
+            gameGenerator = new IntermediateGameGenerator(time, cost);
+        Game game = new Game(room.getID(), players, gameGenerator.getAllActivitiesOfTheGame(), gameGenerator.getCostWanted(), gameGenerator.getNumberOfDaysWanted(), gameGenerator.getNumberOfRisksDrawnWanted(),gameType);
+        for (Player player : game.getPlayers()) {
+            int budget = gameGenerator.getBudgetByRole(player.getRole());
+            player.getRole().setBudget(budget);
+            player.subtractMoney(player.getMoney());
+            player.addMoney(budget);
+        }
         gameInstance.addGame(game);
         return game;
     }

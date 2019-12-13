@@ -60,6 +60,8 @@ public class EndNegotiationEvent extends NegotiationEvent implements EventProtoc
         response.addProperty(GameResponseKey.RESPONSE.key, "END_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negociation.getId());
         response.addProperty(GameResponseKey.AMOUNT.key, negociation.getAmountNegotiated());
+        response.addProperty(GameResponseKey.GIVERID.key, negociation.getGiverRoleID());
+        response.addProperty(GameResponseKey.RECEIVERID.key, negociation.getReceiverRoleID());
 
         super.sendResponses(response.toString());
 

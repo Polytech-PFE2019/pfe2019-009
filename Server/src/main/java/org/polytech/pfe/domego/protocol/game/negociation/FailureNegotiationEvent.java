@@ -52,6 +52,8 @@ public class FailureNegotiationEvent implements EventProtocol {
         response.addProperty(GameResponseKey.RESPONSE.key, "FAIL_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negotiation.getId());
         response.addProperty(GameResponseKey.AMOUNT.key, negotiation.getAmountNegotiated());
+        response.addProperty(GameResponseKey.GIVERID.key, negotiation.getGiverRoleID());
+        response.addProperty(GameResponseKey.RECEIVERID.key, negotiation.getReceiverRoleID());
         new Messenger(giver.getSession()).sendSpecificMessageToAUser(response.toString());
         new Messenger(receiver.getSession()).sendSpecificMessageToAUser(response.toString());
     }

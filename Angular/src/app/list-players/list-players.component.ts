@@ -1,15 +1,15 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
-import {History} from '../model/history';
-import {GameOnService} from '../service/gameOnService/game-on.service';
-import {Subscription} from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { SubscriptionService } from '../service/subscriptionSerivce/subscription.service';
+import { History } from '../model/history';
+import { GameOnService } from '../service/gameOnService/game-on.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list-players',
   templateUrl: './list-players.component.html',
   styleUrls: ['./list-players.component.css']
 })
-export class ListPlayersComponent implements OnInit, OnDestroy  {
+export class ListPlayersComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter();
   histories: History[] = [];
   // @Input() getHistory = [];
@@ -22,7 +22,7 @@ export class ListPlayersComponent implements OnInit, OnDestroy  {
   subHistoty: Subscription;
 
   constructor(private subscription: SubscriptionService,
-              private gameService: GameOnService) { }
+    private gameService: GameOnService) { }
 
   ngOnInit() {
     this.payments = [];
@@ -46,7 +46,7 @@ export class ListPlayersComponent implements OnInit, OnDestroy  {
   getType(type) {
     switch (type) {
       case 'MANDATORY':
-        return 'Resource(s) obligatoire(s)';
+        return 'Ressource(s) obligatoire(s)';
       case 'RISKS':
         return 'Defaillance(s)';
       case 'DAYS':

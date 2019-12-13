@@ -1,9 +1,5 @@
 <div class="activity1Container">
-  <input nz-input type="number"
-         placeholder="Nombre de ressource"
-         [max]="100"
-         [min]="0"
-         [(ngModel)]="resourceNb">
+  <input nz-input type="number" placeholder="Nombre de ressource" [max]="100" [min]="0" [(ngModel)]="resourceNb">
   <p style="padding: 10px">Ça coûte <b>{{ resourceNb * multiple}} k</b></p>
   <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
@@ -11,5 +7,4 @@
   </nz-modal>
   <p>Max resources: {{cost?.maxCost}}</p>
   <p>Min resources: {{cost?.minCost}}</p>
-  <p *ngIf="multiple ===2" style="color: #c87110">Vous pouvez dépenser les resoureces maintenaut!</p>
 </div>

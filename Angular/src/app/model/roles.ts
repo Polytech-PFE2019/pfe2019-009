@@ -1,6 +1,6 @@
 export const Roles = [
   {
-    title: 'Maitre d\'ouvrage',
+    title: 'Maître d\'ouvrage',
     id: 1,
     description: 'Le maître d’ouvrage est la personne pour ' +
       'laquelle est réalisée l’ouvrage. ' +
@@ -44,7 +44,7 @@ export const Roles = [
       ' la personne physique ou morale qui dirige ' +
       'et vérifie la bonne exécution des travaux. ' +
       'En tant qu’architecte, il doit aussi concevoir' +
-      ' le projet en répondant aux exigences du maitred’ouvrage.',
+      ' le projet en répondant aux exigences du maitre d’ouvrage.',
     mission: {
       pointsDeVistore:
         [
@@ -71,13 +71,13 @@ export const Roles = [
     }
   },
   {
-    title: 'Bureau d\'étude',
+    title: 'Bureau d\'études',
     id: 3,
-    description: 'Le bureau d’étude doit assister l’architecte sur ' +
+    description: 'Le bureau d’études doit assister l’architecte sur ' +
       'les spécificités techniques qui relèvent de sa compétence.' +
       ' Ils assurent des études techniques spécifiques : ' +
       'étudedelastructure, étude de sol, étude thermique,' +
-      ' étude acoustique, étude des réseaux...',
+      ' étude acoustique, étude des réseaux ...',
     mission: {
       pointsDeVistore:
         [
@@ -145,7 +145,7 @@ export const Roles = [
       'n’est pas assuré par le gros œuvre. ' +
       'Il s’agit des cloisons et plâtrerie, de la peinture,' +
       ' de l’électricité, de la ventilation, des menuiseries, ' +
-      'des revêtement de sol,delaplomberie…',
+      'des revêtement de sol,de la plomberie …',
     mission: {
       pointsDeVistore:
         [
@@ -177,7 +177,7 @@ export const Roles = [
     description: 'Ces entreprises ont pour but de bâtir' +
       ' l’ossature de l’ouvrage. Cela comprend les fondations, ' +
       'les poutres, les poteaux, ' +
-      'les murs, la charpente, le dallage… ' +
+      'les murs, la charpente, le dallage … ' +
       'Ils ont aussi souvent en charge les installations ' +
       'de chantier et le terrassement.',
     mission: {

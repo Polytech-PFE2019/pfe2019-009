@@ -221,17 +221,22 @@ export class GameOnService {
   getMyHistory(data) {
     const currentId = data.activityID;
     const currentAc = this.currentStep[currentId - 1];
-    const historyTmp = new History(currentId, this.subscription.myRole.id);
     console.log(this.currentStep);
     console.log(currentAc);
+    let historyTmp = null;
+    let isTest = true;
     const role = this.subscription.myRole.id;
     for (const b of currentAc.history) {
       console.log(b, role);
-      if (role === b.roleID) {
+      if (role === b.roleID && isTest) {
+        historyTmp = new History(currentId, this.subscription.myRole.id);
         historyTmp.payments.push(b);
+        isTest = false;
       }
     }
-    this.mesHistories.push(historyTmp);
+    if (historyTmp !== null) {
+      this.mesHistories.push(historyTmp);
+    }
     console.log(this.mesHistories);
     this.subscription.sendHistories(this.mesHistories);
   }

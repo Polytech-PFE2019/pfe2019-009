@@ -92,7 +92,7 @@ public class PayResourcesEvent implements EventProtocol {
             // if the activity status is not done yet it means the risk cards hadn't been drawn
             if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
                 currentActivity.doneActivity();
-                new DrawRiskCardEvent(game).processEvent();
+                new DrawCardEvent(game).processEvent();
             }
             // otherwise it means the payment is coming from risk cards and we have to finish the activity.
             else {

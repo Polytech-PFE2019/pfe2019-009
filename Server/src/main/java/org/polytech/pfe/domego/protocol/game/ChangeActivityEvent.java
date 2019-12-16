@@ -43,6 +43,7 @@ public class ChangeActivityEvent implements EventProtocol {
         response.addProperty(GameResponseKey.COST_PROJECT.key,game.getProject().getCost());
         response.addProperty(GameResponseKey.DELAY_PROJECT.key,game.getProject().getDays());
         response.addProperty(GameResponseKey.FAILURE_PROJECT.key,game.getProject().getRisks());
+        response.addProperty(GameResponseKey.QUALITY_PROJECT.key,game.getProject().getQuality());
         response.addProperty(GameResponseKey.ACTIVITY_ID.key,game.getCurrentActivity().getId());
         response.addProperty(GameResponseKey.INITIAL_DAYS.key, game.getCurrentActivity().getInitialNumberOfDays());
         response.addProperty(GameResponseKey.INITIAL_RISKS.key, game.getCurrentActivity().getInitialNumberOfRisks());

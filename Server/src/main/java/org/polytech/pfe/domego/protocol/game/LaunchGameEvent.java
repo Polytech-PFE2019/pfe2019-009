@@ -81,6 +81,7 @@ public class LaunchGameEvent implements EventProtocol {
         response.addProperty(GameResponseKey.COST_PROJECT.key, game.getProject().getCost());
         response.addProperty(GameResponseKey.DELAY_PROJECT.key, game.getProject().getDays());
         response.addProperty(GameResponseKey.FAILURE_PROJECT.key, game.getProject().getRisks());
+        response.addProperty(GameResponseKey.QUALITY_PROJECT.key, game.getProject().getQuality());
     }
 
     private void addPlayerObject(JsonObject response, Player player){
@@ -90,7 +91,6 @@ public class LaunchGameEvent implements EventProtocol {
         playerJson.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
         playerJson.addProperty(GameResponseKey.MONEY.key, player.getMoney());
         playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
-
         response.add(GameResponseKey.PLAYER.key, playerJson);
     }
 

@@ -8,7 +8,7 @@ import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.protocol.EventProtocol;
-import org.polytech.pfe.domego.protocol.game.DrawRiskCardEvent;
+import org.polytech.pfe.domego.protocol.game.DrawCardEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
 import java.util.logging.Level;
@@ -42,7 +42,7 @@ public class FailureNegotiationEvent implements EventProtocol {
             if (currentActivity.isActivityDone()) {
                 if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
                     currentActivity.doneActivity();
-                    new DrawRiskCardEvent(game).processEvent();
+                    new DrawCardEvent(game).processEvent();
                 }
             }
     }

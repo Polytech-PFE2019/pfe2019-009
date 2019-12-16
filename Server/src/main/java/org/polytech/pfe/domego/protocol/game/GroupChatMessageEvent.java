@@ -56,7 +56,7 @@ public class GroupChatMessageEvent implements EventProtocol {
 
         Player playerMessage = optionalPlayer.get();
 
-        game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse(playerMessage).toString()));
+        game.getPlayers().stream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse(playerMessage).toString()));
 
 
     }

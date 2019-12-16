@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.calculator.VictoryPointCalculator;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.protocol.EventProtocol;
@@ -25,7 +26,7 @@ public class FinishGameEvent implements EventProtocol {
     private Game game;
 
     public FinishGameEvent(Game game) {
-        this.game = game;
+        this.game = new GameAccessor().getGameById(game.getId()).get();
         this.calculator = new VictoryPointCalculator(game);
     }
 
@@ -40,7 +41,7 @@ public class FinishGameEvent implements EventProtocol {
 
         List<Player> rankedList = this.game.getPlayers().stream().sorted(Comparator.comparing(Player::getVictoryPoints)).collect(Collectors.toList());
 
-        this.game.getPlayers().parallelStream().forEach(player ->
+        this.game.getPlayers().stream().forEach(player ->
             new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse(rankedList).toString())
 
         );

@@ -7,6 +7,7 @@ import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.components.game.card.QualityCard;
 import org.polytech.pfe.domego.components.game.card.RiskCard;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.QualityAction;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -28,7 +29,7 @@ public class DrawCardEvent implements EventProtocol {
     private final Logger logger = Logger.getGlobal();
 
     public DrawCardEvent(Game game) {
-        this.game = game;
+        this.game = new GameAccessor().getGameById(game.getId()).get();
 
     }
 
@@ -51,7 +52,11 @@ public class DrawCardEvent implements EventProtocol {
         logger.log(Level.INFO, "DrawCardEvent : List of Risk : {0}" , risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()));
         logger.log(Level.INFO, "DrawCardEvent : List of Quality : {0}" , qualities.stream().map(qualityCard -> qualityCard.getQualityAction()).collect(Collectors.toList()));
 
+        for (Player player : game.getPlayers()) {
 
+            System.out.println(player.getName() + "    "  + player.getResourcesAmount());
+
+        }
 
         JsonObject response = createJsonResponse(currentActivity,risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()), qualities.stream().map(qualityCard -> qualityCard.getQualityAction()).collect(Collectors.toList()));
         game.getPlayers().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(finalResponseWithPlayerElement(response, player).toString()));

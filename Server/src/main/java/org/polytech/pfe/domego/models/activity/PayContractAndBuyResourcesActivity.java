@@ -62,7 +62,7 @@ public class PayContractAndBuyResourcesActivity extends Activity {
     }
 
     private BuyResources getBuyResourcesByRoleID(int roleID){
-        return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID && buyResources.hasPaid()).findAny().orElse(new BuyResources(roleID,2));
+        return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID && !buyResources.hasPaid()).findAny().orElse(new BuyResources(roleID,2));
     }
 
     public List<Integer> getBuyingRoleIDList(){

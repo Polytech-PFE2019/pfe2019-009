@@ -33,7 +33,7 @@ public class LaunchGameEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-       game.getPlayers().parallelStream().forEach(
+       game.getPlayers().stream().forEach(
                player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player))
        );
        logger.info("LaunchGameEvent : Send Message LaunchGameEvent to all players");

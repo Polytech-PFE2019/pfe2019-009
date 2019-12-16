@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Payment;
 import org.polytech.pfe.domego.models.Player;
@@ -48,7 +49,7 @@ public class PayResourcesEvent implements EventProtocol {
             return;
         }
 
-        Optional<Game> optionalGame = gameInstance.getSpecificGameByID(String.valueOf(request.get(GameRequestKey.GAMEID.getKey())));
+        Optional<Game> optionalGame = new GameAccessor().getGameById(String.valueOf(request.get(GameRequestKey.GAMEID.getKey())));
         if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
@@ -75,18 +76,19 @@ public class PayResourcesEvent implements EventProtocol {
         Type founderListType = new TypeToken<ArrayList<Payment>>(){}.getType();
         List<Payment> payments = new Gson().fromJson(request.get("payments").toString(), founderListType);
         Activity currentActivity = game.getCurrentActivity();
-        if (!currentActivity.payResources(player, payments)){
+        if (!currentActivity.payResources(game.getPlayerById(player.getID()).get(), payments)){
             int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
-            logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay", new Object[]{game.getId(), player.getID(),player.getResourcesAmount(), totalAmount});
+            logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay", new Object[]{game.getId(), player.getName(),player.getResourcesAmount(), totalAmount});
             return;
         }
         game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);//Send Message to the player that payment is ok
 
 
 
-        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
+        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getName(),payments.size(), currentActivity.getId()});
         logger.log(Level.INFO, "PaymentResourcesEvent : List Payment :  {0}", payments);
-        new UpdatePaymentGameEvent(game, player).processEvent();
+        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has now {2} resources", new Object[]{game.getId(), player.getName(),player.getResourcesAmount()});
+        new UpdatePaymentGameEvent(game, game.getPlayerById(player.getID()).get()).processEvent();
 
         if (currentActivity.isActivityDone()) {
             // if the activity status is not done yet it means the risk cards hadn't been drawn

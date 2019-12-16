@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
@@ -21,7 +22,7 @@ public class ChangeActivityEvent implements EventProtocol {
     private final Logger logger = Logger.getGlobal();
 
     public ChangeActivityEvent(Game game) {
-        this.game = game;
+        this.game = new GameAccessor().getGameById(game.getId()).get();
     }
 
     @Override
@@ -31,9 +32,16 @@ public class ChangeActivityEvent implements EventProtocol {
         }
         else{
             game.goToTheNextActivity();
+
+            for (Player player : game.getPlayers()) {
+
+                System.out.println(player.getName() + "    "  + player.getResourcesAmount());
+
+            }
+
             new PayContractEvent(game).processEvent();
             logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
-            game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
+            game.getPlayers().stream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
         }
     }
 

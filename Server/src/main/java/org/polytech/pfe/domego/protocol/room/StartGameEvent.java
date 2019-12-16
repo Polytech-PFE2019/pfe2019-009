@@ -62,10 +62,10 @@ public class StartGameEvent implements EventProtocol {
             this.messenger.sendError("You aren't the HOST player");
             return;
         }
-        /*if(!room.isFull()){
+        if(!room.isFull()){
             this.messenger.sendError("You must be 6 to start");
             return;
-        }*/
+        }
         if (!room.everybodyGotARole()){
             this.messenger.sendError("At least one player has no role");
             return;
@@ -94,7 +94,7 @@ public class StartGameEvent implements EventProtocol {
         Game game = gameAccessor.createNewGameFromRoom(room, gameType,timeOfProject,costOfProject);
         String response = createStartGameResponse(game).toString();
 
-        room.getPlayerList().parallelStream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
+        room.getPlayerList().stream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
 
         logger.log(Level.INFO,
                 "StartGameEvent: Player name : {0} start the game for room with ID {1}",

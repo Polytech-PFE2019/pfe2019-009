@@ -1,15 +1,20 @@
 <div class="container">
-  <img [src]="role?.src" width="60" height="60">
-  <div class="role-container">
+  <div class="infor">
+    <img [src]="role?.src" [ngStyle]="{borderColor: role.style.background}" width="60" height="60">
+    <h2>{{role?.username}}</h2>
+  </div>
+  <div class="role-container" [ngStyle]="{backgroundColor: role.style.background}">
     <nz-card [nzTitle]="role?.title">
       <div class="info-container">
         <span *ngIf="index1==0">{{role?.description}}</span>
+        <div class="money-class" [ngStyle]="{backgroundColor: role.style.background}"><b>{{role?.money}}K</b></div>
       </div>
     </nz-card>
     <label nz-checkbox
            [disabled]="disableChoose"
            [(ngModel)]="role.choosed"
-           (ngModelChange)="getChange()">Choisir ce rôle</label>
+           style="margin-top: 10px; color: white"
+           (ngModelChange)="getChange()"><b>Choisir ce rôle</b></label>
   </div>
   <app-confirm-role #confirmRole [role]="role?.title"></app-confirm-role>
 </div>

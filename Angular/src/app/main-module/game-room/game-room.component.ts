@@ -35,6 +35,10 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   userReady = 0;
   hostID: string;
   isLoding = false;
+  radioValue = '1';
+  costs = null;
+  days = null;
+  isConfig = false;
 
   constructor(private router: Router,
               private globals: Globals,
@@ -68,7 +72,6 @@ export class GameRoomComponent implements OnInit, OnDestroy {
           case 'UPDATE':
             this.users = data.players;
             this.hostID = data.hostID;
-
             for (const r of this.roles) {
               let taken = false;
               if (r.ready) {
@@ -158,16 +161,37 @@ export class GameRoomComponent implements OnInit, OnDestroy {
   }
 
   gameStart() {
+    this.isConfig = false;
     console.log('Game start');
-    const message = {
-      request: 'START_GAME',
-      roomID: this.roomID.toString(),
-      userID: this.userID.toString()
-    };
-    console.log(message);
-
-
-    this.lobbyService.messages.next(message as SocketRequest);
+    let gameTypes = 'INITIAL';
+    if (this.radioValue === '2') {
+      gameTypes = 'INTERMEDIATE';
+    }
+    if (this.radioValue === '1') {
+      this.subscriptionService.isVersionInitial = true;
+      const reqInitial = {
+        request: 'START_GAME',
+        gameType: gameTypes,
+        roomID: this.roomID.toString(),
+        userID: this.userID.toString()
+      };
+      console.log(reqInitial);
+      this.lobbyService.messages.next(reqInitial as SocketRequest);
+      this.router.navigate(['loading']);
+    } else {
+      this.subscriptionService.isVersionInitial = false;
+      const reqInter = {
+        request: 'START_GAME',
+        gameType: gameTypes,
+        roomID: this.roomID.toString(),
+        userID: this.userID.toString(),
+        days: this.days,
+        cost: this.costs
+      };
+      console.log(reqInter);
+      this.lobbyService.messages.next(reqInter as SocketRequest);
+      this.router.navigate(['loading']);
+    }
   }
 
   goToLoadingPage(gameID) {
@@ -185,11 +209,18 @@ export class GameRoomComponent implements OnInit, OnDestroy {
     console.log(event);
     const req = {
       request: 'CHANGE_STATUS',
-      roomID: this.roomID.toString(),
-      userID: this.userID.toString()
+      roomID: this.roomID,
+      userID: this.userID
     };
     console.log(req);
     this.lobbyService.messages.next(req as SocketRequest);
   }
 
+  configureGame() {
+    this.isConfig = true;
+  }
+
+  close() {
+    this.isConfig = false;
+  }
 }

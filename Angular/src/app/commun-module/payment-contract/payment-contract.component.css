@@ -1,5 +1,13 @@
 .inter{
   width: 30px;
-  height: 10px;
+  height: 8px;
   background-color: black;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.container{
+  display: flex;
+  height: 70px;
+  align-items: center;
 }

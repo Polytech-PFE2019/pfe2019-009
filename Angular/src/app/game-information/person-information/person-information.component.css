@@ -1,10 +1,13 @@
 .container{
   height: 100%;
   display: flex;
+  flex-direction: column;
+  background-color: white;
 }
 
 nz-card{
   width: 100%;
+  background-color: #f0f2f5;
 }
 
 .resource{
@@ -29,7 +32,10 @@ h3{
 
 .content-container{
   margin-top: 20px;
-  height: 150px
+  height: 160px
+}
 
+.contract-info{
+  height: 260px;
 }
 

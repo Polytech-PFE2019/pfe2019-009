@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgZorroAntdModule, NZ_I18N, fr_FR } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, fr_FR, NzConfigService, NzConfig, NZ_CONFIG } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,10 +19,8 @@ import { ConfirmRoleComponent } from './modal-module/role-confirm/confirm-role/c
 import { GameOnComponent } from './main-module/game-on/game-on.component';
 import { RoleChoiceDirective } from './directives/role-choice.directive';
 import { ProjetInformationComponent } from './game-information/projet-information/projet-information.component';
-import { ProjetInformationDurationComponent } from
-  './game-information/projet-information/projet-information-duration/projet-information-duration.component';
-import { ProjetInformationBudgetComponent } from
-  './game-information/projet-information/projet-information-budget/projet-information-budget.component';
+import { ProjetInformationDurationComponent } from './game-information/projet-information/projet-information-duration/projet-information-duration.component';
+import { ProjetInformationBudgetComponent } from './game-information/projet-information/projet-information-budget/projet-information-budget.component';
 import { ProjetInformationRiskComponent } from './game-information/projet-information/projet-information-risk/projet-information-risk.component';
 import { Globals } from './globals';
 import { BuyResourcesComponent } from './main-module/game-on/buy-resources/buy-resources.component';
@@ -34,7 +32,6 @@ import { ActivityDisplayerComponent } from './commun-module/activity-displayer/a
 import { LobbyService } from './service/lobbyService/lobby.service';
 import { WebsocketService } from './service/webSocketService/websocket.service';
 import { GameOnService } from './service/gameOnService/game-on.service';
-import { RiskContainerComponent } from './commun-module/risk-back/risk-container/risk-container.component';
 import { RiskBackComponent } from './commun-module/risk-back/risk-back.component';
 import { LoadingComponent } from './loading/loading.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
@@ -49,7 +46,17 @@ import { ChatMessageComponent } from './chat-module/chat-message/chat-message.co
 import { CountdownModule } from 'ngx-countdown';
 import { ResultComponent } from './game-information/result/result.component';
 import { PaymentContractComponent } from './commun-module/payment-contract/payment-contract.component';
+import { ListPlayersComponent } from './list-players/list-players.component';
+import { ChatGroupComponent } from './chat-module/chat-group/chat-group.component';
+import { ContractComponent } from './game-information/person-information/contract/contract.component';
+import { ListHistoryComponent } from './list-history/list-history.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
+
+const ngZorroConfig: NzConfig = {
+  notification: { nzDuration: 20000 }
+};
 
 registerLocaleData(fr);
 
@@ -74,7 +81,6 @@ registerLocaleData(fr);
     NegociationComponent,
     ResourceBuyerComponent,
     ActivityDisplayerComponent,
-    RiskContainerComponent,
     RiskBackComponent,
     LoadingComponent,
     LoadingPageComponent,
@@ -86,7 +92,11 @@ registerLocaleData(fr);
     ChatReceiverComponent,
     ChatMessageComponent,
     ResultComponent,
-    PaymentContractComponent
+    PaymentContractComponent,
+    ListPlayersComponent,
+    ChatGroupComponent,
+    ContractComponent,
+    ListHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -95,9 +105,14 @@ registerLocaleData(fr);
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    CountdownModule
+    CountdownModule,
+    MatIconModule,
+    MatBadgeModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: fr_FR }, Globals, LobbyService, WebsocketService, GameOnService],
+  providers: [{ provide: NZ_I18N, useValue: fr_FR },
+    Globals, LobbyService,
+  { provide: NZ_CONFIG, useValue: ngZorroConfig },
+    WebsocketService, GameOnService],
   bootstrap: [AppComponent]
 })
 

@@ -1,16 +1,44 @@
 .container {
-  height: 100vh;
+  height: calc(100vh - 60px);
   width: 100vw;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }
 
+.headers {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#listOfPlayers {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  margin-bottom: -10px;
+}
+
+#groupChat{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  margin-bottom: -10px;
+}
 
 .left-container {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 60px);
   overflow-y: auto;
+  overflow-x: auto;
+  background-color: rgba(139, 139, 139, 0.3);
+  display: flex;
+  flex-direction: row;
 }
 
 .right-container {
-  max-height: 100%;
+  height: calc(100vh - 60px);
   overflow-y: auto;
 }
 
@@ -25,11 +53,9 @@ h2 {
 }
 
 .activity {
-  width: 45%;
-  height: 350px;
-  margin-left: 30px;
-  margin-top: 30px;
-  background-color: #efefef;
+  height: 395px;
+  background-color: white;
+  margin-top: 8px;
 }
 
 .wait {
@@ -41,11 +67,13 @@ h2 {
 
 .activityContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
 }
 
-#end{
+#nego {
   display: flex;
   justify-content: center;
   width: 200px;
@@ -55,7 +83,17 @@ h2 {
   margin-left: 42%;
 }
 
-input{
+#end {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  height: 40px;
+  margin-top: 20px;
+  font-size: 20px;
+  margin-left: 42%;
+}
+
+input {
   width: 50px;
   height: 50px;
   position: absolute;
@@ -63,16 +101,74 @@ input{
   right: 30px;
 }
 
-.dialog-container{
-  height: 400px;
+.dialog-container {
+  height: 450px;
   position: absolute;
   bottom: 20px;
   right: 10px;
   display: flex;
 }
 
-.myContainer{
-  display: flex;
-  flex-wrap: wrap;
+.groupchat-container {
+  height: 400px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
 
+.myContainer {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 600px;
+}
+
+.players {
+  z-index: 999;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  max-height: 600px;
+  overflow-y: auto;
+  background-color: #e0e0e0;
+  padding: 10px;
+  border: solid 1px #123074;
+}
+
+.groupChat {
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+  overflow-y: auto;
+  margin: 10px;
+}
+.playerContianer {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#negociation{
+  position: absolute;
+  bottom: 5px;
+  z-index: 999;
+  right: 5px;
+}
+
+.nego-container{
+  position: relative;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+}
+
+.personActivity{
+  height: 374px;
+  background-color: white;
+}
+.mat-icon {
+  border: none;
+  font-size: 50px;
+  width: 50px;
+}

@@ -6,37 +6,34 @@
     <!--    <button id="createSalon" nz-button nzType="default" (click)="createASalon()">Créer un salon</button>-->
     <!--    <button id="joinSalon" nz-button nzType="default" (click)="joinASalon()">Join un salon</button>-->
     <nz-card>
-      <h4>Entréez votre nom!</h4>
-      <input nz-input placeholder="Entréez votre nom" [(ngModel)]="value" (ngModelChange)="getUsername()"/>
+      <h4>Entrez votre nom !</h4>
+      <input nz-input placeholder="Entrez votre nom" [(ngModel)]="value" (ngModelChange)="getUsername()" />
       <div class="choice">
         <button class="create" (click)="createASalon()">Créer une partie</button>
       </div>
-      <nz-table #filterTable
-                [nzShowPagination]="false"
-                [nzData]="listOfDisplayData"
-                nzTitle="Parties disponibles">
+      <nz-table #filterTable [nzShowPagination]="false" [nzData]="listOfDisplayData" nzTitle="Parties disponibles">
         <thead>
-        <tr>
-          <th>
-            ID
-          </th>
-          <th>Creator</th>
-          <th>
-            Nombre de joueurs
-          </th>
-          <th>Join</th>
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>Créateur</th>
+            <th>
+              Nombre de joueurs
+            </th>
+            <th>Joindre</th>
 
-        </tr>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{ data?.roomID}}</td>
-          <td>{{ data?.creator}}</td>
-          <td>{{ data?.numberOfPlayer }}</td>
-          <td>
-            <button nz-button (click)="joinSalon(data)" [disabled]="data.numberOfPlayer===6">Join</button>
-          </td>
-        </tr>
+          <tr *ngFor="let data of filterTable.data">
+            <td>{{ data?.roomID}}</td>
+            <td>{{ data?.creator}}</td>
+            <td>{{ data?.numberOfPlayer }}</td>
+            <td>
+              <button nz-button (click)="joinSalon(data)" [disabled]="data.numberOfPlayer===6">Join</button>
+            </td>
+          </tr>
         </tbody>
       </nz-table>
     </nz-card>

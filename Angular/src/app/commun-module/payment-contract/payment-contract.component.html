@@ -1,15 +1,15 @@
-<div nz-row style="padding-bottom: 10px">
-  <div nz-col nzSpan="8">
-    <div class="blue_rounding">1k</div>
+<div style="padding-bottom: 10px" class="container">
+  <div>
+    <div [ngStyle]="giverStyle"></div>
   </div>
   <div class="inter">
   </div>
-  <div nz-col nzSpan="8">
+  <div>
     <img src="../../../assets/icons/coin.png" [width]="30" [height]="30" alt="right_arrow">
   </div>
   <div class="inter">
   </div>
-  <div nz-col nzSpan="8">
-    <div class="black_square"></div>
+  <div>
+    <div [ngStyle]="receiverStyle"><b>{{percent}}%</b></div>
   </div>
 </div>

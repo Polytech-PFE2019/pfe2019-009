@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Roles} from '../../model/roles';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-result',
@@ -22,6 +23,7 @@ export class ResultComponent implements OnInit {
   data: any[] = [];
 
   constructor(private gameOnService: GameOnService,
+              private router: Router,
               private subscription: SubscriptionService) {
   }
 
@@ -48,20 +50,25 @@ export class ResultComponent implements OnInit {
         contactNegociated: item.information.contractNegotiated
       };
       const tmp = {
-        title: this.getSrcById(item.player.roleID).title,
+        title: this.getRoleById(item.player.roleID).title,
         user: item.player.username,
+        id: item.player.roleID,
         point: item.NumberOfVictoryPoints,
         details: detail,
         rank: item.rank,
-        src: this.getSrcById(item.player.roleID).src
+        src: this.getRoleById(item.player.roleID).src
       };
       this.data.push(tmp);
     }
   }
 
-  getSrcById(id) {
+  getRoleById(id) {
     return this.roles.filter(next => next.id === id)[0];
   }
 
 
+  quit() {
+    console.log('quit');
+    this.router.navigate(['']);
+  }
 }

@@ -5,6 +5,8 @@ import {Observable, Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class SubscriptionService {
+  isInitial: any = null;
+  isVersionInitial: any = null;
   roomID = new Subject<any>();
   roomID$ = this.roomID.asObservable();
 
@@ -40,7 +42,16 @@ export class SubscriptionService {
   failures = new Subject<any>();
   failures$ = this.failures.asObservable();
 
+  myHistories = new Subject<any>();
+  myHistories$ = this.myHistories.asObservable();
+
   myRole: any;
+
+  currentActivityID = new Subject<any>();
+  currentActivityID$ = this.currentActivityID.asObservable();
+
+  costInital: any = null;
+
 
   constructor() {
   }
@@ -89,6 +100,7 @@ export class SubscriptionService {
   sendCurrentActivity(msg) {
     console.log('sendCurrentActivity' + msg);
     this.currentActivity.next(msg);
+    this.currentActivityID.next(msg.title);
   }
 
   sendCosts(msg) {
@@ -104,5 +116,10 @@ export class SubscriptionService {
   sendFailures(msg) {
     console.log('sendFailures' + msg);
     this.failures.next(msg);
+  }
+
+  sendHistories(msg) {
+    console.log('send' + msg);
+    this.myHistories.next(msg);
   }
 }

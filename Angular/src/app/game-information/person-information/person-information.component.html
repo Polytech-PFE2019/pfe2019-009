@@ -1,10 +1,6 @@
 <div class="container">
-  <nz-card [nzActions]="[description, pointVictoire, special, plan]">
-    <nz-card-meta
-      [nzDescription]="extra"
-      [nzTitle]="myInformation.title"
-      [nzAvatar]="avatarTemplate">
-    </nz-card-meta>
+  <nz-card [nzTitle]="extra"
+           [nzActions]="[description, pointVictoire, special, plan]" [nzExtra]="extraBnt">
     <div *ngIf="isPointsVistoire" class="content-container">
       <h6>Points de victoire:</h6>
       <p *ngFor="let item of myInformation?.mission.pointsDeVistore">
@@ -33,38 +29,55 @@
     <nz-avatar [nzSrc]="myInformation.src"></nz-avatar>
   </ng-template>
   <ng-template #pointVictoire style="position: absolute; bottom: 0">
-    <span (click)="showPointsVistoire()">
+    <div (click)="showPointsVistoire()">
       <i class="iconfont icon-mubiao">
       </i><br>
       Points de victoire
-    </span>
+    </div>
+  </ng-template>
+  <ng-template #extraBnt>
+    <button nz-button
+            nz-popconfirm
+            nzPopconfirmTitle="Voulez-vous déclarer une faillte?"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="confirm()"
+            (nzOnCancel)="cancel()"
+            [nzIcon]="iconTpl"
+            nzType="primary"><i nz-icon nzType="warning"></i>
+      Faillte
+    </button>
+  </ng-template>
+  <ng-template #iconTpl>
+    <i nz-icon nzType="exclamation" style="color: red;"></i>
   </ng-template>
   <ng-template #special>
-    <span (click)="showSpecial()">
+    <div (click)="showSpecial()">
       <i class="iconfont icon-hetong">
       </i>
       <br>
     Spécial
-    </span>
+    </div>
   </ng-template>
   <ng-template #description>
-    <span (click)="showDescription()">
+    <div (click)="showDescription()">
       <i id="description" class="iconfont icon-description"></i>
       <br>
       Description
-    </span>
+    </div>
   </ng-template>
 
   <ng-template #plan>
-    <span (click)="showPlan()">
+    <div (click)="showPlan()">
       <i id="planning" class="iconfont icon-touzijihuaguanli"></i>
       <br>
       Plan
-    </span>
+    </div>
   </ng-template>
 
   <ng-template #extra>
+    <h4>{{myInformation?.title}}</h4>
     <div class="resource">
+      <nz-avatar [nzSrc]="myInformation.src"></nz-avatar>
       <div class="inner">
         <img src="../../../assets/moneybag.png" [width]="30" [height]="30">
         <h3>{{currentMonney}}K</h3>
@@ -77,3 +90,21 @@
     </div>
   </ng-template>
 </div>
+
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+          <span class="ant-notification-notice-icon">
+            <i nz-icon nzType="money-collect"
+               style="color: rgb(16, 142, 233);"
+               nzTheme="outline">
+            </i>
+          </span>
+      <div class="ant-notification-notice-message">Paiement du contract</div>
+      <div class="ant-notification-notice-description">
+        Une partie du contrat a été payée: <b>{{giverRoleName}}</b> a payé <b>{{paymentAmount}}
+        k</b> au <b>{{receiverRoleName}}</b>
+      </div>
+    </div>
+  </div>
+</ng-template>

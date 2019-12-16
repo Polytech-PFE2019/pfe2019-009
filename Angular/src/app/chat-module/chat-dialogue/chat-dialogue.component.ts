@@ -98,7 +98,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
         case 'END_NEGOTIATE':
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
-            this.notification.template(this.template);
+            // this.notification.template(this.template);
 
           }
           break;

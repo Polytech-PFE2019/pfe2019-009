@@ -77,9 +77,9 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   handleOk(): void {
     this.sendBuy.emit(true);
     this.price = this.resourceNb * this.multiple;
-    this.notification.blank('Activité effectuée',
-      'Vous avez acheté ' + this.resourceNb + ' resources',
-      {nzDuration: 35});
+    // this.notification.blank('Activité effectuée',
+    //   'Vous avez acheté ' + this.resourceNb + ' resources',
+    //   {nzDuration: 35});
     console.log('price is ' + this.price);
     this.resourceService.sendResourcesBuying(this.resourceNb);
     this.resourceService.sendPayment(this.price);

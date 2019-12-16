@@ -69,7 +69,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
 
   myStyle = {
     height: '50vh'
-  }
+  };
   tabs = [
     {
       id: 0,
@@ -186,12 +186,12 @@ export class GameOnComponent implements OnInit, OnDestroy {
       }
 
       if (data.response === 'CHANGE_ACTIVITY') {
-        this.notification.create(
-          'info',
-          'Fin de l\'étape ' + (data.activityID - 1),
-          'L\'étape ' + data.activityID + ' commence',
-          {nzDuration: 8000}
-        );
+        // this.notification.create(
+        //   'info',
+        //   'Fin de l\'étape ' + (data.activityID - 1),
+        //   'L\'étape ' + data.activityID + ' commence',
+        //   {nzDuration: 8000}
+        // );
       }
 
       if (data.response === 'UPDATE_PAYMENT') {
@@ -353,7 +353,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   getOpenDialoue($event: any) {
-    if($event && this.isTest){
+    if ($event && this.isTest) {
       this.myStyle.height = '50vh';
       this.isTest = false;
     }

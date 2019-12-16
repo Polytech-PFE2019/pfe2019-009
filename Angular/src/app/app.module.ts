@@ -55,7 +55,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 
 
 const ngZorroConfig: NzConfig = {
-  notification: { nzDuration: 20000 }
+  notification: { nzDuration: 8000 }
 };
 
 registerLocaleData(fr);

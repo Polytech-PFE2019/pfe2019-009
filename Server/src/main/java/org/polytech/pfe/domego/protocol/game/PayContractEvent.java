@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.protocol.game;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
@@ -20,13 +21,20 @@ public class PayContractEvent implements EventProtocol {
     private Game game;
 
     public PayContractEvent(Game game) {
-        this.game = game;
+        this.game = new GameAccessor().getGameById(game.getId()).get();
 
     }
     @Override
     public void processEvent() {
 
+
         Activity activity = game.getCurrentActivity();
+
+        for (Player player : game.getPlayers()) {
+
+            System.out.println(player.getName() + "    "  + player.getResourcesAmount());
+
+        }
 
         if(activity.getPayContractList().isEmpty())
             return;
@@ -46,7 +54,16 @@ public class PayContractEvent implements EventProtocol {
             if (optionalReceiver.isEmpty())
                 return;
 
+
+
             Player receiver = optionalReceiver.get();
+            logger.log(Level.INFO,
+                    "PayContractEvent : GIVER name :  {0}, money {1} resource {2}",
+                    new Object[]{giver.getName(), giver.getMoney(), giver.getResourcesAmount()});
+            logger.log(Level.INFO,
+                    "PayContractEvent : RECEIVER name :  {0}, money {1} resource {2}",
+                    new Object[]{receiver.getName(), receiver.getMoney(), receiver.getResourcesAmount()});
+
             giver.subtractMoney(amountPaid);
             receiver.addMoney(amountPaid);
             payContract.setPaid();
@@ -54,8 +71,15 @@ public class PayContractEvent implements EventProtocol {
             new Messenger(receiver.getSession()).sendSpecificMessageToAUser(createResponseToUser(receiver, giver, receiver, amountPaid, negotiation.getId()));
 
             logger.log(Level.INFO,
-                    "EndNegotiationEvent : In game {0}, {1} paid {2} the amount {3}.",
+                    "PayContractEvent : In game {0}, {1} paid {2} the amount {3}.",
                     new Object[]{game.getId(), giver.getRole().getName(), receiver.getRole().getName() ,  amountPaid});
+
+            logger.log(Level.INFO,
+                    "PayContractEvent : GIVER name :  {0}, money {1} resource {2}",
+                    new Object[]{giver.getName(), giver.getMoney(), giver.getResourcesAmount()});
+            logger.log(Level.INFO,
+                    "PayContractEvent : RECEIVER name :  {0}, money {1} resource {2}",
+                    new Object[]{receiver.getName(), receiver.getMoney(), receiver.getResourcesAmount()});
         }
     }
 

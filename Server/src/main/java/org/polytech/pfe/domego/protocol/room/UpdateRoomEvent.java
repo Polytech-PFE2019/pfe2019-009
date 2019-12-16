@@ -18,7 +18,7 @@ public class UpdateRoomEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-       currentRoom.getPlayerList().parallelStream().forEach(
+       currentRoom.getPlayerList().stream().forEach(
                player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player.getID()))
        );
     }

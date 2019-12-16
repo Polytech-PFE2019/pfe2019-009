@@ -40,8 +40,8 @@
           </div>
         </div>
       </div>
-      <div class="groupchat-container" *ngIf="showGroupChat">
-        <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
+      <div class="groupchat-container" [ngStyle]="headerStyle" *ngIf="showGroupChat">
+        <app-chat-group #groupChat (minusDialogue)="minusDialogue($event)" (openDialogue)="openMinusedDialogue($event)" (closeDialogue)="closeGroupChat()"></app-chat-group>
       </div>
       <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow" [@.disabled]='isDiabled'
         [@swing]="swing" (click)="launchNegotiation()" [height]="80" [width]="70">

@@ -128,10 +128,11 @@ input {
 }
 
 .groupchat-container {
-  height: 400px;
+  height: 50vh;
   position: absolute;
-  bottom: 70px;
-  right: 5px;
+  bottom: 0;
+  width: 30vw;
+  right: 5%;
 }
 
 .myContainer {

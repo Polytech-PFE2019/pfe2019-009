@@ -13,6 +13,8 @@ import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscri
 export class ChatGroupComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Output() closeDialogue = new EventEmitter();
+  @Output() minusDialogue = new EventEmitter();
+  @Output() openDialogue = new EventEmitter();
   isOpenGroupChat = true;
   messages: DialogueMessage[] = [];
   myMessage = '';
@@ -78,4 +80,11 @@ export class ChatGroupComponent implements OnInit, OnDestroy {
     this.messages.push(message);
   }
 
+  minus() {
+    this.minusDialogue.emit(true);
+  }
+
+  open() {
+    this.openDialogue.emit(true);
+  }
 }

@@ -73,6 +73,7 @@ public class FinishGameEvent implements EventProtocol {
         projectJson.addProperty(GameResponseKey.COST_PROJECT.key, project.getCost());
         projectJson.addProperty(GameResponseKey.DAYS.key, project.getDays());
         projectJson.addProperty(GameResponseKey.RISKS.key, project.getRisks());
+        projectJson.addProperty(GameResponseKey.QUALITY.key, project.getQuality());
         return projectJson;
     }
 

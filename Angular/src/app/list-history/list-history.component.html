@@ -1,28 +1,34 @@
-<nz-list [nzDataSource]="histories"
-         [nzItemLayout]="'vertical'"
-         [nzRenderItem]="step">
-  <ng-template #step let-item let-i>
-    {{item.payments.length}}
-    <nz-list-item style="display: flex; flex-direction: column">
-      <h3>Etape {{i+1}}</h3>
-      <nz-table class="basicTable" #playerTable
-                [nzData]="item.payments"
-                [nzShowPagination]="false">
-        <thead>
-        <tr>
-          <th>Type</th>
-          <th>Depensé</th>
-          <th>Résultat</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let h of playerTable.data" >
-          <td>{{getType(h.type)}}</td>
-          <td>{{h.amount}}</td>
-          <td>{{getBonus(h.type, h.bonus)}}</td>
-        </tr>
-        </tbody>
-      </nz-table>
-    </nz-list-item>
-  </ng-template>
-</nz-list>
+<div class="card-container">
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab [nzTitle]="'Liste de joueurs'">
+      <app-list-players></app-list-players>
+    </nz-tab>
+    <nz-tab [nzTitle]="'Mon historique'" #target>
+      <nz-affix id="affix-container-target">
+        <div style="margin: 5px;">
+          <h4>L'argent dépensé total:</h4>
+          <h4>Les ressources dépensées totales: {{totalResourcePayment}}</h4>
+        </div>
+      </nz-affix>
+      <div *ngFor="let h of histories; let i=index" style="margin-top: 10px">
+        <h3>Etape {{i+1}}</h3>
+        <nz-table class="basicTable" #playerTable [nzData]="h.payments" [nzShowPagination]="false">
+          <thead>
+          <tr>
+            <th>Type</th>
+            <th>Depensé</th>
+            <th>Résultat</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let h of playerTable.data">
+            <td>{{getType(h.type)}}</td>
+            <td>{{h.amount}}</td>
+            <td>{{getBonus(h.type, h.bonus)}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>

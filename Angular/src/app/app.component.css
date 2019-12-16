@@ -55,3 +55,41 @@ nz-badge {
   vertical-align: middle;
 }
 
+#image {
+  /* the image you want to 'watermark' */
+  height: 200px; /* or whatever, equal to the image you want 'watermarked' */
+  width: 200px; /* as above */
+  background-image: url('../assets/icons/coin.png');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+#image img {
+  /* the actual 'watermark' */
+  position: absolute;
+  top: 0; /* or whatever */
+  left: 0; /* or whatever, position according to taste */
+  opacity: 0.1; /* Firefox, Chrome, Safari, Opera, IE >= 9 (preview) */
+  filter:alpha(opacity=10); /* for <= IE 8 */
+}
+
+#image {
+  /* the image you want to 'watermark' */
+  height: 200px; /* or whatever, equal to the image you want 'watermarked' */
+  width: 200px; /* as above */
+  background-image: url('../assets/icons/coin.png');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+#image p {
+  /* the actual 'watermark' */
+  position: absolute;
+  top: 0; /* or whatever */
+  left: 0; /* or whatever, position according to taste */
+  opacity: 0.5; /* Firefox, Chrome, Safari, Opera, IE >= 9 (preview) */
+  filter:alpha(opacity=50); /* for <= IE 8 */
+}
+

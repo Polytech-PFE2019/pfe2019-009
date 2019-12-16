@@ -2,9 +2,6 @@
   text-align: center;
 }
 
-nz-tabset{
-  width: 100%;
-}
 
 .activity2Container{
   padding-top: 20px;
@@ -12,6 +9,7 @@ nz-tabset{
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+
 }
 
 .row{
@@ -50,4 +48,8 @@ img{
 
 .column{
   text-align: center;
+}
+
+#confirm{
+  margin-left: 150px;
 }

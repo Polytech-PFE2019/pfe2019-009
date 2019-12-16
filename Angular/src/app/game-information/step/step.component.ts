@@ -42,6 +42,7 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
   CURRENT_COLOR = 'grey';
   PREVIOUS_COLOR = 'lightgrey';
   numOfStep = 1;
+  isDone = false;
 
   constructor(private subscription: SubscriptionService,
               private nzMessage: NzMessageService,
@@ -62,14 +63,14 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(data, this.step.title);
       this.numOfStep += 1;
       if (data === this.step.title) {
-        // setInterval(() => {
         document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #82ce2c';
-        //  setTimeout(() => {
-        //   document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #ececec';
-        //  }, 500);
-        // }, 1000);
       } else if (data > this.step.title) {
+        this.isDone = true;
         document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #123074';
+        document.getElementById('stepCard' + this.step.title).style.backgroundColor = '#aaaaaa38';
+
+      } else if (data < this.step.title) {
+        document.getElementById('stepCard' + this.step.title).style.border = 'solid 2px #f68c12';
       }
     });
 
@@ -78,6 +79,8 @@ export class StepComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     if (this.step.title === 1) {
       document.getElementById('stepCard' + this.step.title).style.border = 'solid 8px #82ce2c';
+    } else {
+      document.getElementById('stepCard' + this.step.title).style.border = 'solid 2px #f68c12';
     }
   }
 

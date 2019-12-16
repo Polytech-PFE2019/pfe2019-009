@@ -1,6 +1,8 @@
-<div [hidden]="!isLoading">
+<div [hidden]="!isLoading" class="allContainerss">
   <div class="headers">
-    <button id="groupChat" type="button" (click)="openGroupChat()"><img src="../../../assets/icons/list.png" [width]="40" [height]="40"></button>
+    <nz-badge [nzCount]="5">
+      <button id="groupChat" type="button" (click)="openGroupChat()"><img src="../../../assets/icons/list.png" [width]="40" [height]="40"></button>
+    </nz-badge>
     <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
     <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/menu.png" [width]="40" [height]="40">
   </div>

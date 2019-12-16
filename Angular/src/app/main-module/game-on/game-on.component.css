@@ -5,6 +5,7 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
+  opacity: 0.95;
 }
 
 .headers {
@@ -32,7 +33,7 @@
   height: calc(100vh - 60px);
   overflow-y: auto;
   overflow-x: auto;
-  background-color: rgba(139, 139, 139, 0.3);
+  /*background-color: rgba(139, 139, 139, 0.3);*/
   display: flex;
   flex-direction: row;
 }
@@ -56,6 +57,9 @@ h2 {
   height: 395px;
   background-color: white;
   margin-top: 8px;
+  border-radius: 10px;
+  opacity: 0.99;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .wait {
@@ -133,7 +137,6 @@ input {
   padding: 10px;
   border: solid 1px #123074;
 }
-
 .groupChat {
   z-index: 999;
   display: flex;
@@ -166,4 +169,11 @@ input {
 .personActivity{
   height: 374px;
   background-color: white;
+}
+
+.allContainerss{
+  background-image: url('../../../assets/icons/new123.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
 }

@@ -5,6 +5,10 @@
   background-color: white;
 }
 
+nz-card{
+  border-radius: 10px;
+}
+
 .content-container{
   height: 205px;
 }

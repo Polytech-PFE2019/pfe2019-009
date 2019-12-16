@@ -304,17 +304,17 @@ export class GameOnComponent implements OnInit, OnDestroy {
   }
 
   getBuy($event: any) {
-    this.tabs = [
-      {
-        id: 0,
-        name: 'Payer des resources',
-        icon: 'pay-circle'
-      },
-      {
-        id: 1,
-        name: 'Acheter des resources',
-        icon: 'shopping-cart',
-      },
-    ];
+    // this.tabs = [
+    //   {
+    //     id: 0,
+    //     name: 'Payer des resources',
+    //     icon: 'pay-circle'
+    //   },
+    //   {
+    //     id: 1,
+    //     name: 'Acheter des resources',
+    //     icon: 'shopping-cart',
+    //   },
+    // ];
   }
 }

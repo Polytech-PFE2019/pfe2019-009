@@ -11,8 +11,8 @@
         </div>
       </nz-affix>
       <div *ngFor="let h of histories; let i=index" style="margin-top: 10px">
-        <h3>Etape {{h.activityID}}</h3>
         <div *ngIf="h.payments.length>0">
+          <h3>Etape {{h.activityID}}</h3>
           <nz-table class="basicTable" #playerTable [nzData]="h.payments" [nzShowPagination]="false">
             <thead>
             <tr>

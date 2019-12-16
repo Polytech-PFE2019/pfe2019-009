@@ -62,9 +62,14 @@ export class GameOnComponent implements OnInit, OnDestroy {
   showGroupChat = false;
   totalScrollHeight = 0;
   isMinused = false;
+  isTest = false;
   headerStyle = {
     height: '50vh'
   };
+
+  myStyle = {
+    height: '50vh'
+  }
   tabs = [
     {
       id: 0,
@@ -344,6 +349,21 @@ export class GameOnComponent implements OnInit, OnDestroy {
       this.headerStyle.height = '50vh';
       this.isMinused = false;
       console.log(this.headerStyle);
+    }
+  }
+
+  getOpenDialoue($event: any) {
+    if($event && this.isTest){
+      this.myStyle.height = '50vh';
+      this.isTest = false;
+    }
+  }
+
+  closeChatDialogue($event: any) {
+    if ($event) {
+      this.headerStyle.height = '6vh';
+      console.log(this.headerStyle);
+      this.isTest = true;
     }
   }
 }

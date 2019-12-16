@@ -36,15 +36,15 @@
       <div class="dialog-container">
         <div *ngFor="let i of listOfDialog">
           <div *ngIf="i.started">
-            <app-chat-dialogue [data]="i"></app-chat-dialogue>
+            <app-chat-dialogue [data]="i" (openDialogue)="getOpenDialoue($event)" (minusDialogue)="closeChatDialogue($event)"></app-chat-dialogue>
           </div>
         </div>
       </div>
       <div class="groupchat-container" [ngStyle]="headerStyle" *ngIf="showGroupChat">
         <app-chat-group #groupChat (minusDialogue)="minusDialogue($event)" (openDialogue)="openMinusedDialogue($event)" (closeDialogue)="closeGroupChat()"></app-chat-group>
       </div>
-      <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow" [@.disabled]='isDiabled'
-        [@swing]="swing" (click)="launchNegotiation()" [height]="80" [width]="70">
+      <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow"
+           (click)="launchNegotiation()" [height]="80" [width]="70">
     </div>
     <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
       style="background-color: #ececec">

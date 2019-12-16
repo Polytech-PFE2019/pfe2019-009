@@ -13,6 +13,8 @@ import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
 })
 export class ChatDialogueComponent implements OnInit, OnDestroy {
   @Output() sendCloseDialog = new EventEmitter();
+  @Output() minusDialogue = new EventEmitter();
+  @Output() openDialogue = new EventEmitter();
   @Input() data: any;
   @Input() receiver = {
     class: 'receiver',
@@ -42,6 +44,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   };
   contractProposed = 0;
   myMessage = '';
+
 
   constructor(private gameService: GameOnService,
               private notification: NzNotificationService,
@@ -164,6 +167,14 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     };
     console.log(req);
     this.gameService.messages.next(req as SocketRequest);
+  }
+
+  minus() {
+    this.minusDialogue.emit(true);
+  }
+
+  open() {
+    this.openDialogue.emit(true);
   }
 
 }

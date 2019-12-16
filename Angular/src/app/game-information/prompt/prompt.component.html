@@ -1,8 +1,9 @@
 <div class="promptContainer">
-  <span *ngFor="let id of currentActivity?.rolesID">
-    <b>{{getRoleById(id).title}}</b>
-  </span>
-  <span *ngIf="currentActivity?.rolesID.length>1">sont entrain de jouer</span>
-  <span *ngIf="currentActivity?.rolesID.length===1">est entrain de jouer</span>
+  <div>En attendant que les autres finissent...</div>
+  <!--  <span *ngFor="let id of currentActivity?.rolesID">-->
+  <!--    <b>{{getRoleById(id).title}}</b>-->
+  <!--  </span>-->
+  <!--  <span *ngIf="currentActivity?.rolesID.length>1">sont entrain de jouer</span>-->
+  <!--  <span *ngIf="currentActivity?.rolesID.length===1">est entrain de jouer</span>-->
   <img src="../../../assets/rotation.gif" [width]="240" [height]="180" alt="loading">
 </div>

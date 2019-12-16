@@ -21,7 +21,7 @@
 
   <div class="senderBox">
     <div class="desc-container">
-      <textarea #msg rows="6" (keyup.enter)="sendMessage()" nz-input id="msg" [(ngModel)]="myMessage">
+      <textarea #msg rows="4" (keyup.enter)="sendMessage()" nz-input id="msg" [(ngModel)]="myMessage">
           </textarea>
       <button nzType="default" id="msgBnt" nz-button (click)="sendMessage()" nzShape="circle">
         <i class="iconfont icon-send">

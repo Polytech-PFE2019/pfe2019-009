@@ -1,9 +1,8 @@
 <div [hidden]="!isLoading" class="allContainerss">
   <div class="headers">
-    <button id="groupChat" type="button" (click)="openGroupChat()">
+    <button id="groupChat" nz-button nzSize="small" (click)="openGroupChat()">
       <div *ngIf="hasBadge">
-        <mat-icon matBadgeSize="large" matBadge="!" matBadgePosition="above after">chat</mat-icon>
-
+        <mat-icon matBadgeSize="medium" matBadge="!" matBadgePosition="above after">chat</mat-icon>
       </div>
       <div *ngIf="!hasBadge">
         <mat-icon>chat</mat-icon>

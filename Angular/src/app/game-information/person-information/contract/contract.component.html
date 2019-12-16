@@ -1,5 +1,5 @@
 <div class="container">
-  <nz-card [nzTitle]="contract" [nzActions]="[contractSigne, receive, give]">
+  <nz-card id="contract-card" [nzTitle]="contract" [nzActions]="[contractSigne, receive, give]">
     <div class="content-container">
       <div *ngIf="isPayment">
         <nz-tabset>

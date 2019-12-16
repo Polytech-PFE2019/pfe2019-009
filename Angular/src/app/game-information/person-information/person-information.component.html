@@ -1,6 +1,8 @@
 <div class="container">
-  <nz-card [nzTitle]="extra"
-           [nzActions]="[description, pointVictoire, special, plan]" [nzExtra]="extraBnt">
+  <nz-card
+    id="person-card"
+    [nzTitle]="extra"
+    [nzActions]="[description, pointVictoire, special, plan]" [nzExtra]="extraBnt">
     <div *ngIf="isPointsVistoire" class="content-container">
       <h6>Points de victoire:</h6>
       <p *ngFor="let item of myInformation?.mission.pointsDeVistore">
@@ -55,7 +57,7 @@
       <i class="iconfont icon-hetong">
       </i>
       <br>
-    Spécial
+      Spécial
     </div>
   </ng-template>
   <ng-template #description>

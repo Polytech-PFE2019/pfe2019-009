@@ -1,13 +1,19 @@
 <div [hidden]="!isLoading" class="allContainerss">
   <div class="headers">
-    <nz-badge [nzCount]="5">
-      <button id="groupChat" type="button" (click)="openGroupChat()"><img src="../../../assets/icons/list.png" [width]="40" [height]="40"></button>
-    </nz-badge>
+    <button id="groupChat" type="button" (click)="openGroupChat()">
+      <div *ngIf="hasBadge">
+        <mat-icon matBadgeSize="large" matBadge="!" matBadgePosition="above after">chat</mat-icon>
+
+      </div>
+      <div *ngIf="!hasBadge">
+        <mat-icon>chat</mat-icon>
+      </div>
+    </button>
     <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
     <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/menu.png" [width]="40" [height]="40">
   </div>
   <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Menu"
-             (nzOnClose)="closePlayers()">
+    (nzOnClose)="closePlayers()">
     <app-list-players></app-list-players>
   </nz-drawer>
   <div nz-row class="container">
@@ -35,18 +41,17 @@
           </div>
         </div>
       </div>
+      <div class="groupchat-container" *ngIf="showGroupChat">
+        <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
+      </div>
       <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow" [@.disabled]='isDiabled'
-           [@swing]="swing" (click)="launchNegotiation()" [height]="80" [width]="70">
+        [@swing]="swing" (click)="launchNegotiation()" [height]="80" [width]="70">
     </div>
-    <div class="groupchat-container" *ngIf="showGroupChat">
-      <app-chat-group #groupChat (closeDialogue)="closeGroupChat()"></app-chat-group>
-    </div>
-
     <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
-         style="background-color: #ececec">
+      style="background-color: #ececec">
       <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
         <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
-                  (sendStepTest)="getStepTest($event)"></app-step>
+          (sendStepTest)="getStepTest($event)"></app-step>
       </div>
     </div>
   </div>
@@ -83,7 +88,7 @@
       </span>
       <div class="ant-notification-notice-message">Paiement effectué</div>
       <div class="ant-notification-notice-description" *ngIf="totalAmount>0">
-        <b>{{currentPlayer?.title}}</b> avez payé <b>{{totalAmount}}</b> resource(s) pour reduire
+        <b>{{currentPlayer?.title}}</b> avez payé <b>{{totalAmount}}</b> ressource(s) pour reduire
         <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
       </div>
     </div>

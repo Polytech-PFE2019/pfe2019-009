@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {GameOnService} from '../service/gameOnService/game-on.service';
-import {History} from '../model/history';
-import {SubscriptionService} from '../service/subscriptionSerivce/subscription.service';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { GameOnService } from '../service/gameOnService/game-on.service';
+import { History } from '../model/history';
+import { SubscriptionService } from '../service/subscriptionSerivce/subscription.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list-history',
@@ -16,7 +16,7 @@ export class ListHistoryComponent implements OnInit, OnDestroy {
   subHistoty: Subscription;
 
   constructor(private gameService: GameOnService,
-              private subscription: SubscriptionService) {
+    private subscription: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -32,7 +32,7 @@ export class ListHistoryComponent implements OnInit, OnDestroy {
   getType(type) {
     switch (type) {
       case 'MANDATORY':
-        return 'Resource(s) obligatoire(s)';
+        return 'Ressource(s) obligatoire(s)';
       case 'RISKS':
         return 'Defaillance(s)';
       case 'DAYS':

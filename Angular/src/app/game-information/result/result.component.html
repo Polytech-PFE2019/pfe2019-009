@@ -21,10 +21,10 @@
               <p>Budget: <b nz-tooltip nzTooltipTitle="Budget initial">{{d?.details.money}}</b>/
                 <b nz-tooltip nzTooltipTitle="Budget restant">{{d?.details.moneyRemain}}</b>/
                 <b nz-tooltip nzTooltipTitle="Budget dépensé">{{d?.details.moneyPayed}}</b></p>
-              <p>Resources: <b nz-tooltip nzTooltipTitle="Resource(s) dépensée(s)">{{d?.details.resourcePayed}}</b>/
-                <b nz-tooltip nzTooltipTitle="Resource(s) restante(s)">{{d?.details.resourceReamin}}</b></p>
+              <p>Resources: <b nz-tooltip nzTooltipTitle="Ressource(s) dépensée(s)">{{d?.details.resourcePayed}}</b>/
+                <b nz-tooltip nzTooltipTitle="Ressource(s) restante(s)">{{d?.details.resourceReamin}}</b></p>
               <p>Defaillance(s) reduite(s): <b nz-tooltip
-                                               nzTooltipTitle="Resource(s) reduite(s)">{{d?.details.riskReduced}}</b>
+                  nzTooltipTitle="Ressource(s) reduite(s)">{{d?.details.riskReduced}}</b>
               </p>
               <p>Delay(s) reduite(s): <b nz-tooltip nzTooltipTitle="Delay(s) reduite(s)">{{d?.details.dayReduced}}</b>
               </p>
@@ -49,8 +49,6 @@
       </div>
     </div>
   </div>
-  <button id="start"
-          nz-button nzType="default"
-          (click)="quit()">Quitter
+  <button id="start" nz-button nzType="default" (click)="quit()">Quitter
   </button>
 </div>

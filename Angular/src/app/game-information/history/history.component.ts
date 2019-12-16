@@ -1,7 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {BuyResourceService} from '../../service/resources/buy-resource.service';
-import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { BuyResourceService } from '../../service/resources/buy-resource.service';
+import { SubscriptionService } from '../../service/subscriptionSerivce/subscription.service';
 
 @Component({
   selector: 'app-history',
@@ -28,7 +28,7 @@ export class HistoryComponent implements OnInit {
   roles: any[] = [];
 
   constructor(private resourceService: BuyResourceService,
-              private subscription: SubscriptionService) {
+    private subscription: SubscriptionService) {
   }
 
   ngOnInit() {
@@ -76,7 +76,7 @@ export class HistoryComponent implements OnInit {
     }
 
     const basic = {
-      activity: 'Resource(s) obligatoire(s)',
+      activity: 'Ressource(s) obligatoire(s)',
       money: this.basicAmount,
       src: '../../../../assets/icons/person.png',
       result: '-'
@@ -120,7 +120,7 @@ export class HistoryComponent implements OnInit {
         return this.riskDetail;
       case 'Durées':
         return this.dayDetail;
-      case 'Resource(s) obligatoire(s)':
+      case 'Ressource(s) obligatoire(s)':
         return this.basicDetail;
       default:
         if (this.totalDetail.length === 0) {

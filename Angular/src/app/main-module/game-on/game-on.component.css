@@ -22,7 +22,7 @@
   margin-bottom: -10px;
 }
 
-#groupChat{
+#groupChat {
   position: absolute;
   left: 10px;
   top: 10px;
@@ -59,7 +59,7 @@ h2 {
   margin-top: 8px;
   border-radius: 10px;
   opacity: 0.99;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .wait {
@@ -137,6 +137,7 @@ input {
   padding: 10px;
   border: solid 1px #123074;
 }
+
 .groupChat {
   z-index: 999;
   display: flex;
@@ -144,6 +145,7 @@ input {
   overflow-y: auto;
   margin: 10px;
 }
+
 .playerContianer {
   height: 60px;
   width: 100%;
@@ -152,28 +154,34 @@ input {
   align-items: center;
 }
 
-#negociation{
+#negociation {
   position: absolute;
   bottom: 5px;
   z-index: 999;
   right: 5px;
 }
 
-.nego-container{
+.nego-container {
   position: relative;
   bottom: 10px;
   right: 10px;
   display: flex;
 }
 
-.personActivity{
+.personActivity {
   height: 374px;
   background-color: white;
 }
 
-.allContainerss{
+.allContainerss {
   background-image: url('../../../assets/icons/new123.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
+}
+
+.mat-icon {
+  border: none;
+  font-size: 50px;
+  width: 50px;
 }

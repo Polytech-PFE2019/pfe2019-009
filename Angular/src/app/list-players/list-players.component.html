@@ -1,26 +1,22 @@
 <div class="card-container">
   <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
     <nz-tab [nzTitle]="'Liste de joueurs'">
-      <nz-list
-        style="width: 100%"
-        [nzDataSource]="roles"
-        [nzItemLayout]="'vertical'"
-        [nzRenderItem]="item">
+      <nz-list style="width: 100%" [nzDataSource]="roles" [nzItemLayout]="'vertical'" [nzRenderItem]="item">
         <ng-template #item let-item>
           <nz-list-item [nzContent]="item.description" [nzActions]="[starAction]" [nzExtra]="extra">
             <ng-template #starAction><i class="iconfont icon-money" style="margin-right: 8px;"
-                                        [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
+                [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
             <nz-list-item-meta [nzTitle]="nzTitle">
               <ng-template #nzTitle>{{ item.title }} - {{item.username}}</ng-template>
             </nz-list-item-meta>
           </nz-list-item>
           <ng-template #extra>
-            <img alt="logo" [src]="item.src" [width]="80" [height]="80"/>
+            <img alt="logo" [src]="item.src" [width]="80" [height]="80" />
           </ng-template>
         </ng-template>
       </nz-list>
     </nz-tab>
-    <nz-tab [nzTitle]="'Mes histoiriques'" #target>
+    <nz-tab [nzTitle]="'Mon historique'" #target>
       <nz-affix id="affix-container-target">
         <div style="margin: 5px;">
           <h4>L'argent dépensé total:</h4>
@@ -34,22 +30,20 @@
       <!--        <ng-template #step let-item let-i>-->
       <div *ngFor="let h of histories; let i=index" style="margin-top: 10px">
         <h3>Etape {{i+1}}</h3>
-        <nz-table class="basicTable" #playerTable
-                  [nzData]="h.payments"
-                  [nzShowPagination]="false">
+        <nz-table class="basicTable" #playerTable [nzData]="h.payments" [nzShowPagination]="false">
           <thead>
-          <tr>
-            <th>Type</th>
-            <th>Depensé</th>
-            <th>Résultat</th>
-          </tr>
+            <tr>
+              <th>Type</th>
+              <th>Depensé</th>
+              <th>Résultat</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let h of playerTable.data">
-            <td>{{getType(h.type)}}</td>
-            <td>{{h.amount}}</td>
-            <td>{{getBonus(h.type, h.bonus)}}</td>
-          </tr>
+            <tr *ngFor="let h of playerTable.data">
+              <td>{{getType(h.type)}}</td>
+              <td>{{h.amount}}</td>
+              <td>{{getBonus(h.type, h.bonus)}}</td>
+            </tr>
           </tbody>
         </nz-table>
       </div>

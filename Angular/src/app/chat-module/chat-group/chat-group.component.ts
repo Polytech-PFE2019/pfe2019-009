@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
-import {DialogueMessage} from '../chat-dialogue/dialogueMessage';
-import {GameOnService} from 'src/app/service/gameOnService/game-on.service';
-import {SocketRequest} from 'src/Request';
-import {SubscriptionService} from 'src/app/service/subscriptionSerivce/subscription.service';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { DialogueMessage } from '../chat-dialogue/dialogueMessage';
+import { GameOnService } from 'src/app/service/gameOnService/game-on.service';
+import { SocketRequest } from 'src/Request';
+import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscription.service';
 
 
 @Component({
@@ -25,8 +25,8 @@ export class ChatGroupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userID = this.subscription.userId;
     this.gameService.groupChatMessages.forEach(data => {
-        this.manageDataResponse(data);
-      }
+      this.manageDataResponse(data);
+    }
     );
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);

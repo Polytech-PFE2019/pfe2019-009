@@ -205,7 +205,7 @@ class RoomRequestHandlerTest {
         request2.addProperty("request","START_GAME");
         request2.addProperty("userID", ""+playerID );
         request2.addProperty("roomID", ""+lastRoomCreatedID);
-        request2.addProperty("gameType", ""+gameType.key);
+        request2.addProperty("gameType", ""+gameType.getKey());
         Map value2 = new Gson().fromJson(request2, Map.class);
 
 

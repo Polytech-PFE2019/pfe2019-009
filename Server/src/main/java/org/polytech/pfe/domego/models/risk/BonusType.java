@@ -9,7 +9,7 @@ public enum BonusType {
     QUALITY("QUALITY"),
     NOTHING("NOTHING");
 
-    public String key;
+    final String key;
 
     BonusType(String s) {
         this.key = s;

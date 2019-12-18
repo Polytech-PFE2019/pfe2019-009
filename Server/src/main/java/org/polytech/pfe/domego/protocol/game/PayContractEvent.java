@@ -3,7 +3,6 @@ package org.polytech.pfe.domego.protocol.game;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
@@ -21,7 +20,7 @@ public class PayContractEvent implements EventProtocol {
     private Game game;
 
     public PayContractEvent(Game game) {
-        this.game = new GameAccessor().getGameById(game.getId()).get();
+        this.game = game;
 
     }
     @Override

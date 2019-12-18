@@ -7,7 +7,6 @@ import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.calculator.InfoProjectGameCalculator;
 import org.polytech.pfe.domego.components.game.card.QualityCard;
 import org.polytech.pfe.domego.components.game.card.RiskCard;
-import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.QualityAction;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -29,7 +28,7 @@ public class DrawCardEvent implements EventProtocol {
     private final Logger logger = Logger.getGlobal();
 
     public DrawCardEvent(Game game) {
-        this.game = new GameAccessor().getGameById(game.getId()).get();
+        this.game = game;
 
     }
 

@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.components.calculator.VictoryPointCalculator;
-import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.Project;
 import org.polytech.pfe.domego.protocol.EventProtocol;
@@ -26,7 +25,7 @@ public class FinishGameEvent implements EventProtocol {
     private Game game;
 
     public FinishGameEvent(Game game) {
-        this.game = new GameAccessor().getGameById(game.getId()).get();
+        this.game = game;
         this.calculator = new VictoryPointCalculator(game);
     }
 

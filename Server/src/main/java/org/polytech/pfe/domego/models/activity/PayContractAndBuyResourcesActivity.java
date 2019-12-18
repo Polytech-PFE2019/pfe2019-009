@@ -51,6 +51,8 @@ public class PayContractAndBuyResourcesActivity extends Activity {
     @Override
     public int getExchangeRateForRoleID(int roleID){
         BuyResources action = getBuyResourcesByRoleID(roleID);
+        if (action.hasPaid())
+            action = getBuyResourcesByRoleID(RoleType.NON_DEFINI.getId());
         return action.getRate();
     }
 

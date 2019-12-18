@@ -158,7 +158,9 @@ class GameRequestHandlerTest {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "BUY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
+        response.addProperty(GameResponseKey.BUYING_RESOURCES.key,1);
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+        response.addProperty(GameResponseKey.PRICE.key, 1);
         response.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
 
         //test response
@@ -252,7 +254,6 @@ class GameRequestHandlerTest {
                     role = new Role(RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE.getId(), RoleType.ENTREPRISE_CORPS_ETAT_SECONDAIRE, "description",30000,"special", objectiveList);
                     break;
                 default:
-                    System.out.println("TROLL ICI");
                     role = new Role();
             }
             player.setRole(role);

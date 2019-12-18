@@ -11,7 +11,7 @@
     </div>
   </nz-card>
   <nz-card *ngIf="!isVanished">
-    <h6>{{card?.description}}</h6>
+    <h4>{{card?.description}}</h4>
     <img src="../../../assets/risks/nothing.png" *ngIf="card.bonus.length===0" [width]="40" [height]="40">
     <div class="contextContainer" *ngIf="card.bonus.length>0">
       <div *ngFor="let item of card?.bonus">

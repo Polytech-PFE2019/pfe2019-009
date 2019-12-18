@@ -16,13 +16,15 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   @Output() sendBuy = new EventEmitter();
   resourceNb = 0;
   isVisible = false;
-  multiple = 1;
+  multiple = 2;
   price = 0;
   subCurrentMonney: Subscription;
   currentMonney = 30;
   gameID: string;
   userID: string;
   subCost: Subscription;
+  currentActivity: any;
+  roleID : any;
   cost: any = null;
   roles: any[] = [];
 
@@ -36,6 +38,15 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentMonney = this.subscription.myRole.money;
 
+    this.roleID = this.subscription.myRole.id;
+
+    this.currentActivity = this.subscription.current;
+    this.subscription.currentActivity$.subscribe(data => {
+      this.currentActivity = data;
+      this.calculateMultiple()
+    });
+    this.calculateMultiple();
+
     this.subCurrentMonney = this.resourceService.currentMonney$.subscribe(data => {
       this.currentMonney = data;
     });
@@ -47,6 +58,9 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     });
 
     this.cost = this.subscription.costInital;
+
+
+
 
     // this.gameService.messages.subscribe(data => {
     //   console.log(data);
@@ -81,8 +95,7 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     //   'Vous avez acheté ' + this.resourceNb + ' resources',
     //   {nzDuration: 35});
     console.log('price is ' + this.price);
-    this.resourceService.sendResourcesBuying(this.resourceNb);
-    this.resourceService.sendPayment(this.price);
+
     this.multiple = 2;
     console.log('multiple' + this.multiple);
     this.isVisible = false;
@@ -94,8 +107,8 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
       amount: this.resourceNb.toString()
     };
     console.log(req);
-    this.gameService.messages.next(req as SocketRequest);
     this.resourceNb = 0;
+    this.gameService.messages.next(req as SocketRequest);
   }
 
   handleCancel(): void {
@@ -112,4 +125,11 @@ export class BuyResourcesComponent implements OnInit, OnDestroy {
     return this.roles.filter(next => next.id === id)[0];
   }
 
+  private calculateMultiple() {
+    for (let buyingAction of this.currentActivity.buyingActions){
+      if(buyingAction.roleID === this.roleID){
+        this.multiple = 1;
+      }
+    }
+  }
 }

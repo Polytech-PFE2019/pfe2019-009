@@ -16,7 +16,7 @@
     </button>
   </div>
 
-  <div class="context">
+  <div id="listMessages" class="context">
     <div *ngFor="let message of messages">
       <div class="sender" *ngIf="message.isSender">
         <app-chat-message [message]="message.message" [roleID]="message.roleID"></app-chat-message>

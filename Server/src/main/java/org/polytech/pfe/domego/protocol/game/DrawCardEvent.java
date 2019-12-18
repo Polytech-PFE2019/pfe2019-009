@@ -50,13 +50,6 @@ public class DrawCardEvent implements EventProtocol {
         logger.log(Level.INFO, "DrawCardEvent : In the game {0} for the activity {1} they draw {2} risk cards and {3} quality card" , new Object[]{game.getId(), currentActivity.getId(), risks.size(), qualities.size() });
         logger.log(Level.INFO, "DrawCardEvent : List of Risk : {0}" , risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()));
         logger.log(Level.INFO, "DrawCardEvent : List of Quality : {0}" , qualities.stream().map(qualityCard -> qualityCard.getQualityAction()).collect(Collectors.toList()));
-
-        for (Player player : game.getPlayers()) {
-
-            System.out.println(player.getName() + "    "  + player.getResourcesAmount());
-
-        }
-
         JsonObject response = createJsonResponse(currentActivity,risks.stream().map(riskCard -> riskCard.getRiskAction()).collect(Collectors.toList()), qualities.stream().map(qualityCard -> qualityCard.getQualityAction()).collect(Collectors.toList()));
         game.getPlayers().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(finalResponseWithPlayerElement(response, player).toString()));
 

@@ -12,6 +12,14 @@
 
 }
 
+
+.buyResource{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+}
+
 .row{
   display: flex;
   flex-direction: row;
@@ -51,7 +59,7 @@ img{
 }
 
 #confirm{
-  margin-left: 150px;
+  margint-top: 1em;
 }
 
 :host ::ng-deep .ant-tabs-tab {
@@ -67,6 +75,10 @@ h1{
   text-align: center;
   font-weight: bold;
   padding-top: 1em;
+}
+
+h5{
+  padding-top:2em;
 }
 
 p{

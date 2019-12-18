@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, OnDestroy, AfterViewChecked} from '@angular/core';
 import { DialogueMessage } from '../chat-dialogue/dialogueMessage';
 import { GameOnService } from 'src/app/service/gameOnService/game-on.service';
 import { SocketRequest } from 'src/Request';
@@ -10,7 +10,7 @@ import { SubscriptionService } from 'src/app/service/subscriptionSerivce/subscri
   templateUrl: './chat-group.component.html',
   styleUrls: ['./chat-group.component.css']
 })
-export class ChatGroupComponent implements OnInit, OnDestroy {
+export class ChatGroupComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() data: any;
   @Output() closeDialogue = new EventEmitter();
   @Output() minusDialogue = new EventEmitter();
@@ -20,8 +20,17 @@ export class ChatGroupComponent implements OnInit, OnDestroy {
   myMessage = '';
   userID: string;
   subGame: any;
+  scrollHeight:any;
 
   constructor(private gameService: GameOnService, private subscription: SubscriptionService) {
+  }
+
+  ngAfterViewChecked(): void {
+    let chatGroupe =document.getElementById("listMessages");
+    if(this.scrollHeight !== chatGroupe.scrollHeight){
+      this.scrollHeight = chatGroupe.scrollHeight;
+      chatGroupe.scrollTop = chatGroupe.scrollHeight;
+    }
   }
 
   ngOnInit() {

@@ -29,11 +29,6 @@ public class PayContractEvent implements EventProtocol {
 
         Activity activity = game.getCurrentActivity();
 
-        for (Player player : game.getPlayers()) {
-
-            System.out.println(player.getName() + "    "  + player.getResourcesAmount());
-
-        }
 
         if(activity.getPayContractList().isEmpty())
             return;

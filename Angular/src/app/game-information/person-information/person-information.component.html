@@ -4,24 +4,24 @@
     [nzTitle]="extra"
     [nzActions]="[description, pointVictoire, special, plan]" [nzExtra]="extraBnt">
     <div *ngIf="isPointsVistoire" class="content-container">
-      <h6>Points de victoire:</h6>
+      <h4>Points de victoire:</h4>
       <p *ngFor="let item of myInformation?.mission.pointsDeVistore">
         {{item}}
       </p>
     </div>
     <div *ngIf="isSpecial" class="content-container">
-      <h6>Spécial:</h6>
+      <h4>Spécial:</h4>
       <p *ngFor="let item of myInformation?.mission.specialActivity">
         {{item}}
       </p>
     </div>
     <div *ngIf="isDescription" class="content-container">
-      <h6>Description:</h6>
+      <h4>Description:</h4>
       <p>{{myInformation.description}}</p>
     </div>
 
     <div *ngIf="isPlan" class="content-container">
-      <h6>Plan</h6>
+      <h4>Plan</h4>
       <p>Resources nécessaires: <b>Max: {{cost.maxCost}}</b>/<b>Min: {{cost.minCost}}</b></p>
       <p>Durée du projet: <b>Max: {{day.maxTime}}</b>/<b>Min: {{day.minTime}}</b></p>
       <p>Defaillance du projet: <b>Max: {{risk.maxFailure}}</b>/<b>Min: {{risk.minFailure}}</b></p>

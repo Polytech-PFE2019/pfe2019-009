@@ -46,6 +46,7 @@ export class SubscriptionService {
   myHistories$ = this.myHistories.asObservable();
 
   myRole: any;
+  current: any;
 
   currentActivityID = new Subject<any>();
   currentActivityID$ = this.currentActivityID.asObservable();

@@ -7,6 +7,7 @@ public enum GameResponseKey {
     RANKING("ranking"),
     RANK("rank"),
     RESOURCES("resources"),
+    BUYING_RESOURCES("buyingResources"),
     UPDATE_PAYMENT("UPDATE_PAYMENT"),
     LAUNCH_GAME("LAUNCH_GAME"),
     ACTIVITY_ID("activityID"),
@@ -69,7 +70,7 @@ public enum GameResponseKey {
     INFORMATION("information"),
 
     CONTRACTS_GIVER("contractsGiver"),
-    CONTRACTS_RECEIVER("contractsReceiver");
+    CONTRACTS_RECEIVER("contractsReceiver"), PRICE("price");
 
     public final String key;
 

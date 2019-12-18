@@ -28,13 +28,6 @@ public class ChangeActivityEvent implements EventProtocol {
         }
         else{
             game.goToTheNextActivity();
-
-            for (Player player : game.getPlayers()) {
-
-                System.out.println(player.getName() + "    "  + player.getResourcesAmount());
-
-            }
-
             new PayContractEvent(game).processEvent();
             logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
             game.getPlayers().stream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));

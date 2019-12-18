@@ -85,6 +85,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
           next.roleID === this.myInformation.id)[0]);
         this.myDataSource.push(tmp);
         console.log(this.myDataSource);
+        this.selectedIndex = 0;
       }
 
     });

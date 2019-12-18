@@ -100,6 +100,7 @@ export class GameOnService {
             console.log(this.currentStep);
             console.log(this.currentActivity);
             this.subscription.sendCurrentActivity(this.currentActivity);
+            this.subscription.current = this.currentActivity;
           }
           if (data.response === 'CHANGE_ACTIVITY') {
             const currentId = data.activityID;
@@ -111,6 +112,7 @@ export class GameOnService {
             console.log(this.currentActivity);
             console.log(this.currentStep);
             this.subscription.sendCurrentActivity(this.currentActivity);
+            this.subscription.current = this.currentActivity;
           }
 
 
@@ -123,6 +125,10 @@ export class GameOnService {
             this.updateInformationAfterPayment(currentId);
             this.getMyHistory(data);
             console.log(this.currentStep);
+          }
+          if (data.response === 'BUY_RESOURCES'){
+            this.resourceManager.sendResourcesBuying(data.buyingResources);
+            this.resourceManager.sendPayment(data.price);
           }
 
           if (data.response === 'drawRisk') {
@@ -139,6 +145,9 @@ export class GameOnService {
 
           if (data.response === 'MSG_GROUP_CHAT') {
             this.groupChatMessages.push(data);
+          }
+          if (data.response === 'KO'){
+            alert(data.reason)
           }
           this.reponses.next(data);
           return data;

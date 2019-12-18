@@ -11,7 +11,7 @@
         <app-buy-resources (sendBuy)="getBuy($event)"></app-buy-resources>
       </div>
       <div class="buyResource" *ngIf="tab.name==='Alouer des ressources'">
-        <div class="column" style="width: 90%">
+        <div class="column" style="width: 100%">
           <nz-table nzBordered [nzData]="myDataSource" [nzNoAnimation]="false" #table [nzFrontPagination]="false">
             <thead>
               <tr>
@@ -49,11 +49,11 @@
               </tr>
             </tbody>
           </nz-table>
-          <div class="column">
+          <div class="column" style="margin-top: 10px">
             <h5>Ressources à payer: {{totalRes}}</h5>
           </div>
         </div>
-        <button id="confirm" nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
+        <button id="confirm"  style="margin-top: 4px" nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
       </div>
     </nz-tab>
   </nz-tabset>

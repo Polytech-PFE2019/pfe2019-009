@@ -63,6 +63,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   totalScrollHeight = 0;
   isMinused = false;
   isTest = false;
+  nego = 0;
   headerStyle = {
     height: '50vh'
   };
@@ -70,6 +71,8 @@ export class GameOnComponent implements OnInit, OnDestroy {
   myStyle = {
     height: '50vh'
   };
+
+  isTutorial = false;
   tabs = [
     {
       id: 0,
@@ -94,6 +97,9 @@ export class GameOnComponent implements OnInit, OnDestroy {
     negoID: ''
   };
 
+  index = 0;
+  disable = false;
+
   constructor(private lobbyService: LobbyService,
               private gameService: GameOnService,
               private subscription: SubscriptionService,
@@ -106,6 +112,7 @@ export class GameOnComponent implements OnInit, OnDestroy {
   ngOnInit() {
     setTimeout(() => {
       this.isLoading = true;
+      this.isTutorial = true;
     }, 4000);
     console.log(22222222222222);
     this.gameId = this.subscription.gameID;
@@ -370,5 +377,21 @@ export class GameOnComponent implements OnInit, OnDestroy {
       console.log(this.headerStyle);
       this.isTest = true;
     }
+  }
+
+  closeTutorial() {
+    this.isTutorial = false;
+  }
+
+  onIndexChange(index: number): void {
+    this.index = index;
+  }
+
+  onNegoChange(nego: number): void {
+    this.nego = nego;
+  }
+
+  openTotu() {
+    this.isTutorial = true;
   }
 }

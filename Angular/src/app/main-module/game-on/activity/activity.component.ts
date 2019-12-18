@@ -64,6 +64,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subCurrentActivity = this.subscription.currentActivity$.subscribe(data => {
+      console.log(data);
+
       this.currentActivity = data;
       this.myDataSource = [];
       this.isFinishedMine = false;

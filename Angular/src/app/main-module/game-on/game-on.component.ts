@@ -73,12 +73,17 @@ export class GameOnComponent implements OnInit, OnDestroy {
   tabs = [
     {
       id: 0,
-      name: 'Acheter des resources',
-      icon: 'shopping-cart',
+      name: 'Descriptif de l\'étape',
+      icon: 'book',
     },
     {
       id: 1,
-      name: 'Payer des resources',
+      name: 'Acheter des ressources',
+      icon: 'shopping-cart',
+    },
+    {
+      id: 2,
+      name: 'Alouer des ressources',
       icon: 'pay-circle'
     },
   ];

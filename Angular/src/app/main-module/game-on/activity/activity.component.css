@@ -53,3 +53,22 @@ img{
 #confirm{
   margin-left: 150px;
 }
+
+:host ::ng-deep .ant-tabs-tab {
+  width: 33.3%;
+  margin: 0;
+  padding: 12px 5px;
+  text-align: center;
+  white-space: normal;
+}
+
+h1{
+  font-size: larger;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 1em;
+}
+
+p{
+  padding: 2em;
+}

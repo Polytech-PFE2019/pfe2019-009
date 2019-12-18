@@ -1,5 +1,6 @@
 export class Activity {
   title: string;
+  activityTitle:string;
   numberOfDays: number;
   status: string;
   description: string;
@@ -18,6 +19,7 @@ export class Activity {
 
   constructor(r) {
     this.title = r.activityID;
+    this.activityTitle = r.title;
     this.numberOfDays = r.numberOfDays;
     this.status = r.status;
     this.description = r.description;

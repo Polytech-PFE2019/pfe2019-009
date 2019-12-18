@@ -1,12 +1,16 @@
 <div class="activity2Container" *ngIf="currentActivity?.rolesID.includes(myInformation.id) && !isFinishedMine">
   <h3>Etape {{currentActivity.title}}</h3>
-  <nz-tabset [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="printIndex()">
+  <nz-tabset  [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="printIndex()" style="width: 100%">
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
-      <ng-template #titleTemplate><i nz-icon [nzType]="tab.icon"></i>{{ tab.name }} </ng-template>
-      <div class="paymentResource" *ngIf="tab.name==='Acheter des resources'">
+      <ng-template #titleTemplate ><i nz-icon [nzType]="tab.icon"></i>{{ tab.name }} </ng-template>
+      <div class="paymentResource" *ngIf="tab.name==='Descriptif de l\'étape'">
+        <h1>{{currentActivity.activityTitle}}</h1>
+        <p>{{currentActivity.description}}</p>
+      </div>
+      <div class="paymentResource" *ngIf="tab.name==='Acheter des ressources'">
         <app-buy-resources (sendBuy)="getBuy($event)"></app-buy-resources>
       </div>
-      <div class="buyResource" *ngIf="tab.name==='Payer des resources'">
+      <div class="buyResource" *ngIf="tab.name==='Alouer des ressources'">
         <div class="column" style="width: 90%">
           <nz-table nzBordered [nzData]="myDataSource" [nzNoAnimation]="false" #table [nzFrontPagination]="false">
             <thead>

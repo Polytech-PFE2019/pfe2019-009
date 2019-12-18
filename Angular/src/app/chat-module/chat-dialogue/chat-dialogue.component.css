@@ -8,6 +8,15 @@
   margin-bottom: 10px;
 }
 
+.dialogue{
+  height: 50px;
+  width: 50px;
+  position: relative;
+  bottom: -400px;
+  z-index: 99;
+  margin-right: 20px;
+}
+
 .context {
   width: 335px;
   height: 205px;
@@ -124,4 +133,20 @@ button {
   position: relative;
   bottom: 10px;
   right: 4px;
+}
+
+nz-badge {
+  margin-right: 20px;
+  z-index: 999;
+}
+
+.head-example {
+  width: 45px;
+  height: 45px;
+  border-radius: 4px;
+  background: #c54e3c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
 }

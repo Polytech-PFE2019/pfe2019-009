@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Roles} from '../../model/roles';
+import {SubscriptionService} from "../../service/subscriptionSerivce/subscription.service";
 
 @Component({
   selector: 'app-chat-list',
@@ -9,26 +11,42 @@ export class ChatListComponent implements OnInit {
   @Input() isChat = false;
   @Output() close = new EventEmitter();
   isDialog = false;
+  roles = Roles;
+  myRoles: any;
   title = '';
   data = [
     {
-      title: 'Ant Design Title 1'
+      id: 1,
     },
     {
-      title: 'Ant Design Title 2'
+      id: 2,
     },
     {
-      title: 'Ant Design Title 3'
+      id: 3,
     },
     {
-      title: 'Ant Design Title 4'
-    }
+      id: 4,
+    },
+    {
+      id: 5,
+    },
+    {
+      id: 6,
+    },
   ];
+  withRoles: any[] = [];
 
-  constructor() {
+  constructor(private subscription: SubscriptionService) {
   }
 
   ngOnInit() {
+    this.withRoles = [];
+    this.myRoles = this.subscription.myRole;
+    for (const item of this.data) {
+      if (item.id !== 1) {
+        this.withRoles.push(this.getRoleById(item.id));
+      }
+    }
   }
 
   closeChat() {
@@ -44,5 +62,9 @@ export class ChatListComponent implements OnInit {
 
   ifCloseDialog($event: any) {
     this.isDialog = $event;
+  }
+
+  getRoleById(id) {
+    return this.roles.find(next => next.id === id);
   }
 }

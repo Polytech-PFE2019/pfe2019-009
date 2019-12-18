@@ -1,16 +1,16 @@
-<div class="container" *ngIf="isOpenDialog">
+<div class="container" *ngIf="isOpenDialog && !this.isMenus">
   <countdown [config]="{leftTime: data.time}"></countdown>
   <div class="header">
     <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
     <h5>{{data?.otherUserName}}</h5>
-<!--    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"-->
-<!--            style="margin-right: 5px;" (click)="minus()">-->
-<!--      <i nz-icon nzType="minus" nzTheme="outline"></i>-->
-<!--    </button>-->
-<!--    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"-->
-<!--            style="margin-right: 5px;" (click)="open()">-->
-<!--      <i nz-icon nzType="plus" nzTheme="outline"></i>-->
-<!--    </button>-->
+    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"
+            style="margin-right: 5px;" (click)="minus()">
+      <i nz-icon nzType="minus" nzTheme="outline"></i>
+    </button>
+    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"
+            style="margin-right: 5px;" (click)="open()">
+      <i nz-icon nzType="plus" nzTheme="outline"></i>
+    </button>
   </div>
   <div class="receiverBox">
     <div class="negociation">
@@ -54,6 +54,17 @@
       </button>
     </div>
   </div>
+</div>
+
+<div *ngIf="isMenus" class="dialogue">
+  <nz-badge [nzCount]="iconTemplate">
+    <div class="head-example" (click)="open()">
+      <img [src]="withRole.src" [width]="40" height="40">
+    </div>
+  </nz-badge>
+  <ng-template #iconTemplate>
+    <i nz-icon nzType="clock-circle" class="ant-scroll-number-custom-component" style="color: #f5222d"></i>
+  </ng-template>
 </div>
 
 <ng-template #template>

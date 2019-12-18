@@ -5,6 +5,7 @@ import {SocketRequest} from 'src/Request';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
 import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
+import {Roles} from "../../model/roles";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -23,8 +24,8 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   };
   @Input() title = '';
   @ViewChild('template', {static: true}) template: TemplateRef<{}>;
-  isOpenDialog = true;
   value = 100;
+  isOpenDialog = true;
   contractNumber = 0;
   inputValue: string;
   isChated = false;
@@ -34,6 +35,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   negotiationID: string;
   listOfNegociation: any[] = [];
   subGame: Subscription;
+  roles = Roles;
 
   messages: DialogueMessage[] = [];
   msg = '';
@@ -44,6 +46,9 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   };
   contractProposed = 0;
   myMessage = '';
+  isMenus = false;
+  myRole: any;
+  withRole: any;
 
 
   constructor(private gameService: GameOnService,
@@ -53,11 +58,17 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.myRole = this.subsciption.myRole;
     this.userID = this.subsciption.userId;
     console.log(this.data);
     if (this.data.response === 'START_NEGOTIATE') {
       console.log(this.data);
       this.negotiationID = this.data.negociationID;
+    }
+    if (this.data.giverID === this.myRole.id) {
+      this.withRole = this.getRolebyId(this.data.receiverID);
+    } else {
+      this.withRole = this.getRolebyId(this.data.giverID);
     }
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
@@ -157,6 +168,10 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     this.isOpenDialog = true;
   }
 
+  getRolebyId(id) {
+    return this.roles.find(next => next.id === id);
+  }
+
   accepteContract() {
     this.accepteStyle.backgroundColor = '#4E8014';
     const req = {
@@ -170,11 +185,13 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   }
 
   minus() {
-    this.minusDialogue.emit(true);
+    // this.minusDialogue.emit(true);
+    this.isMenus = true;
   }
 
   open() {
-    this.openDialogue.emit(true);
+    // this.openDialogue.emit(true);
+    this.isMenus = false;
   }
 
 }

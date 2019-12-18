@@ -39,6 +39,7 @@
   </ng-template>
   <ng-template #extraBnt>
     <button nz-button
+            *ngIf="currentMonney<=0"
             nz-popconfirm
             nzPopconfirmTitle="Voulez-vous déclarer une faillte?"
             nzPopconfirmPlacement="bottom"

@@ -1,6 +1,6 @@
 export class Activity {
   title: string;
-  activityTitle:string;
+  activityTitle: string;
   numberOfDays: number;
   status: string;
   description: string;

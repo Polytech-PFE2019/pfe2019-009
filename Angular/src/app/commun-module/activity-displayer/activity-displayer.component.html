@@ -10,6 +10,7 @@
     </label>
   </nz-radio-group>
   <div *ngIf="!isActivity && type !== 'QUALITY'" [ngStyle]="roleStyle">{{item?.amountToPay}}</div>
+  <br>
   <b *ngIf="type==='DAYS'">-{{item?.bonusAmount}}j</b>
   <b *ngIf="type==='RISKS'">-{{item?.bonusAmount}}R</b>
   <div *ngIf="type === 'QUALITY'" class="quality">

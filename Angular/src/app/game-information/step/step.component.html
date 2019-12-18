@@ -1,6 +1,7 @@
 <div class="container" (click)="sendStep()">
   <nz-card [id]="'stepCard' + step.title" [nzBordered]="true" [nzTitle]="titleTemplate" [nzExtra]="extraTemplate">
     <div class="contenu" *ngIf="!isHistory">
+      <h6 nz-title>{{step?.activityTitle}}</h6>
       <p>{{step?.description}}</p>
       <div class="step-container">
         <div nz-row>

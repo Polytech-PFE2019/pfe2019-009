@@ -232,6 +232,8 @@ export class GameOnService {
         historyTmp = new History(currentId, this.subscription.myRole.id);
         historyTmp.payments.push(b);
         isTest = false;
+      } else if (role === b.roleID && !isTest && historyTmp !== null) {
+        historyTmp.payments.push(b);
       }
     }
     if (historyTmp !== null) {

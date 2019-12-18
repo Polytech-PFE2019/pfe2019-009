@@ -4,9 +4,13 @@ public enum GameType {
     INITIAL("INITIAL"),
     INTERMEDIATE("INTERMEDIATE");
 
-    public String key;
+    private final String key;
 
     GameType(String key) {
         this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

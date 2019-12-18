@@ -152,10 +152,17 @@ public class Player {
         money += amount;
     }
 
+    public void subtractMoney(int amount){
+        money -= amount;
+    }
+
     public void subtractMoney(double amount){
         money -= amount;
     }
 
+    public void setMoney(double money) {
+        this.money = money;
+    }
 
     public int getVictoryPoints() {
         return victoryPoints;

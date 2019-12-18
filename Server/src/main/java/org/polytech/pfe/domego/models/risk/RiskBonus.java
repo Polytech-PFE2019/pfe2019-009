@@ -51,9 +51,9 @@ public class RiskBonus implements Bonus {
     @Override
     public JsonElement transformToJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(RiskResponseKey.TYPE.key, this.bonusType.key);
-        jsonObject.addProperty(RiskResponseKey.AMOUNT.key, this.amount);
-        jsonObject.addProperty(RiskResponseKey.ACTIVITY_ID_ASSOCIATE.key, this.activityID);
+        jsonObject.addProperty(RiskResponseKey.TYPE.getKey(), this.bonusType.key);
+        jsonObject.addProperty(RiskResponseKey.AMOUNT.getKey(), this.amount);
+        jsonObject.addProperty(RiskResponseKey.ACTIVITY_ID_ASSOCIATE.getKey(), this.activityID);
         return jsonObject;
     }
 

@@ -33,7 +33,7 @@ public class LaunchGameEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-       game.getPlayers().stream().forEach(
+       game.getPlayers().forEach(
                player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player))
        );
        logger.info("LaunchGameEvent : Send Message LaunchGameEvent to all players");
@@ -43,7 +43,7 @@ public class LaunchGameEvent implements EventProtocol {
     public String createUpdateResponse(Player player) {
         JsonObject response = new JsonObject();
 
-        response.addProperty(ActivityResponseKey.GAME_TYPE.key, game.getGameType().key);
+        response.addProperty(ActivityResponseKey.GAME_TYPE.key, game.getGameType().getKey());
         this.addInfosToCurrentGame(response);
 
         this.addPlayerObject(response, player);

@@ -27,9 +27,9 @@ public class MoneyBonus implements Bonus {
     @Override
     public JsonElement transformToJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(RiskResponseKey.TYPE.key, this.bonusType.key);
-        jsonObject.addProperty(RiskResponseKey.AMOUNT.key, this.amount);
-        jsonObject.addProperty(RiskResponseKey.ROLE_ID.key, this.roleType.getId());
+        jsonObject.addProperty(RiskResponseKey.TYPE.getKey(), this.bonusType.key);
+        jsonObject.addProperty(RiskResponseKey.AMOUNT.getKey(), this.amount);
+        jsonObject.addProperty(RiskResponseKey.ROLE_ID.getKey(), this.roleType.getId());
         return jsonObject;
     }
 

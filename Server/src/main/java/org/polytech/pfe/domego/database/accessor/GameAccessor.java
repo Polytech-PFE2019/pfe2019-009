@@ -47,8 +47,7 @@ public class GameAccessor {
         for (Player player : game.getPlayers()) {
             int budget = gameGenerator.getBudgetByRole(player.getRole());
             player.getRole().setBudget(budget);
-            player.subtractMoney(player.getMoney());
-            player.addMoney(budget);
+            player.setMoney(budget);
         }
         gameInstance.addGame(game);
         return game;

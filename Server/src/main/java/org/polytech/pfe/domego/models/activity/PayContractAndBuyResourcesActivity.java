@@ -3,6 +3,7 @@ package org.polytech.pfe.domego.models.activity;
 import org.polytech.pfe.domego.components.game.card.QualityCard;
 import org.polytech.pfe.domego.components.game.card.RiskCard;
 import org.polytech.pfe.domego.models.Player;
+import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.buying.BuyResources;
 import org.polytech.pfe.domego.models.activity.pay.PayContract;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
@@ -56,13 +57,15 @@ public class PayContractAndBuyResourcesActivity extends Activity {
     @Override
     public void buyResources(Player player, int amount) {
         BuyResources action = getBuyResourcesByRoleID(player.getRole().getId());
+        if (action.hasPaid())
+            action = getBuyResourcesByRoleID(RoleType.NON_DEFINI.getId());
         action.buyResources(amount);
         player.addResources(amount);
         player.subtractMoney(amount * action.getRate());
     }
 
     private BuyResources getBuyResourcesByRoleID(int roleID){
-        return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID && !buyResources.hasPaid()).findAny().orElse(new BuyResources(roleID,2));
+        return buyResourcesList.stream().filter(buyResources -> buyResources.getRoleID() == roleID).findAny().orElse(new BuyResources(roleID,2));
     }
 
     public List<Integer> getBuyingRoleIDList(){

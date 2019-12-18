@@ -4,17 +4,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class ChangeActivityEvent implements EventProtocol {
 
@@ -22,7 +18,7 @@ public class ChangeActivityEvent implements EventProtocol {
     private final Logger logger = Logger.getGlobal();
 
     public ChangeActivityEvent(Game game) {
-        this.game = new GameAccessor().getGameById(game.getId()).get();
+        this.game = game;
     }
 
     @Override

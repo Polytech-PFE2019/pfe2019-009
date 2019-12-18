@@ -42,7 +42,7 @@ public class VictoryPointCalculator {
     }
 
     private double calculateBenefit(Player player){
-        double initialMoney;
+        int initialMoney;
         if (player.getRole().getName().equals(RoleType.MAITRE_D_OUVRAGE))
             initialMoney = player.getRole().getBudget() - game.getProject().getCostWanted();
         else

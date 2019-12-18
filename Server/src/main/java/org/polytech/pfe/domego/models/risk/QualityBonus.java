@@ -39,9 +39,9 @@ public class QualityBonus implements Bonus {
     @Override
     public JsonElement transformToJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(RiskResponseKey.TYPE.key, this.bonusType.key);
-        jsonObject.addProperty(RiskResponseKey.AMOUNT.key, this.amount);
-        jsonObject.addProperty(RiskResponseKey.ACTIVITY_ID_ASSOCIATE.key, this.activityIdAssociate);
+        jsonObject.addProperty(RiskResponseKey.TYPE.getKey(), this.bonusType.key);
+        jsonObject.addProperty(RiskResponseKey.AMOUNT.getKey(), this.amount);
+        jsonObject.addProperty(RiskResponseKey.ACTIVITY_ID_ASSOCIATE.getKey(), this.activityIdAssociate);
         return jsonObject;
     }
 }

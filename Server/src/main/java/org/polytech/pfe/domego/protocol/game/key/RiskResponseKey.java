@@ -6,9 +6,13 @@ public enum  RiskResponseKey {
     ROLE_ID("roleID"),
     ACTIVITY_ID_ASSOCIATE("activityIdAssociate");
 
-    public String key;
+    private final String key;
 
     RiskResponseKey(String key) {
         this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

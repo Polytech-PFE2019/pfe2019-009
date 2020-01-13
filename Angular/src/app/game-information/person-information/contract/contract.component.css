@@ -1,0 +1,59 @@
+.container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+}
+
+::ng-deep #contract-card > .ant-card-actions{
+  border-radius: 10px;
+}
+
+.contract-info{
+  height: 260px;
+}
+
+nz-card{
+  border-radius: 10px;
+}
+
+.content-container{
+  height: 195px;
+  overflow-y: auto;
+}
+
+.amount{
+  font-size: 20px;
+  margin-left: 10px
+}
+
+.contract{
+  display: flex;
+}
+
+.contract-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+img{
+  margin-left: 10px
+}
+
+.contractWithRole{
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+  align-items: center;
+}
+
+/*nz-card.ant-card-head{*/
+/*  border: 1px red solid;*/
+/*}*/
+
+/*::ng-deep #test > .ant-card-head{*/
+/*  border: 9px red solid;*/
+/*}*/

@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { WebsocketService } from '../webSocketService/websocket.service';
-import { SubscriptionService } from '../subscriptionSerivce/subscription.service';
-import { Subject, Subscription } from 'rxjs';
-import { SocketRequest } from '../../../Request';
-import { URLGame } from '../../model/url';
-import { map } from 'rxjs/operators';
-import { Activity } from '../../model/activity';
-import { ActionSet } from '../../model/action';
-import { BuyResourceService } from '../resources/buy-resource.service';
-import { Roles } from '../../model/roles';
+import {Injectable} from '@angular/core';
+import {WebsocketService} from '../webSocketService/websocket.service';
+import {SubscriptionService} from '../subscriptionSerivce/subscription.service';
+import {Subject, Subscription} from 'rxjs';
+import {SocketRequest} from '../../../Request';
+import {URLGame} from '../../model/url';
+import {map} from 'rxjs/operators';
+import {Activity} from '../../model/activity';
+import {ActionSet} from '../../model/action';
+import {BuyResourceService} from '../resources/buy-resource.service';
+import {Roles} from '../../model/roles';
+import {History} from '../../model/history';
 
 @Injectable()
 export class GameOnService {
@@ -33,10 +34,12 @@ export class GameOnService {
   subRiskReduced: Subscription;
   riskReduced = 0;
   results: any;
+  groupChatMessages = [];
+  mesHistories: History[] = [];
 
   constructor(private wsService: WebsocketService,
-    private resourceManager: BuyResourceService,
-    private subscription: SubscriptionService) {
+              private resourceManager: BuyResourceService,
+              private subscription: SubscriptionService) {
     this.messages = wsService
       .connect(URLGame)
       .pipe(
@@ -74,8 +77,9 @@ export class GameOnService {
           }
 
           if (data.response === 'LAUNCH_GAME') {
+            this.subscription.isInitial = data.gameType === 'INITIAL';
             this.userID = data.player.userID;
-            this.updateMinAndMax(data.project);
+            this.updateMinAndMax(data);
             if (data.player.userID !== undefined) {
               console.log('send userID');
               this.userID = data.player.userID;
@@ -96,31 +100,35 @@ export class GameOnService {
             console.log(this.currentStep);
             console.log(this.currentActivity);
             this.subscription.sendCurrentActivity(this.currentActivity);
+            this.subscription.current = this.currentActivity;
           }
           if (data.response === 'CHANGE_ACTIVITY') {
             const currentId = data.activityID;
             this.currentActivity = this.currentStep[currentId - 1];
             this.currentStep[currentId - 1].extraPayment = data.extraPaying;
+            this.currentStep[currentId - 1].contractsGiver = data.contractsGiver;
+            this.currentStep[currentId - 1].contractsReceiver = data.contractsReceiver;
             this.updateExtraPayment(currentId);
             console.log(this.currentActivity);
             console.log(this.currentStep);
             this.subscription.sendCurrentActivity(this.currentActivity);
+            this.subscription.current = this.currentActivity;
           }
 
 
-
           if (data.response === 'UPDATE_PAYMENT') {
-
-            this.updateMinAndMax(data.project)
+            this.updateMinAndMax(data);
             const currentId = data.activityID;
-            if (this.currentStep[currentId - 1].history === null) {
-              this.currentStep[currentId - 1].history = data.payments;
-            } else {
-              this.currentStep[currentId - 1].history = this.currentStep[currentId - 1].history.concat(data.payments);
-            }
+            this.currentStep[currentId - 1].history = data.payments;
+
             console.log(this.currentStep[currentId - 1].history);
             this.updateInformationAfterPayment(currentId);
+            this.getMyHistory(data);
             console.log(this.currentStep);
+          }
+          if (data.response === 'BUY_RESOURCES'){
+            this.resourceManager.sendResourcesBuying(data.buyingResources);
+            this.resourceManager.sendPayment(data.price);
           }
 
           if (data.response === 'drawRisk') {
@@ -129,9 +137,17 @@ export class GameOnService {
             console.log(this.currentStep);
             console.log(this.currentStep[currentId - 1].riskCards);
             this.addInformationAfterRiskCards(currentId);
+            this.updateMinAndMax(data);
           }
           if (data.response === 'FINISH') {
             this.results = data;
+          }
+
+          if (data.response === 'MSG_GROUP_CHAT') {
+            this.groupChatMessages.push(data);
+          }
+          if (data.response === 'KO'){
+            alert(data.reason)
           }
           this.reponses.next(data);
           return data;
@@ -189,23 +205,50 @@ export class GameOnService {
     this.subscription.sendActivities(this.currentStep);
 
   }
-  updateMinAndMax(project) {
+
+  updateMinAndMax(data) {
     const failure = {
-      minFailure: project.minFailure,
-      maxFailure: project.maxFailure
+      minFailure: data.project.minFailure,
+      maxFailure: data.project.maxFailure
     };
     this.subscription.sendFailures(failure);
 
     const cost = {
-      minCost: project.minCost,
-      maxCost: project.maxCost
+      minCost: data.project.minCost,
+      maxCost: data.project.maxCost
     };
     this.subscription.sendCosts(cost);
+    this.subscription.costInital = cost;
 
     const days = {
-      minTime: project.minTime,
-      maxTime: project.maxTime
+      minTime: data.project.minTime,
+      maxTime: data.project.maxTime
     };
     this.subscription.sendDays(days);
+  }
+
+  getMyHistory(data) {
+    const currentId = data.activityID;
+    const currentAc = this.currentStep[currentId - 1];
+    console.log(this.currentStep);
+    console.log(currentAc);
+    let historyTmp = null;
+    let isTest = true;
+    const role = this.subscription.myRole.id;
+    for (const b of currentAc.history) {
+      console.log(b, role);
+      if (role === b.roleID && isTest) {
+        historyTmp = new History(currentId, this.subscription.myRole.id);
+        historyTmp.payments.push(b);
+        isTest = false;
+      } else if (role === b.roleID && !isTest && historyTmp !== null) {
+        historyTmp.payments.push(b);
+      }
+    }
+    if (historyTmp !== null) {
+      this.mesHistories.push(historyTmp);
+    }
+    console.log(this.mesHistories);
+    this.subscription.sendHistories(this.mesHistories);
   }
 }

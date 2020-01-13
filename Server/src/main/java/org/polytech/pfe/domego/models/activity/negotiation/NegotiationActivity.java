@@ -1,6 +1,7 @@
 package org.polytech.pfe.domego.models.activity.negotiation;
 
-import org.polytech.pfe.domego.components.game.RiskCard;
+import org.polytech.pfe.domego.components.game.card.QualityCard;
+import org.polytech.pfe.domego.components.game.card.RiskCard;
 import org.polytech.pfe.domego.models.RoleType;
 import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
@@ -15,6 +16,12 @@ public class NegotiationActivity extends Activity implements NegotiationAction {
 
     public NegotiationActivity(int id, int numbersOfDays, String title , String description, List<PayResources> payResourcesList,  List<RiskCard> riskCards, List<Negotiation> negociationList) {
         super(id, numbersOfDays, title,description, payResourcesList, riskCards);
+        this.negotiationList = negociationList;
+        checkForMultiplicityForOneRole();
+    }
+
+    public NegotiationActivity(int id, int numbersOfDays, String title , String description, List<PayResources> payResourcesList, List<RiskCard> riskCards, List<QualityCard> qualityCards , List<Negotiation> negociationList) {
+        super(id, numbersOfDays, title,description, payResourcesList, riskCards, qualityCards);
         this.negotiationList = negociationList;
         checkForMultiplicityForOneRole();
     }

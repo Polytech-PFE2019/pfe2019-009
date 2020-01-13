@@ -12,6 +12,10 @@ h1{
   align-items: center;
 }
 
+nz-card{
+  color: rgba(0,0,0,0.95);
+}
+
 
 .creationContainer{
   opacity: 0.9;
@@ -19,6 +23,7 @@ h1{
   margin-top: 80px;
   align-self: center;
   border: 1px solid #8b8b8b;
+  color : rgba(0, 0, 0, 0.9)
 }
 
 .choice{
@@ -34,7 +39,8 @@ h1{
   width: 500px;
   background-color: lightblue;
   font-size: 28px;
-  color: #f0f2f5;
+  color: white;
+  font-weight: bold;
 }
 
 #createSalon{

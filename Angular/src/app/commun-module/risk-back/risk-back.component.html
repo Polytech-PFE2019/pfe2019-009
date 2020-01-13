@@ -1,10 +1,8 @@
-<div [@.disabled]='isDiabled'>
-  <nz-card
-    *ngIf="isVanished"
-    [@flipOutX]="{ value: flipOutX, params: { timing: 1, delay: myTiming} }"
+<div [@.disabled]='isDiabled' class="allContainers">
+  <nz-card *ngIf="isVanished" [@flipOutX]="{ value: flipOutX, params: { timing: 1, delay: myTiming} }"
     style="background: black">
     <div class="cardContainer">
-      <h2 style="color: white;margin: 5px">
+      <h2 style="color: white">
         Risques
       </h2>
       <div class="circle">{{title}}</div>
@@ -13,7 +11,7 @@
     </div>
   </nz-card>
   <nz-card *ngIf="!isVanished">
-    <h6>{{card?.description}}</h6>
+    <h4>{{card?.description}}</h4>
     <img src="../../../assets/risks/nothing.png" *ngIf="card.bonus.length===0" [width]="40" [height]="40">
     <div class="contextContainer" *ngIf="card.bonus.length>0">
       <div *ngFor="let item of card?.bonus">
@@ -21,15 +19,110 @@
         <img src="../../../assets/risks/cost.png" *ngIf="item.type === 'MONEY'" [width]="40" [height]="40">
         <img src="../../../assets/risks/day.png" *ngIf="item.type === 'DAYS'" [width]="40" [height]="40">
         <img src="../../../assets/risks/resource.png" *ngIf="item.type === 'RESOURCES'" [width]="40" [height]="40">
-        <div class="moneyRisk" *ngIf="item.type === 'MONEY'"
-             [ngStyle]="getStyleById(item.roleID).style">{{item?.amount}}</div>
-        <div class="dayRisk" *ngIf="item.type === 'DAYS'">{{item?.amount + ' '}} Jours</div>
-        <div class="risk" *ngIf="item.type === 'RISK'">{{item?.amount + ' '}} Risques</div>
-        <div class="resourceRisk"
-             [ngStyle]="getStyleById(item.roleID).style"
-             *ngIf="item.type === 'RESOURCES'">{{item?.amount}}
+        <div class="moneyRisk" *ngIf="item.type === 'MONEY'" [ngStyle]="getStyleById(item.roleID).style">
+          {{item?.amount}}</div>
+        <div class="dayRisk" *ngIf="item.type === 'DAYS'">{{item?.amount}} J · <b>{{item.activityIdAssociate}}</b></div>
+        <div class="risk" *ngIf="item.type === 'RISK'">{{item?.amount}} R · <b>{{item.activityIdAssociate}}</b></div>
+        <div class="resourceRisk" [ngStyle]="getStyleById(item.roleID).style" *ngIf="item.type === 'RESOURCES'">
+          {{item?.amount}}
         </div>
       </div>
     </div>
   </nz-card>
 </div>
+
+<ng-template #money>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
+        </i>
+      </span>
+      <div class="ant-notification-notice-message">Effet d'une carte risque</div>
+      <div class="ant-notification-notice-description"
+        *ngIf="extraPlayer.title === myInformation.title && extraPayment<0">
+        Vous devez payer <b>{{extraPayment}}K</b> à cause de la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+      <div class="ant-notification-notice-description"
+        *ngIf="extraPlayer.title === myInformation.title && extraPayment>0">
+        Vous avez gagné <b>{{extraPayment}}K</b> grâce à la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+      <div class="ant-notification-notice-description"
+        *ngIf="extraPlayer.title !== myInformation.title && extraPayment<0">
+        {{extraPlayer.title}} doit payer <b>{{extraPayment}}K</b> à cause de la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+
+      <div class="ant-notification-notice-description"
+        *ngIf="extraPlayer.title !== myInformation.title && extraPayment>0">
+        {{extraPlayer.title}} a gagné <b>{{extraPayment}}K</b> grâce à la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #day>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
+        </i>
+      </span>
+      <div class="ant-notification-notice-message">Effet d'une carte risque</div>
+      <div class="ant-notification-notice-description" *ngIf="extraPayment>0">
+        La durée à l'étape <b>{{activityID}}</b> augmente de <b>{{extraPayment}}J</b>
+        à cause de
+        <b>{{card.description}}</b>
+      </div>
+      <div class="ant-notification-notice-description" *ngIf="extraPayment<0">
+        La durée à l'étape <b>{{activityID}}</b> diminue de <b>{{extraPayment}}J</b>
+        grâce à
+        <b>{{card.description}}</b>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #risk>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
+        </i>
+      </span>
+      <div class="ant-notification-notice-message">Effet d'une carte risque</div>
+      <div class="ant-notification-notice-description" *ngIf="extraPayment>0">
+        La defaillance à l'étape <b>{{activityID}}</b> augmente de <b>{{extraPayment}}R</b>
+        à cause de la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+      <div class="ant-notification-notice-description" *ngIf="extraPayment<0">
+        La defaillance à l'étape <b>{{activityID}}</b> diminue de <b>{{extraPayment}}R</b>
+        grâce à la carte risque : <b>{{card.description}}</b>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #resource>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
+        </i>
+      </span>
+      <div class="ant-notification-notice-message">Effet d'une carte risque</div>
+      <div class="ant-notification-notice-description" *ngIf="extraPlayer.title === myInformation.title">
+        Vous devez payer <b>{{extraPayment}}</b> ressource(s) à cause de la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+      <div class="ant-notification-notice-description" *ngIf="extraPlayer.title !== myInformation.title">
+        {{extraPlayer.title}} doit payer <b>{{extraPayment}}</b> ressource(s) à cause de la carte risque :
+        <b>{{card.description}}</b>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,178 @@
+<div class="container">
+  <nz-card id="contract-card" [nzTitle]="contract" [nzActions]="[contractSigne, receive, give]">
+    <div class="content-container">
+      <div *ngIf="isPayment">
+        <nz-tabset>
+          <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab">
+            <div *ngIf="tab === 'Total à payer'">
+              <div *ngIf="contractsGiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
+              <div class="contract-container">
+                <div class="contractWithRole" *ngFor="let item of contractsGiver">
+                  <div [ngStyle]="getRoleById(myRoleId).style"></div>
+                  <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
+                  <div class="amount"><b>{{item?.amount}}K</b></div>
+                  <img src="../../../../assets/icons/youjiantou.png" [width]="40" [height]="20">
+                  <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
+                  </div>
+                  <span style="margin-left: 10px">{{getRoleById(item.withRole).title}}</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="tab === 'État du paiement'">
+              <div *ngIf="contractsGiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
+              <div class="contract-container">
+                <div class="contractWithRole" *ngFor="let item of contractsGiver">
+                  <div [ngStyle]="getRoleById(myRoleId).style"></div>
+                  <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
+                  <div class="amount"><b>{{item?.amountPaid}}K</b></div>
+                  <img src="../../../../assets/icons/youjiantou.png" [width]="40" [height]="20">
+                  <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
+                  </div>
+                  <span style="margin-left: 10px">{{getRoleById(item.withRole).title}}</span>
+                </div>
+              </div>
+            </div>
+          </nz-tab>
+        </nz-tabset>
+      </div>
+      <div *ngIf="isSigne">
+        <div class="contract-container">
+          <div *ngIf="contracts.length == 0">Vous n'avez pas encore signé de contrats.</div>
+          <div class="contractWithRole" *ngFor="let item of contracts">
+            <div [ngStyle]="getRoleById(myRoleId).style">
+            </div>
+            <div *ngIf="item.isPay" style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px">
+            </div>
+            <img *ngIf="!item.isPay" src="../../../../assets/icons/zuojiantou.png" [width]="40" [height]="20">
+            <div class="amount"><b>{{item?.amount}}K</b></div>
+            <div *ngIf="!item.isPay" style="width: 40px; height: 10px; background-color: #8b8b8b;margin-left: 10px">
+            </div>
+            <img *ngIf="item.isPay" src="../../../../assets/icons/youjiantou.png" [width]="40" [height]="20">
+            <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
+            </div>
+            <span style="margin-left: 10px">{{getRoleById(item.withRole).title}}</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isReceive">
+        <nz-tabset>
+          <nz-tab *ngFor="let tab of tab" [nzTitle]="tab">
+            <div *ngIf="tab === 'Total à recevoir'">
+              <div *ngIf="contractsReceiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
+              <div class="contract-container">
+                <div class="contractWithRole" *ngFor="let item of contractsReceiver">
+                  <div [ngStyle]="getRoleById(myRoleId).style"></div>
+                  <img src="../../../../assets/icons/zuojiantou.png" [width]="40" [height]="20">
+                  <div class="amount"><b>{{item?.amount}}K</b></div>
+                  <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
+                  <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
+                  </div>
+                  <span style="margin-left: 10px">{{getRoleById(item.withRole).title}}</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="tab === 'État du paiement'">
+              <div *ngIf="contractsReceiver.length == 0">Vous n'avez pas signé de contrats de ce type.</div>
+              <div class="contract-container">
+                <div class="contractWithRole" *ngFor="let item of contractsReceiver">
+                  <div [ngStyle]="getRoleById(myRoleId).style"></div>
+                  <img src="../../../../assets/icons/zuojiantou.png" [width]="40" [height]="20">
+                  <div class="amount"><b>{{item?.amountPaid}}K</b></div>
+                  <div style="width: 40px; height: 10px; background-color: #8b8b8b; margin-left: 10px"></div>
+                  <div [ngStyle]="getRoleById(item.withRole).style" style="margin-left: 10px">
+                  </div>
+                  <span style="margin-left: 10px">{{getRoleById(item.withRole).title}}</span>
+                </div>
+              </div>
+            </div>
+          </nz-tab>
+        </nz-tabset>
+      </div>
+    </div>
+  </nz-card>
+</div>
+<ng-template #contract>
+  <div class="contract">
+    <nz-avatar nzSrc="../../../../assets/icons/hetong.png"></nz-avatar>
+    <h4 nz-title>Contrats</h4>
+  </div>
+</ng-template>
+
+<ng-template #receive style="position: absolute; bottom: 0">
+  <div (click)="showReceive()">
+    <i class="iconfont icon-shoukuan">
+    </i><br>
+    À recevoir
+  </div>
+</ng-template>
+
+<ng-template #give>
+  <div (click)="showPayment()">
+    <i class="iconfont icon-fukuan">
+    </i>
+    <br>
+    À payer
+  </div>
+</ng-template>
+<ng-template #contractSigne>
+  <div (click)="showSign()">
+    <i id="description" class="iconfont icon-qianzishenhe"></i>
+    <br>
+    Signés
+  </div>
+</ng-template>
+
+<ng-template #plan>
+  <span>
+    <i id="planning" class="iconfont icon-touzijihuaguanli"></i>
+    <br>
+    Plan
+  </span>
+</ng-template>
+
+<ng-template>
+  <div class="contractWithRole">
+    <div [ngStyle]="getRoleById(myRoleId).style">
+    </div>
+    <img src="../../../../assets/icons/zuojiantou.png" [width]="20" [height]="20">
+    <img src="../../../../assets/icons/youjiantou.png" [width]="20" [height]="20">
+    <div class="amount"><b>{{amount}}K</b></div>
+    <div [ngStyle]="getRoleById(withRole).style">
+    </div>
+  </div>
+</ng-template>
+
+<!--  <ng-template #extra>-->
+<!--    <h4>{{myInformation?.title}}</h4>-->
+<!--    <div class="resource">-->
+<!--      <nz-avatar [nzSrc]="myInformation.src"></nz-avatar>-->
+<!--      <div class="inner">-->
+<!--        <img src="../../../assets/moneybag.png" [width]="30" [height]="30">-->
+<!--        <h3>{{currentMonney}}K</h3>-->
+<!--      </div>-->
+<!--      <br>-->
+<!--      <div class="inner" style="margin-left: 30px">-->
+<!--        <div class="resourceCube" [ngStyle]="{backgroundColor: myInformation.style.background}"></div>-->
+<!--        <h3>{{currentResource}}</h3>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </ng-template>-->
+<!--</div>-->
+
+<!--<ng-template #template>-->
+<!--  <div class="ant-notification-notice-content">-->
+<!--    <div class="ant-notification-notice-with-icon">-->
+<!--          <span class="ant-notification-notice-icon">-->
+<!--            <i nz-icon nzType="money-collect"-->
+<!--               style="color: rgb(16, 142, 233);"-->
+<!--               nzTheme="outline">-->
+<!--            </i>-->
+<!--          </span>-->
+<!--      <div class="ant-notification-notice-message">Paiement du contract</div>-->
+<!--      <div class="ant-notification-notice-description">-->
+<!--        Une partie du contrat a été payée: <b>{{giverRoleName}}</b> a payé <b>{{paymentAmount}}-->
+<!--        k</b> au <b>{{receiverRoleName}}</b>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->

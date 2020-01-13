@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Payment;
 import org.polytech.pfe.domego.models.Player;
@@ -28,14 +28,12 @@ import java.util.logging.Logger;
 public class PayResourcesEvent implements EventProtocol {
 
     private Map<String, ?> request;
-    private GameInstance gameInstance;
     private Messenger messenger;
     private final Logger logger = Logger.getGlobal();
 
     public PayResourcesEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
-        gameInstance = GameInstance.getInstance();
 
     }
 
@@ -48,7 +46,7 @@ public class PayResourcesEvent implements EventProtocol {
             return;
         }
 
-        Optional<Game> optionalGame = gameInstance.getSpecificGameByID(String.valueOf(request.get(GameRequestKey.GAMEID.getKey())));
+        Optional<Game> optionalGame = new GameAccessor().getGameById(String.valueOf(request.get(GameRequestKey.GAMEID.getKey())));
         if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
@@ -77,22 +75,23 @@ public class PayResourcesEvent implements EventProtocol {
         Activity currentActivity = game.getCurrentActivity();
         if (!currentActivity.payResources(player, payments)){
             int totalAmount = payments.stream().mapToInt(Payment::getAmount).sum();
-            logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay", new Object[]{game.getId(), player.getID(),player.getResourcesAmount(), totalAmount});
+            logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has not enough resources, he has {2} and he need {3} to pay", new Object[]{game.getId(), player.getName(),player.getResourcesAmount(), totalAmount});
             return;
         }
         game.getPlayerById(player.getID()).ifPresent(this::sendResponseToUser);//Send Message to the player that payment is ok
 
 
 
-        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getID(),payments.size(), currentActivity.getId()});
+        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has realize {2} payment for the activity : {3}", new Object[]{game.getId(), player.getName(),payments.size(), currentActivity.getId()});
         logger.log(Level.INFO, "PaymentResourcesEvent : List Payment :  {0}", payments);
+        logger.log(Level.INFO,"PaymentResourcesEvent : In the game {0}, the player named {1} has now {2} resources", new Object[]{game.getId(), player.getName(),player.getResourcesAmount()});
         new UpdatePaymentGameEvent(game, player).processEvent();
 
         if (currentActivity.isActivityDone()) {
             // if the activity status is not done yet it means the risk cards hadn't been drawn
             if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
                 currentActivity.doneActivity();
-                new DrawRiskCardEvent(game).processEvent();
+                new DrawCardEvent(game).processEvent();
             }
             // otherwise it means the payment is coming from risk cards and we have to finish the activity.
             else {
@@ -112,6 +111,9 @@ public class PayResourcesEvent implements EventProtocol {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "PAY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
+
+        response.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
+
         messenger.sendSpecificMessageToAUser(response.toString());
     }
 

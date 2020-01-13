@@ -9,7 +9,7 @@
 .container{
   width: 40px;
   height: 35px;
-  color: #f0f2f5;
+  color: white;
   display: flex;
   background-color: #c54e3c;
   justify-content: center;
@@ -25,7 +25,7 @@
   height:35px;
   border: 1px solid #efefef;
   margin-left: 1px;
-  color: #f0f2f5;
+  color: white;
   justify-content: center;
   align-items: center;
   margin-top: 1px;
@@ -38,7 +38,7 @@
   height:35px;
   border: 1px solid #efefef;
   margin-left: 1px;
-  color: #f0f2f5;
+  color: white;
   justify-content: center;
   align-items: center;
   margin-top: 1px;
@@ -51,7 +51,7 @@
   background-size: 40px;
   width: 40px;
   height:35px;
-  color: #f0f2f5;
+  color: white;
   display: flex;
   background-color: #c54e3c;
   justify-content: center;

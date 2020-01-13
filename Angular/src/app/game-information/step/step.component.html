@@ -1,12 +1,10 @@
 <div class="container" (click)="sendStep()">
-  <nz-card [nzBordered]="true"
-           [nzTitle]="titleTemplate"
-           [nzExtra]="extraTemplate">
+  <nz-card [id]="'stepCard' + step.title" [nzBordered]="true" [nzTitle]="titleTemplate" [nzExtra]="extraTemplate">
     <div class="contenu" *ngIf="!isHistory">
       <p>{{step?.description}}</p>
       <div class="step-container">
         <div nz-row>
-          <div nz-col nzSpan="14">
+          <div nz-col nzSpan="12">
             <nz-card nzTitle="Action(s) spéciale(s)"
                      *ngIf="step.buyingActions.length>0 || step.negotiationActions.length>0">
               <div class="resource-buyer" *ngIf="step.buyingActions.length>0">
@@ -21,6 +19,14 @@
               </div>
             </nz-card>
           </div>
+          <div nz-col nzSpan="1"></div>
+          <div nz-col nzSpan="8">
+            <div *ngFor="let payments of step?.payContractAction">
+              <app-payment-contract [receiverID]="payments.receiverID" [percent]="payments.amount"
+                                    [giverID]="payments.giverID">
+              </app-payment-contract>
+            </div>
+          </div>
         </div>
         <div nz-row style="margin-top: 10px">
           <div nz-col nzSpan="24">
@@ -28,36 +34,36 @@
               <nz-table nzBordered [nzData]="test" #table [nzFrontPagination]="false">
                 <thead>
                 <tr>
-                  <th><img src="../../../assets/icons/person.png" width="20" height="20" alt="Person"></th>
-                  <th><img src="../../../assets/icons/faillante.png" width="20" height="20" alt="faillante"></th>
-                  <th><img src="../../../assets/icons/duration.png" width="20" height="20" alt="duration"></th>
+                  <th><img src="../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
+                  <th><img src="../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
+                  <th><img src="../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
+                  <th *ngIf="!subscription.isVersionInitial"><img src="../../../assets/icons/quality.png" [width]="20" [height]="20" alt="duration"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let data of step?.payingActions; let t of table.data">
                   <td>
-                    <app-activity-displayer
-                      [role]="data?.roleID"
-                      [type]="'MANDATORY'"
-                      [extraPaying]="step.extraPayment"
-                      [activitiesBenefits]="data?.actions[0].actions">
+                    <app-activity-displayer [role]="data?.roleID" [type]="'MANDATORY'"
+                                            [extraPaying]="step.extraPayment"
+                                            [activitiesBenefits]="data?.actions[0].actions">
                     </app-activity-displayer>
                   </td>
                   <td>
-                    <app-activity-displayer
-                      [role]="data?.roleID"
-                      *ngIf="data?.actions.length > 1"
-                      [isActivity]="false"
-                      [activitiesBenefits]="data?.actions[1].actions"
-                      [type]="'RISKS'"></app-activity-displayer>
+                    <app-activity-displayer [role]="data?.roleID" *ngIf="data?.actions.length > 1"
+                                            [isActivity]="false" [activitiesBenefits]="data?.actions[1].actions"
+                                            [type]="'RISKS'">
+                    </app-activity-displayer>
                   </td>
                   <td>
-                    <app-activity-displayer
-                      *ngIf="data?.actions.length > 2"
-                      [role]="data?.roleID"
-                      [activitiesBenefits]="data?.actions[2].actions"
-                      [isActivity]="false"
-                      [type]="'DAYS'">
+                    <app-activity-displayer *ngIf="data?.actions.length > 2" [role]="data?.roleID"
+                                            [activitiesBenefits]="data?.actions[2].actions" [isActivity]="false"
+                                            [type]="'DAYS'">
+                    </app-activity-displayer>
+                  </td>
+                  <td *ngIf="!subscription.isVersionInitial">
+                    <app-activity-displayer *ngIf="data?.actions.length > 3" [role]="data?.roleID"
+                                            [activitiesBenefits]="data?.actions[3].actions" [isActivity]="false"
+                                            [type]="'QUALITY'">
                     </app-activity-displayer>
                   </td>
                 </tr>
@@ -69,10 +75,7 @@
       </div>
     </div>
     <div class="history" *ngIf="isHistory">
-      <app-history
-        [listOfData]="step?.history"
-        [activityID]="step?.title"
-        [riskCards]="step.riskCards">
+      <app-history [listOfData]="step?.history" [activityID]="step?.title" [riskCards]="step.riskCards">
       </app-history>
     </div>
   </nz-card>
@@ -85,10 +88,12 @@
 
 <ng-template #titleTemplate>
   <div class="templateTitle">
-    <h4 nz-title>Etape {{step?.title}}</h4>
+    <div class="titleContainer">
+      <h4 nz-title>Etape {{step?.title}}</h4>
+    </div>
     <div class="durationContainer"><b>+{{step?.numberOfDays}}j</b></div>
     <div class="risk" *ngFor="let item of counter(step.risks); let i=index">
-      Risque{{i + 1}}
+      <span><b>R{{i + 1}}</b></span>
     </div>
   </div>
 </ng-template>

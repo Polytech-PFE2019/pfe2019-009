@@ -6,7 +6,7 @@ import org.polytech.pfe.domego.models.activity.Activity;
 import org.polytech.pfe.domego.models.activity.ActivityStatus;
 import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.protocol.EventProtocol;
-import org.polytech.pfe.domego.protocol.game.DrawRiskCardEvent;
+import org.polytech.pfe.domego.protocol.game.DrawCardEvent;
 import org.polytech.pfe.domego.protocol.game.key.GameRequestKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 import org.springframework.web.socket.WebSocketSession;
@@ -49,7 +49,7 @@ public class EndNegotiationEvent extends NegotiationEvent implements EventProtoc
         if (currentActivity.isActivityDone()) {
             if (!currentActivity.getActivityStatus().equals(ActivityStatus.DONE)) {
                 currentActivity.doneActivity();
-                new DrawRiskCardEvent(game).processEvent();
+                new DrawCardEvent(game).processEvent();
             }
         }
 
@@ -60,6 +60,8 @@ public class EndNegotiationEvent extends NegotiationEvent implements EventProtoc
         response.addProperty(GameResponseKey.RESPONSE.key, "END_NEGOTIATE");
         response.addProperty(GameResponseKey.NEGOCIATIONID.key, negociation.getId());
         response.addProperty(GameResponseKey.AMOUNT.key, negociation.getAmountNegotiated());
+        response.addProperty(GameResponseKey.GIVERID.key, negociation.getGiverRoleID());
+        response.addProperty(GameResponseKey.RECEIVERID.key, negociation.getReceiverRoleID());
 
         super.sendResponses(response.toString());
 

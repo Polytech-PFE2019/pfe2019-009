@@ -7,6 +7,7 @@ import org.polytech.pfe.domego.components.business.Room;
 import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.database.accessor.RoomAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
+import org.polytech.pfe.domego.generator.GameType;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.room.key.RoomRequestKey;
@@ -73,11 +74,27 @@ public class StartGameEvent implements EventProtocol {
             this.messenger.sendError("Everybody is not ready");
             return;
         }
+        GameType gameType;
+        try{
+            gameType = GameType.valueOf(request.get(RoomRequestKey.GAME_TYPE.getKey()));
+        }catch (IllegalArgumentException e){
+            this.messenger.sendError("This type of game doesn't exist");
+            return;
+        }
+        int timeOfProject = 0;
+        if(request.containsKey(RoomRequestKey.DAYS.getKey())){
+            timeOfProject = Integer.valueOf(request.get(RoomRequestKey.DAYS.getKey()));
+        }
 
-        Game game = gameAccessor.createNewGameFromRoom(room);
+        int costOfProject = 0;
+        if(request.containsKey(RoomRequestKey.COST.getKey())){
+            costOfProject = Integer.valueOf(request.get(RoomRequestKey.COST.getKey()));
+        }
+
+        Game game = gameAccessor.createNewGameFromRoom(room, gameType,timeOfProject,costOfProject);
         String response = createStartGameResponse(game).toString();
 
-        room.getPlayerList().parallelStream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
+        room.getPlayerList().stream().forEach(currentPlayer -> new Messenger(currentPlayer.getSession()).sendSpecificMessageToAUser(response));
 
         logger.log(Level.INFO,
                 "StartGameEvent: Player name : {0} start the game for room with ID {1}",
@@ -100,5 +117,14 @@ public class StartGameEvent implements EventProtocol {
             throw new MissArgumentToRequestException(RoomRequestKey.ROOMID);
         if (!request.containsKey(RoomRequestKey.USERID.getKey()))
             throw new MissArgumentToRequestException(RoomRequestKey.USERID);
+        if (!request.containsKey(RoomRequestKey.GAME_TYPE.getKey()))
+            throw new MissArgumentToRequestException(RoomRequestKey.GAME_TYPE);
+        if (request.containsKey(RoomRequestKey.GAME_TYPE.getKey()) && GameType.valueOf(request.get(RoomRequestKey.GAME_TYPE.getKey())).equals(GameType.INTERMEDIATE)){
+            if (!request.containsKey(RoomRequestKey.DAYS.getKey()))
+                throw new MissArgumentToRequestException(RoomRequestKey.DAYS);
+            if (!request.containsKey(RoomRequestKey.COST.getKey()))
+                throw new MissArgumentToRequestException(RoomRequestKey.COST);
+        }
+
     }
 }

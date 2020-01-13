@@ -1,14 +1,18 @@
-<div class="container" *ngIf="isOpenDialog">
+<div class="container" *ngIf="isOpenDialog && !this.isMenus">
   <countdown [config]="{leftTime: data.time}"></countdown>
   <div class="header">
     <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
     <h5>{{data?.otherUserName}}</h5>
+    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"
+            style="margin-right: 5px;" (click)="minus()">
+      <i nz-icon nzType="minus" nzTheme="outline"></i>
+    </button>
   </div>
   <div class="receiverBox">
     <div class="negociation">
       <h4>Contract</h4>
       <h4>{{contractNumber}}k</h4>
-    <button *ngIf="!isProposer" (click)="accepteContract()" [ngStyle]="accepteStyle">Accepeter</button>
+      <button *ngIf="!isProposer" (click)="accepteContract()" [ngStyle]="accepteStyle">Accepter</button>
     </div>
   </div>
   <div class="context">
@@ -26,39 +30,50 @@
     <div class="contract-container">
       <h4>Un contrat:</h4>
       <div style="display: flex; flex-direction: row">
-        <input nz-input
-               type="number"
-               placeholder="0"
-               [max]="1000"
-               [min]="0"
-               [(ngModel)]="contract"
-               style="margin-right: 10px;width: 100px">
-        <b> K</b>
+        <input #contract (keyup.enter)="sendContract()" nz-input [(ngModel)]="contractProposed" type="number"
+          placeholder="0" [max]="1000" [min]="0" style="margin-right: 10px;width: 100px">
+        <b>K</b>
       </div>
-      <button nz-button
-              nzType="default"
-              style="width: 160px;
+      <button nz-button nzType="default" style="width: 160px;
               margin-top: 15px;
               margin-left: 6px;
-              margin-bottom: 10px;"
-              (click)="sendContract()">
+              margin-bottom: 10px;" (click)="sendContract()">
         Proposer un contrat
       </button>
     </div>
     <div class="desc-container">
-      <textarea
-        nz-input
-        [(ngModel)]="msg"
-        id="msg"
-        rows="4"
-        placeholder="..."></textarea>
-      <button id="sendBnt"
-              class="sendBnt"
-              nz-button (click)="sendMessage()"
-              nzShape="circle">
+      <textarea #msg rows="6" (keyup.enter)="sendMessage()" nz-input id="msg" [(ngModel)]="myMessage">
+      </textarea>
+      <button nzType="default" id="msgBnt" nz-button (click)="sendMessage()" nzShape="circle">
         <i class="iconfont icon-send">
         </i>
       </button>
     </div>
   </div>
 </div>
+
+<div *ngIf="isMenus" class="dialogue">
+  <nz-badge [nzCount]="iconTemplate">
+    <div class="head-example" (click)="open()">
+      <img [src]="withRole.src" [width]="40" height="40">
+    </div>
+  </nz-badge>
+  <ng-template #iconTemplate>
+    <i nz-icon nzType="clock-circle" class="ant-scroll-number-custom-component" style="color: #f5222d"></i>
+  </ng-template>
+</div>
+
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
+        </i>
+      </span>
+      <div class="ant-notification-notice-message">Résultat de négociation</div>
+      <div class="ant-notification-notice-description">
+        Vous avez négocié un contrat de: <b>{{contractNumber}}K</b>
+      </div>
+    </div>
+  </div>
+</ng-template>

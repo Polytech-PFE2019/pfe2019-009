@@ -3,7 +3,7 @@ package org.polytech.pfe.domego.protocol.game;
 import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
-import org.polytech.pfe.domego.components.statefull.GameInstance;
+import org.polytech.pfe.domego.database.accessor.GameAccessor;
 import org.polytech.pfe.domego.exceptions.MissArgumentToRequestException;
 import org.polytech.pfe.domego.models.Player;
 import org.polytech.pfe.domego.models.activity.Activity;
@@ -22,13 +22,13 @@ public class BuyResourceEvent implements EventProtocol {
 
     private Logger logger = Logger.getGlobal();
     private Map<String,String> request;
-    private GameInstance gameInstance;
+    private GameAccessor gameAccessor;
     private Messenger messenger;
 
     public BuyResourceEvent(WebSocketSession session, Map request) {
         this.messenger = new Messenger(session);
         this.request = request;
-        gameInstance = GameInstance.getInstance();
+        this.gameAccessor = new GameAccessor();
 
     }
 
@@ -41,7 +41,7 @@ public class BuyResourceEvent implements EventProtocol {
             return;
         }
 
-        Optional<Game> optionalGame = gameInstance.getSpecificGameByID(request.get(GameRequestKey.GAMEID.getKey()));
+        Optional<Game> optionalGame = this.gameAccessor.getGameById(request.get(GameRequestKey.GAMEID.getKey()));
         if(optionalGame.isEmpty()){
             this.messenger.sendError("GAME NOT FOUND");
             return;
@@ -68,7 +68,8 @@ public class BuyResourceEvent implements EventProtocol {
         int numberOfResource = Integer.parseInt(request.get(GameRequestKey.AMOUNT.getKey()));
         int currentPriceOfResource = activity.getExchangeRateForRoleID(roleID);
 
-        if (numberOfResource * currentPriceOfResource > player.getMoney()) {
+        int totalPrice = numberOfResource * currentPriceOfResource;
+        if ( totalPrice > player.getMoney()) {
             this.messenger.sendError("USER HAS NOT ENOUGH MONEY");
             return;
         }
@@ -77,14 +78,17 @@ public class BuyResourceEvent implements EventProtocol {
         logger.log(Level.INFO,
                 "BuyResourceEvent : In game  {0} the player named : {1} has buy {2} resources. He has now : {3} resources and : {4} money.",
                 new Object[]{game.getId(), player.getName(), numberOfResource, player.getResourcesAmount(), player.getMoney()});
-        this.sendResponseToUser(player);
+        this.sendResponseToUser(player, totalPrice, numberOfResource);
     }
 
-    private void sendResponseToUser(Player player) {
+    private void sendResponseToUser(Player player, int price, int buyingResources) {
         JsonObject response = new JsonObject();
         response.addProperty(GameResponseKey.RESPONSE.key, "BUY_RESOURCES");
         response.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
+        response.addProperty(GameResponseKey.BUYING_RESOURCES.key,buyingResources);
         response.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+        response.addProperty(GameResponseKey.PRICE.key, price);
+        response.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
         messenger.sendSpecificMessageToAUser(response.toString());
 
     }

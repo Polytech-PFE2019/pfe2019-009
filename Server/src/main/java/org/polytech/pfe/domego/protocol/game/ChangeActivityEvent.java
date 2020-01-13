@@ -5,13 +5,10 @@ import com.google.gson.JsonObject;
 import org.polytech.pfe.domego.components.business.Game;
 import org.polytech.pfe.domego.components.business.Messenger;
 import org.polytech.pfe.domego.models.Player;
-import org.polytech.pfe.domego.models.activity.Activity;
-import org.polytech.pfe.domego.models.activity.negotiation.Negotiation;
 import org.polytech.pfe.domego.models.activity.pay.PayResources;
 import org.polytech.pfe.domego.protocol.EventProtocol;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,13 +25,12 @@ public class ChangeActivityEvent implements EventProtocol {
     public void processEvent() {
         if (game.getCurrentActivity().getId() == game.getActivities().size()){
             new FinishGameEvent(game).processEvent();
-            return;
         }
         else{
             game.goToTheNextActivity();
             new PayContractEvent(game).processEvent();
             logger.log(Level.INFO, "ChangeActivityEvent : In game : {0}, the current activity is now {1}", new Object[]{game.getId(), game.getCurrentActivity().getId()});
-            game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
+            game.getPlayers().stream().forEach(player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createJsonResponse().toString()));
         }
     }
 
@@ -44,7 +40,12 @@ public class ChangeActivityEvent implements EventProtocol {
         response.addProperty(GameResponseKey.COST_PROJECT.key,game.getProject().getCost());
         response.addProperty(GameResponseKey.DELAY_PROJECT.key,game.getProject().getDays());
         response.addProperty(GameResponseKey.FAILURE_PROJECT.key,game.getProject().getRisks());
+        response.addProperty(GameResponseKey.QUALITY_PROJECT.key,game.getProject().getQuality());
         response.addProperty(GameResponseKey.ACTIVITY_ID.key,game.getCurrentActivity().getId());
+        response.addProperty(GameResponseKey.INITIAL_DAYS.key, game.getCurrentActivity().getInitialNumberOfDays());
+        response.addProperty(GameResponseKey.INITIAL_RISKS.key, game.getCurrentActivity().getInitialNumberOfRisks());
+        response.addProperty(GameResponseKey.ACTUAL_DAYS.key, game.getCurrentActivity().getNumberOfDays());
+        response.addProperty(GameResponseKey.ACTUAL_RISKS.key, game.getCurrentActivity().getRiskCardList().size());
         JsonArray extraPaymentArray = new JsonArray();
         for (PayResources payResources : game.getCurrentActivity().getPayResourcesList()) {
             if (payResources.isExtraPayment()){
@@ -61,7 +62,4 @@ public class ChangeActivityEvent implements EventProtocol {
         return response;
     }
 
-    private void sendErrorToAllPlayers(String errorMessage){
-        game.getPlayers().parallelStream().forEach(player -> new Messenger(player.getSession()).sendError(errorMessage));
-    }
 }

@@ -12,7 +12,7 @@
 /*  right:-16px; !* 圆角的位置需要细心调试哦 *!*/
 /*  width:0;*/
 /*  height:0;*/
-/*  font-size:0;*/
+/*  fonts-size:0;*/
 /*  border:solid 8px;*/
 /*  border-color:#cacaca #cacaca #cacaca #F8C301;*/
 /*}*/
@@ -23,4 +23,8 @@
   border-radius: 10px;
   margin: 5px;
   padding: 5px;
+}
+
+.roleName{
+  font-weight: bold;
 }

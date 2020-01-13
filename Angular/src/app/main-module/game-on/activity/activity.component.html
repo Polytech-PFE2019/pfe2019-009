@@ -1,62 +1,76 @@
 <div class="activity2Container" *ngIf="currentActivity?.rolesID.includes(myInformation.id) && !isFinishedMine">
-  <h3>Etape {{currentActivity.title}} - Payer des ressources</h3>
-  <div class="column" style="width: 90%">
-    <nz-table nzBordered [nzData]="myDataSource" [nzNoAnimation]="false" #table [nzFrontPagination]="false">
-      <thead>
-      <tr>
-        <th><img src="../../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
-        <th><img src="../../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
-        <th><img src="../../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of table.data">
-        <td>
-          <app-activity-displayer
-            [role]="item?.roleID"
-            [extraPaying]="currentActivity.extraPayment"
-            [type]="'MANDATORY'"
-            [isActivity]="false"
-            (sendPaymentActivity)="getPaymentActivity($event)"
-            [activitiesBenefits]="item?.actions[0].actions">
-          </app-activity-displayer>
-        </td>
-        <td>
-          <app-activity-displayer [role]="item?.roleID" [isActivity]="true"
-                                  (sendPaymentActivity)="getPaymentActivity($event)"
-                                  [activitiesBenefits]="item?.actions[1].actions"
-                                  [type]="'RISKS'"></app-activity-displayer>
-        </td>
-        <td>
-          <app-activity-displayer [role]="item?.roleID" *ngIf="item?.actions.length > 2"
-                                  [activitiesBenefits]="item?.actions[2].actions" [isActivity]="true"
-                                  (sendPaymentActivity)="getPaymentActivity($event)" [type]="'DAYS'">
-          </app-activity-displayer>
-        </td>
-      </tr>
-      </tbody>
-    </nz-table>
-    <div class="column">
-      <div style="height: 20px"></div>
-      <h5>Ressources à payer: {{totalRes}}</h5>
-      <h5>Risques à réduire: {{riskReduced}}</h5>
-      <h5>Durée à réduire: {{daysReduced}}</h5>
-
-    </div>
-  </div>
-  <button nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
-  <nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-    <p>Êtes-vous sûr d'payer {{totalRes}} ressources?</p>
-  </nz-modal>
+  <h3>Etape {{currentActivity.title}}</h3>
+  <nz-tabset  [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="printIndex()" style="width: 100%">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
+      <ng-template #titleTemplate ><i nz-icon [nzType]="tab.icon"></i>{{ tab.name }} </ng-template>
+      <div class="paymentResource" *ngIf="tab.name==='Descriptif de l\'étape'">
+        <h1>{{currentActivity.activityTitle}}</h1>
+        <p>{{currentActivity.description}}</p>
+      </div>
+      <div class="paymentResource" *ngIf="tab.name==='Acheter des ressources'">
+        <app-buy-resources (sendBuy)="getBuy($event)"></app-buy-resources>
+      </div>
+      <div class="buyResource" *ngIf="tab.name==='Alouer des ressources'">
+        <div class="column" style="width: 90%">
+          <nz-table nzBordered [nzData]="myDataSource" [nzNoAnimation]="false" #table [nzFrontPagination]="false">
+            <thead>
+              <tr>
+                <th><img src="../../../../assets/icons/person.png" [width]="20" [height]="20" alt="Person"></th>
+                <th><img src="../../../../assets/icons/faillante.png" [width]="20" [height]="20" alt="faillante"></th>
+                <th><img src="../../../../assets/icons/duration.png" [width]="20" [height]="20" alt="duration"></th>
+                <th *ngIf="!subscription.isVersionInitial"><img src="../../../../assets/icons/quality.png" [width]="20"
+                    [height]="20" alt="duration"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of table.data">
+                <td>
+                  <app-activity-displayer [role]="item?.roleID" [extraPaying]="currentActivity.extraPayment"
+                    [type]="'MANDATORY'" [isActivity]="false" (sendPaymentActivity)="getPaymentActivity($event)"
+                    [activitiesBenefits]="item?.actions[0].actions">
+                  </app-activity-displayer>
+                </td>
+                <td>
+                  <app-activity-displayer [role]="item?.roleID" [isActivity]="true"
+                    (sendPaymentActivity)="getPaymentActivity($event)" [activitiesBenefits]="item?.actions[1].actions"
+                    [type]="'RISKS'"></app-activity-displayer>
+                </td>
+                <td>
+                  <app-activity-displayer [role]="item?.roleID" *ngIf="item?.actions.length > 2"
+                    [activitiesBenefits]="item?.actions[2].actions" [isActivity]="true"
+                    (sendPaymentActivity)="getPaymentActivity($event)" [type]="'DAYS'">
+                  </app-activity-displayer>
+                </td>
+                <td *ngIf="!subscription.isVersionInitial">
+                  <app-activity-displayer *ngIf="item?.actions.length > 3" [role]="item?.roleID"
+                    [activitiesBenefits]="item?.actions[3].actions" [isActivity]="true" [type]="'QUALITY'">
+                  </app-activity-displayer>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="column">
+            <h5>Ressources à payer: {{totalRes}}</h5>
+          </div>
+        </div>
+        <button id="confirm" nz-button nzType="default" nzShape="round" (click)="popConfirm()">Confirmer</button>
+      </div>
+    </nz-tab>
+  </nz-tabset>
 </div>
-<div *ngIf="!currentActivity?.rolesID.includes(myInformation.id)">
+<div *ngIf="!currentActivity?.rolesID.includes(myInformation.id)" style="height: 100%">
   <app-prompt></app-prompt>
 </div>
 
 <div *ngIf="negotiationIDs.length > 0">
-  <button (click)="launchNegotiation()">Lancer la négociation</button>
+  <button nz-button nzType="default" (click)="launchNegotiation()"><i class="iconfont icon-duihua"></i>Négociation
+  </button>
 </div>
 
 <div *ngIf="isFinishedMine && currentActivity?.rolesID.includes(myInformation.id)">
   <app-wait></app-wait>
 </div>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <p>Êtes-vous sûr de payer {{totalRes}} ressource(s)?</p>
+</nz-modal>

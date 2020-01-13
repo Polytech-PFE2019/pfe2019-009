@@ -2,32 +2,53 @@
   <h1>Résultats du jeu</h1>
   <div class="projectInfo">
     <p>Durée du projet: <b>{{ duration }}</b> jours</p>
-    <p>Défaillance	du	projet: <b>{{ failure }}</b></p>
+    <p>Défaillance du projet: <b>{{ failure }}</b></p>
     <p>Coût du projet: <b>{{ cost }}</b></p>
   </div>
-  <div nz-row  [nzGutter]="8">
-    <div nz-col [nzSpan]="4" class="resultColumn" *ngFor="let d of data">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="4" class="resultColumn" *ngFor="let d of data; let i=index">
       <div class="result">
         <img class="profile" [src]="d?.src" width="60" height="60">
         <h3 style="margin-top: 30px; height: 40px">{{d?.title}} - {{d?.user}}</h3>
-        <img class="rank" *ngIf="d.rank===1" src="../../../assets/icons/gold-medal.png" [height]="50" [width]="50">
-        <img class="rank" *ngIf="d.rank===2" src="../../../assets/icons/silver-medal.png" [height]="50" [width]="50">
-        <img class="rank" *ngIf="d.rank===3" src="../../../assets/icons/bronze-medal.png" [height]="50" [width]="50">
+        <img class="rank" *ngIf="i===5" src="../../../assets/icons/gold-medal.png" [height]="50" [width]="50">
+        <img class="rank" *ngIf="i===4" src="../../../assets/icons/silver-medal.png" [height]="50" [width]="50">
+        <img class="rank" *ngIf="i===3" src="../../../assets/icons/bronze-medal.png" [height]="50" [width]="50">
         <h6>Point de Victoire: </h6>
         <h1 style="color: #e0620d">{{d?.point}}</h1>
-        <div class="details">
-          <p>Budget: <b nz-tooltip nzTooltipTitle="Budget initial">{{d?.details.money}}</b>/
-            <b nz-tooltip nzTooltipTitle="Budget restant">{{d?.details.moneyRemain}}</b>/
-            <b nz-tooltip nzTooltipTitle="Budget dépensé">{{d?.details.moneyPayed}}</b></p>
-          <p>Resources: <b nz-tooltip nzTooltipTitle="Resource(s) dépensée(s)">{{d?.details.resourcePayed}}</b>/
-            <b nz-tooltip nzTooltipTitle="Resource(s) restante(s)">{{d?.details.resourceReamin}}</b></p>
-          <p>Defaillance(s) reduite(s): <b nz-tooltip nzTooltipTitle="Resource(s) reduite(s)">{{d?.details.riskReduced}}</b></p>
-          <p>Delay(s) reduite(s): <b nz-tooltip nzTooltipTitle="Delay(s) reduite(s)">{{d?.details.dayReduced}}</b></p>
-          <p>Négociation: <b nz-tooltip nzTooltipTitle="Contrat">{{d?.details.contactNegociated}}K</b></p>
-        </div>
+        <nz-tabset>
+          <nz-tab nzTitle="Détails">
+            <div class="details">
+              <p>Budget: <b nz-tooltip nzTooltipTitle="Budget initial">{{d?.details.money}}</b>/
+                <b nz-tooltip nzTooltipTitle="Budget restant">{{d?.details.moneyRemain}}</b>/
+                <b nz-tooltip nzTooltipTitle="Budget dépensé">{{d?.details.moneyPayed}}</b></p>
+              <p>Resources: <b nz-tooltip nzTooltipTitle="Ressource(s) dépensée(s)">{{d?.details.resourcePayed}}</b>/
+                <b nz-tooltip nzTooltipTitle="Ressource(s) restante(s)">{{d?.details.resourceReamin}}</b></p>
+              <p>Defaillance(s) reduite(s): <b nz-tooltip
+                  nzTooltipTitle="Ressource(s) reduite(s)">{{d?.details.riskReduced}}</b>
+              </p>
+              <p>Delay(s) reduite(s): <b nz-tooltip nzTooltipTitle="Delay(s) reduite(s)">{{d?.details.dayReduced}}</b>
+              </p>
+              <p>Négociation: <b nz-tooltip nzTooltipTitle="Contrat">{{d?.details.contactNegociated}}K</b></p>
+            </div>
+          </nz-tab>
+          <nz-tab nzTitle="Objectifs">
+            <div class="details">
+              <p *ngFor="let item of getRoleById(d?.id)?.mission.pointsDeVistore">
+                {{item}}
+              </p>
+            </div>
+          </nz-tab>
+          <nz-tab nzTitle="Spécial">
+            <div class="details">
+              <p *ngFor="let item of getRoleById(d?.id)?.mission.specialActivity">
+                {{item}}
+              </p>
+            </div>
+          </nz-tab>
+        </nz-tabset>
       </div>
-
     </div>
   </div>
+  <button id="start" nz-button nzType="default" (click)="quit()">Quitter
+  </button>
 </div>
-<b nz-tooltip nzTooltipTitle="pdfsdfs"></b>

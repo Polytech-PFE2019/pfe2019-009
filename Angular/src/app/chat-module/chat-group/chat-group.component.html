@@ -1,0 +1,40 @@
+<div class="container" *ngIf="isOpenGroupChat">
+  <div class="header">
+    <nz-avatar [nzSrc]="'../../assets/icons/Chat.png'"></nz-avatar>
+    <h5>Group Chat</h5>
+    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"
+            style="margin-right: 5px;" (click)="minus()">
+      <i nz-icon nzType="minus" nzTheme="outline"></i>
+    </button>
+    <button nz-button nzType="default" [nzSize]="'small'" nzShape="circle"
+            style="margin-right: 5px;" (click)="open()">
+      <i nz-icon nzType="plus" nzTheme="outline"></i>
+    </button>
+    <button nz-button nzType="danger" [nzSize]="'small'" nzShape="circle" (click)="closeGroupChat()"
+      style="margin-right: 5px;">
+      <i nz-icon nzType="close" nzTheme="outline"></i>
+    </button>
+  </div>
+
+  <div id="listMessages" class="context">
+    <div *ngFor="let message of messages">
+      <div class="sender" *ngIf="message.isSender">
+        <app-chat-message [message]="message.message" [roleID]="message.roleID"></app-chat-message>
+      </div>
+      <div class="receiver" *ngIf="!message.isSender">
+        <app-chat-message [message]="message.message" [roleID]="message.roleID"></app-chat-message>
+      </div>
+    </div>
+  </div>
+
+  <div class="senderBox">
+    <div class="desc-container">
+      <textarea #msg rows="4" style="height:auto; margin-bottom: 1.5em; margin-left: 0.8em; margin-right: 0.6em" (keyup.enter)="sendMessage()" nz-input id="msg" [(ngModel)]="myMessage">
+          </textarea>
+      <button style="margin-top: 1.5em" nzType="default" id="msgBnt" nz-button (click)="sendMessage()" nzShape="circle">
+        <i class="iconfont icon-send">
+        </i>
+      </button>
+    </div>
+  </div>
+</div>

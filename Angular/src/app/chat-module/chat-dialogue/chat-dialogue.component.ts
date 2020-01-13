@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {GameOnService} from '../../service/gameOnService/game-on.service';
 import {DialogueMessage} from './dialogueMessage';
 import {SocketRequest} from 'src/Request';
 import {SubscriptionService} from '../../service/subscriptionSerivce/subscription.service';
 import {Subscription} from 'rxjs';
-import {NzNotificationService} from "ng-zorro-antd";
+import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
+import {Roles} from "../../model/roles";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -13,6 +14,8 @@ import {NzNotificationService} from "ng-zorro-antd";
 })
 export class ChatDialogueComponent implements OnInit, OnDestroy {
   @Output() sendCloseDialog = new EventEmitter();
+  @Output() minusDialogue = new EventEmitter();
+  @Output() openDialogue = new EventEmitter();
   @Input() data: any;
   @Input() receiver = {
     class: 'receiver',
@@ -20,8 +23,9 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     description: 40,
   };
   @Input() title = '';
-  isOpenDialog = true;
+  @ViewChild('template', {static: true}) template: TemplateRef<{}>;
   value = 100;
+  isOpenDialog = true;
   contractNumber = 0;
   inputValue: string;
   isChated = false;
@@ -31,6 +35,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   negotiationID: string;
   listOfNegociation: any[] = [];
   subGame: Subscription;
+  roles = Roles;
 
   messages: DialogueMessage[] = [];
   msg = '';
@@ -39,18 +44,31 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   accepteStyle = {
     backgroundColor: '#c54e3c'
   };
+  contractProposed = 0;
+  myMessage = '';
+  isMenus = false;
+  myRole: any;
+  withRole: any;
+
 
   constructor(private gameService: GameOnService,
               private notification: NzNotificationService,
+              private nzConfigService: NzConfigService,
               private subsciption: SubscriptionService) {
   }
 
   ngOnInit() {
+    this.myRole = this.subsciption.myRole;
     this.userID = this.subsciption.userId;
     console.log(this.data);
     if (this.data.response === 'START_NEGOTIATE') {
       console.log(this.data);
       this.negotiationID = this.data.negociationID;
+    }
+    if (this.data.giverID === this.myRole.id) {
+      this.withRole = this.getRolebyId(this.data.receiverID);
+    } else {
+      this.withRole = this.getRolebyId(this.data.giverID);
     }
     this.subGame = this.gameService.reponses$.subscribe(data => {
       console.log(data);
@@ -80,15 +98,19 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
           }
           break;
         case 'FAIL_NEGOTIATE':
+
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
-            alert('La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort');
+            this.notification.blank('La négociation a échoué',
+              'La négociation a échoué ! Un contrat de montant ' + data.amount + 'k a été tiré au sort',
+              {nzDuration: 10});
           }
           break;
         case 'END_NEGOTIATE':
           if (data.negociationID === this.negotiationID) {
             this.isOpenDialog = false;
-            this.createBasicNotification();
+            // this.notification.template(this.template);
+
           }
           break;
       }
@@ -111,16 +133,15 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
   sendContract() {
     const request = {
       request: 'PRICE_NEGOTIATE',
-      amount: this.contract.toString(),
+      amount: this.contractProposed.toString(),
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
     } as SocketRequest;
-
     console.log(request);
-    this.contractNumber = this.contract;
+    this.contractNumber = this.contractProposed;
+    // this.contractProposed = 0;
     this.gameService.messages.next(request);
-    this.contract = 0;
 
   }
 
@@ -128,7 +149,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     this.isChated = true;
     const request = {
       request: 'MSG_NEGOTIATE',
-      message: this.msg,
+      message: this.myMessage,
       userID: this.gameService.userID,
       gameID: this.gameService.gameID,
       negotiationID: this.negotiationID
@@ -136,7 +157,7 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     console.log(request);
 
     this.gameService.messages.next(request);
-    this.msg = '';
+    this.myMessage = '';
   }
 
   ngOnDestroy(): void {
@@ -145,6 +166,10 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
 
   openChat() {
     this.isOpenDialog = true;
+  }
+
+  getRolebyId(id) {
+    return this.roles.find(next => next.id === id);
   }
 
   accepteContract() {
@@ -159,10 +184,14 @@ export class ChatDialogueComponent implements OnInit, OnDestroy {
     this.gameService.messages.next(req as SocketRequest);
   }
 
-  createBasicNotification(): void {
-    this.notification.blank(
-      'Résultat de négociation',
-      'Vous avez négocié un contrat de ' + this.contractNumber + ' K.'
-    );
+  minus() {
+    // this.minusDialogue.emit(true);
+    this.isMenus = true;
   }
+
+  open() {
+    // this.openDialogue.emit(true);
+    this.isMenus = false;
+  }
+
 }

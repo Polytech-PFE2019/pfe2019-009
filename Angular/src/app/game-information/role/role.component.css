@@ -3,9 +3,15 @@
   transition: all 0.6s;
   margin-bottom: 20px;
   margin-top: 50px;
-  box-shadow: 3px 3px 3px #AAAAAA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+h2{
+  color: #c87110;
+  margin-left: 10px;
+}
 /*.container:hover{*/
   /*transform: scale(1.2);*/
 /*}*/
@@ -15,20 +21,24 @@
 }
 
 .role-container {
-  background: #ECECEC;
   padding: 12px;
   height: 340px;
   overflow-y: auto;
   text-align: center;
+  box-shadow: 3px 3px 3px #AAAAAA;
+}
+
+.infor{
+  z-index:999;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 img{
   border-radius: 50%;
-  border: solid 1px #3f3f3f;
-  z-index:999;
-  position: absolute;
-  margin-top: -40px;
-  left: 45%;
+  border: solid 6px;
 }
 
 nz-card {
@@ -39,8 +49,22 @@ nz-card {
 
 .info-container{
   min-height: 200px;
+  text-align: center;
 }
 
 #profile{
   border: 10px solid #008000;
+}
+
+.money-class{
+  font-size: 20px;
+  position: absolute;
+  bottom: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }

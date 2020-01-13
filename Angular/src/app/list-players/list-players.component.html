@@ -1,0 +1,14 @@
+<nz-list style="width: 100%" [nzDataSource]="roles" [nzItemLayout]="'vertical'" [nzRenderItem]="item">
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="item.description" [nzActions]="[starAction]" [nzExtra]="extra">
+      <ng-template #starAction><i class="iconfont icon-money" style="margin-right: 8px;"
+                                  [ngStyle]="{color: item.style.background}"></i>{{item.money}}</ng-template>
+      <nz-list-item-meta [nzTitle]="nzTitle">
+        <ng-template #nzTitle>{{ item.title }} - {{item.username}}</ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+    <ng-template #extra>
+      <img alt="logo" [src]="item.src" [width]="80" [height]="80" />
+    </ng-template>
+  </ng-template>
+</nz-list>

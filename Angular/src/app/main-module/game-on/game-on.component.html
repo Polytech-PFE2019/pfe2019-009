@@ -1,48 +1,95 @@
-<h2 nz-title>Domego - {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
-<div nz-row class="container">
-  <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8" style="background-color: #cccccc">
-    <div class="activityContainer">
-      <div class="activity">
-        <app-activity [activities]="activities" (sendInitDialog)="initDialog($event)"></app-activity>
+<div [hidden]="!isLoading" class="allContainerss">
+  <div class="headers">
+    <button id="groupChat" nz-button nzSize="small" (click)="openGroupChat()">
+      <div *ngIf="hasBadge">
+        <mat-icon matBadgeSize="medium" matBadge="!" matBadgePosition="above after">chat</mat-icon>
       </div>
-      <div class="activity">
-        <app-buy-resources></app-buy-resources>
+      <div *ngIf="!hasBadge">
+        <mat-icon>chat</mat-icon>
       </div>
-      <div class="activity">
-        <app-person-information>
-        </app-person-information>
-      </div>
-      <div class="activity">
-        <app-projet-information></app-projet-information>
+    </button>
+    <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
+    <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/menu.png" [width]="40" [height]="40">
+  </div>
+  <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Menu"
+    (nzOnClose)="closePlayers()">
+    <app-list-history></app-list-history>
+  </nz-drawer>
+  <div nz-row class="container">
+    <div class="left-container" nz-col [nzSpan]="16" [nzPush]="8">
+      <div style="height: 30px"></div>
+      <div class="activityContainer">
+        <div class="activity" nz-col [nzSpan]="11">
+          <app-activity [activities]="activities" (sendBuy)="getBuy($event)" [tabs]="tabs"></app-activity>
+        </div>
+        <div class="activity" nz-col [nzSpan]="11">
+          <app-person-information>
+          </app-person-information>
+        </div>
+        <div class="activity" nz-col [nzSpan]="11">
+          <app-projet-information></app-projet-information>
+        </div>
+        <div class="activity" nz-col [nzSpan]="11">
+          <app-contract></app-contract>
+        </div>
       </div>
       <div class="dialog-container">
         <div *ngFor="let i of listOfDialog">
-          <app-chat-dialogue [data]="i"></app-chat-dialogue>
+          <div *ngIf="i.started">
+            <app-chat-dialogue [data]="i" (openDialogue)="getOpenDialoue($event)" (minusDialogue)="closeChatDialogue($event)"></app-chat-dialogue>
+          </div>
         </div>
       </div>
+      <div class="groupchat-container" [ngStyle]="headerStyle" *ngIf="showGroupChat">
+        <app-chat-group #groupChat (minusDialogue)="minusDialogue($event)" (openDialogue)="openMinusedDialogue($event)" (closeDialogue)="closeGroupChat()"></app-chat-group>
+      </div>
+      <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow"
+           (click)="launchNegotiation()" [height]="80" [width]="70">
     </div>
-
-    <button id="end" nz-button *ngIf="this.currentActivity.title === 12" (click)="closeGame()"><b>Terminer</b></button>
-  </div>
-  <div class="right-container" nz-col [nzSpan]="8" [nzPull]="16" style="background-color: #ececec">
-    <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
-      <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
-                (sendStepTest)="getStepTest($event)"></app-step>
+    <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
+      style="background-color: #ececec">
+      <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
+        <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
+          (sendStepTest)="getStepTest($event)"></app-step>
+      </div>
     </div>
   </div>
-
-  <!--  <app-chat-list [isChat]="isChat" (close)="closeChat($event)"></app-chat-list>-->
+</div>
+<div [hidden]="isLoading">
+  <app-loading></app-loading>
 </div>
 
-<nz-modal [nzVisible]="isRiskCard" nzTitle="Risques" (nzOnOk)="closeRiskCard()" (nzOnCancel)="closeRiskCard()">
+<nz-modal [nzVisible]="isRiskCard" [nzFooter]="modalFooter" nzTitle="Risques">
   <div class="myContainer" *ngIf="isRiskCard && riskCard !== null">
     <div *ngFor="let card of riskCard; let i=index">
-      <app-risk-back
-        [myTiming]="i + 1"
-        [card]="card"
-        [isDiabled]="false"
-        [title]="riskOfActivityId"></app-risk-back>
+      <app-risk-back [myTiming]="i + 1" [card]="card" [isDiabled]="false" [title]="riskOfActivityId"></app-risk-back>
     </div>
   </div>
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="closeRiskCard()">OK</button>
+  </ng-template>
 </nz-modal>
 
+<nz-modal [nzVisible]="establish.visible" [nzFooter]="modalEstablishFooter" nzTitle="Negotiation" nzClosable="false">
+  <p>Une négotiation avec {{establish.name}} va être lancée. Si vous ne vous mettez pas d'accord avant la fin du temps
+    imparti, un contrat sera tiré au sort.</p>
+  <ng-template #modalEstablishFooter>
+    <button nz-button nzType="primary" (click)="establishNegotiation(establish.negoID)">OK</button>
+  </ng-template>
+</nz-modal>
+
+<ng-template #template>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i nz-icon nzType="sound" style="color: rgb(16, 142, 233);" nzTheme="outline">
+        </i>
+      </span>
+      <div class="ant-notification-notice-message">Paiement effectué</div>
+      <div class="ant-notification-notice-description" *ngIf="totalAmount>0">
+        <b>{{currentPlayer?.title}}</b> avez payé <b>{{totalAmount}}</b> ressource(s) pour reduire
+        <b>{{riskReduced}}</b> risque(s) et <b>{{daysReduced}}</b> délai(s)
+      </div>
+    </div>
+  </div>
+</ng-template>

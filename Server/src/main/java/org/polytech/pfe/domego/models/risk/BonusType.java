@@ -6,9 +6,10 @@ public enum BonusType {
     RESOURCES("RESOURCES"),
     DAYS("DAYS"),
     RISK("RISK"),
+    QUALITY("QUALITY"),
     NOTHING("NOTHING");
 
-    public String key;
+    final String key;
 
     BonusType(String s) {
         this.key = s;

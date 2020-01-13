@@ -14,6 +14,7 @@ export class ActivityDisplayerComponent implements OnInit {
   @Output() sendPaymentActivity = new EventEmitter();
   @Input() activitiesBenefits: any[] = [];
   @Input() extraPaying: any[] = [];
+  @Input() isInter = false;
   roleStyle: any;
   roles = Roles;
   value = 0;

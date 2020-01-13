@@ -1,12 +1,15 @@
 .promptContainer {
   background: rgba(132,132,132,0.5);
-  height: 350px;
+  height: 43vh;
   display: flex;
   width: 100%;
-
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 35px;
   font-weight: bold;
+}
+
+p, span{
+  font-size: 16px;
 }

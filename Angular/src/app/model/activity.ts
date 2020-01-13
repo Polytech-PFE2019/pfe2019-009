@@ -1,5 +1,6 @@
 export class Activity {
   title: string;
+  activityTitle:string;
   numberOfDays: number;
   status: string;
   description: string;
@@ -12,10 +13,13 @@ export class Activity {
   riskCards: any;
   extraPayment: any[];
   payContractAction: any[];
+  contractsGiver: any[];
+  contractsReceiver: any[];
 
 
   constructor(r) {
     this.title = r.activityID;
+    this.activityTitle = r.title;
     this.numberOfDays = r.numberOfDays;
     this.status = r.status;
     this.description = r.description;
@@ -27,7 +31,9 @@ export class Activity {
     this.history = [];
     this.riskCards = null;
     this.extraPayment = [];
-    this.payContractAction = [];
+    this.contractsGiver = [];
+    this.contractsReceiver = [];
+    this.payContractAction = r.payContractAction;
   }
 
   addAttributes(activity) {

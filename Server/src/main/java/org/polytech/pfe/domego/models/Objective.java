@@ -22,6 +22,13 @@ public class Objective {
         return validated;
     }
 
+    public boolean isValid(double amount){
+        validated = amount > 0;
+        return validated;
+    }
+
+
+
     //for the doubles objectives
     public boolean isValid(int amount1, int amount2){
         validated = amount1 > 0 && amount2 > 0;
@@ -35,6 +42,19 @@ public class Objective {
         }
         if(hasMultiplicity){
             victoryPoints = this.amount*amount;
+        }
+        else{
+            victoryPoints = this.amount;
+        }
+    }
+
+    public void calculateVictoryPoints(double amount) {
+        if(!isValid(amount)) {
+            victoryPoints = 0;
+            return;
+        }
+        if(hasMultiplicity){
+            victoryPoints = this.amount*(int)amount;
         }
         else{
             victoryPoints = this.amount;

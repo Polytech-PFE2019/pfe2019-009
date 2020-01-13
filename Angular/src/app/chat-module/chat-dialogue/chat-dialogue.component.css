@@ -1,16 +1,27 @@
 .container {
-  background-color: #f0f2f5;
+  background-color: white;
   border-radius: 10px;
-  width: 450px;
-  height: 450px;
+  width: 100%;
+  height:  100%;
   overflow-y: auto;
   margin-right: 40px;
+  margin-bottom: 10px;
+  border: 1px solid #bfbfbf;
+}
+
+.dialogue{
+  height: 50px;
+  width: 50px;
+  position: relative;
+  bottom: -400px;
+  z-index: 99;
+  margin-right: 20px;
 }
 
 .context {
   width: 335px;
   height: 205px;
-  background-color: whitesmoke;
+  background-color: #bababa;
   overflow-y: auto;
 }
 
@@ -38,7 +49,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   top:0px;
 }
 
@@ -93,6 +104,7 @@ button {
   padding: 15px;
   background-color: burlywood;
   border-radius: 5px;
+  align-items: center;
 }
 
 .desc-container{
@@ -116,4 +128,26 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+}
+
+#msgBnt{
+  position: relative;
+  bottom: 10px;
+  right: 4px;
+}
+
+nz-badge {
+  margin-right: 20px;
+  z-index: 999;
+}
+
+.head-example {
+  width: 45px;
+  height: 45px;
+  border-radius: 4px;
+  background: #c54e3c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
 }

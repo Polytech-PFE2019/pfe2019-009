@@ -18,6 +18,7 @@ import org.polytech.pfe.domego.protocol.game.key.ActivityResponseKey;
 import org.polytech.pfe.domego.protocol.game.key.GameResponseKey;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class LaunchGameEvent implements EventProtocol {
 
     @Override
     public void processEvent() {
-       game.getPlayers().parallelStream().forEach(
+       game.getPlayers().forEach(
                player -> new Messenger(player.getSession()).sendSpecificMessageToAUser(createUpdateResponse(player))
        );
        logger.info("LaunchGameEvent : Send Message LaunchGameEvent to all players");
@@ -42,9 +43,12 @@ public class LaunchGameEvent implements EventProtocol {
     public String createUpdateResponse(Player player) {
         JsonObject response = new JsonObject();
 
+        response.addProperty(ActivityResponseKey.GAME_TYPE.key, game.getGameType().getKey());
         this.addInfosToCurrentGame(response);
 
         this.addPlayerObject(response, player);
+
+        this.addPlayersMoneyObject(response, game.getPlayers());
 
         this.addProjectObject(response, player);
 
@@ -77,6 +81,7 @@ public class LaunchGameEvent implements EventProtocol {
         response.addProperty(GameResponseKey.COST_PROJECT.key, game.getProject().getCost());
         response.addProperty(GameResponseKey.DELAY_PROJECT.key, game.getProject().getDays());
         response.addProperty(GameResponseKey.FAILURE_PROJECT.key, game.getProject().getRisks());
+        response.addProperty(GameResponseKey.QUALITY_PROJECT.key, game.getProject().getQuality());
     }
 
     private void addPlayerObject(JsonObject response, Player player){
@@ -86,8 +91,18 @@ public class LaunchGameEvent implements EventProtocol {
         playerJson.addProperty(GameResponseKey.RESOURCES.key, player.getResourcesAmount());
         playerJson.addProperty(GameResponseKey.MONEY.key, player.getMoney());
         playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
-
         response.add(GameResponseKey.PLAYER.key, playerJson);
+    }
+
+    private void addPlayersMoneyObject(JsonObject response, List<Player> players){
+        JsonArray playersJson = new JsonArray();
+        for (Player player : players ) {
+            JsonObject playerJson = new JsonObject();
+            playerJson.addProperty(GameResponseKey.MONEY.key, player.getMoney());
+            playerJson.addProperty(GameResponseKey.ROLE_ID.key, player.getRole().getId());
+            playersJson.add(playerJson);
+        }
+        response.add(GameResponseKey.PLAYERS.key, playersJson);
     }
 
     private void addProjectObject(JsonObject response, Player player) {

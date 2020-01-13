@@ -15,6 +15,13 @@
   align-items: center;
 }
 
+#tuto{
+  position: absolute;
+  right: 60px;
+  top: 10px;
+  margin-bottom: -10px;
+}
+
 #listOfPlayers {
   position: absolute;
   right: 10px;
@@ -202,4 +209,9 @@ input {
   border: none;
   font-size: 50px;
   width: 50px;
+}
+
+.nego-containers{
+  display: flex;
+  flex-direction: row;
 }

@@ -9,10 +9,11 @@
       </div>
     </button>
     <h2 nz-title>Domego - Etape {{currentActivity?.title}} - {{subscription.myRole.username}}</h2>
+    <img id="tuto" src="../../../assets/wenhao.png" (click)="openTotu()" [width]="40" [height]="40">
     <img id="listOfPlayers" (click)="showPlayers()" src="../../../assets/icons/menu.png" [width]="40" [height]="40">
   </div>
   <nz-drawer [nzWidth]="460" [nzClosable]="true" [nzVisible]="isPlayers" nzPlacement="right" nzTitle="Menu"
-    (nzOnClose)="closePlayers()">
+             (nzOnClose)="closePlayers()">
     <app-list-history></app-list-history>
   </nz-drawer>
   <div nz-row class="container">
@@ -36,21 +37,23 @@
       <div class="dialog-container">
         <div *ngFor="let i of listOfDialog">
           <div *ngIf="i.started">
-            <app-chat-dialogue [data]="i" (openDialogue)="getOpenDialoue($event)" (minusDialogue)="closeChatDialogue($event)"></app-chat-dialogue>
+            <app-chat-dialogue [data]="i" (openDialogue)="getOpenDialoue($event)"
+                               (minusDialogue)="closeChatDialogue($event)"></app-chat-dialogue>
           </div>
         </div>
       </div>
       <div class="groupchat-container" [ngStyle]="headerStyle" *ngIf="showGroupChat">
-        <app-chat-group #groupChat (minusDialogue)="minusDialogue($event)" (openDialogue)="openMinusedDialogue($event)" (closeDialogue)="closeGroupChat()"></app-chat-group>
+        <app-chat-group #groupChat (minusDialogue)="minusDialogue($event)" (openDialogue)="openMinusedDialogue($event)"
+                        (closeDialogue)="closeGroupChat()"></app-chat-group>
       </div>
       <img src="../../../assets/icons/duihua.png" id="negociation" *ngIf="isShow"
            (click)="launchNegotiation()" [height]="80" [width]="70">
     </div>
     <div id="stepsContainer" class="right-container" nz-col [nzSpan]="8" [nzPull]="16"
-      style="background-color: #ececec">
+         style="background-color: #ececec">
       <div class="stepContainer" #stepContainers *ngFor="let s of currentStep" [id]="s.title">
         <app-step [step]="s" (currentStep)="getCurrentStep($event)" (sendTestClick)="getClickTest($event)"
-          (sendStepTest)="getStepTest($event)"></app-step>
+                  (sendStepTest)="getStepTest($event)"></app-step>
       </div>
     </div>
   </div>
@@ -93,3 +96,40 @@
     </div>
   </div>
 </ng-template>
+
+<nz-modal [nzWidth]="930" [nzClosable]="true" nzTitle="Tutorial" [nzVisible]="isTutorial" [nzFooter]="ok">
+  <nz-steps [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-step nzTitle="Acheter des resources" nzStatus="finish" nzIcon="shopping-cart"></nz-step>
+    <nz-step nzTitle="Alouer des recources" nzStatus="finish" nzIcon="pay-circle"></nz-step>
+    <nz-step nzTitle="Négociation" nzStatus="finish" nzIcon="team"></nz-step>
+  </nz-steps>
+  <nz-divider></nz-divider>
+  <div *ngIf="index ===0">
+    <h4>Acheter des reources</h4>
+    <img src="../../../assets/acheter.gif">
+  </div>
+  <div *ngIf="index ===1">
+    <h4>Alouer des reources</h4>
+    <img src="../../../assets/payer.gif">
+  </div>
+  <div *ngIf="index ===2">
+    <h4>Négociation</h4>
+    <div class="nego-containers">
+      <div>
+        <nz-steps [nzCurrent]="nego" nzDirection="vertical" (nzIndexChange)="onNegoChange($event)">
+          <nz-step nzTitle="Lancer - Accepter" nzStatus="finish"></nz-step>
+          <nz-step nzTitle="Contrat" nzStatus="finish"></nz-step>
+          <nz-step nzTitle="Chat privé" nzStatus="finish"></nz-step>
+        </nz-steps>
+      </div>
+      <div>
+        <img src="../../../assets/nego.gif" *ngIf="nego===0">
+        <img src="../../../assets/contrat.gif" *ngIf="nego===1">
+        <img src="../../../assets/chatprive.gif" *ngIf="nego===2">
+      </div>
+    </div>
+  </div>
+  <ng-template #ok>
+    <button nz-button nzType="primary" (click)="closeTutorial()">OK</button>
+  </ng-template>
+</nz-modal>

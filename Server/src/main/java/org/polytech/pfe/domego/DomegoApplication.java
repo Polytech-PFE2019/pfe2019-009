@@ -12,22 +12,20 @@ import java.util.logging.Logger;
 @SpringBootApplication
 public class DomegoApplication {
 
-	@Value("${runOnDocker}")
-	public static boolean runOnDocker;
 
 	public static void main(String[] args) {
-		if (!runOnDocker){
-			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		/*
+		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-			try {
-				MyLogger.setup();
-				logger.info("Application Start");
-			} catch (IOException | URISyntaxException e) {
-				logger.warning("Problems with creating the log files");
-				throw new RuntimeException("Problems with creating the log files");
-			}
+		try {
+			MyLogger.setup();
+			logger.info("Application Start");
+		} catch (IOException | URISyntaxException e) {
+			logger.warning("Problems with creating the log files");
+			throw new RuntimeException("Problems with creating the log files");
+		}*/
 
-		}
+
 
 		SpringApplication.run(DomegoApplication.class, args);
 	}
